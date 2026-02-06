@@ -8,9 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import java.math.BigDecimal;
-
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -42,7 +40,8 @@ public class GPUDAOImplementTest {
                 .build();
         testInstance.create(gpu);
 
-        verify(jdbcTemplate).update(eq("INSERT INTO GPUs (model_number, name, chip_manufacturer, board_manufacturer, video_memory, price)"),
+        verify(jdbcTemplate).update(eq("INSERT INTO GPUs (model_number, name, chip_manufacturer," +
+                        "board_manufacturer, video_memory, price)"),
                 eq(modelNumber), eq(name), eq(chip), eq(board), eq(vram), eq(price));
     }
 }
