@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RAM {
 
-    private int id;
+    private String id;
     private String name;
     private String brand;
     private int volume;

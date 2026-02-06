@@ -40,8 +40,7 @@ public class GPUDAOImplementTest {
                 .build();
         testInstance.create(gpu);
 
-        verify(jdbcTemplate).update(eq("INSERT INTO GPUs (model_number, name, chip_manufacturer," +
-                        "board_manufacturer, video_memory, price)"),
+        verify(jdbcTemplate).update(eq("INSERT INTO GPUs (model_number, name, chip_manufacturer, board_manufacturer, video_memory, price)"),
                 eq(modelNumber), eq(name), eq(chip), eq(board), eq(vram), eq(price));
     }
 }

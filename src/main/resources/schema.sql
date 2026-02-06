@@ -15,7 +15,7 @@ CREATE TABLE "GPUs" (
 DROP TABLE IF EXISTS "RAM";
 
 CREATE TABLE "RAM" (
-    "id" bigint NOT NULL,
+    "id" varchar NOT NULL,
     "name" varchar,
     "brand" varchar,
     "volume" smallint,
