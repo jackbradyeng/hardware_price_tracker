@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
-import static com.price_tracker.DBTableNames.RAM_TABLE_NAME;
+import static com.price_tracker.constants.DBTableNames.RAM_TABLE_NAME;
 
 @Data
 @AllArgsConstructor

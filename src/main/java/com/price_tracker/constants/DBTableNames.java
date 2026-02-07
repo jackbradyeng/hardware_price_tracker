@@ -1,4 +1,4 @@
-package com.price_tracker;
+package com.price_tracker.constants;
 
 public final class DBTableNames {
 

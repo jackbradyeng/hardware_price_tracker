@@ -1,4 +1,4 @@
-package com.price_tracker;
+package com.price_tracker.controllers;
 
 import com.price_tracker.domain.GPU;
 import lombok.extern.java.Log;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @RestController
 @Log
-public class PriceTrackerController {
+public class GPUController {
 
     // hello world end point
     @GetMapping(path = "/hello")
@@ -21,7 +21,7 @@ public class PriceTrackerController {
 
     // gpu end point
     @GetMapping(path = "/gpus")
-    public GPU retrieveGPU(@RequestBody final GPU gpu) {
+    public GPU retrieveGPU() {
         return GPU.builder()
                 .modelNumber("PRIME-RTX5070TI-O16G")
                 .name("Asus Prime GeForce RTX 5070 Ti OC 16G Graphics Card")
