@@ -1,0 +1,31 @@
+package com.price_tracker.repositories;
+
+import com.price_tracker.domain.GPU;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import java.util.Optional;
+
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+public class GPURepoIntegrationTests {
+
+    private final GPURepository testInstance;
+    private final TestDataUtility data = new TestDataUtility();
+
+    @Autowired
+    public GPURepoIntegrationTests(GPURepository testInstance) {
+        this.testInstance = testInstance;
+    }
+
+    @Test
+    public void testCreateAndRecall() {
+        GPU gpu = data.createTestGPU();
+        testInstance.save(gpu);
+        Optional<GPU> result = testInstance.findById(gpu.getModelNumber());
+        assert (result).isPresent();
+        assert (result.get()).equals(gpu);
+    }
+}
