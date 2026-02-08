@@ -1,6 +1,6 @@
 package com.price_tracker.repositories;
 
-import com.price_tracker.domain.GPU;
+import com.price_tracker.domain.entities.GPU;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;

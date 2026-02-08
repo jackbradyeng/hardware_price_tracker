@@ -1,4 +1,4 @@
-package com.price_tracker.domain;
+package com.price_tracker.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

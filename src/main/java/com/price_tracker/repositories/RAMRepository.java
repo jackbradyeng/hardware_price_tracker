@@ -1,6 +1,6 @@
 package com.price_tracker.repositories;
 
-import com.price_tracker.domain.RAM;
+import com.price_tracker.domain.entities.RAM;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
