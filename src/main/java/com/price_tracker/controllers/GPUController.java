@@ -1,7 +1,13 @@
 package com.price_tracker.controllers;
 
-import com.price_tracker.domain.GPU;
+import com.price_tracker.domain.entities.GPU;
+import com.price_tracker.domain.dto.GPUDTO;
+import com.price_tracker.mappers.GPUMapper;
+import com.price_tracker.mappers.Mapper;
+import com.price_tracker.services.GPUService;
 import lombok.extern.java.Log;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,13 +19,25 @@ import java.math.BigDecimal;
 @Log
 public class GPUController {
 
-    // hello world end point
-    @GetMapping(path = "/hello")
-    public String helloWorld() {
-        return "Hello World.";
+    private final GPUService gpuService;
+    private final Mapper<GPU, GPUDTO> gpuMapper;
+
+    // gpu service dependency injection
+    public GPUController(GPUService gpuService, GPUMapper gpuMapper) {
+        this.gpuService = gpuService;
+        this.gpuMapper = gpuMapper;
     }
 
-    // gpu end point
+    // gpu create endpoint
+    @PostMapping(path = "/gpus")
+    public ResponseEntity<GPUDTO> createGPU(@RequestBody final GPUDTO gpuDTO) {
+        log.info("Got GPU: {}" + gpuDTO.toString());
+        GPU gpu = gpuMapper.mapFrom(gpuDTO);
+        GPU savedGPU = gpuService.createGPU(gpu);
+        return new ResponseEntity<>(gpuMapper.mapTo(savedGPU), HttpStatus.CREATED);
+    }
+
+    // gpu read endpoint
     @GetMapping(path = "/gpus")
     public GPU retrieveGPU() {
         return GPU.builder()
@@ -31,11 +49,4 @@ public class GPUController {
                 .price(new BigDecimal("1598.00"))
                 .build();
     }
-
-    @PostMapping(path = "/gpus")
-    public GPU createGPU(@RequestBody final GPU gpu) {
-        log.info("Got GPU: {}" + gpu.toString());
-        return gpu;
-    }
 }
-
