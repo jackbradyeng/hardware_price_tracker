@@ -1,6 +1,6 @@
 package com.price_tracker.repositories;
 
-import com.price_tracker.domain.GPU;
+import com.price_tracker.domain.entities.GPU;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
