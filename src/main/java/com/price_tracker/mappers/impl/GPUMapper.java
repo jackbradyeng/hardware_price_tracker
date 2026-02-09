@@ -1,7 +1,8 @@
-package com.price_tracker.mappers;
+package com.price_tracker.mappers.impl;
 
 import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.domain.entities.GPU;
+import com.price_tracker.mappers.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

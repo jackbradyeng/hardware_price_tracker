@@ -2,7 +2,7 @@ package com.price_tracker.controllers;
 
 import com.price_tracker.domain.entities.GPU;
 import com.price_tracker.domain.dto.GPUDTO;
-import com.price_tracker.mappers.GPUMapper;
+import com.price_tracker.mappers.impl.GPUMapper;
 import com.price_tracker.mappers.Mapper;
 import com.price_tracker.services.GPUService;
 import lombok.extern.java.Log;
