@@ -4,7 +4,9 @@ import com.price_tracker.domain.dto.RAMDTO;
 import com.price_tracker.domain.entities.RAM;
 import com.price_tracker.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RAMMapper implements Mapper<RAM, RAMDTO> {
 
     private ModelMapper modelMapper;
