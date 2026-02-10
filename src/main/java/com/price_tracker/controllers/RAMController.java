@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 
+/** Fully functional REST API with CRUD functionality. */
 @RestController
 @Log
 public class RAMController {

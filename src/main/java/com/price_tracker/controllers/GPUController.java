@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/** Fully functional REST API with CRUD functionality. */
 @RestController
 @Log
 public class GPUController {
@@ -30,7 +31,7 @@ public class GPUController {
     public ResponseEntity<GPUDTO> createGPU(@RequestBody final GPUDTO gpuDTO) {
         log.info("Got GPU: {}" + gpuDTO.toString());
         GPU gpu = gpuMapper.mapFrom(gpuDTO);
-        GPU savedGPU = gpuService.createGPU(gpu);
+        GPU savedGPU = gpuService.save(gpu);
         return new ResponseEntity<>(gpuMapper.mapTo(savedGPU), HttpStatus.CREATED);
     }
 
@@ -52,4 +53,40 @@ public class GPUController {
             return new ResponseEntity<>(gpudto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    // gpu update endpoint
+    @PutMapping(path = "/gpus/{id}")
+    public ResponseEntity<GPUDTO> fullUpdateGPU(
+            @PathVariable("id") String id,
+            @RequestBody GPUDTO gpuDTO) {
+        if(!gpuService.exists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        gpuDTO.setModelNumber(id);
+        GPU gpu = gpuMapper.mapFrom(gpuDTO);
+        GPU savedGPU = gpuService.save(gpu);
+        return new ResponseEntity<>(
+                gpuMapper.mapTo(savedGPU),
+                HttpStatus.OK
+        );
+    }
+
+    // gpu partial-update endpoint
+    @PatchMapping(path = "/gpus/{id}")
+    public ResponseEntity<GPUDTO> partialUpdate(
+            @PathVariable("id") String id,
+            @RequestBody GPUDTO gpuDTO
+    ) {
+        if(!gpuService.exists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        GPU gpu = gpuMapper.mapFrom(gpuDTO);
+        GPU updatedGPU = gpuService.partialUpdate(id, gpu);
+        return new ResponseEntity<>(
+                gpuMapper.mapTo(updatedGPU),
+                HttpStatus.OK
+        );
+    }
+
+    // gpu delete endpoint
 }
