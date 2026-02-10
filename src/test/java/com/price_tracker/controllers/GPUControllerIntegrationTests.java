@@ -1,7 +1,10 @@
 package com.price_tracker.controllers;
 
 import com.price_tracker.domain.entities.GPU;
+import com.price_tracker.repositories.GPURepository;
 import com.price_tracker.repositories.TestDataUtility;
+import com.price_tracker.services.GPUService;
+import com.price_tracker.services.impl.GPUServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +24,21 @@ import tools.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 public class GPUControllerIntegrationTests {
 
-    private MockMvc mockMVC;
-    private ObjectMapper objectMapper;
-    private TestDataUtility tdl;
+    private final MockMvc mockMVC;
+    private final ObjectMapper objectMapper;
+    private final TestDataUtility tdl;
+    private final GPUService gpuService;
 
     @Autowired
-    public GPUControllerIntegrationTests(MockMvc mockMVC) {
+    public GPUControllerIntegrationTests(MockMvc mockMVC, GPURepository gpuRepository) {
         this.mockMVC = mockMVC;
         this.objectMapper = new ObjectMapper();
         this.tdl = new TestDataUtility();
+        this.gpuService = new GPUServiceImpl(gpuRepository);
     }
 
     @Test
-    public void testThatCreateGPUReturnsSuccessful() throws Exception {
+    public void testThatCreateGPUReturnsHttpStatus200ok() throws Exception {
         GPU testGPU = tdl.createTestGPU();
         String gpuString = objectMapper.writeValueAsString(testGPU);
 
@@ -43,6 +48,39 @@ public class GPUControllerIntegrationTests {
                         .content(gpuString)
         ).andExpect(
                 MockMvcResultMatchers.status().isCreated()
+        );
+    }
+
+    @Test
+    public void testThatGPUReadAllReturnsHttpStatus200ok() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/gpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+            MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetGPUByIDReturnsHttpStatusOkWhenGPUExists() throws Exception {
+        GPU testGPU = tdl.createTestGPU();
+        gpuService.createGPU(testGPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/gpus/PRIME-RTX5070TI-O16G")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGPUGetByIDReturnsHttpStatusNotFoundWhenGPUDoesNotExist() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/gpus/gpuDoesNotExist")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
         );
     }
 }
