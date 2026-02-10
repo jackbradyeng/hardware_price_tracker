@@ -89,4 +89,9 @@ public class GPUController {
     }
 
     // gpu delete endpoint
+    @DeleteMapping(path = "/gpus/{id}")
+    public ResponseEntity<GPUDTO> deleteGPU(@PathVariable("id") String id) {
+        gpuService.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }

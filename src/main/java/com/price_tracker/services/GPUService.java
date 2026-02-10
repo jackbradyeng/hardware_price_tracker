@@ -17,4 +17,6 @@ public interface GPUService {
     boolean exists(String id);
 
     GPU partialUpdate(String id, GPU gpu);
+
+    void delete(String id);
 }

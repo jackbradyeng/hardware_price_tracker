@@ -1,6 +1,5 @@
 package com.price_tracker.services.impl;
 
-import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.domain.entities.GPU;
 import com.price_tracker.repositories.GPURepository;
 import com.price_tracker.services.GPUService;
@@ -49,5 +48,10 @@ public class GPUServiceImpl implements GPUService {
             Optional.ofNullable(gpu.getPrice()).ifPresent(existingGPU::setPrice);
             return gpuRepository.save(existingGPU);
         }).orElseThrow(() -> new RuntimeException("GPU does not exist."));
+    }
+
+    @Override
+    public void delete(String id) {
+        gpuRepository.deleteById(id);
     }
 }
