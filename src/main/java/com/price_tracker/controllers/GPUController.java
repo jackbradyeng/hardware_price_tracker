@@ -8,11 +8,9 @@ import com.price_tracker.services.GPUService;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Log
@@ -36,16 +34,22 @@ public class GPUController {
         return new ResponseEntity<>(gpuMapper.mapTo(savedGPU), HttpStatus.CREATED);
     }
 
-    // gpu read endpoint
+    // gpu read-all endpoint
     @GetMapping(path = "/gpus")
-    public GPU retrieveGPU() {
-        return GPU.builder()
-                .modelNumber("PRIME-RTX5070TI-O16G")
-                .name("Asus Prime GeForce RTX 5070 Ti OC 16G Graphics Card")
-                .chipManufacturer("NVIDIA")
-                .boardManufacturer("ASUS")
-                .videoMemory(16)
-                .price(new BigDecimal("1598.00"))
-                .build();
+    public List<GPUDTO> listGPUs() {
+        List<GPU> gpus = gpuService.findAll();
+        return gpus.stream()
+                .map(gpuMapper::mapTo)
+                .toList();
+    }
+
+    // gpu get-one endpoint
+    @GetMapping(path = "/gpus/{id}")
+    public ResponseEntity<GPUDTO> getGPU(@PathVariable("id") String id) {
+        Optional<GPU> foundGPU = gpuService.findOne(id);
+        return foundGPU.map(gpu -> {
+            GPUDTO gpudto = gpuMapper.mapTo(gpu);
+            return new ResponseEntity<>(gpudto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
