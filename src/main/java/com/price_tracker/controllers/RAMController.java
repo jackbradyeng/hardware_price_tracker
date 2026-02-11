@@ -8,11 +8,10 @@ import com.price_tracker.services.RAMService;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 /** Fully functional REST API with CRUD functionality. */
 @RestController
@@ -37,16 +36,22 @@ public class RAMController {
         return new ResponseEntity<>(ramMapper.mapTo(savedRAM), HttpStatus.CREATED);
     }
 
-    // ram read endpoint
+    // ram read-all endpoint
     @GetMapping(path = "/ram")
-    public RAM retrieveRAM() {
-        return RAM.builder()
-                .id(" KF556C36BBEK2/32")
-                .name("Kingston 32GB (2x16GB) KF556C36BBEK2/32 Fury Beast CL36 5600MHz DDR5 RAM Black")
-                .brand("Kingston")
-                .volume(32)
-                .clockRate(6000)
-                .price(new BigDecimal("649.00"))
-                .build();
+    public List<RAMDTO> listRAM() {
+        List<RAM> ram = ramService.findAll();
+        return ram.stream()
+                .map(ramMapper::mapTo)
+                .toList();
+    }
+
+    // ram get-one endpoint
+    @GetMapping(path = "/ram/{id}")
+    public ResponseEntity<RAMDTO> getRAM(@PathVariable("id") String id) {
+        Optional<RAM> foundRAM = ramService.findOne(id);
+        return foundRAM.map(ram -> {
+            RAMDTO ramdto = ramMapper.mapTo(ram);
+            return new ResponseEntity<>(ramdto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
