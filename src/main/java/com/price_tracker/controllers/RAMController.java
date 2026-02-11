@@ -9,7 +9,6 @@ import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +31,7 @@ public class RAMController {
     public ResponseEntity<RAMDTO> createRAM(@RequestBody final RAMDTO ramDTO) {
         log.info("Got RAM: {}" + ramDTO.toString());
         RAM ram = ramMapper.mapFrom(ramDTO);
-        RAM savedRAM = ramService.createRAM(ram);
+        RAM savedRAM = ramService.save(ram);
         return new ResponseEntity<>(ramMapper.mapTo(savedRAM), HttpStatus.CREATED);
     }
 
@@ -53,5 +52,38 @@ public class RAMController {
             RAMDTO ramdto = ramMapper.mapTo(ram);
             return new ResponseEntity<>(ramdto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    // ram update endpoint
+    @PutMapping(path = "/ram/{id}")
+    public ResponseEntity<RAMDTO> fullUpdateRAM(
+            @PathVariable("id") String id,
+            @RequestBody RAMDTO ramDTO) {
+        if(ramService.exists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ramDTO.setId(id);
+        RAM ram = ramMapper.mapFrom(ramDTO);
+        RAM savedRAM = ramService.save(ram);
+        return new ResponseEntity<>(
+                ramMapper.mapTo(savedRAM),
+                HttpStatus.OK
+        );
+    }
+
+    // ram partial-update endpoint
+    @PatchMapping(path = "/ram/{id}")
+    public ResponseEntity<RAMDTO> partialUpdate(
+            @PathVariable String id,
+            @RequestBody RAMDTO ramDTO) {
+        if(!ramService.exists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        RAM ram = ramMapper.mapFrom(ramDTO);
+        RAM updatedRAM = ramService.partialUpdate(id, ram);
+        return new ResponseEntity<>(
+                ramMapper.mapTo(updatedRAM),
+                HttpStatus.OK
+        );
     }
 }
