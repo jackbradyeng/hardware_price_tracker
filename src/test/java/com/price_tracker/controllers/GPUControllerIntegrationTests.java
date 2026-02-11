@@ -37,6 +37,7 @@ public class GPUControllerIntegrationTests {
         this.gpuService = new GPUServiceImpl(gpuRepository);
     }
 
+    /// create tests
     @Test
     public void testThatCreateGPUReturnsHttpStatus200ok() throws Exception {
         GPU testGPU = tdl.createTestGPU();
@@ -51,6 +52,7 @@ public class GPUControllerIntegrationTests {
         );
     }
 
+    /// read tests
     @Test
     public void testThatGPUReadAllReturnsHttpStatus200ok() throws Exception {
         mockMVC.perform(
@@ -64,10 +66,10 @@ public class GPUControllerIntegrationTests {
     @Test
     public void testThatGetGPUByIDReturnsHttpStatusOkWhenGPUExists() throws Exception {
         GPU testGPU = tdl.createTestGPU();
-        gpuService.createGPU(testGPU);
+        GPU savedGPU = gpuService.save(testGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/gpus/PRIME-RTX5070TI-O16G")
+                MockMvcRequestBuilders.get("/gpus/" + savedGPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -82,5 +84,25 @@ public class GPUControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
         );
+    }
+
+    /// delete tests
+    @Test
+    public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingGPU() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.delete("/gpus/gpuDoesNotExist")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void testThatDeleteGPUReturnsHttpStatus204ForExisting() throws Exception {
+        GPU testGPU = tdl.createTestGPU();
+        GPU savedGPU = gpuService.save(testGPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.delete("/gpus/" + savedGPU.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 }
