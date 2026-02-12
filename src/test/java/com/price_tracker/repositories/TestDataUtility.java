@@ -1,6 +1,7 @@
 package com.price_tracker.repositories;
 
 import com.price_tracker.domain.entities.GPU;
+import com.price_tracker.domain.entities.RAM;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
@@ -17,7 +18,7 @@ public class TestDataUtility {
         int vram = 16;
         BigDecimal price = new BigDecimal("1598.00");
 
-        GPU gpu = GPU.builder()
+        return GPU.builder()
                 .modelNumber(modelNumber)
                 .name(name)
                 .chipManufacturer(chip)
@@ -25,6 +26,23 @@ public class TestDataUtility {
                 .videoMemory(vram)
                 .price(price)
                 .build();
-        return gpu;
+    }
+
+    public RAM createTestRAM() {
+        String id = "KF560C36BBE2K2-64";
+        String name = "Kingston 64GB (2x32GB) Fury Beast CL36 6000MHz DDR5 RAM (KF560C36BBE2K2-64)";
+        String brand = "Kingston";
+        int volume = 64;
+        int clockRate = 6000;
+        BigDecimal price = new BigDecimal("1299.00");
+
+        return RAM.builder()
+                .id(id)
+                .name(name)
+                .brand(brand)
+                .volume(volume)
+                .clockRate(clockRate)
+                .price(price)
+                .build();
     }
 }
