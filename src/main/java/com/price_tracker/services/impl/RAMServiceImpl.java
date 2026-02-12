@@ -48,4 +48,9 @@ public class RAMServiceImpl implements RAMService {
             return ramRepository.save(existingRAM);
         }).orElseThrow(() -> new RuntimeException("RAM does not exist"));
     }
+
+    @Override
+    public void delete(String id) {
+        ramRepository.deleteById(id);
+    }
 }

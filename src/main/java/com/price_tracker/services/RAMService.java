@@ -15,4 +15,6 @@ public interface RAMService {
     boolean exists(String id);
 
     RAM partialUpdate(String id, RAM ram);
+
+    void delete(String id);
 }

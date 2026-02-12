@@ -86,4 +86,11 @@ public class RAMController {
                 HttpStatus.OK
         );
     }
+
+    // ram delete endpoint
+    @DeleteMapping(path = "/ram/{id}")
+    public ResponseEntity<RAMDTO> deleteRAM(@PathVariable("id") String id) {
+        ramService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
