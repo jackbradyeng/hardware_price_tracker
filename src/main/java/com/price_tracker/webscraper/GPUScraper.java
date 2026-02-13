@@ -15,20 +15,29 @@ public class GPUScraper {
         // css locations for Umart GPU parameters
         String umartCSSNameLocation = ".goods_title h1";
         String umartCSSPriceLocation = "span.goods-price";
-        String umartCSSModelLocation = "li:contains(Model Number)";
+        String umartCSSModelLocation = "li:contains(Model Number:)";
+        String umartCSSBrandLocation = "li:contains(Brand:)";
 
         try {
             Document document = Jsoup.connect(url).get();
             String name = document.select(umartCSSNameLocation).text();
             String price = document.select(umartCSSPriceLocation).text();
             String rawModelNumber = document.select(umartCSSModelLocation).text();
+            String rawBrand = document.select(umartCSSBrandLocation).text();
+
             // if the return element has "Model Number: ", remove it.
             String modelNumber = rawModelNumber.contains(":") ? rawModelNumber.split(":")[1].trim() : rawModelNumber;
+
+            // if the return element has "Brand: ", remote it.
+            String brand = rawBrand.contains(":") ? rawBrand.split(":")[1].trim() : rawBrand;
+
             System.out.println("====================");
             System.out.println("UMART - GPUs");
             System.out.println(name);
             System.out.println(price);
             System.out.println(modelNumber);
+            System.out.println(brand);
+            System.out.println("====================");
             return name;
         } catch (IOException e) {
             e.printStackTrace();
