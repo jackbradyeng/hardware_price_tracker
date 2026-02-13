@@ -17,16 +17,8 @@ import static com.price_tracker.constants.DBTableNames.GPU_TABLE_NAME;
 public class GPU {
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GPU_id_seq")
     private String modelNumber;
     private String name;
-
-    // @ManyToOne(cascade = CascadeType.ALL)
-    private String chipManufacturer;
-
-    // @ManyToOne(cascade = CascadeType.ALL)
-    private String boardManufacturer;
-
-    private int videoMemory;
+    private String brand;
     private BigDecimal price;
 }
