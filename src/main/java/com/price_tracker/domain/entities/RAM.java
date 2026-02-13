@@ -19,11 +19,6 @@ public class RAM {
     @Id
     private String id;
     private String name;
-
-    // @ManyToOne(cascade = CascadeType.ALL)
     private String brand;
-
-    private int volume;
-    private int clockRate;
     private BigDecimal price;
 }
