@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RAMMapper implements Mapper<RAMEntity, RAMDTO> {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public RAMMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;

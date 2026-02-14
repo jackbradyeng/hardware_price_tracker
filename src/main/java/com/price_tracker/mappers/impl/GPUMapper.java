@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GPUMapper implements Mapper<GPUEntity, GPUDTO> {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public GPUMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
