@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
 import static com.price_tracker.constants.DBTableNames.GPU_TABLE_NAME;
 
 @Data
@@ -14,11 +13,13 @@ import static com.price_tracker.constants.DBTableNames.GPU_TABLE_NAME;
 @Builder
 @Entity
 @Table(name = GPU_TABLE_NAME)
-public class GPU {
+public class GPUEntity {
 
     @Id
     private String modelNumber;
+    private String chip;
+    private String chipManufacturer;
+    private String boardManufacturer;
     private String name;
-    private String brand;
-    private BigDecimal price;
+    private boolean isActive = true;
 }

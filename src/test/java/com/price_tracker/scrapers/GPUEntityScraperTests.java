@@ -9,11 +9,11 @@ import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class GPUScraperTests {
+public class GPUEntityScraperTests {
 
     private final GPUScraper scraper;
 
-    public GPUScraperTests() { this.scraper = new GPUScraper(); }
+    public GPUEntityScraperTests() { this.scraper = new GPUScraper(); }
 
     @Test
     public void testThatUmartGPUScraperReturnsExpectedOutput() {

@@ -1,6 +1,6 @@
 package com.price_tracker.services.impl;
 
-import com.price_tracker.domain.entities.GPU;
+import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.repositories.GPURepository;
 import com.price_tracker.services.GPUService;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,19 @@ public class GPUServiceImpl implements GPUService {
     }
 
     @Override
-    public GPU save(GPU gpu) {
-        return gpuRepository.save(gpu);
+    public GPUEntity save(GPUEntity gpuEntity) {
+        return gpuRepository.save(gpuEntity);
     }
 
     @Override
-    public List<GPU> findAll() {
+    public List<GPUEntity> findAll() {
         return StreamSupport
                 .stream(gpuRepository.findAll().spliterator(), false)
                 .toList();
     }
 
     @Override
-    public Optional<GPU> findOne(String id) {
+    public Optional<GPUEntity> findOne(String id) {
         return gpuRepository.findById(id);
     }
 
@@ -40,12 +40,12 @@ public class GPUServiceImpl implements GPUService {
     }
 
     @Override
-    public GPU partialUpdate(String id, GPU gpu) {
-        gpu.setModelNumber(id);
+    public GPUEntity partialUpdate(String id, GPUEntity gpuEntity) {
+        gpuEntity.setModelNumber(id);
 
         // first retrieve gpu instance, then update and save
         return gpuRepository.findById(id).map(existingGPU -> {
-            Optional.ofNullable(gpu.getPrice()).ifPresent(existingGPU::setPrice);
+            Optional.ofNullable(gpuEntity.getName()).ifPresent(existingGPU::setName);
             return gpuRepository.save(existingGPU);
         }).orElseThrow(() -> new RuntimeException("GPU does not exist."));
     }

@@ -1,20 +1,20 @@
 package com.price_tracker.services;
 
-import com.price_tracker.domain.entities.GPU;
+import com.price_tracker.domain.entities.GPUEntity;
 import java.util.List;
 import java.util.Optional;
 
 public interface GPUService {
 
-    GPU save(GPU gpu);
+    GPUEntity save(GPUEntity gpuEntity);
 
-    List<GPU> findAll();
+    List<GPUEntity> findAll();
 
-    Optional<GPU> findOne(String id);
+    Optional<GPUEntity> findOne(String id);
 
     boolean exists(String id);
 
-    GPU partialUpdate(String id, GPU gpu);
+    GPUEntity partialUpdate(String id, GPUEntity gpuEntity);
 
     void delete(String id);
 }

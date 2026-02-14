@@ -1,6 +1,6 @@
 package com.price_tracker.repositories;
 
-import com.price_tracker.domain.entities.GPU;
+import com.price_tracker.domain.entities.GPUEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -10,22 +10,22 @@ import java.util.Optional;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class GPURepoIntegrationTests {
+public class GPUEntityRepoIntegrationTests {
 
     private final GPURepository testInstance;
     private final TestDataUtility data = new TestDataUtility();
 
     @Autowired
-    public GPURepoIntegrationTests(GPURepository testInstance) {
+    public GPUEntityRepoIntegrationTests(GPURepository testInstance) {
         this.testInstance = testInstance;
     }
 
     @Test
     public void testCreateAndRecall() {
-        GPU gpu = data.createTestGPU();
-        testInstance.save(gpu);
-        Optional<GPU> result = testInstance.findById(gpu.getModelNumber());
+        GPUEntity gpuEntity = data.createTestGPU();
+        testInstance.save(gpuEntity);
+        Optional<GPUEntity> result = testInstance.findById(gpuEntity.getModelNumber());
         assert (result).isPresent();
-        assert (result.get()).equals(gpu);
+        assert (result.get()).equals(gpuEntity);
     }
 }

@@ -1,6 +1,6 @@
 package com.price_tracker.controllers;
 
-import com.price_tracker.domain.entities.GPU;
+import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.mappers.impl.GPUMapper;
 import com.price_tracker.mappers.Mapper;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class GPUController {
 
     private final GPUService gpuService;
-    private final Mapper<GPU, GPUDTO> gpuMapper;
+    private final Mapper<GPUEntity, GPUDTO> gpuMapper;
 
     // gpu service dependency injection
     public GPUController(GPUService gpuService, GPUMapper gpuMapper) {
@@ -30,16 +30,16 @@ public class GPUController {
     @PostMapping(path = "/gpus")
     public ResponseEntity<GPUDTO> createGPU(@RequestBody final GPUDTO gpuDTO) {
         log.info("Got GPU: {}" + gpuDTO.toString());
-        GPU gpu = gpuMapper.mapFrom(gpuDTO);
-        GPU savedGPU = gpuService.save(gpu);
-        return new ResponseEntity<>(gpuMapper.mapTo(savedGPU), HttpStatus.CREATED);
+        GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
+        GPUEntity savedGPUEntity = gpuService.save(gpuEntity);
+        return new ResponseEntity<>(gpuMapper.mapTo(savedGPUEntity), HttpStatus.CREATED);
     }
 
     // gpu read-all endpoint
     @GetMapping(path = "/gpus")
     public List<GPUDTO> listGPUs() {
-        List<GPU> gpus = gpuService.findAll();
-        return gpus.stream()
+        List<GPUEntity> gpuses = gpuService.findAll();
+        return gpuses.stream()
                 .map(gpuMapper::mapTo)
                 .toList();
     }
@@ -47,7 +47,7 @@ public class GPUController {
     // gpu get-one endpoint
     @GetMapping(path = "/gpus/{id}")
     public ResponseEntity<GPUDTO> getGPU(@PathVariable("id") String id) {
-        Optional<GPU> foundGPU = gpuService.findOne(id);
+        Optional<GPUEntity> foundGPU = gpuService.findOne(id);
         return foundGPU.map(gpu -> {
             GPUDTO gpudto = gpuMapper.mapTo(gpu);
             return new ResponseEntity<>(gpudto, HttpStatus.OK);
@@ -63,10 +63,10 @@ public class GPUController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         gpuDTO.setModelNumber(id);
-        GPU gpu = gpuMapper.mapFrom(gpuDTO);
-        GPU savedGPU = gpuService.save(gpu);
+        GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
+        GPUEntity savedGPUEntity = gpuService.save(gpuEntity);
         return new ResponseEntity<>(
-                gpuMapper.mapTo(savedGPU),
+                gpuMapper.mapTo(savedGPUEntity),
                 HttpStatus.OK
         );
     }
@@ -80,10 +80,10 @@ public class GPUController {
         if(!gpuService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        GPU gpu = gpuMapper.mapFrom(gpuDTO);
-        GPU updatedGPU = gpuService.partialUpdate(id, gpu);
+        GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
+        GPUEntity updatedGPUEntity = gpuService.partialUpdate(id, gpuEntity);
         return new ResponseEntity<>(
-                gpuMapper.mapTo(updatedGPU),
+                gpuMapper.mapTo(updatedGPUEntity),
                 HttpStatus.OK
         );
     }
