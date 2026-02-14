@@ -1,7 +1,7 @@
 package com.price_tracker.controllers;
 
 import com.price_tracker.domain.dto.RAMDTO;
-import com.price_tracker.domain.entities.RAM;
+import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.mappers.Mapper;
 import com.price_tracker.mappers.impl.RAMMapper;
 import com.price_tracker.services.RAMService;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class RAMController {
 
     private final RAMService ramService;
-    private final Mapper<RAM, RAMDTO> ramMapper;
+    private final Mapper<RAMEntity, RAMDTO> ramMapper;
 
     // ram service dependency injection
     public RAMController(RAMService ramService, RAMMapper ramMapper) {
@@ -30,16 +30,16 @@ public class RAMController {
     @PostMapping(path = "/ram")
     public ResponseEntity<RAMDTO> createRAM(@RequestBody final RAMDTO ramDTO) {
         log.info("Got RAM: {}" + ramDTO.toString());
-        RAM ram = ramMapper.mapFrom(ramDTO);
-        RAM savedRAM = ramService.save(ram);
-        return new ResponseEntity<>(ramMapper.mapTo(savedRAM), HttpStatus.CREATED);
+        RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
+        RAMEntity savedRAMEntity = ramService.save(ramEntity);
+        return new ResponseEntity<>(ramMapper.mapTo(savedRAMEntity), HttpStatus.CREATED);
     }
 
     // ram read-all endpoint
     @GetMapping(path = "/ram")
     public List<RAMDTO> listRAM() {
-        List<RAM> ram = ramService.findAll();
-        return ram.stream()
+        List<RAMEntity> ramEntity = ramService.findAll();
+        return ramEntity.stream()
                 .map(ramMapper::mapTo)
                 .toList();
     }
@@ -47,7 +47,7 @@ public class RAMController {
     // ram get-one endpoint
     @GetMapping(path = "/ram/{id}")
     public ResponseEntity<RAMDTO> getRAM(@PathVariable("id") String id) {
-        Optional<RAM> foundRAM = ramService.findOne(id);
+        Optional<RAMEntity> foundRAM = ramService.findOne(id);
         return foundRAM.map(ram -> {
             RAMDTO ramdto = ramMapper.mapTo(ram);
             return new ResponseEntity<>(ramdto, HttpStatus.OK);
@@ -62,11 +62,11 @@ public class RAMController {
         if(ramService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ramDTO.setId(id);
-        RAM ram = ramMapper.mapFrom(ramDTO);
-        RAM savedRAM = ramService.save(ram);
+        ramDTO.setModelNumber(id);
+        RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
+        RAMEntity savedRAMEntity = ramService.save(ramEntity);
         return new ResponseEntity<>(
-                ramMapper.mapTo(savedRAM),
+                ramMapper.mapTo(savedRAMEntity),
                 HttpStatus.OK
         );
     }
@@ -79,10 +79,10 @@ public class RAMController {
         if(!ramService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        RAM ram = ramMapper.mapFrom(ramDTO);
-        RAM updatedRAM = ramService.partialUpdate(id, ram);
+        RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
+        RAMEntity updatedRAMEntity = ramService.partialUpdate(id, ramEntity);
         return new ResponseEntity<>(
-                ramMapper.mapTo(updatedRAM),
+                ramMapper.mapTo(updatedRAMEntity),
                 HttpStatus.OK
         );
     }

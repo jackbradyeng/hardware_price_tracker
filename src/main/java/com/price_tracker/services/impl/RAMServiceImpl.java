@@ -1,6 +1,6 @@
 package com.price_tracker.services.impl;
 
-import com.price_tracker.domain.entities.RAM;
+import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.repositories.RAMRepository;
 import com.price_tracker.services.RAMService;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,19 @@ public class RAMServiceImpl implements RAMService {
     }
 
     @Override
-    public RAM save(RAM ram) {
-        return ramRepository.save(ram);
+    public RAMEntity save(RAMEntity ramEntity) {
+        return ramRepository.save(ramEntity);
     }
 
     @Override
-    public List<RAM> findAll() {
+    public List<RAMEntity> findAll() {
         return StreamSupport
                 .stream(ramRepository.findAll().spliterator(), false)
                 .toList();
     }
 
     @Override
-    public Optional<RAM> findOne(String id) {
+    public Optional<RAMEntity> findOne(String id) {
         return ramRepository.findById(id);
     }
 
@@ -40,11 +40,11 @@ public class RAMServiceImpl implements RAMService {
     }
 
     @Override
-    public RAM partialUpdate(String id, RAM ram) {
-        ram.setId(id);
+    public RAMEntity partialUpdate(String id, RAMEntity ramEntity) {
+        ramEntity.setModelNumber(id);
 
         return ramRepository.findById(id).map(existingRAM -> {
-            Optional.ofNullable(ram.getPrice()).ifPresent(existingRAM::setPrice);
+            Optional.ofNullable(ramEntity.getName()).ifPresent(existingRAM::setName);
             return ramRepository.save(existingRAM);
         }).orElseThrow(() -> new RuntimeException("RAM does not exist"));
     }

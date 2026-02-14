@@ -1,13 +1,13 @@
 package com.price_tracker.mappers.impl;
 
 import com.price_tracker.domain.dto.RAMDTO;
-import com.price_tracker.domain.entities.RAM;
+import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.mappers.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RAMMapper implements Mapper<RAM, RAMDTO> {
+public class RAMMapper implements Mapper<RAMEntity, RAMDTO> {
 
     private ModelMapper modelMapper;
 
@@ -16,12 +16,12 @@ public class RAMMapper implements Mapper<RAM, RAMDTO> {
     }
 
     @Override
-    public RAMDTO mapTo(RAM ram) {
-        return modelMapper.map(ram, RAMDTO.class);
+    public RAMDTO mapTo(RAMEntity ramEntity) {
+        return modelMapper.map(ramEntity, RAMDTO.class);
     }
 
     @Override
-    public RAM mapFrom(RAMDTO ramdto) {
-        return modelMapper.map(ramdto, RAM.class);
+    public RAMEntity mapFrom(RAMDTO ramdto) {
+        return modelMapper.map(ramdto, RAMEntity.class);
     }
 }
