@@ -15,6 +15,8 @@ public class GPUPricePointDTO {
 
     private Long id;
     private String modelNumber;
+    private String vendor;
+    private String currency;
     private BigDecimal price;
     private LocalDateTime scrapedAt;
 }
