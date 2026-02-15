@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import static com.price_tracker.constants.DBTableNames.GPU_TABLE_NAME;
+import static com.price_tracker.constants.DatabaseTableNames.GPU_TABLE_NAME;
 
 @Data
 @AllArgsConstructor
