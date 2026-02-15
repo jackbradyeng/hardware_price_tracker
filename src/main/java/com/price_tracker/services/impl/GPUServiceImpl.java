@@ -3,19 +3,17 @@ package com.price_tracker.services.impl;
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.repositories.GPURepository;
 import com.price_tracker.services.GPUService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @Service
+@AllArgsConstructor
 public class GPUServiceImpl implements GPUService {
 
     private final GPURepository gpuRepository;
-
-    public GPUServiceImpl(GPURepository gpuRepository) {
-        this.gpuRepository = gpuRepository;
-    }
 
     @Override
     public GPUEntity save(GPUEntity gpuEntity) {
