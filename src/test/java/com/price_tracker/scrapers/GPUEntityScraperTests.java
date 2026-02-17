@@ -1,6 +1,6 @@
 package com.price_tracker.scrapers;
 
-import com.price_tracker.webscraper.GPUScraper;
+import com.price_tracker.webscraper.impl.UmartGPUScraper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -11,13 +11,13 @@ import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
 @ExtendWith(MockitoExtension.class)
 public class GPUEntityScraperTests {
 
-    private final GPUScraper scraper;
+    private final UmartGPUScraper scraper;
 
-    public GPUEntityScraperTests() { this.scraper = new GPUScraper(); }
+    public GPUEntityScraperTests() { this.scraper = new UmartGPUScraper(); }
 
     @Test
-    public void testThatUmartGPUScraperReturnsExpectedOutput() {
-        assert scraper.scrapeGPUName(UMART_ASUS_5070TI).equals(
-                "Asus Prime GeForce RTX 5070 Ti OC 16G Graphics Card (PRIME-RTX5070TI-O16G)");
+    public void testThatUmartGPUScraperReturnsExpectedModelNumber() {
+        String[] scrapedValues = scraper.scrapeGPUData(UMART_ASUS_5070TI);
+        assert scrapedValues[0].equals("PRIME-RTX5070TI-O16G");
     }
 }
