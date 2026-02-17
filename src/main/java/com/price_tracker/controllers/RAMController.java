@@ -3,8 +3,8 @@ package com.price_tracker.controllers;
 import com.price_tracker.domain.dto.RAMDTO;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.mappers.Mapper;
-import com.price_tracker.mappers.impl.RAMMapper;
 import com.price_tracker.services.RAMService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +14,12 @@ import java.util.Optional;
 
 /** Fully functional REST API with CRUD functionality. */
 @RestController
+@RequiredArgsConstructor
 @Log
 public class RAMController {
 
     private final RAMService ramService;
     private final Mapper<RAMEntity, RAMDTO> ramMapper;
-
-    // ram service dependency injection
-    public RAMController(RAMService ramService, RAMMapper ramMapper) {
-        this.ramService = ramService;
-        this.ramMapper = ramMapper;
-    }
 
     // ram create endpoint
     @PostMapping(path = "/ram")

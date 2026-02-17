@@ -2,9 +2,9 @@ package com.price_tracker.controllers;
 
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.domain.dto.GPUDTO;
-import com.price_tracker.mappers.impl.GPUMapper;
 import com.price_tracker.mappers.Mapper;
 import com.price_tracker.services.GPUService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +14,12 @@ import java.util.Optional;
 
 /** Fully functional REST API with CRUD functionality. */
 @RestController
+@RequiredArgsConstructor
 @Log
 public class GPUController {
 
     private final GPUService gpuService;
     private final Mapper<GPUEntity, GPUDTO> gpuMapper;
-
-    // gpu service dependency injection
-    public GPUController(GPUService gpuService, GPUMapper gpuMapper) {
-        this.gpuService = gpuService;
-        this.gpuMapper = gpuMapper;
-    }
 
     // gpu create endpoint
     @PostMapping(path = "/gpus")
@@ -38,8 +33,8 @@ public class GPUController {
     // gpu read-all endpoint
     @GetMapping(path = "/gpus")
     public List<GPUDTO> listGPUs() {
-        List<GPUEntity> gpuses = gpuService.findAll();
-        return gpuses.stream()
+        List<GPUEntity> gpus = gpuService.findAll();
+        return gpus.stream()
                 .map(gpuMapper::mapTo)
                 .toList();
     }
