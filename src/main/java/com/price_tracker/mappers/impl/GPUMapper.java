@@ -3,17 +3,15 @@ package com.price_tracker.mappers.impl;
 import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.mappers.Mapper;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class GPUMapper implements Mapper<GPUEntity, GPUDTO> {
 
     private final ModelMapper modelMapper;
-
-    public GPUMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public GPUDTO mapTo(GPUEntity gpuEntity) {
