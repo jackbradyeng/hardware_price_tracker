@@ -17,7 +17,7 @@ public class GPUEntityScraperTests {
 
     @Test
     public void testThatUmartGPUScraperReturnsExpectedModelNumber() {
-        String[] scrapedValues = scraper.scrapeGPUData(UMART_ASUS_5070TI);
+        String[] scrapedValues = scraper.scrapeProductData(UMART_ASUS_5070TI);
         assert scrapedValues[0].equals("PRIME-RTX5070TI-O16G");
     }
 }
