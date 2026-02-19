@@ -1,5 +1,4 @@
 services:
-
   db:
     image: postgres
     ports:
@@ -7,3 +6,8 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: changelater!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
