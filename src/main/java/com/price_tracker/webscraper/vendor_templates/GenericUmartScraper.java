@@ -1,4 +1,4 @@
-package com.price_tracker.webscraper;
+package com.price_tracker.webscraper.vendor_templates;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

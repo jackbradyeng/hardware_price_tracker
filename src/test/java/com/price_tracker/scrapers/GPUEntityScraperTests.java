@@ -1,6 +1,6 @@
 package com.price_tracker.scrapers;
 
-import com.price_tracker.webscraper.impl.UmartGPUScraper;
+import com.price_tracker.webscraper.product_services.impl.UmartGPUScraper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

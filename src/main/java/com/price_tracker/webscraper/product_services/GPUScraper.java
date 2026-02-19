@@ -1,4 +1,4 @@
-package com.price_tracker.webscraper;
+package com.price_tracker.webscraper.product_services;
 
 import com.price_tracker.domain.entities.GPUPricePoint;
 

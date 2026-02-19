@@ -1,9 +1,10 @@
-package com.price_tracker.webscraper.impl;
+package com.price_tracker.webscraper.product_services.impl;
 
 import com.price_tracker.domain.entities.GPUPricePoint;
-import com.price_tracker.webscraper.GPUScraper;
-import com.price_tracker.webscraper.GenericUmartScraper;
+import com.price_tracker.webscraper.product_services.GPUScraper;
+import com.price_tracker.webscraper.vendor_templates.GenericUmartScraper;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import static com.price_tracker.constants.CurrencyConstants.AUD;
 import static com.price_tracker.constants.VendorConstants.UMART;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Service
 @RequiredArgsConstructor
