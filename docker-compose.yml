@@ -5,9 +5,9 @@ services:
       - "5432:5432"
     restart: always
     environment:
-      POSTGRES_PASSWORD: changelater!
+      POSTGRES_PASSWORD: 'changelater!'
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
 
 volumes:
   postgres_data:
