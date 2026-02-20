@@ -34,14 +34,12 @@ public class RAMController {
     @GetMapping(path = "/ram")
     public List<RAMDTO> listRAM() {
         List<RAMEntity> ramEntity = ramService.findAll();
-        return ramEntity.stream()
-                .map(ramMapper::mapTo)
-                .toList();
+        return ramEntity.stream().map(ramMapper::mapTo).toList();
     }
 
     // ram get-one endpoint
     @GetMapping(path = "/ram/{id}")
-    public ResponseEntity<RAMDTO> getRAM(@PathVariable("id") String id) {
+    public ResponseEntity<RAMDTO> getRAM(@PathVariable String id) {
         Optional<RAMEntity> foundRAM = ramService.findOne(id);
         return foundRAM.map(ram -> {
             RAMDTO ramdto = ramMapper.mapTo(ram);
@@ -51,40 +49,30 @@ public class RAMController {
 
     // ram update endpoint
     @PutMapping(path = "/ram/{id}")
-    public ResponseEntity<RAMDTO> fullUpdateRAM(
-            @PathVariable("id") String id,
-            @RequestBody RAMDTO ramDTO) {
+    public ResponseEntity<RAMDTO> fullUpdateRAM(@PathVariable String id, @RequestBody RAMDTO ramDTO) {
         if(ramService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         ramDTO.setModelNumber(id);
         RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
         RAMEntity savedRAMEntity = ramService.save(ramEntity);
-        return new ResponseEntity<>(
-                ramMapper.mapTo(savedRAMEntity),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(ramMapper.mapTo(savedRAMEntity), HttpStatus.OK);
     }
 
     // ram partial-update endpoint
     @PatchMapping(path = "/ram/{id}")
-    public ResponseEntity<RAMDTO> partialUpdate(
-            @PathVariable String id,
-            @RequestBody RAMDTO ramDTO) {
+    public ResponseEntity<RAMDTO> partialUpdate(@PathVariable String id, @RequestBody RAMDTO ramDTO) {
         if(!ramService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
         RAMEntity updatedRAMEntity = ramService.partialUpdate(id, ramEntity);
-        return new ResponseEntity<>(
-                ramMapper.mapTo(updatedRAMEntity),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(ramMapper.mapTo(updatedRAMEntity), HttpStatus.OK);
     }
 
     // ram delete endpoint
     @DeleteMapping(path = "/ram/{id}")
-    public ResponseEntity<RAMDTO> deleteRAM(@PathVariable("id") String id) {
+    public ResponseEntity<RAMDTO> deleteRAM(@PathVariable String id) {
         ramService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
