@@ -1,9 +1,10 @@
 package com.price_tracker.repositories;
 
 import com.price_tracker.domain.entities.GPUEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GPURepository extends CrudRepository<GPUEntity, String> {
+public interface GPURepository extends JpaRepository<GPUEntity, String> {
 }
