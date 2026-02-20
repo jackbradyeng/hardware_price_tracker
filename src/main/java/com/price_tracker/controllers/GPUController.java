@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-/** Fully functional REST API with CRUD functionality. */
 @RestController
 @RequiredArgsConstructor
 @Log
@@ -34,14 +33,12 @@ public class GPUController {
     @GetMapping(path = "/gpus")
     public List<GPUDTO> listGPUs() {
         List<GPUEntity> gpus = gpuService.findAll();
-        return gpus.stream()
-                .map(gpuMapper::mapTo)
-                .toList();
+        return gpus.stream().map(gpuMapper::mapTo).toList();
     }
 
     // gpu get-one endpoint
     @GetMapping(path = "/gpus/{id}")
-    public ResponseEntity<GPUDTO> getGPU(@PathVariable("id") String id) {
+    public ResponseEntity<GPUDTO> getGPU(@PathVariable String id) {
         Optional<GPUEntity> foundGPU = gpuService.findOne(id);
         return foundGPU.map(gpu -> {
             GPUDTO gpudto = gpuMapper.mapTo(gpu);
@@ -51,42 +48,31 @@ public class GPUController {
 
     // gpu update endpoint
     @PutMapping(path = "/gpus/{id}")
-    public ResponseEntity<GPUDTO> fullUpdateGPU(
-            @PathVariable("id") String id,
-            @RequestBody GPUDTO gpuDTO) {
+    public ResponseEntity<GPUDTO> fullUpdateGPU(@PathVariable String id, @RequestBody GPUDTO gpuDTO) {
         if(!gpuService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         gpuDTO.setModelNumber(id);
         GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
         GPUEntity savedGPUEntity = gpuService.save(gpuEntity);
-        return new ResponseEntity<>(
-                gpuMapper.mapTo(savedGPUEntity),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(gpuMapper.mapTo(savedGPUEntity), HttpStatus.OK);
     }
 
     // gpu partial-update endpoint
     @PatchMapping(path = "/gpus/{id}")
-    public ResponseEntity<GPUDTO> partialUpdate(
-            @PathVariable("id") String id,
-            @RequestBody GPUDTO gpuDTO
-    ) {
+    public ResponseEntity<GPUDTO> partialUpdate(@PathVariable String id, @RequestBody GPUDTO gpuDTO) {
         if(!gpuService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
         GPUEntity updatedGPUEntity = gpuService.partialUpdate(id, gpuEntity);
-        return new ResponseEntity<>(
-                gpuMapper.mapTo(updatedGPUEntity),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(gpuMapper.mapTo(updatedGPUEntity), HttpStatus.OK);
     }
 
     // gpu delete endpoint
     @DeleteMapping(path = "/gpus/{id}")
-    public ResponseEntity<GPUDTO> deleteGPU(@PathVariable("id") String id) {
+    public ResponseEntity<GPUDTO> deleteGPU(@PathVariable String id) {
         gpuService.delete(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
