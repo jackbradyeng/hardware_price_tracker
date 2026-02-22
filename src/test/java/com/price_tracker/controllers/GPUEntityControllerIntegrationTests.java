@@ -107,6 +107,55 @@ public class GPUEntityControllerIntegrationTests {
         );
     }
 
+    /// update tests
+    @Test
+    public void testThatFullUpdateReturns200ok() throws Exception {
+        GPUEntity testGPUENtity = tdl.createTestGPU();
+        GPUEntity savedGPU = gpuService.save(testGPUENtity);
+
+        GPUDTO updatedGPU = gpuMapper.mapTo(tdl.createTestGPU());
+        updatedGPU.setName("Updated GPU name");
+        String gpuJson = objectMapper.writeValueAsString(updatedGPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.put("/gpus/" + savedGPU.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gpuJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+
+    @Test
+    public void testThatFullUpdateReturnsUpdatedGPU() throws Exception {
+        GPUEntity testGPUENtity = tdl.createTestGPU();
+        GPUEntity savedGPU = gpuService.save(testGPUENtity);
+
+        GPUDTO updatedGPU = gpuMapper.mapTo(tdl.createTestGPU());
+        updatedGPU.setName("Updated GPU name");
+        updatedGPU.setChip("Updated GPU chip");
+        updatedGPU.setChipManufacturer("Updated GPU chip manufacturer");
+        updatedGPU.setBoardManufacturer("Updated GPU board manufacturer");
+        String gpuJson = objectMapper.writeValueAsString(updatedGPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.put("/gpus/" + savedGPU.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gpuJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value("Updated GPU name")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.chip").value("Updated GPU chip")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.chipManufacturer")
+                        .value("Updated GPU chip manufacturer")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.boardManufacturer").
+                        value("Updated GPU board manufacturer")
+        );
+    }
+
     /// delete tests
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingGPU() throws Exception {
