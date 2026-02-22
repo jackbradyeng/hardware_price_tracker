@@ -1,12 +1,15 @@
 package com.price_tracker.controllers;
 
+import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.domain.entities.GPUEntity;
+import com.price_tracker.mappers.impl.GPUMapper;
 import com.price_tracker.repositories.GPURepository;
 import com.price_tracker.repositories.TestDataUtility;
 import com.price_tracker.services.GPUService;
 import com.price_tracker.services.impl.GPUServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -28,6 +31,7 @@ public class GPUEntityControllerIntegrationTests {
     private final ObjectMapper objectMapper;
     private final TestDataUtility tdl;
     private final GPUService gpuService;
+    private final GPUMapper gpuMapper;
 
     @Autowired
     public GPUEntityControllerIntegrationTests(MockMvc mockMVC, GPURepository gpuRepository) {
@@ -35,11 +39,12 @@ public class GPUEntityControllerIntegrationTests {
         this.objectMapper = new ObjectMapper();
         this.tdl = new TestDataUtility();
         this.gpuService = new GPUServiceImpl(gpuRepository);
+        this.gpuMapper = new GPUMapper(new ModelMapper());
     }
 
     /// create tests
     @Test
-    public void testThatCreateGPUReturnsHttpStatus200ok() throws Exception {
+    public void testThatCreateGPUReturnsHttpStatus201Created() throws Exception {
         GPUEntity testGPUEntity = tdl.createTestGPU();
         String gpuString = objectMapper.writeValueAsString(testGPUEntity);
 
@@ -49,6 +54,22 @@ public class GPUEntityControllerIntegrationTests {
                         .content(gpuString)
         ).andExpect(
                 MockMvcResultMatchers.status().isCreated()
+        );
+    }
+
+    @Test
+    public void testThatCreateGPUReturnsSavedGPU() throws Exception {
+        GPUEntity testGPUEntity = tdl.createTestGPU();
+        String gpuString = objectMapper.writeValueAsString(testGPUEntity);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/gpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gpuString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.modelNumber").isString()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.modelNumber").value("PRIME-RTX5070TI-O16G")
         );
     }
 

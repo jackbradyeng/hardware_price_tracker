@@ -11,7 +11,7 @@ public class TestDataUtility {
 
     public GPUEntity createTestGPU() {
         String modelNumber = "PRIME-RTX5070TI-O16G";
-        String chip = "RTX 5070Ti";
+        String chip = "RTX 5070 Ti";
         String chipManufacturer = "NVIDIA";
         String boardManufacturer = "ASUS";
         String name = "Asus Prime GeForce RTX 5070 Ti OC 16G Graphics Card";
@@ -20,8 +20,9 @@ public class TestDataUtility {
                 .modelNumber(modelNumber)
                 .chip(chip)
                 .chipManufacturer(chipManufacturer)
-                .name(name)
                 .boardManufacturer(boardManufacturer)
+                .name(name)
+                .isActive(true)
                 .build();
     }
 
