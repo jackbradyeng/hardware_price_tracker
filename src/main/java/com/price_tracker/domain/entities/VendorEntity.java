@@ -22,5 +22,5 @@ public class VendorEntity {
     private String primaryLocation;
     private String primaryCurrency;
     private String homeURL;
-    private boolean activeStatus;
+    private Boolean activeStatus;
 }

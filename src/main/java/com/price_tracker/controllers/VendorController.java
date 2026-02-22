@@ -24,7 +24,7 @@ public class VendorController {
     // vendor create endpoint
     @PostMapping(path = "/vendors")
     public ResponseEntity<VendorDTO> createVendor(@RequestBody final VendorDTO vendorDTO) {
-        log.info("GOt vendor: {}" + vendorDTO.toString());
+        log.info("Got vendor: {}" + vendorDTO.toString());
         VendorEntity vendorEntity = vendorMapper.mapFrom(vendorDTO);
         VendorEntity savedVendor = vendorService.save(vendorEntity);
         return new ResponseEntity<>(vendorMapper.mapTo(savedVendor), HttpStatus.CREATED);
