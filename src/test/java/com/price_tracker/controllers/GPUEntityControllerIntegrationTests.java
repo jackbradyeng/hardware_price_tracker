@@ -4,7 +4,7 @@ import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.mappers.impl.GPUMapper;
 import com.price_tracker.repositories.GPURepository;
-import com.price_tracker.repositories.TestDataUtility;
+import com.price_tracker.TestDataUtility;
 import com.price_tracker.services.GPUService;
 import com.price_tracker.services.impl.GPUServiceImpl;
 import org.junit.jupiter.api.Test;

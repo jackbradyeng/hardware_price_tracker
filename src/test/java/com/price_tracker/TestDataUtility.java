@@ -1,4 +1,4 @@
-package com.price_tracker.repositories;
+package com.price_tracker;
 
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.domain.entities.RAMEntity;
