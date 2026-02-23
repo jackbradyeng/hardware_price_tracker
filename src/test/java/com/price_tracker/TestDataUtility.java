@@ -2,8 +2,11 @@ package com.price_tracker;
 
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.domain.entities.RAMEntity;
+import com.price_tracker.domain.entities.UmartProductEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
 
 @Data
 @NoArgsConstructor
@@ -47,6 +50,19 @@ public class TestDataUtility {
                 .dimmCount(dimmCount)
                 .clockRate(clockRate)
                 .voltage(voltage)
+                .build();
+    }
+
+    public UmartProductEntity createTestUmartProduct() {
+        String productType = "GPU";
+        String modelNumber = "PRIME-RTX5070TI-O16G";
+        String vendor = "Umart";
+
+        return UmartProductEntity.builder()
+                .productType(productType)
+                .modelNumber(modelNumber)
+                .vendor(vendor)
+                .url(UMART_ASUS_5070TI)
                 .build();
     }
 }
