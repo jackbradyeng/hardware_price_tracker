@@ -2,51 +2,45 @@ package com.price_tracker.webscraper;
 
 import com.price_tracker.domain.entities.GPUPricePoint;
 import com.price_tracker.repositories.GPUPricePointRepository;
-import com.price_tracker.repositories.GPURepository;
+import com.price_tracker.repositories.UmartProductRepository;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUScraper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
 @Log
 public class GPUScrapingService {
 
-    private final GPURepository gpuRepository;
+
+    private final Integer sleepingConstant = 1000; // for polite scraping
     private final GPUPricePointRepository gpuPricePointRepository;
-
-    /* The problem here is that our dependencies will eventually become very difficult to maintain. What happens when
-    we keep adding vendors and product types? What happens when a vendor goes bust, and we need to remove them
-    from the service? What happens if we want to stop tracking a product type all-together? */
-
-    /* What happens when a vendor's website goes down at the time of scraping? */
+    private final UmartProductRepository umartProductRepository;
     private final UmartGPUScraper umartGPUScraper;
 
-    /* These need to come from a DB table. It is unsustainable to log them in a constants class. */
-    private final ArrayList<String> umartGPUURLs;
-
-    /** Core scraping service. Runs automatically at 3AM each day as per the CRON notation. */
+    /** Core scraping service. Runs automatically at 3AM each day as per the CRON notation below. */
     @Scheduled(cron = "0 0 3 * * ?")
-    public void runDailyScrape() {
+    public void runDailyScrape() throws InterruptedException {
         System.out.println("Scraping service started at " + LocalDateTime.now());
         runDailyGPUScrape();
         System.out.println("Scraping service completed at " + LocalDateTime.now());
     }
 
-    public void runDailyGPUScrape() {
+    public void runDailyGPUScrape() throws InterruptedException {
         runUmartGPUScrape();
     }
 
     // both of these umart methods should be split off into a different class/interface and injected via the constructor
-    public void runUmartGPUScrape() {
-        for(String url : umartGPUURLs) {
+    public void runUmartGPUScrape() throws InterruptedException {
+        for(String url : umartProductRepository.findUrlsForActiveGPUs()) {
             GPUPricePoint gpuPricePoint = scrapeGPU(url);
+            Thread.sleep(sleepingConstant);
             if(gpuPricePoint != null) {
-                log.info("Got GPU Model & Price {}" + gpuPricePoint);
+                log.info("Got GPU Model: " + gpuPricePoint.getModelNumber() + " & GPU Price: "
+                        + gpuPricePoint.getPrice());
                 gpuPricePointRepository.save(gpuPricePoint);
             }
         }
