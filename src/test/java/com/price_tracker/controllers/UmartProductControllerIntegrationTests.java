@@ -78,6 +78,38 @@ public class UmartProductControllerIntegrationTests {
     }
 
     // read tests
+    @Test
+    public void testThatUmartProductReadAllReturnsHttpStatus200ok() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/umartproducts")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetUmartProductByIDReturnsHttpStatusOkWhenProductExists() throws Exception {
+        UmartProductEntity umartProductEntity = tdl.createTestUmartProduct();
+        UmartProductEntity savedProduct = umartProductService.save(umartProductEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/umartproducts/" + savedProduct.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatUmartProductGetByIDReturnsHttpStatusNotFoundWhenProductDoesNotExist() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/umartproducts/" + Long.MAX_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
 
     // update tests
 
