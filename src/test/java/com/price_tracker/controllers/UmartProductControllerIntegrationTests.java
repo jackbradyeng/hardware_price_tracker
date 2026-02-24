@@ -114,4 +114,22 @@ public class UmartProductControllerIntegrationTests {
     // update tests
 
     // delete tests
+    @Test
+    public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingProduct() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/umartproducts/" + Long.MAX_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void testThatDeleteGPUReturnsHttpStatus204ForExistingProduct() throws Exception {
+        UmartProductEntity umartProductEntity = tdl.createTestUmartProduct();
+        UmartProductEntity savedProduct = umartProductService.save(umartProductEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/umartproducts/" + savedProduct.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 }
