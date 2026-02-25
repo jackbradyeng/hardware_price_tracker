@@ -5,10 +5,12 @@ import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.domain.entities.UmartProductEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
 
 @Data
+@Component
 @NoArgsConstructor
 public class TestDataUtility {
 
@@ -30,7 +32,7 @@ public class TestDataUtility {
     }
 
     public RAMEntity createTestRAM() {
-        String id = "KF560C36BBE2K2-64";
+        String modelNumber = "KF560C36BBE2K2-64";
         String name = "Kingston 64GB (2x32GB) Fury Beast CL36 6000MHz DDR5 RAM (KF560C36BBE2K2-64)";
         String brand = "Kingston";
         String standard = "DDR5";
@@ -41,7 +43,7 @@ public class TestDataUtility {
         Double voltage = 1.35;
 
         return RAMEntity.builder()
-                .modelNumber(id)
+                .modelNumber(modelNumber)
                 .name(name)
                 .brand(brand)
                 .standard(standard)
@@ -50,6 +52,7 @@ public class TestDataUtility {
                 .dimmCount(dimmCount)
                 .clockRate(clockRate)
                 .voltage(voltage)
+                .isActive(true)
                 .build();
     }
 
