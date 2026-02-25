@@ -14,10 +14,10 @@ public class RAMDTO {
     private String modelNumber;
     private String name;
     private String brand;
-    private int volume;
-    private int dimmCount;
-    private int clockRate;
+    private Integer volume;
+    private Integer dimmCount;
+    private Integer clockRate;
     private String latency;
     private Double voltage;
-    private boolean isActive = true;
+    private Boolean isActive = true;
 }
