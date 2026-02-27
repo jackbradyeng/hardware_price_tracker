@@ -2,6 +2,7 @@ package com.price_tracker.webscraper.vendor_templates;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import static com.price_tracker.constants.UmartCSSLocations.UMART_CSS_MODEL_LOCA
 import static com.price_tracker.constants.UmartCSSLocations.UMART_CSS_PRICE_LOCATION;
 
 @Data
+@Log
 @RequiredArgsConstructor
 public abstract class GenericUmartScraper {
 
@@ -20,11 +22,14 @@ public abstract class GenericUmartScraper {
         try {
             Document document = Jsoup.connect(url).get();
             String rawModelNumber = document.select(UMART_CSS_MODEL_LOCATION).text();
-            String price = document.select(UMART_CSS_PRICE_LOCATION).text();
+            String rawPrice = document.select(UMART_CSS_PRICE_LOCATION).text();
 
-            // if the return element has "Model Number: ", remove it.
+            // remove all residual text from the model number.
             String modelNumber =
                     rawModelNumber.contains(":") ? rawModelNumber.split(":")[1].trim() : rawModelNumber;
+
+            // remove any commas from the price tag
+            String price = rawPrice.replaceAll(",", "");
 
             scrapedValues[0] = modelNumber;
             scrapedValues[1] = price;
@@ -41,17 +46,17 @@ public abstract class GenericUmartScraper {
         try {
             return (!scrapedValues[0].isBlank() && !scrapedValues[1].isBlank());
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Scraped values array is empty.");
+            log.info("Scraped values array is empty.");
             return false;
         }
     }
 
     /** Logs the scraped model number and price given a particular URL. */
     public void logModelNumberAndPrice(String modelNumber, String price, String url) {
-        System.out.println("========================================");
-        System.out.println("UMART - PRODUCT - FROM: " + url);
-        System.out.println(modelNumber);
-        System.out.println(price);
-        System.out.println("========================================");
+        log.info("========================================");
+        log.info("UMART - PRODUCT - FROM: " + url);
+        log.info(modelNumber);
+        log.info(price);
+        log.info("========================================");
     }
 }
