@@ -6,8 +6,9 @@ import com.price_tracker.domain.entities.UmartProductEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
+import static com.price_tracker.constants.TestingConstants.*;
 import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
+import static com.price_tracker.constants.WebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 
 @Data
 @Component
@@ -15,57 +16,60 @@ import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
 public class TestDataUtility {
 
     public GPUEntity createTestGPU() {
-        String modelNumber = "PRIME-RTX5070TI-O16G";
-        String chip = "RTX 5070 Ti";
-        String chipManufacturer = "NVIDIA";
-        String boardManufacturer = "ASUS";
-        String name = "Asus Prime GeForce RTX 5070 Ti OC 16G Graphics Card";
-
         return GPUEntity.builder()
-                .modelNumber(modelNumber)
-                .chip(chip)
-                .chipManufacturer(chipManufacturer)
-                .boardManufacturer(boardManufacturer)
-                .name(name)
+                .modelNumber(TESTING_GPU_MODEL_NUMBER)
+                .chip(TESTING_GPU_CHIP)
+                .chipManufacturer(TESTING_GPU_CHIP_MANUFACTURER)
+                .boardManufacturer(TESTING_GPU_BOARD_MANUFACTURER)
+                .name(TESTING_GPU_NAME)
                 .isActive(true)
                 .build();
     }
 
     public RAMEntity createTestRAM() {
-        String modelNumber = "KF560C36BBE2K2-64";
-        String name = "Kingston 64GB (2x32GB) Fury Beast CL36 6000MHz DDR5 RAM (KF560C36BBE2K2-64)";
-        String brand = "Kingston";
-        String standard = "DDR5";
-        String latency = "CL36";
-        int volume = 64;
-        int dimmCount = 2;
-        int clockRate = 6000;
-        Double voltage = 1.35;
-
         return RAMEntity.builder()
-                .modelNumber(modelNumber)
-                .name(name)
-                .brand(brand)
-                .standard(standard)
-                .latency(latency)
-                .volume(volume)
-                .dimmCount(dimmCount)
-                .clockRate(clockRate)
-                .voltage(voltage)
+                .modelNumber(TESTING_RAM_MODEL_NUMBER)
+                .name(TESTING_RAM_NAME)
+                .brand(TESTING_RAM_BRAND)
+                .standard(TESTING_RAM_STANDARD)
+                .latency(TESTING_RAM_LATENCY)
+                .volume(TESTING_RAM_VOLUME)
+                .dimmCount(TESTING_RAM_DIMM_COUNT)
+                .clockRate(TESTING_RAM_CLOCKRATE)
+                .voltage(TESTING_RAM_VOLTAGE)
                 .isActive(true)
                 .build();
     }
 
-    public UmartProductEntity createTestUmartProduct() {
-        String productType = "GPU";
-        String modelNumber = "PRIME-RTX5070TI-O16G";
-        String vendor = "Umart";
-
+    public UmartProductEntity createTestUmartGPU() {
         return UmartProductEntity.builder()
-                .productType(productType)
-                .modelNumber(modelNumber)
-                .vendor(vendor)
+                .productType(PRODUCT_TYPE_GPU)
+                .modelNumber(TESTING_GPU_MODEL_NUMBER)
+                .vendor(TESTING_VENDOR_UMART)
                 .url(UMART_ASUS_5070TI)
                 .build();
+    }
+
+    public UmartProductEntity createTestUmartRAM() {
+        return UmartProductEntity.builder()
+                .productType(PRODUCT_TYPE_RAM)
+                .modelNumber(TESTING_RAM_MODEL_NUMBER)
+                .vendor(TESTING_VENDOR_UMART)
+                .url(UMART_KINGSTON_KINGSTON_F64G)
+                .build();
+    }
+
+    public String[] createSampleTestScrapedGPUData() {
+        String[] scrapedData = new String[2];
+        scrapedData[0] = TESTING_GPU_MODEL_NUMBER;
+        scrapedData[1] = TESTING_GPU_PRICE;
+        return scrapedData;
+    }
+
+    public String[] createSampleTestScrapedRAMData() {
+        String[] scrapedData = new String[2];
+        scrapedData[0] = TESTING_RAM_MODEL_NUMBER;
+        scrapedData[1] = TESTING_RAM_PRICE;
+        return scrapedData;
     }
 }
