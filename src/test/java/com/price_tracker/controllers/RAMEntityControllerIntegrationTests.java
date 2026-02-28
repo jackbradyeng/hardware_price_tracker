@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
+import static com.price_tracker.constants.TestingConstants.TESTING_RAM_MODEL_NUMBER;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -33,7 +34,8 @@ public class RAMEntityControllerIntegrationTests {
     private final RAMMapper ramMapper;
 
     @Autowired
-    public RAMEntityControllerIntegrationTests(MockMvc mockMvc, ObjectMapper objectMapper, TestDataUtility testDataUtility, RAMService ramService) {
+    public RAMEntityControllerIntegrationTests(MockMvc mockMvc, ObjectMapper objectMapper,
+                                               TestDataUtility testDataUtility, RAMService ramService) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
         this.tdl = testDataUtility;
@@ -68,7 +70,7 @@ public class RAMEntityControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.modelNumber").isString()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.modelNumber").value("KF560C36BBE2K2-64")
+                MockMvcResultMatchers.jsonPath("$.modelNumber").value(TESTING_RAM_MODEL_NUMBER)
         );
     }
 }

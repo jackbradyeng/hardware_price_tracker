@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
+import static com.price_tracker.constants.TestingConstants.PRODUCT_TYPE_GPU;
+import static com.price_tracker.constants.TestingConstants.TESTING_GPU_MODEL_NUMBER;
 import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
 
 @SpringBootTest
@@ -47,7 +49,7 @@ public class UmartProductControllerIntegrationTests {
     // create tests
     @Test
     public void testThatCreateUmartProductReturnsHttpStatus201Created() throws Exception {
-        UmartProductEntity testProductEntity = tdl.createTestUmartProduct();
+        UmartProductEntity testProductEntity = tdl.createTestUmartGPU();
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
@@ -61,7 +63,7 @@ public class UmartProductControllerIntegrationTests {
 
     @Test
     public void TestThatCreatedUmartProductReturnsSavedUmartProduct() throws Exception {
-        UmartProductEntity testProductEntity = tdl.createTestUmartProduct();
+        UmartProductEntity testProductEntity = tdl.createTestUmartGPU();
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
@@ -69,9 +71,9 @@ public class UmartProductControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testProductString)
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.productType").value("GPU")
+                MockMvcResultMatchers.jsonPath("$.productType").value(PRODUCT_TYPE_GPU)
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.modelNumber").value("PRIME-RTX5070TI-O16G")
+                MockMvcResultMatchers.jsonPath("$.modelNumber").value(TESTING_GPU_MODEL_NUMBER)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.url").value(UMART_ASUS_5070TI)
         );
@@ -90,7 +92,7 @@ public class UmartProductControllerIntegrationTests {
 
     @Test
     public void testThatGetUmartProductByIDReturnsHttpStatusOkWhenProductExists() throws Exception {
-        UmartProductEntity umartProductEntity = tdl.createTestUmartProduct();
+        UmartProductEntity umartProductEntity = tdl.createTestUmartGPU();
         UmartProductEntity savedProduct = umartProductService.save(umartProductEntity);
 
         mockMvc.perform(
@@ -124,7 +126,7 @@ public class UmartProductControllerIntegrationTests {
 
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204ForExistingProduct() throws Exception {
-        UmartProductEntity umartProductEntity = tdl.createTestUmartProduct();
+        UmartProductEntity umartProductEntity = tdl.createTestUmartGPU();
         UmartProductEntity savedProduct = umartProductService.save(umartProductEntity);
 
         mockMvc.perform(

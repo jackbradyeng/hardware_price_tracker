@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
+import static com.price_tracker.constants.TestingConstants.TESTING_GPU_MODEL_NUMBER;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -71,7 +72,7 @@ public class GPUEntityControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.modelNumber").isString()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.modelNumber").value("PRIME-RTX5070TI-O16G")
+                MockMvcResultMatchers.jsonPath("$.modelNumber").value(TESTING_GPU_MODEL_NUMBER)
         );
     }
 
