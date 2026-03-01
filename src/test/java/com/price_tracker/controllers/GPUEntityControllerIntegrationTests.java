@@ -116,7 +116,7 @@ public class GPUEntityControllerIntegrationTests {
         GPUEntity testGPUENtity = tdl.createTestGPU();
         GPUEntity savedGPU = gpuService.save(testGPUENtity);
 
-        GPUDTO updatedGPU = gpuMapper.mapTo(tdl.createTestGPU());
+        GPUDTO updatedGPU = gpuMapper.mapTo(testGPUENtity);
         updatedGPU.setName("Updated GPU name");
         String gpuJson = objectMapper.writeValueAsString(updatedGPU);
 
@@ -128,7 +128,6 @@ public class GPUEntityControllerIntegrationTests {
                 MockMvcResultMatchers.status().isOk()
         );
     }
-
 
     @Test
     public void testThatFullUpdateReturnsUpdatedGPU() throws Exception {
