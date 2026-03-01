@@ -1,6 +1,7 @@
 package com.price_tracker.controllers;
 
 import com.price_tracker.TestDataUtility;
+import com.price_tracker.domain.dto.RAMDTO;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.mappers.impl.RAMMapper;
 import com.price_tracker.services.RAMService;
@@ -22,7 +23,7 @@ import static com.price_tracker.constants.TestingConstants.TESTING_RAM_MODEL_NUM
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-@DirtiesContext(classMode =  DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class RAMEntityControllerIntegrationTests {
@@ -73,4 +74,41 @@ public class RAMEntityControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.modelNumber").value(TESTING_RAM_MODEL_NUMBER)
         );
     }
+
+    /// read tests
+    @Test
+    public void testThatRAMReadAllReturnsHttpStatus200ok() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/ram")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetRAMByIDReturnsHttpStatusOkWhenRAMExists() throws Exception {
+        RAMEntity testRAMEntity = tdl.createTestRAM();
+        RAMEntity savedRAMEntity = ramService.save(testRAMEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/ram/" + savedRAMEntity.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatRAMGetByIDReturnsHttpStatusNotFoundWhenRAMDoesNotExist() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/ram/ramDoesNotExist")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    /// update tests
+    /// delete tests
 }
