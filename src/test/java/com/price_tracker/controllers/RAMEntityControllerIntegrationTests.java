@@ -158,4 +158,22 @@ public class RAMEntityControllerIntegrationTests {
     }
 
     /// delete tests
+    @Test
+    public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingGPU() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/ram/ramDoesNotExist")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void testThatDeleteGPUReturnsHttpStatus204ForExisting() throws Exception {
+        RAMEntity testRAMEntity = tdl.createTestRAM();
+        RAMEntity savedRAMEntity = ramService.save(testRAMEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/ram/" + savedRAMEntity.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 }
