@@ -50,7 +50,7 @@ public class RAMController {
     // ram update endpoint
     @PutMapping(path = "/ram/{id}")
     public ResponseEntity<RAMDTO> fullUpdateRAM(@PathVariable String id, @RequestBody RAMDTO ramDTO) {
-        if(ramService.exists(id)) {
+        if(!ramService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         ramDTO.setModelNumber(id);
