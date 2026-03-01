@@ -110,5 +110,52 @@ public class RAMEntityControllerIntegrationTests {
     }
 
     /// update tests
+    @Test
+    public void testThatFullUpdateReturns200ok() throws Exception {
+        RAMEntity testRAMEntity = tdl.createTestRAM();
+        RAMEntity savedRAMEntity = ramService.save(testRAMEntity);
+
+        RAMDTO updatedRAM = ramMapper.mapTo(testRAMEntity);
+        updatedRAM.setName("Updated RAM name");
+        String ramJson = objectMapper.writeValueAsString(updatedRAM);
+
+        System.out.println("Model number is " + savedRAMEntity.getModelNumber());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/ram/" + savedRAMEntity.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ramJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateReturnsUpdatedRAM() throws Exception {
+        RAMEntity testRAMEntity = tdl.createTestRAM();
+        RAMEntity savedRAMEntity = ramService.save(testRAMEntity);
+
+        RAMDTO updatedRAM = ramMapper.mapTo(testRAMEntity);
+        updatedRAM.setName("Updated RAM name");
+        updatedRAM.setBrand("Updated brand");
+        updatedRAM.setClockRate(1000);
+        updatedRAM.setVolume(128);
+        String ramJson = objectMapper.writeValueAsString(updatedRAM);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/ram/" + savedRAMEntity.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ramJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value("Updated RAM name")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.brand").value("Updated brand")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.clockRate").value(1000)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.volume").value(128)
+        );
+    }
+
     /// delete tests
 }
