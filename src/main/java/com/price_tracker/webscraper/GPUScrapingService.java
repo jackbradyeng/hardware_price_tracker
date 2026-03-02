@@ -42,7 +42,7 @@ public class GPUScrapingService {
                         + gpuPricePoint.getPrice());
                 gpuPricePointRepository.save(gpuPricePoint);
             } else {
-                log.info("Could not create GPU price point entity.");
+                log.info("Could not create GPU price point entity for: " + url);
             }
         }
     }
