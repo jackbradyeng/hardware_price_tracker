@@ -24,9 +24,14 @@ public class CPUEntity {
     private String series;
     private Integer cores;
     private Integer threads;
+    private Double baseClock;
+    private Double boostClock;
     private Double l1Cache;
     private Double l2Cache;
     private Double l3Cache;
+    private Integer thermalDesignPower;
+    private Integer maxTemperature;
     private Integer maxMemory;
     private String memorySupported;
+    private Boolean hasIntegratedGPU;
 }
