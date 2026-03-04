@@ -9,7 +9,7 @@ public final class TestingConstants {
     public static final String TESTING_GPU_BOARD_MANUFACTURER = "ASUS";
     public static final String TESTING_GPU_NAME = "Asus Prime GeForce RTX 5070 Ti OC 16G Graphics Card";
 
-    // second testing model
+    // secondary gpu testing constants
     public static final String SECOND_TESTING_GPU_MODEL_NUMBER = "PROART-RTX5070TI-O16G";
     public static final String SECOND_TESTING_GPU_NAME = "Asus ProArt GeForce RTX 5070 Ti OC 16G Graphics Card (PROART-RTX5070TI-O16G)";
 
@@ -28,6 +28,13 @@ public final class TestingConstants {
     public static final Integer TESTING_RAM_DIMM_COUNT = 2;
     public static final Integer TESTING_RAM_CLOCKRATE = 6000;
     public static final Double TESTING_RAM_VOLTAGE = 1.35;
+
+    // secondary ram testing constants
+    public static final String SECOND_TESTING_RAM_MODEL_NUMBER = "F5-6000J3636F16GX2-TZ5NR";
+    public static final String SECOND_TESTING_RAM_NAME = "G.Skill 32GB (2x16GB) F5-6000J3636F16GX2-TZ5NR Trident Z5 Neo RGB 6000MHz CL36 DDR5 RAM";
+    public static final String SECOND_TESTING_RAM_BRAND = "G.SKILL";
+    public static final Integer SECOND_TESTING_RAM_VOLUME = 32;
+    public static final Double SECOND_TESTING_RAM_VOLTAGE = 1.10;
 
     // umart ram product testing constants
     public static final String TESTING_RAM_PRICE = "1,299.00";

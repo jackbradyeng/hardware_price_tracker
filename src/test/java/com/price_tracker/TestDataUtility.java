@@ -1,10 +1,12 @@
 package com.price_tracker;
 
 import com.price_tracker.domain.dto.GPUDTO;
+import com.price_tracker.domain.dto.RAMDTO;
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.domain.entities.UmartProductEntity;
 import com.price_tracker.mappers.impl.GPUMapper;
+import com.price_tracker.mappers.impl.RAMMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,7 @@ import static com.price_tracker.constants.WebDomainNames.UMART_KINGSTON_KINGSTON
 public class TestDataUtility {
 
     private final GPUMapper gpuMapper;
+    private final RAMMapper ramMapper;
 
     public GPUEntity createTestGPU() {
         return GPUEntity.builder()
@@ -63,6 +66,28 @@ public class TestDataUtility {
                 .voltage(TESTING_RAM_VOLTAGE)
                 .isActive(true)
                 .build();
+    }
+
+    public RAMEntity createSecondTestRAM() {
+        return RAMEntity.builder()
+                .modelNumber(SECOND_TESTING_RAM_MODEL_NUMBER)
+                .name(SECOND_TESTING_RAM_NAME)
+                .brand(SECOND_TESTING_RAM_BRAND)
+                .standard(TESTING_RAM_STANDARD)
+                .latency(TESTING_RAM_LATENCY)
+                .volume(SECOND_TESTING_RAM_VOLUME)
+                .dimmCount(TESTING_RAM_DIMM_COUNT)
+                .clockRate(TESTING_RAM_CLOCKRATE)
+                .voltage(SECOND_TESTING_RAM_VOLTAGE)
+                .isActive(true)
+                .build();
+    }
+
+    public List<RAMDTO> createListOfRAM() {
+        ArrayList<RAMDTO> ramdtos = new ArrayList<>();
+        ramdtos.add(ramMapper.mapTo(createTestRAM()));
+        ramdtos.add(ramMapper.mapTo(createSecondTestRAM()));
+        return ramdtos;
     }
 
     public UmartProductEntity createTestUmartGPU() {
