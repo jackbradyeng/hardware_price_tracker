@@ -1,19 +1,25 @@
 package com.price_tracker;
 
+import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.domain.entities.UmartProductEntity;
+import com.price_tracker.mappers.impl.GPUMapper;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
 import static com.price_tracker.constants.TestingConstants.*;
 import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
 import static com.price_tracker.constants.WebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 
 @Data
 @Component
-@NoArgsConstructor
+@AllArgsConstructor
 public class TestDataUtility {
+
+    private final GPUMapper gpuMapper;
 
     public GPUEntity createTestGPU() {
         return GPUEntity.builder()
@@ -24,6 +30,24 @@ public class TestDataUtility {
                 .name(TESTING_GPU_NAME)
                 .isActive(true)
                 .build();
+    }
+
+    public GPUEntity createSecondTestGPU() {
+        return GPUEntity.builder()
+                .modelNumber(SECOND_TESTING_GPU_MODEL_NUMBER)
+                .chip(TESTING_GPU_CHIP)
+                .chipManufacturer(TESTING_GPU_CHIP_MANUFACTURER)
+                .boardManufacturer(TESTING_GPU_BOARD_MANUFACTURER)
+                .name(SECOND_TESTING_GPU_NAME)
+                .isActive(true)
+                .build();
+    }
+
+    public List<GPUDTO> createListOfGPUs() {
+        ArrayList<GPUDTO> gpudtos = new ArrayList<>();
+        gpudtos.add(gpuMapper.mapTo(createTestGPU()));
+        gpudtos.add(gpuMapper.mapTo(createSecondTestGPU()));
+        return gpudtos;
     }
 
     public RAMEntity createTestRAM() {

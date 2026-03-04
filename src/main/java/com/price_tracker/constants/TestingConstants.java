@@ -9,6 +9,10 @@ public final class TestingConstants {
     public static final String TESTING_GPU_BOARD_MANUFACTURER = "ASUS";
     public static final String TESTING_GPU_NAME = "Asus Prime GeForce RTX 5070 Ti OC 16G Graphics Card";
 
+    // second testing model
+    public static final String SECOND_TESTING_GPU_MODEL_NUMBER = "PROART-RTX5070TI-O16G";
+    public static final String SECOND_TESTING_GPU_NAME = "Asus ProArt GeForce RTX 5070 Ti OC 16G Graphics Card (PROART-RTX5070TI-O16G)";
+
     // umart gpu product testing constants
     public static final String TESTING_VENDOR_UMART = "UMART";
     public static final String TESTING_GPU_PRICE = "1,499.00";

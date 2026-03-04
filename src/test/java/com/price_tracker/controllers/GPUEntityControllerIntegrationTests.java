@@ -37,10 +37,10 @@ public class GPUEntityControllerIntegrationTests {
     private final GPUMapper gpuMapper;
 
     @Autowired
-    public GPUEntityControllerIntegrationTests(MockMvc mockMVC, GPURepository gpuRepository) {
+    public GPUEntityControllerIntegrationTests(MockMvc mockMVC, GPURepository gpuRepository, TestDataUtility tdl) {
         this.mockMVC = mockMVC;
         this.objectMapper = new ObjectMapper();
-        this.tdl = new TestDataUtility();
+        this.tdl = tdl;
         this.gpuService = new GPUServiceImpl(gpuRepository);
         this.gpuMapper = new GPUMapper(new ModelMapper());
     }

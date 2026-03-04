@@ -17,11 +17,12 @@ import java.util.Optional;
 public class GPUEntityRepoIntegrationTests {
 
     private final GPURepository testInstance;
-    private final TestDataUtility data = new TestDataUtility();
+    private final TestDataUtility data;
 
     @Autowired
-    public GPUEntityRepoIntegrationTests(GPURepository testInstance) {
+    public GPUEntityRepoIntegrationTests(GPURepository testInstance, TestDataUtility tdl) {
         this.testInstance = testInstance;
+        this.data = tdl;
     }
 
     @Test

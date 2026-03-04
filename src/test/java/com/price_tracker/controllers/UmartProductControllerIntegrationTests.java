@@ -38,12 +38,13 @@ public class UmartProductControllerIntegrationTests {
     private final TestDataUtility tdl;
 
     @Autowired
-    public UmartProductControllerIntegrationTests(MockMvc mockMvc, UmartProductRepository umartProductRepository) {
+    public UmartProductControllerIntegrationTests(MockMvc mockMvc, UmartProductRepository umartProductRepository,
+                                                  TestDataUtility tdl) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
         this.umartProductService = new UmartProductServiceImpl(umartProductRepository);
         this.umartProductMapper = new UmartProductMapper(new ModelMapper());
-        this.tdl = new TestDataUtility();
+        this.tdl = tdl;
     }
 
     // create tests
