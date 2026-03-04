@@ -45,9 +45,9 @@ public class GPUController {
 
     // gpu read-all endpoint
     @GetMapping(path = "/gpus")
-    public List<GPUDTO> listGPUs() {
+    public ResponseEntity<List<GPUDTO>> listGPUs() {
         List<GPUEntity> gpus = gpuService.findAll();
-        return gpus.stream().map(gpuMapper::mapTo).toList();
+        return new ResponseEntity<>(gpus.stream().map(gpuMapper::mapTo).toList(), HttpStatus.OK);
     }
 
     // gpu get-one endpoint
