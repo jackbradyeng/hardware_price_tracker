@@ -9,6 +9,7 @@ import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,19 @@ public class RAMController {
         RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
         RAMEntity savedRAMEntity = ramService.save(ramEntity);
         return new ResponseEntity<>(ramMapper.mapTo(savedRAMEntity), HttpStatus.CREATED);
+    }
+
+    // ram create-all endpoint
+    @PostMapping(path = "/ram/saveall")
+    public ResponseEntity<List<RAMDTO>> createRam(@RequestBody final List<RAMDTO> ramDTOs) {
+        ArrayList<RAMDTO> responseList = new ArrayList<>();
+        for (RAMDTO ramDTO : ramDTOs) {
+            log.info("Got RAM: {}" + ramDTO.toString());
+            RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
+            RAMEntity savedRAM = ramService.save(ramEntity);
+            responseList.add(ramMapper.mapTo(savedRAM));
+        }
+        return new ResponseEntity<>(responseList, HttpStatus.CREATED);
     }
 
     // ram read-all endpoint
