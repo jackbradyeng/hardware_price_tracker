@@ -8,6 +8,8 @@ public interface GPUService {
 
     GPUEntity save(GPUEntity gpuEntity);
 
+    List<GPUEntity> saveAll(List<GPUEntity> gpuEntities);
+
     List<GPUEntity> findAll();
 
     Optional<GPUEntity> findOne(String id);

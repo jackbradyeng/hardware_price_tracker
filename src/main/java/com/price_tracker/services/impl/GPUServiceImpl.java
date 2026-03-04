@@ -21,6 +21,11 @@ public class GPUServiceImpl implements GPUService {
     }
 
     @Override
+    public List<GPUEntity> saveAll(List<GPUEntity> gpuEntities) {
+        return gpuRepository.saveAll(gpuEntities);
+    }
+
+    @Override
     public List<GPUEntity> findAll() {
         return StreamSupport
                 .stream(gpuRepository.findAll().spliterator(), false)
