@@ -19,6 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
+
+import java.util.List;
+
 import static com.price_tracker.constants.TestingConstants.TESTING_RAM_MODEL_NUMBER;
 
 @SpringBootTest
@@ -72,6 +75,20 @@ public class RAMEntityControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.modelNumber").isString()
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.modelNumber").value(TESTING_RAM_MODEL_NUMBER)
+        );
+    }
+
+    @Test
+    public void testThatCreateListOfRAMReturns201Created() throws Exception {
+        List<RAMDTO> testRAMDTOs = tdl.createListOfRAM();
+        String listString = objectMapper.writeValueAsString(testRAMDTOs);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/ram/saveall")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(listString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isCreated()
         );
     }
 
