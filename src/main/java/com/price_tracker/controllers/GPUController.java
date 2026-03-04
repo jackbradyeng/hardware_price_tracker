@@ -9,6 +9,7 @@ import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,19 @@ public class GPUController {
         GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
         GPUEntity savedGPUEntity = gpuService.save(gpuEntity);
         return new ResponseEntity<>(gpuMapper.mapTo(savedGPUEntity), HttpStatus.CREATED);
+    }
+
+    // gpu create-all endpoint
+    @PostMapping(path = "/gpus/saveall")
+    public ResponseEntity<List<GPUDTO>> createGPU(@RequestBody final List<GPUDTO> gpuDTOs) {
+        ArrayList<GPUDTO> responseList = new ArrayList<>();
+        for (GPUDTO gpuDTO : gpuDTOs) {
+            log.info("Got GPU: {}" + gpuDTO.toString());
+            GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
+            GPUEntity savedGPUEntity = gpuService.save(gpuEntity);
+            responseList.add(gpuMapper.mapTo(savedGPUEntity));
+        }
+        return new ResponseEntity<>(responseList, HttpStatus.CREATED);
     }
 
     // gpu read-all endpoint
