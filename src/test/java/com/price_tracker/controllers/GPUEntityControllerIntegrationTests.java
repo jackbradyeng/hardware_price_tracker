@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
+import java.util.List;
 import static com.price_tracker.constants.TestingConstants.TESTING_GPU_MODEL_NUMBER;
 
 @SpringBootTest
@@ -73,6 +74,20 @@ public class GPUEntityControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.modelNumber").isString()
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.modelNumber").value(TESTING_GPU_MODEL_NUMBER)
+        );
+    }
+
+    @Test
+    public void testTHatCreateListOfGPUsReturns201Created()  throws Exception {
+        List<GPUDTO> testGPUDTOs = tdl.createListOfGPUs();
+        String listString = objectMapper.writeValueAsString(testGPUDTOs);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/gpus/saveall")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(listString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isCreated()
         );
     }
 
