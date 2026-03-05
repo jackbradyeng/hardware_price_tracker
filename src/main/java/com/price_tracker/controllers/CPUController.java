@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +30,21 @@ public class CPUController {
     }
 
     // cpu read-all endpoint
+    @GetMapping(path = "/cpus")
+    public ResponseEntity<List<CPUDTO>> listCPUs() {
+        List<CPUEntity> cpus = cpuService.findAll();
+        return new ResponseEntity<>(cpus.stream().map(cpuMapper::mapTo).toList(), HttpStatus.OK);
+    }
 
-    // cpu get-one endpoint
+    // cpu read-one endpoint
+    @GetMapping(path = "/cpus/{id}")
+    public ResponseEntity<CPUDTO> getCPU(@PathVariable String id) {
+        Optional<CPUEntity> foundCPU = cpuService.findOne(id);
+        return foundCPU.map(cpu -> {
+            CPUDTO cpudto = cpuMapper.mapTo(cpu);
+            return new ResponseEntity<>(cpudto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
     // cpu update endpoint
 
