@@ -46,8 +46,22 @@ public class CPUController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // cpu update endpoint
+    // cpu full-update endpoint
+    @PutMapping(path = "/cpus/{id}")
+    public ResponseEntity<CPUDTO> fullUpdateCPU(@PathVariable String id, @RequestBody CPUDTO cpudto) {
+        if(!cpuService.exists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        cpudto.setModelNumber(id);
+        CPUEntity cpuEntity = cpuMapper.mapFrom(cpudto);
+        CPUEntity savedCPU = cpuService.save(cpuEntity);
+        return new ResponseEntity<>(cpuMapper.mapTo(savedCPU), HttpStatus.OK);
+    }
 
     // cpu delete endpoint
-
+    @DeleteMapping(path = "/cpus/{id}")
+    public ResponseEntity<CPUDTO> deleteCPU(@PathVariable String id) {
+        cpuService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
