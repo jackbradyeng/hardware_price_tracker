@@ -20,7 +20,7 @@ public class RAMScrapingService {
     private final UmartProductRepository umartProductRepository;
     private final UmartRAMScraper umartRAMScraper;
 
-    // @Scheduled(cron = "0 00 22 * * ?")
+    @Scheduled(cron = "0 00 23 * * ?")
     public void runDailyScrape() throws InterruptedException {
         log.info("Scraping service started at " + LocalDateTime.now());
         runDailyRAMScrape();
@@ -40,7 +40,7 @@ public class RAMScrapingService {
                         + ramPricePoint.getPrice());
                 ramPricePointRepository.save(ramPricePoint);
             } else {
-                log.info("Could not create RAM price point entity.");
+                log.info("Could not create RAM price point entity for: " + url);
             }
         }
     }
