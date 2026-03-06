@@ -1,6 +1,7 @@
 package com.price_tracker.controllers;
 
 import com.price_tracker.TestDataUtility;
+import com.price_tracker.domain.dto.UmartProductDTO;
 import com.price_tracker.domain.entities.UmartProductEntity;
 import com.price_tracker.mappers.impl.UmartProductMapper;
 import com.price_tracker.repositories.UmartProductRepository;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
+import java.util.List;
 import static com.price_tracker.constants.TestingConstants.PRODUCT_TYPE_GPU;
 import static com.price_tracker.constants.TestingConstants.TESTING_GPU_MODEL_NUMBER;
 import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
@@ -77,6 +79,20 @@ public class UmartProductControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.modelNumber").value(TESTING_GPU_MODEL_NUMBER)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.url").value(UMART_ASUS_5070TI)
+        );
+    }
+
+    @Test
+    public void testThatCreateListOfUmartProductsReturns201Created() throws Exception {
+        List<UmartProductDTO> testUmartProductDTOs = tdl.createTestUmartProducts();
+        String jsonString = objectMapper.writeValueAsString(testUmartProductDTOs);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/umartproducts/saveall")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isCreated()
         );
     }
 

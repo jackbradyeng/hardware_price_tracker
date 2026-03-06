@@ -2,11 +2,13 @@ package com.price_tracker;
 
 import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.domain.dto.RAMDTO;
+import com.price_tracker.domain.dto.UmartProductDTO;
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.domain.entities.UmartProductEntity;
 import com.price_tracker.mappers.impl.GPUMapper;
 import com.price_tracker.mappers.impl.RAMMapper;
+import com.price_tracker.mappers.impl.UmartProductMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,7 @@ public class TestDataUtility {
 
     private final GPUMapper gpuMapper;
     private final RAMMapper ramMapper;
+    private final UmartProductMapper umartProductMapper;
 
     public GPUEntity createTestGPU() {
         return GPUEntity.builder()
@@ -47,10 +50,10 @@ public class TestDataUtility {
     }
 
     public List<GPUDTO> createListOfGPUs() {
-        ArrayList<GPUDTO> gpudtos = new ArrayList<>();
-        gpudtos.add(gpuMapper.mapTo(createTestGPU()));
-        gpudtos.add(gpuMapper.mapTo(createSecondTestGPU()));
-        return gpudtos;
+        ArrayList<GPUDTO> gpuDTOs = new ArrayList<>();
+        gpuDTOs.add(gpuMapper.mapTo(createTestGPU()));
+        gpuDTOs.add(gpuMapper.mapTo(createSecondTestGPU()));
+        return gpuDTOs;
     }
 
     public RAMEntity createTestRAM() {
@@ -84,10 +87,10 @@ public class TestDataUtility {
     }
 
     public List<RAMDTO> createListOfRAM() {
-        ArrayList<RAMDTO> ramdtos = new ArrayList<>();
-        ramdtos.add(ramMapper.mapTo(createTestRAM()));
-        ramdtos.add(ramMapper.mapTo(createSecondTestRAM()));
-        return ramdtos;
+        ArrayList<RAMDTO> ramDTOs = new ArrayList<>();
+        ramDTOs.add(ramMapper.mapTo(createTestRAM()));
+        ramDTOs.add(ramMapper.mapTo(createSecondTestRAM()));
+        return ramDTOs;
     }
 
     public UmartProductEntity createTestUmartGPU() {
@@ -106,6 +109,13 @@ public class TestDataUtility {
                 .vendor(TESTING_VENDOR_UMART)
                 .url(UMART_KINGSTON_KINGSTON_F64G)
                 .build();
+    }
+
+    public List<UmartProductDTO> createTestUmartProducts() {
+        ArrayList<UmartProductDTO> umartProductDTOs = new ArrayList<>();
+        umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartGPU()));
+        umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartRAM()));
+        return umartProductDTOs;
     }
 
     public String[] createSampleTestScrapedGPUData() {
