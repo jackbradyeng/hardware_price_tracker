@@ -14,6 +14,7 @@ public class RAMDTO {
     private String modelNumber;
     private String name;
     private String brand;
+    private String standard;
     private Integer volume;
     private Integer dimmCount;
     private Integer clockRate;

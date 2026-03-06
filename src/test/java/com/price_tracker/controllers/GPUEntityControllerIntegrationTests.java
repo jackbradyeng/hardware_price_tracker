@@ -78,7 +78,7 @@ public class GPUEntityControllerIntegrationTests {
     }
 
     @Test
-    public void testTHatCreateListOfGPUsReturns201Created() throws Exception {
+    public void testThatCreateListOfGPUsReturns201Created() throws Exception {
         List<GPUDTO> testGPUDTOs = tdl.createListOfGPUs();
         String listString = objectMapper.writeValueAsString(testGPUDTOs);
 
