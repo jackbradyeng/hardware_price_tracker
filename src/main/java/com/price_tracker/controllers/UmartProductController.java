@@ -9,6 +9,7 @@ import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,19 @@ public class UmartProductController {
         UmartProductEntity umartProductEntity = umartProductMapper.mapFrom(umartProductDTO);
         UmartProductEntity savedUmartProduct = umartProductService.save(umartProductEntity);
         return new ResponseEntity<>(umartProductMapper.mapTo(savedUmartProduct), HttpStatus.CREATED);
+    }
+
+    // umart product create-all endpoint
+    @PostMapping(path = "/umartproducts/saveall")
+    public ResponseEntity<List<UmartProductDTO>> createProducts(@RequestBody final List<UmartProductDTO> umartProductDTOs) {
+        ArrayList<UmartProductDTO> responseList = new ArrayList<>();
+        for (UmartProductDTO umartProductDTO : umartProductDTOs) {
+            log.info("Got Umart Product: {}" + umartProductDTO.toString());
+            UmartProductEntity umartProductEntity = umartProductMapper.mapFrom(umartProductDTO);
+            UmartProductEntity savedUmartProduct = umartProductService.save(umartProductEntity);
+            responseList.add(umartProductMapper.mapTo(savedUmartProduct));
+        }
+        return new ResponseEntity<>(responseList, HttpStatus.CREATED);
     }
 
     // umart product read-all endpoint
