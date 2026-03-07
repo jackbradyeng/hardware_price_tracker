@@ -34,4 +34,5 @@ public class CPUEntity {
     private Integer maxMemory;
     private String memorySupported;
     private Boolean hasIntegratedGPU;
+    private Boolean isActive = true;
 }

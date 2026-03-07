@@ -21,5 +21,5 @@ public class GPUEntity {
     private String chipManufacturer;
     private String boardManufacturer;
     private String name;
-    private Boolean isActive;
+    private Boolean isActive = true;
 }

@@ -27,4 +27,5 @@ public class CPUDTO {
     private Integer maxMemory;
     private String memorySupported;
     private Boolean hasIntegratedGPU;
+    private Boolean isActive;
 }
