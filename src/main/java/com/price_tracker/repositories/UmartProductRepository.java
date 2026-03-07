@@ -19,4 +19,9 @@ public interface UmartProductRepository extends JpaRepository<UmartProductEntity
             "join RAMEntity r on u.modelNumber = r.modelNumber " +
             "where u.productType='RAM' and r.isActive = true")
     List<String> findUrlsForActiveRAM();
+
+    @Query("select u.url from UmartProductEntity u " +
+            "join CPUEntity c on u.modelNumber = c.modelNumber " +
+            "where u.productType='CPU' and c.isActive = true")
+    List<String> findUrlsForActiveCPU();
 }
