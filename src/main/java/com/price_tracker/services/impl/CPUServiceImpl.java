@@ -3,13 +3,15 @@ package com.price_tracker.services.impl;
 import com.price_tracker.domain.entities.CPUEntity;
 import com.price_tracker.repositories.CPURepository;
 import com.price_tracker.services.CPUService;
-import lombok.AllArgsConstructor;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Transactional
 public class CPUServiceImpl implements CPUService {
 
     private final CPURepository cpuRepository;
@@ -17,6 +19,11 @@ public class CPUServiceImpl implements CPUService {
     @Override
     public CPUEntity save(CPUEntity cpuEntity) {
         return cpuRepository.save(cpuEntity);
+    }
+
+    @Override
+    public List<CPUEntity> saveAll(List<CPUEntity> cpuEntities) {
+        return cpuRepository.saveAll(cpuEntities);
     }
 
     @Override

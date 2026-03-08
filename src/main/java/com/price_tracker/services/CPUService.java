@@ -8,6 +8,8 @@ public interface CPUService {
 
     CPUEntity save(CPUEntity cpuEntity);
 
+    List<CPUEntity> saveAll(List<CPUEntity> cpuEntities);
+
     List<CPUEntity> findAll();
 
     Optional<CPUEntity> findOne(String id);
