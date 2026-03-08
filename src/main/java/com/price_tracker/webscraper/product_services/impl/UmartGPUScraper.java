@@ -6,6 +6,7 @@ import com.price_tracker.webscraper.vendor_templates.GenericUmartScraper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import static com.price_tracker.constants.VendorConstants.UMART;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Service
+@Log
 @RequiredArgsConstructor
 public class UmartGPUScraper extends GenericUmartScraper implements GPUScraper {
 
@@ -36,7 +38,7 @@ public class UmartGPUScraper extends GenericUmartScraper implements GPUScraper {
                     .scrapedAt(currentTime)
                     .build();
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Scraped values array is empty.");
+            log.info("Scraped values array is empty.");
             return null;
         }
     }

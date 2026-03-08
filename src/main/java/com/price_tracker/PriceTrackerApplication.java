@@ -13,5 +13,4 @@ public class PriceTrackerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PriceTrackerApplication.class, args);
 	}
-
 }
