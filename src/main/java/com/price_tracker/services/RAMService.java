@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface RAMService {
     RAMEntity save(RAMEntity ramEntity);
 
+    List<RAMEntity> saveAll(List<RAMEntity> ramEntities);
+
     List<RAMEntity> findAll();
 
     Optional<RAMEntity> findOne(String id);

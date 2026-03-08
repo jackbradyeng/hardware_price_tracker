@@ -3,24 +3,27 @@ package com.price_tracker.services.impl;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.repositories.RAMRepository;
 import com.price_tracker.services.RAMService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class RAMServiceImpl implements RAMService {
 
     private final RAMRepository ramRepository;
-
-    public RAMServiceImpl(RAMRepository ramRepository) {
-        this.ramRepository = ramRepository;
-    }
 
     @Override
     public RAMEntity save(RAMEntity ramEntity) {
         return ramRepository.save(ramEntity);
     }
+
+    @Override
+    public List<RAMEntity> saveAll(List<RAMEntity> ramEntities) { return ramRepository.saveAll(ramEntities); }
 
     @Override
     public List<RAMEntity> findAll() {
