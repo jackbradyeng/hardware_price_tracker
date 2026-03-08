@@ -21,12 +21,30 @@ public class CPUController {
     private final Mapper<CPUEntity, CPUDTO> cpuMapper;
 
     // cpu create endpoint
-    @PostMapping(name = "/cpus")
+    @PostMapping(path = "/cpus")
     public ResponseEntity<CPUDTO> createCPU(@RequestBody final CPUDTO cpuDTO) {
         log.info("Got CPU: {}" + cpuDTO.toString());
         CPUEntity cpuEntity = cpuMapper.mapFrom(cpuDTO);
         CPUEntity savedCPU = cpuService.save(cpuEntity);
         return new ResponseEntity<>(cpuMapper.mapTo(savedCPU), HttpStatus.CREATED);
+    }
+
+    // cpu create-all endpoint
+    @PostMapping(path = "/cpus/saveall")
+    public ResponseEntity<List<CPUDTO>> createCPU(@RequestBody final List<CPUDTO> cpuDTOs) {
+        log.info("Processing batch of " + cpuDTOs.size() + " CPU records.");
+
+        List<CPUEntity> cpuEntities = cpuDTOs.stream()
+                .map(cpuMapper::mapFrom)
+                .toList();
+
+        List<CPUEntity> savedEntities = cpuService.saveAll(cpuEntities);
+
+        List<CPUDTO> responseList = savedEntities.stream()
+                .map(cpuMapper::mapTo)
+                .toList();
+
+        return new ResponseEntity<>(responseList, HttpStatus.CREATED);
     }
 
     // cpu read-all endpoint
