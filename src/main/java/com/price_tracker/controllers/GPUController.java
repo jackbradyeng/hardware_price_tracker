@@ -33,13 +33,18 @@ public class GPUController {
     // gpu create-all endpoint
     @PostMapping(path = "/gpus/saveall")
     public ResponseEntity<List<GPUDTO>> createGPU(@RequestBody final List<GPUDTO> gpuDTOs) {
-        ArrayList<GPUDTO> responseList = new ArrayList<>();
-        for (GPUDTO gpuDTO : gpuDTOs) {
-            log.info("Got GPU: {}" + gpuDTO.toString());
-            GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
-            GPUEntity savedGPUEntity = gpuService.save(gpuEntity);
-            responseList.add(gpuMapper.mapTo(savedGPUEntity));
-        }
+        log.info("Processing batch of " + gpuDTOs.size() + " GPU records.");
+
+        List<GPUEntity> gpuEntities = gpuDTOs.stream()
+                .map(gpuMapper::mapFrom)
+                .toList();
+
+        List<GPUEntity> savedEntities = gpuService.saveAll(gpuEntities);
+
+        List<GPUDTO> responseList = savedEntities.stream()
+                .map(gpuMapper::mapTo)
+                .toList();
+
         return new ResponseEntity<>(responseList, HttpStatus.CREATED);
     }
 
