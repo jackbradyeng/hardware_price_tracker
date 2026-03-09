@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import static com.price_tracker.constants.ScrapingConstants.SLEEPING_CONSTANT;
 
 @Service
@@ -20,38 +21,38 @@ public class GPUScrapingService {
     private final UmartProductRepository umartProductRepository;
     private final UmartGPUScraper umartGPUScraper;
 
-    /** Core scraping service. Runs automatically at 3AM each day as per the CRON notation below. */
+    /** Core scraping service. Runs automatically each day as per the CRON notation below. */
     @Scheduled(cron = "0 00 22 * * ?")
-    public void runDailyScrape() throws InterruptedException {
-        log.info("Scraping service started at " + LocalDateTime.now());
-        runDailyGPUScrape();
-        log.info("Scraping service completed at " + LocalDateTime.now());
-    }
-
-    public void runDailyGPUScrape() throws InterruptedException {
+    public void runDailyScrape() {
         runUmartGPUScrape();
     }
 
-    // both of these umart methods should be split off into a different class/interface and injected via the constructor
-    public void runUmartGPUScrape() throws InterruptedException {
-        for(String url : umartProductRepository.findUrlsForActiveGPUs()) {
-            GPUPricePoint gpuPricePoint = scrapeGPU(url);
-            if(gpuPricePoint != null) {
-                Thread.sleep(SLEEPING_CONSTANT);
-                log.info("Got GPU Model: " + gpuPricePoint.getModelNumber() + " & GPU Price: "
-                        + gpuPricePoint.getPrice());
-                gpuPricePointRepository.save(gpuPricePoint);
-            } else {
-                log.info("Could not create GPU price point entity for: " + url);
-            }
-        }
+    private void runUmartGPUScrape() {
+        /* This method converts the list of URL strings into a stream for modification. It then maps each string to the
+        * process method below to obtain a list of PricePoint objects. It removes any Optionals from the stream and then
+        * converts it back to a list. The reason for this is to avoid a stateful representation i.e. a functional
+        * implementation bypasses the need for either the service or the scraper to maintain its own list. Additionally,
+        * we avoid the N+1 problem by saving all PricePoints to the persistence layer at once via the saveAll call.*/
+        List<GPUPricePoint> pricePoints = umartProductRepository.findUrlsForActiveGPUs()
+                .stream()
+                .map(this::processGPU)
+                .flatMap(Optional::stream)
+                .toList();
+        gpuPricePointRepository.saveAll(pricePoints);
     }
 
-    public GPUPricePoint scrapeGPU(String URL) {
-        String[] scrapedData = umartGPUScraper.scrapeProductData(URL);
-        if(umartGPUScraper.validateScrapedData(scrapedData))
-            return umartGPUScraper.createGPUPricePoint(scrapedData);
-        else
-            return null;
+    private Optional<GPUPricePoint> processGPU(String url) {
+        /* We need to handle the thread interruption case in this method because the functional interface above does not
+        * allow checked exceptions to be thrown. i.e. When processGPU is called from runUmartGPUScrape, a compile-time
+        * error will be thrown unless processGPU handles the InterruptedException every time.*/
+        try {
+            Thread.sleep(SLEEPING_CONSTANT);
+            return umartGPUScraper.scrapeProductData(url)
+                    .map(umartGPUScraper::createGPUPricePoint);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.warning("Scraping interrupted for URL: " + url);
+            return Optional.empty();
+        }
     }
 }
