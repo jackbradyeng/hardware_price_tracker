@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import static com.price_tracker.constants.ScrapingConstants.SLEEPING_CONSTANT;
+import static com.price_tracker.constants.ScrapingConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class RAMScrapingService {
     private final UmartRAMScraper umartRAMScraper;
 
     /** Core scraping service. Runs automatically each day as per the CRON notation below. */
-    @Scheduled(cron = "0 30 22 * * ?")
+    @Scheduled(cron = RAM_SCRAPING_TIME)
     public void runDailyScrape() {
         runUmartRAMScrape();
     }

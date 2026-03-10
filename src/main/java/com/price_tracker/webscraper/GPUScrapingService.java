@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import static com.price_tracker.constants.ScrapingConstants.GPU_SCRAPING_TIME;
 import static com.price_tracker.constants.ScrapingConstants.SLEEPING_CONSTANT;
 
 @Service
@@ -22,7 +23,7 @@ public class GPUScrapingService {
     private final UmartGPUScraper umartGPUScraper;
 
     /** Core scraping service. Runs automatically each day as per the CRON notation below. */
-    @Scheduled(cron = "0 00 22 * * ?")
+    @Scheduled(cron = GPU_SCRAPING_TIME)
     public void runDailyScrape() {
         runUmartGPUScrape();
     }
