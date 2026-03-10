@@ -10,4 +10,14 @@ public final class DatabaseTableNames {
     public static final String CPU_PRICE_HISTORY = "CPU_PRICE_HISTORY";
     public static final String VENDOR_TABLE_NAME = "VENDORS";
     public static final String UMART_PRODUCT_NAME = "UMART_PRODUCTS";
+
+    // sequence names
+    public static final String GPU_PRICE_SEQUENCE = "GPU_PRICE_SEQUENCE";
+    public static final String RAM_PRICE_SEQUENCE = "RAM_PRICE_SEQUENCE";
+    public static final String CPU_PRICE_SEQUENCE = "CPU_PRICE_SEQUENCE";
+
+    // generator names
+    public static final String GPU_PRICE_GEN = "GPU_PRICE_GEN";
+    public static final String RAM_PRICE_GEN = "RAM_PRICE_GEN";
+    public static final String CPU_PRICE_GEN = "CPU_PRICE_GEN";
 }
