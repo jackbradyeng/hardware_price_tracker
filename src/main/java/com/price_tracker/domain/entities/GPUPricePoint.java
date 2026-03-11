@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import static com.price_tracker.constants.DatabaseTableNames.GPU_PRICE_HISTORY;
+import static com.price_tracker.constants.DatabaseTableNames.*;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +18,12 @@ import static com.price_tracker.constants.DatabaseTableNames.GPU_PRICE_HISTORY;
 public class GPUPricePoint {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = GPU_PRICE_GEN)
+    @SequenceGenerator(
+            name = GPU_PRICE_GEN,
+            sequenceName = GPU_PRICE_SEQUENCE,
+            allocationSize = 50
+    )
     private Long id;
     private String modelNumber;
     private String vendor;

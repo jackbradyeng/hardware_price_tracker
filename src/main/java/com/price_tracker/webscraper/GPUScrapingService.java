@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import static com.price_tracker.constants.ScrapingConstants.GPU_SCRAPING_TIME;
@@ -34,12 +36,16 @@ public class GPUScrapingService {
         * converts it back to a list. The reason for this is to avoid a stateful representation i.e. a functional
         * implementation bypasses the need for either the service or the scraper to maintain its own list. Additionally,
         * we avoid the N+1 problem by saving all PricePoints to the persistence layer at once via the saveAll call.*/
+        Instant start = Instant.now();
         List<GPUPricePoint> pricePoints = umartProductRepository.findUrlsForActiveGPUs()
                 .stream()
                 .map(this::processGPU)
                 .flatMap(Optional::stream)
                 .toList();
         gpuPricePointRepository.saveAll(pricePoints);
+        Instant end = Instant.now();
+        Duration timeElapsed = Duration.between(start, end);
+        log.info("GPU scraping service took " + timeElapsed.toSeconds() + " seconds to execute.");
     }
 
     private Optional<GPUPricePoint> processGPU(String url) {
