@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import static com.price_tracker.constants.DatabaseTableNames.*;
+import static com.price_tracker.constants.DatabaseTableNames.RAM_PRICE_HISTORY;
 
 @Data
 @AllArgsConstructor
@@ -18,12 +18,7 @@ import static com.price_tracker.constants.DatabaseTableNames.*;
 public class RAMPricePoint {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = RAM_PRICE_GEN)
-    @SequenceGenerator(
-            name = RAM_PRICE_GEN,
-            sequenceName = RAM_PRICE_SEQUENCE,
-            allocationSize = 50
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String modelNumber;
     private String vendor;
