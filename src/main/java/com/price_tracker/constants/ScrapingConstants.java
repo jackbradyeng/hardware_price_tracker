@@ -2,5 +2,10 @@ package com.price_tracker.constants;
 
 public final class ScrapingConstants {
 
-    public static final Integer SLEEPING_CONSTANT = 1000;
+    // may need to tighten the sleeping interval as the volume of scraped data increases...
+    public static final Integer SLEEPING_CONSTANT = 750;
+
+    // CRON timestamps
+    public static final String GPU_SCRAPING_TIME = "0 00 22 * * ?";
+    public static final String RAM_SCRAPING_TIME = "0 30 22 * * ?";
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import static com.price_tracker.constants.DatabaseTableNames.CPU_PRICE_HISTORY;
+import static com.price_tracker.constants.DatabaseTableNames.*;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +18,12 @@ import static com.price_tracker.constants.DatabaseTableNames.CPU_PRICE_HISTORY;
 public class CPUPricePoint {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = CPU_PRICE_SEQUENCE)
+    @SequenceGenerator(
+            name = CPU_PRICE_GEN,
+            sequenceName = CPU_PRICE_SEQUENCE,
+            allocationSize = 50
+    )
     private Long id;
     private String modelNumber;
     private String vendor;

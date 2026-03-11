@@ -5,11 +5,15 @@ import com.price_tracker.repositories.RAMPricePointRepository;
 import com.price_tracker.repositories.UmartProductRepository;
 import com.price_tracker.webscraper.product_services.impl.UmartRAMScraper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
-import static com.price_tracker.constants.ScrapingConstants.SLEEPING_CONSTANT;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import static com.price_tracker.constants.ScrapingConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,36 +24,35 @@ public class RAMScrapingService {
     private final UmartProductRepository umartProductRepository;
     private final UmartRAMScraper umartRAMScraper;
 
-    @Scheduled(cron = "0 00 23 * * ?")
-    public void runDailyScrape() throws InterruptedException {
-        log.info("Scraping service started at " + LocalDateTime.now());
-        runDailyRAMScrape();
-        log.info("Scraping service completed at " + LocalDateTime.now());
-    }
-
-    public void runDailyRAMScrape() throws InterruptedException {
+    /** Core scraping service. Runs automatically each day as per the CRON notation below. */
+    @Scheduled(cron = RAM_SCRAPING_TIME)
+    public void runDailyScrape() {
         runUmartRAMScrape();
     }
 
-    public void runUmartRAMScrape() throws InterruptedException {
-        for(String url : umartProductRepository.findUrlsForActiveRAM()) {
-            RAMPricePoint ramPricePoint = scrapeRAM(url);
-            if(ramPricePoint != null) {
-                Thread.sleep(SLEEPING_CONSTANT);
-                log.info("Got RAM Model: " + ramPricePoint.getModelNumber() + " & RAM  Price: "
-                        + ramPricePoint.getPrice());
-                ramPricePointRepository.save(ramPricePoint);
-            } else {
-                log.info("Could not create RAM price point entity for: " + url);
-            }
-        }
+    @SneakyThrows
+    private void runUmartRAMScrape() {
+        Instant start = Instant.now();
+        List<RAMPricePoint> pricePoints = umartProductRepository.findUrlsForActiveRAM()
+                .stream()
+                .map(this::processRAM)
+                .flatMap(Optional::stream)
+                .toList();
+        ramPricePointRepository.saveAll(pricePoints);
+        Instant end = Instant.now();
+        Duration timeElapsed = Duration.between(start, end);
+        log.info("RAM scraping service took " + timeElapsed.toSeconds() + " seconds to execute.");
     }
 
-    public RAMPricePoint scrapeRAM(String url) {
-        String[] scrapedData = umartRAMScraper.scrapeProductData(url);
-        if(umartRAMScraper.validateScrapedData(scrapedData))
-            return umartRAMScraper.createRAMPricePoint(scrapedData);
-        else
-            return null;
+    private Optional<RAMPricePoint> processRAM(String url) {
+        try {
+            Thread.sleep(SLEEPING_CONSTANT);
+            return umartRAMScraper.scrapeProductData(url)
+                    .map(umartRAMScraper::createRAMPricePoint);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.warning("Scraping interrupted for URL: " + url);
+            return Optional.empty();
+        }
     }
 }
