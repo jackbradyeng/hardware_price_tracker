@@ -9,6 +9,8 @@ import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import static com.price_tracker.constants.ScrapingConstants.*;
@@ -30,12 +32,16 @@ public class RAMScrapingService {
 
     @SneakyThrows
     private void runUmartRAMScrape() {
+        Instant start = Instant.now();
         List<RAMPricePoint> pricePoints = umartProductRepository.findUrlsForActiveRAM()
                 .stream()
                 .map(this::processRAM)
                 .flatMap(Optional::stream)
                 .toList();
         ramPricePointRepository.saveAll(pricePoints);
+        Instant end = Instant.now();
+        Duration timeElapsed = Duration.between(start, end);
+        log.info("RAM scraping service took " + timeElapsed.toSeconds() + " seconds to execute.");
     }
 
     private Optional<RAMPricePoint> processRAM(String url) {
