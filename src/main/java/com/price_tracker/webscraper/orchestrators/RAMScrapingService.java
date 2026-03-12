@@ -1,4 +1,4 @@
-package com.price_tracker.webscraper;
+package com.price_tracker.webscraper.orchestrators;
 
 import com.price_tracker.domain.entities.RAMPricePoint;
 import com.price_tracker.repositories.RAMPricePointRepository;
