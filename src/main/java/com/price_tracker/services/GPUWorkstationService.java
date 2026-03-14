@@ -1,22 +1,24 @@
 package com.price_tracker.services;
 
-import com.price_tracker.domain.entities.GPUWorkstationEntity;
+import com.price_tracker.domain.dto.GPUWorkstationDTO;
 import java.util.List;
 import java.util.Optional;
 
 public interface GPUWorkstationService {
 
-    GPUWorkstationEntity save(GPUWorkstationEntity gpuWorkstation);
+    GPUWorkstationDTO save(GPUWorkstationDTO gpuWorkstation);
 
-    List<GPUWorkstationEntity> saveAll(List<GPUWorkstationEntity> gpuWorkstationEntityList);
+    List<GPUWorkstationDTO> saveAll(List<GPUWorkstationDTO> GPUWorkstationDTOList);
 
-    List<GPUWorkstationEntity> findAll();
+    List<GPUWorkstationDTO> findAll();
 
-    Optional<GPUWorkstationEntity> findOne(String id);
+    Optional<GPUWorkstationDTO> findOne(String id);
 
-    boolean exists(String id);
+    Boolean exists(String id);
 
-    GPUWorkstationEntity partialUpdate(String id, GPUWorkstationEntity gpuWorkstation);
+    Optional<GPUWorkstationDTO> fullUpdate(String id, GPUWorkstationDTO gpuWorkstationEntity);
+
+    Optional<GPUWorkstationDTO> partialUpdate(String id, GPUWorkstationDTO gpuWorkstation);
 
     void delete(String id);
 }
