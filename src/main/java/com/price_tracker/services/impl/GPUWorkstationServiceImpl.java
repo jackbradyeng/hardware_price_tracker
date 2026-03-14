@@ -2,7 +2,7 @@ package com.price_tracker.services.impl;
 
 import com.price_tracker.domain.dto.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.GPUWorkstationEntity;
-import com.price_tracker.mappers.Mapper;
+import com.price_tracker.mappers.impl.GPUWorkstationMapper;
 import com.price_tracker.repositories.GPUWorkstationRepository;
 import com.price_tracker.services.GPUWorkstationService;
 import jakarta.transaction.Transactional;
@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class GPUWorkstationServiceImpl implements GPUWorkstationService {
 
     private final GPUWorkstationRepository gpuWorkstationRepository;
-    private final Mapper<GPUWorkstationEntity, GPUWorkstationDTO> modelMapper;
+    private final GPUWorkstationMapper modelMapper;
 
     @Override
     public GPUWorkstationDTO save(GPUWorkstationDTO gpuWorkstationDTO) {
