@@ -16,7 +16,7 @@ import static com.price_tracker.constants.VendorConstants.UMART;
 @Data
 @Service
 @Log
-public class GPUWorkstationScraperImpl extends GenericUmartScraper implements GPUWorkstationScraper {
+public class UmartGPUWorkstationScraper extends GenericUmartScraper implements GPUWorkstationScraper {
 
     @Override
     public GPUWorkstationPricePoint createGPUWorkstationPricePoint(ScrapedDataDTO scrapedDataDTO) {
