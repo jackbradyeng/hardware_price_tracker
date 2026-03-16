@@ -22,4 +22,5 @@ public class GPUWorkstationDTO {
     private Integer raytracingCores;
     private Integer maxPower;
     private String systemInterface;
+    private Boolean isActive;
 }

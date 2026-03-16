@@ -26,4 +26,5 @@ public class GPUWorkstationEntity {
     private Integer raytracingCores;
     private Integer maxPower; // in watts
     private String systemInterface; //PCIe type
+    private Boolean isActive = true;
 }
