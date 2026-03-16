@@ -4,6 +4,7 @@ import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.domain.dto.RAMDTO;
 import com.price_tracker.domain.dto.UmartProductDTO;
 import com.price_tracker.domain.entities.GPUEntity;
+import com.price_tracker.domain.entities.GPUWorkstationEntity;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.domain.entities.UmartProductEntity;
 import com.price_tracker.mappers.impl.GPUMapper;
@@ -116,6 +117,22 @@ public class TestDataUtility {
         umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartGPU()));
         umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartRAM()));
         return umartProductDTOs;
+    }
+
+    public GPUWorkstationEntity createTestWorkstationGPU() {
+        return GPUWorkstationEntity.builder()
+                .modelNumber(TESTING_WS_GPU_MODEL_NUMBER)
+                .name(TESTING_WS_GPU_NAME)
+                .chipManufacturer(TESTING_WS_GPU_CHIP_MANUFACTURER)
+                .gpuMemory(TESTING_WS_GPU_MEMORY)
+                .memoryInterface(TESTING_WS_GPU_MEMORY_INTERFACE)
+                .memoryBandwidth(TESTING_WS_GPU_MEMORY_BANDWIDTH)
+                .cudaCores(TESTING_WS_GPU_CUDA_CORES)
+                .tensorCores(TESTING_WS_GPU_TENSOR_CORES)
+                .raytracingCores(TESTING_WS_GPU_RT_CORES)
+                .systemInterface(TESTING_WS_GPU_SYS_INTERFACE)
+                .isActive(true)
+                .build();
     }
 
     public String[] createSampleTestScrapedGPUData() {
