@@ -18,7 +18,7 @@ public class GPUWorkstationController {
     private final GPUWorkstationService gpuWorkstationService;
 
     // gpu create-one endpoint
-    @PostMapping(path = "/workstaion_gpus")
+    @PostMapping(path = "/workstation_gpus")
     public ResponseEntity<GPUWorkstationDTO> createWorkstationGPU(
             @RequestBody final GPUWorkstationDTO gpuWorkstationDTO) {
 
@@ -28,7 +28,7 @@ public class GPUWorkstationController {
     }
 
     // gpu create-all endpoint
-    @PostMapping(path = "/workstaion_gpus/saveall")
+    @PostMapping(path = "/workstation_gpus/saveall")
     public ResponseEntity<List<GPUWorkstationDTO>> createWorkstationGPU(
             @RequestBody final List<GPUWorkstationDTO> gpuWorkstationDTOS) {
 
