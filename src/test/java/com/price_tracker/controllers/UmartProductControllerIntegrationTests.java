@@ -4,7 +4,7 @@ import com.price_tracker.TestDataUtility;
 import com.price_tracker.domain.dto.UmartProductDTO;
 import com.price_tracker.domain.entities.UmartProductEntity;
 import com.price_tracker.mappers.impl.UmartProductMapper;
-import com.price_tracker.repositories.UmartProductRepository;
+import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.product_services.UmartProductService;
 import com.price_tracker.services.product_services.impl.UmartProductServiceImpl;
 import org.junit.jupiter.api.Test;

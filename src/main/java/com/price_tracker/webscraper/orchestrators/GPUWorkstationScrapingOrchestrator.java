@@ -2,7 +2,7 @@ package com.price_tracker.webscraper.orchestrators;
 
 import com.price_tracker.domain.entities.GPUWorkstationPricePoint;
 import com.price_tracker.repositories.price_point_repos.GPUWorkstationPricePointRepository;
-import com.price_tracker.repositories.UmartProductRepository;
+import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUWorkstationScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;

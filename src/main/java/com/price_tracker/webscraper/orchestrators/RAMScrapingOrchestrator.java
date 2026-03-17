@@ -2,7 +2,7 @@ package com.price_tracker.webscraper.orchestrators;
 
 import com.price_tracker.domain.entities.RAMPricePoint;
 import com.price_tracker.repositories.price_point_repos.RAMPricePointRepository;
-import com.price_tracker.repositories.UmartProductRepository;
+import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.product_services.impl.UmartRAMScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

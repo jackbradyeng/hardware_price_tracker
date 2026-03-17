@@ -1,7 +1,7 @@
 package com.price_tracker.services.product_services.impl;
 
 import com.price_tracker.domain.entities.UmartProductEntity;
-import com.price_tracker.repositories.UmartProductRepository;
+import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.product_services.UmartProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
