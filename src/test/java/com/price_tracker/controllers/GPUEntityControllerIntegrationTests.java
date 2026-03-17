@@ -3,7 +3,7 @@ package com.price_tracker.controllers;
 import com.price_tracker.domain.dto.GPUDTO;
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.mappers.impl.GPUMapper;
-import com.price_tracker.repositories.GPURepository;
+import com.price_tracker.repositories.product_repos.GPURepository;
 import com.price_tracker.TestDataUtility;
 import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.services.product_services.impl.GPUServiceImpl;
