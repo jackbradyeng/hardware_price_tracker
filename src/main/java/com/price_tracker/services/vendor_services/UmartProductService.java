@@ -1,4 +1,4 @@
-package com.price_tracker.services.product_services;
+package com.price_tracker.services.vendor_services;
 
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import java.util.List;

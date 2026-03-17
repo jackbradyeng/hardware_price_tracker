@@ -1,8 +1,8 @@
-package com.price_tracker.services.product_services.impl;
+package com.price_tracker.services.vendor_services.impl;
 
 import com.price_tracker.domain.entities.vendor_entities.VendorEntity;
 import com.price_tracker.repositories.vendor_repos.VendorRepository;
-import com.price_tracker.services.product_services.VendorService;
+import com.price_tracker.services.vendor_services.VendorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;

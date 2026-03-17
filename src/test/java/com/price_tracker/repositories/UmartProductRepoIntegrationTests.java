@@ -7,7 +7,7 @@ import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.services.product_services.RAMService;
-import com.price_tracker.services.product_services.UmartProductService;
+import com.price_tracker.services.vendor_services.UmartProductService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
