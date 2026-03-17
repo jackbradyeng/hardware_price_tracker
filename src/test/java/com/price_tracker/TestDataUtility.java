@@ -2,7 +2,7 @@ package com.price_tracker;
 
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
-import com.price_tracker.domain.dto.UmartProductDTO;
+import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.domain.entities.GPUWorkstationEntity;
 import com.price_tracker.domain.entities.RAMEntity;

@@ -1,4 +1,4 @@
-package com.price_tracker.domain.dto;
+package com.price_tracker.domain.dto.vendor_dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
