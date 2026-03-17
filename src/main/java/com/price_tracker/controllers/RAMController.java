@@ -3,7 +3,7 @@ package com.price_tracker.controllers;
 import com.price_tracker.domain.dto.RAMDTO;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.mappers.Mapper;
-import com.price_tracker.services.RAMService;
+import com.price_tracker.services.product_services.RAMService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;

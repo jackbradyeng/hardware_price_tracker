@@ -3,7 +3,7 @@ package com.price_tracker.controllers;
 import com.price_tracker.domain.dto.CPUDTO;
 import com.price_tracker.domain.entities.CPUEntity;
 import com.price_tracker.mappers.Mapper;
-import com.price_tracker.services.CPUService;
+import com.price_tracker.services.product_services.CPUService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;

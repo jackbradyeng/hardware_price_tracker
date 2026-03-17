@@ -1,8 +1,8 @@
-package com.price_tracker.services.impl;
+package com.price_tracker.services.product_services.impl;
 
 import com.price_tracker.domain.entities.CPUEntity;
 import com.price_tracker.repositories.CPURepository;
-import com.price_tracker.services.CPUService;
+import com.price_tracker.services.product_services.CPUService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

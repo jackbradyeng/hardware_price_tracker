@@ -4,7 +4,7 @@ import com.price_tracker.TestDataUtility;
 import com.price_tracker.domain.dto.RAMDTO;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.mappers.impl.RAMMapper;
-import com.price_tracker.services.RAMService;
+import com.price_tracker.services.product_services.RAMService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;

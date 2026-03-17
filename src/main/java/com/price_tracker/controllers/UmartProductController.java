@@ -3,7 +3,7 @@ package com.price_tracker.controllers;
 import com.price_tracker.domain.dto.UmartProductDTO;
 import com.price_tracker.domain.entities.UmartProductEntity;
 import com.price_tracker.mappers.impl.UmartProductMapper;
-import com.price_tracker.services.UmartProductService;
+import com.price_tracker.services.product_services.UmartProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
