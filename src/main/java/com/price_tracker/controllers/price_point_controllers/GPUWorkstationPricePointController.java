@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
-import com.price_tracker.services.price_points.GPUWorkstationPricePointService;
+import com.price_tracker.services.price_point_services.GPUWorkstationPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;

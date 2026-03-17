@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
-import com.price_tracker.services.price_points.RAMPricePointService;
+import com.price_tracker.services.price_point_services.RAMPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.price_tracker.services.price_points;
+package com.price_tracker.services.price_point_services;
 
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
 import java.util.List;

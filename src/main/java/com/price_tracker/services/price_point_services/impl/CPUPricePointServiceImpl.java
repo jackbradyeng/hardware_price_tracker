@@ -1,9 +1,9 @@
-package com.price_tracker.services.price_points.impl;
+package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
 import com.price_tracker.mappers.price_point_mappers.CPUPricePointMapper;
 import com.price_tracker.repositories.price_point_repos.CPUPricePointRepository;
-import com.price_tracker.services.price_points.CPUPricePointService;
+import com.price_tracker.services.price_point_services.CPUPricePointService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
