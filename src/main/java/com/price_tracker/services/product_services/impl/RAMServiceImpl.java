@@ -1,0 +1,59 @@
+package com.price_tracker.services.product_services.impl;
+
+import com.price_tracker.domain.entities.product_entities.RAMEntity;
+import com.price_tracker.repositories.product_repos.RAMRepository;
+import com.price_tracker.services.product_services.RAMService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.StreamSupport;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class RAMServiceImpl implements RAMService {
+
+    private final RAMRepository ramRepository;
+
+    @Override
+    public RAMEntity save(RAMEntity ramEntity) {
+        return ramRepository.save(ramEntity);
+    }
+
+    @Override
+    public List<RAMEntity> saveAll(List<RAMEntity> ramEntities) { return ramRepository.saveAll(ramEntities); }
+
+    @Override
+    public List<RAMEntity> findAll() {
+        return StreamSupport
+                .stream(ramRepository.findAll().spliterator(), false)
+                .toList();
+    }
+
+    @Override
+    public Optional<RAMEntity> findOne(String id) {
+        return ramRepository.findById(id);
+    }
+
+    @Override
+    public boolean exists(String id) {
+        return ramRepository.existsById(id);
+    }
+
+    @Override
+    public RAMEntity partialUpdate(String id, RAMEntity ramEntity) {
+        ramEntity.setModelNumber(id);
+
+        return ramRepository.findById(id).map(existingRAM -> {
+            Optional.ofNullable(ramEntity.getName()).ifPresent(existingRAM::setName);
+            return ramRepository.save(existingRAM);
+        }).orElseThrow(() -> new RuntimeException("RAM does not exist"));
+    }
+
+    @Override
+    public void delete(String id) {
+        ramRepository.deleteById(id);
+    }
+}

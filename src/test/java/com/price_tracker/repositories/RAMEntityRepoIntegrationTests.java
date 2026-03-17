@@ -1,7 +1,8 @@
 package com.price_tracker.repositories;
 
 import com.price_tracker.TestDataUtility;
-import com.price_tracker.domain.entities.RAMEntity;
+import com.price_tracker.domain.entities.product_entities.RAMEntity;
+import com.price_tracker.repositories.product_repos.RAMRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,15 +1,15 @@
 package com.price_tracker;
 
-import com.price_tracker.domain.dto.GPUDTO;
-import com.price_tracker.domain.dto.RAMDTO;
-import com.price_tracker.domain.dto.UmartProductDTO;
-import com.price_tracker.domain.entities.GPUEntity;
-import com.price_tracker.domain.entities.GPUWorkstationEntity;
-import com.price_tracker.domain.entities.RAMEntity;
-import com.price_tracker.domain.entities.UmartProductEntity;
-import com.price_tracker.mappers.impl.GPUMapper;
-import com.price_tracker.mappers.impl.RAMMapper;
-import com.price_tracker.mappers.impl.UmartProductMapper;
+import com.price_tracker.domain.dto.product_dtos.GPUDTO;
+import com.price_tracker.domain.dto.product_dtos.RAMDTO;
+import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
+import com.price_tracker.domain.entities.product_entities.GPUEntity;
+import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
+import com.price_tracker.domain.entities.product_entities.RAMEntity;
+import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
+import com.price_tracker.mappers.product_mappers.GPUMapper;
+import com.price_tracker.mappers.product_mappers.RAMMapper;
+import com.price_tracker.mappers.vendor_mappers.UmartProductMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Component;

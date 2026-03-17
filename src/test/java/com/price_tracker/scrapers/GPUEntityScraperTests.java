@@ -1,7 +1,7 @@
 package com.price_tracker.scrapers;
 
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.product_services.impl.UmartGPUScraper;
+import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,10 +19,10 @@ import static com.price_tracker.constants.WebDomainNames.UMART_ASUS_5070TI;
 @ActiveProfiles("test")
 public class GPUEntityScraperTests {
 
-    private final UmartGPUScraper scraper;
+    private final UmartGPUScrapingService scraper;
 
     @Autowired
-    public GPUEntityScraperTests(UmartGPUScraper scraper) {
+    public GPUEntityScraperTests(UmartGPUScrapingService scraper) {
         this.scraper = scraper;
     }
 

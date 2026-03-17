@@ -1,12 +1,13 @@
 package com.price_tracker.repositories;
 
 import com.price_tracker.TestDataUtility;
-import com.price_tracker.domain.entities.GPUEntity;
-import com.price_tracker.domain.entities.RAMEntity;
-import com.price_tracker.domain.entities.UmartProductEntity;
-import com.price_tracker.services.GPUService;
-import com.price_tracker.services.RAMService;
-import com.price_tracker.services.UmartProductService;
+import com.price_tracker.domain.entities.product_entities.GPUEntity;
+import com.price_tracker.domain.entities.product_entities.RAMEntity;
+import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
+import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
+import com.price_tracker.services.product_services.GPUService;
+import com.price_tracker.services.product_services.RAMService;
+import com.price_tracker.services.vendor_services.UmartProductService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

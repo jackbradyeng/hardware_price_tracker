@@ -1,0 +1,20 @@
+package com.price_tracker.domain.dto.product_dtos;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class GPUDTO {
+
+    private String modelNumber;
+    private String chip;
+    private String chipManufacturer;
+    private String boardManufacturer;
+    private String name;
+    private Boolean isActive;
+}
