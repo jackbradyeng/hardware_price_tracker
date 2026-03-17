@@ -1,4 +1,4 @@
-package com.price_tracker.repositories;
+package com.price_tracker.repositories.price_point_repos;
 
 import com.price_tracker.domain.entities.RAMPricePoint;
 import org.springframework.data.jpa.repository.JpaRepository;

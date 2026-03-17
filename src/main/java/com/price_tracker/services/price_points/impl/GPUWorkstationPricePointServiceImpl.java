@@ -2,7 +2,7 @@ package com.price_tracker.services.price_points.impl;
 
 import com.price_tracker.domain.dto.GPUWorkstationPricePointDTO;
 import com.price_tracker.mappers.impl.GPUWorkstationPricePointMapper;
-import com.price_tracker.repositories.GPUWorkstationPricePointRepository;
+import com.price_tracker.repositories.price_point_repos.GPUWorkstationPricePointRepository;
 import com.price_tracker.services.price_points.GPUWorkstationPricePointService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

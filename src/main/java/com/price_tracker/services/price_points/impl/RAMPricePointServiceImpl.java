@@ -2,7 +2,7 @@ package com.price_tracker.services.price_points.impl;
 
 import com.price_tracker.domain.dto.RAMPricePointDTO;
 import com.price_tracker.mappers.impl.RAMPricePointMapper;
-import com.price_tracker.repositories.RAMPricePointRepository;
+import com.price_tracker.repositories.price_point_repos.RAMPricePointRepository;
 import com.price_tracker.services.price_points.RAMPricePointService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
