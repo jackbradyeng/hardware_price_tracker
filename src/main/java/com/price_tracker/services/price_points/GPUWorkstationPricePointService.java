@@ -1,4 +1,4 @@
-package com.price_tracker.services;
+package com.price_tracker.services.price_points;
 
 import com.price_tracker.domain.dto.GPUWorkstationPricePointDTO;
 import java.util.List;

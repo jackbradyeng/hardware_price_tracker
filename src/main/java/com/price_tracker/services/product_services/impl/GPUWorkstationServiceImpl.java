@@ -1,10 +1,10 @@
-package com.price_tracker.services.impl;
+package com.price_tracker.services.product_services.impl;
 
 import com.price_tracker.domain.dto.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.GPUWorkstationEntity;
 import com.price_tracker.mappers.impl.GPUWorkstationMapper;
 import com.price_tracker.repositories.GPUWorkstationRepository;
-import com.price_tracker.services.GPUWorkstationService;
+import com.price_tracker.services.product_services.GPUWorkstationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
