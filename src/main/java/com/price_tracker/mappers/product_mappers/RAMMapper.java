@@ -1,4 +1,4 @@
-package com.price_tracker.mappers.impl;
+package com.price_tracker.mappers.product_mappers;
 
 import com.price_tracker.domain.dto.RAMDTO;
 import com.price_tracker.domain.entities.RAMEntity;

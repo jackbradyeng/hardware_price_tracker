@@ -2,7 +2,7 @@ package com.price_tracker.controllers.vendor_controllers;
 
 import com.price_tracker.domain.dto.UmartProductDTO;
 import com.price_tracker.domain.entities.UmartProductEntity;
-import com.price_tracker.mappers.impl.UmartProductMapper;
+import com.price_tracker.mappers.vendor_mappers.UmartProductMapper;
 import com.price_tracker.services.product_services.UmartProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;

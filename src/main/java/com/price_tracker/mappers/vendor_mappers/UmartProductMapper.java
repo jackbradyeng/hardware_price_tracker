@@ -1,4 +1,4 @@
-package com.price_tracker.mappers.impl;
+package com.price_tracker.mappers.vendor_mappers;
 
 import com.price_tracker.domain.dto.UmartProductDTO;
 import com.price_tracker.domain.entities.UmartProductEntity;
