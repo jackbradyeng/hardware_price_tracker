@@ -1,7 +1,7 @@
 package com.price_tracker.mappers.vendor_mappers;
 
 import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
-import com.price_tracker.domain.entities.UmartProductEntity;
+import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.mappers.Mapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

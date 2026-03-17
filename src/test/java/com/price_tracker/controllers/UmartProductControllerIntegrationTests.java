@@ -2,7 +2,7 @@ package com.price_tracker.controllers;
 
 import com.price_tracker.TestDataUtility;
 import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
-import com.price_tracker.domain.entities.UmartProductEntity;
+import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.mappers.vendor_mappers.UmartProductMapper;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.product_services.UmartProductService;

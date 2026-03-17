@@ -1,6 +1,6 @@
 package com.price_tracker.repositories.vendor_repos;
 
-import com.price_tracker.domain.entities.UmartProductEntity;
+import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
 package com.price_tracker.services.product_services;
 
-import com.price_tracker.domain.entities.UmartProductEntity;
+import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import java.util.List;
 import java.util.Optional;
 

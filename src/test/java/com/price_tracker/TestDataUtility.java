@@ -6,7 +6,7 @@ import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
-import com.price_tracker.domain.entities.UmartProductEntity;
+import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.mappers.vendor_mappers.UmartProductMapper;

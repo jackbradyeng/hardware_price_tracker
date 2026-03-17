@@ -1,6 +1,6 @@
 package com.price_tracker.services.product_services.impl;
 
-import com.price_tracker.domain.entities.VendorEntity;
+import com.price_tracker.domain.entities.vendor_entities.VendorEntity;
 import com.price_tracker.repositories.vendor_repos.VendorRepository;
 import com.price_tracker.services.product_services.VendorService;
 import lombok.AllArgsConstructor;
