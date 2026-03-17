@@ -1,7 +1,7 @@
 package com.price_tracker.services.price_points.impl;
 
 import com.price_tracker.domain.dto.CPUPricePointDTO;
-import com.price_tracker.mappers.impl.CPUPricePointMapper;
+import com.price_tracker.mappers.price_point_mappers.CPUPricePointMapper;
 import com.price_tracker.repositories.price_point_repos.CPUPricePointRepository;
 import com.price_tracker.services.price_points.CPUPricePointService;
 import jakarta.transaction.Transactional;

@@ -1,4 +1,4 @@
-package com.price_tracker.mappers.impl;
+package com.price_tracker.mappers.price_point_mappers;
 
 import com.price_tracker.domain.dto.GPUPricePointDTO;
 import com.price_tracker.domain.entities.GPUPricePoint;
