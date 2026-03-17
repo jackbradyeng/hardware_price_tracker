@@ -1,6 +1,6 @@
 package com.price_tracker.controllers;
 
-import com.price_tracker.domain.dto.GPUDTO;
+import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.GPUEntity;
 import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.repositories.product_repos.GPURepository;

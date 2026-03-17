@@ -1,4 +1,4 @@
-package com.price_tracker.domain.dto;
+package com.price_tracker.domain.dto.price_point_dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

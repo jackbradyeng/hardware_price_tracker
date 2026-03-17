@@ -1,6 +1,6 @@
 package com.price_tracker.services.price_points;
 
-import com.price_tracker.domain.dto.GPUPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
 import java.util.List;
 import java.util.Optional;
 

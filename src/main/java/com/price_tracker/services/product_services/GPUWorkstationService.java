@@ -1,6 +1,6 @@
 package com.price_tracker.services.product_services;
 
-import com.price_tracker.domain.dto.GPUWorkstationDTO;
+import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import java.util.List;
 import java.util.Optional;
 

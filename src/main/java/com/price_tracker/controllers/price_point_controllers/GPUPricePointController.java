@@ -1,6 +1,6 @@
 package com.price_tracker.controllers.price_point_controllers;
 
-import com.price_tracker.domain.dto.GPUPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
 import com.price_tracker.services.price_points.GPUPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;

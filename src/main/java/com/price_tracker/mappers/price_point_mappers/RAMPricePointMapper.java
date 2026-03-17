@@ -1,6 +1,6 @@
 package com.price_tracker.mappers.price_point_mappers;
 
-import com.price_tracker.domain.dto.RAMPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
 import com.price_tracker.domain.entities.RAMPricePoint;
 import com.price_tracker.mappers.Mapper;
 import lombok.AllArgsConstructor;

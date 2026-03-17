@@ -1,6 +1,6 @@
 package com.price_tracker.controllers.product_controllers;
 
-import com.price_tracker.domain.dto.GPUWorkstationDTO;
+import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.services.product_services.GPUWorkstationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;

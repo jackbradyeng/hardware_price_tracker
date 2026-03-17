@@ -1,7 +1,7 @@
 package com.price_tracker.controllers;
 
 import com.price_tracker.TestDataUtility;
-import com.price_tracker.domain.dto.GPUWorkstationDTO;
+import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.GPUWorkstationEntity;
 import com.price_tracker.mappers.product_mappers.GPUWorkstationMapper;
 import com.price_tracker.services.product_services.GPUWorkstationService;

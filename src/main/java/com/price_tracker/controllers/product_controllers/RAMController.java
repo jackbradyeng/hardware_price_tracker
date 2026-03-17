@@ -1,6 +1,6 @@
 package com.price_tracker.controllers.product_controllers;
 
-import com.price_tracker.domain.dto.RAMDTO;
+import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.RAMEntity;
 import com.price_tracker.mappers.Mapper;
 import com.price_tracker.services.product_services.RAMService;

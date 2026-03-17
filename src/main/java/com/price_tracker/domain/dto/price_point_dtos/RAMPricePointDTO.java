@@ -1,4 +1,4 @@
-package com.price_tracker.domain.dto;
+package com.price_tracker.domain.dto.price_point_dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CPUPricePointDTO {
+public class RAMPricePointDTO {
 
     private Long id;
     private String modelNumber;
