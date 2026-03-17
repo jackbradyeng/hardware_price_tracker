@@ -3,9 +3,6 @@ package com.price_tracker.constants;
 public class WebDomainNames {
 
     /// UMART DOMAINS
-    public static final String UMART_HOME =
-            "https://www.umart.com.au/";
-
     public static final String UMART_ASUS_5070TI =
             "https://www.umart.com.au/product/asus-prime-geforce-rtx-5070-ti-oc-16g-graphics-card-prime-rtx5070ti-o16g-81687";
 
