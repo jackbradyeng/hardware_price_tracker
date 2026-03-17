@@ -1,4 +1,4 @@
-package com.price_tracker.controllers;
+package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.CPUPricePointDTO;
 import com.price_tracker.services.price_points.CPUPricePointService;
