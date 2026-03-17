@@ -1,6 +1,6 @@
 package com.price_tracker.services.product_services.impl;
 
-import com.price_tracker.domain.entities.RAMEntity;
+import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.repositories.product_repos.RAMRepository;
 import com.price_tracker.services.product_services.RAMService;
 import jakarta.transaction.Transactional;

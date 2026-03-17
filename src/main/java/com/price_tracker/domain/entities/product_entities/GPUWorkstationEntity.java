@@ -1,4 +1,4 @@
-package com.price_tracker.domain.entities;
+package com.price_tracker.domain.entities.product_entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
-import com.price_tracker.domain.entities.CPUEntity;
+import com.price_tracker.domain.entities.product_entities.CPUEntity;
 import com.price_tracker.mappers.Mapper;
 import com.price_tracker.services.product_services.CPUService;
 import lombok.RequiredArgsConstructor;

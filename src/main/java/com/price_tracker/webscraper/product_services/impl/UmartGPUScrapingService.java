@@ -1,6 +1,6 @@
 package com.price_tracker.webscraper.product_services.impl;
 
-import com.price_tracker.domain.entities.GPUPricePoint;
+import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.GPUScraper;
 import com.price_tracker.webscraper.vendor_templates.GenericUmartScraper;

@@ -1,8 +1,8 @@
 package com.price_tracker.repositories;
 
 import com.price_tracker.TestDataUtility;
-import com.price_tracker.domain.entities.GPUEntity;
-import com.price_tracker.domain.entities.RAMEntity;
+import com.price_tracker.domain.entities.product_entities.GPUEntity;
+import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.domain.entities.UmartProductEntity;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.product_services.GPUService;

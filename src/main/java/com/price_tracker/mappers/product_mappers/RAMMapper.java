@@ -1,7 +1,7 @@
 package com.price_tracker.mappers.product_mappers;
 
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
-import com.price_tracker.domain.entities.RAMEntity;
+import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.mappers.Mapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

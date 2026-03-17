@@ -1,6 +1,6 @@
 package com.price_tracker.webscraper.orchestrators;
 
-import com.price_tracker.domain.entities.CPUPricePoint;
+import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
 import com.price_tracker.repositories.price_point_repos.CPUPricePointRepository;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.product_services.impl.UmartCPUScrapingService;

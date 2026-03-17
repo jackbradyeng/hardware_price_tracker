@@ -1,7 +1,7 @@
 package com.price_tracker.mappers.price_point_mappers;
 
 import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
-import com.price_tracker.domain.entities.GPUWorkstationPricePoint;
+import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
 import com.price_tracker.mappers.Mapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

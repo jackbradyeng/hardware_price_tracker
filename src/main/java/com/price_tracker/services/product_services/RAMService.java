@@ -1,6 +1,6 @@
 package com.price_tracker.services.product_services;
 
-import com.price_tracker.domain.entities.RAMEntity;
+import com.price_tracker.domain.entities.product_entities.RAMEntity;
 
 import java.util.List;
 import java.util.Optional;

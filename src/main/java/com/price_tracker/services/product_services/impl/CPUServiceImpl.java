@@ -1,6 +1,6 @@
 package com.price_tracker.services.product_services.impl;
 
-import com.price_tracker.domain.entities.CPUEntity;
+import com.price_tracker.domain.entities.product_entities.CPUEntity;
 import com.price_tracker.repositories.product_repos.CPURepository;
 import com.price_tracker.services.product_services.CPUService;
 import jakarta.transaction.Transactional;

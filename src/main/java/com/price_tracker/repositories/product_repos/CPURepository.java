@@ -1,6 +1,6 @@
 package com.price_tracker.repositories.product_repos;
 
-import com.price_tracker.domain.entities.CPUEntity;
+import com.price_tracker.domain.entities.product_entities.CPUEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

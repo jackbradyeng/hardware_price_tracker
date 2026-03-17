@@ -1,4 +1,4 @@
-package com.price_tracker.domain.entities;
+package com.price_tracker.domain.entities.price_point_entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,14 +14,14 @@ import static com.price_tracker.constants.DatabaseTableNames.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = CPU_PRICE_HISTORY)
-public class CPUPricePoint {
+@Table(name = WORKSTATION_GPU_PRICE_HISTORY)
+public class GPUWorkstationPricePoint {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = CPU_PRICE_SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = WS_GPU_PRICE_SEQUENCE)
     @SequenceGenerator(
-            name = CPU_PRICE_GEN,
-            sequenceName = CPU_PRICE_SEQUENCE,
+            name = WS_GPU_PRICE_GEN,
+            sequenceName = WS_GPU_PRICE_SEQUENCE,
             allocationSize = 50
     )
     private Long id;
