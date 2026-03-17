@@ -16,7 +16,7 @@ import static com.price_tracker.constants.VendorConstants.UMART;
 @Data
 @Service
 @Log
-public class UmartRAMScraper extends GenericUmartScraper implements RAMScraper {
+public class UmartRAMScrapingService extends GenericUmartScraper implements RAMScraper {
 
     @Override
     public RAMPricePoint createRAMPricePoint(ScrapedDataDTO scrapedData) {

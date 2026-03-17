@@ -1,7 +1,7 @@
 package com.price_tracker.scrapers;
 
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.product_services.impl.UmartRAMScraper;
+import com.price_tracker.webscraper.product_services.impl.UmartRAMScrapingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,10 +19,10 @@ import static com.price_tracker.constants.WebDomainNames.UMART_KINGSTON_KINGSTON
 @ActiveProfiles("test")
 public class RAMEntityScraperTests {
 
-    private final UmartRAMScraper scraper;
+    private final UmartRAMScrapingService scraper;
 
     @Autowired
-    public RAMEntityScraperTests(UmartRAMScraper scraper) {
+    public RAMEntityScraperTests(UmartRAMScrapingService scraper) {
         this.scraper = scraper;
     }
 

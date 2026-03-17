@@ -3,7 +3,7 @@ package com.price_tracker.webscraper.orchestrators;
 import com.price_tracker.domain.entities.CPUPricePoint;
 import com.price_tracker.repositories.CPUPricePointRepository;
 import com.price_tracker.repositories.UmartProductRepository;
-import com.price_tracker.webscraper.product_services.impl.UmartCPUScraper;
+import com.price_tracker.webscraper.product_services.impl.UmartCPUScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,11 +18,11 @@ import static com.price_tracker.constants.ScrapingConstants.SLEEPING_CONSTANT;
 @Service
 @RequiredArgsConstructor
 @Log
-public class CPUScrapingService {
+public class CPUScrapingOrchestrator {
 
     private final CPUPricePointRepository cpuPricePointRepository;
     private final UmartProductRepository umartProductRepository;
-    private final UmartCPUScraper umartCPUScraper;
+    private final UmartCPUScrapingService umartCPUScrapingService;
 
     @Scheduled(cron = CPU_SCRAPING_TIME)
     public void runDailyScrape() {
@@ -45,8 +45,8 @@ public class CPUScrapingService {
     private Optional<CPUPricePoint> processCPU(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartCPUScraper.scrapeProductData(url)
-                    .map(umartCPUScraper::createCPUPricePoint);
+            return umartCPUScrapingService.scrapeProductData(url)
+                    .map(umartCPUScrapingService::createCPUPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.warning("Scraping interrupted for URL: " + url);

@@ -1,8 +1,8 @@
 package com.price_tracker.webscraper.product_services.impl;
 
-import com.price_tracker.domain.entities.CPUPricePoint;
+import com.price_tracker.domain.entities.GPUWorkstationPricePoint;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.product_services.CPUScraper;
+import com.price_tracker.webscraper.product_services.GPUWorkstationScraper;
 import com.price_tracker.webscraper.vendor_templates.GenericUmartScraper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,16 +16,16 @@ import static com.price_tracker.constants.VendorConstants.UMART;
 @Data
 @Service
 @Log
-public class UmartCPUScraper extends GenericUmartScraper implements CPUScraper {
+public class UmartGPUWorkstationScrapingService extends GenericUmartScraper implements GPUWorkstationScraper {
 
     @Override
-    public CPUPricePoint createCPUPricePoint(ScrapedDataDTO scrapedData) {
+    public GPUWorkstationPricePoint createGPUWorkstationPricePoint(ScrapedDataDTO scrapedDataDTO) {
 
-        return CPUPricePoint.builder()
-                .modelNumber(scrapedData.modelNumber())
+        return GPUWorkstationPricePoint.builder()
+                .modelNumber(scrapedDataDTO.modelNumber())
                 .vendor(UMART)
                 .currency(AUD)
-                .price(scrapedData.price())
+                .price(scrapedDataDTO.price())
                 .scrapedAt(LocalDateTime.now())
                 .build();
     }
