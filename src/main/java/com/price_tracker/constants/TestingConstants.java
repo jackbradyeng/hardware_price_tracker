@@ -13,10 +13,20 @@ public final class TestingConstants {
     public static final String SECOND_TESTING_GPU_MODEL_NUMBER = "PROART-RTX5070TI-O16G";
     public static final String SECOND_TESTING_GPU_NAME = "Asus ProArt GeForce RTX 5070 Ti OC 16G Graphics Card (PROART-RTX5070TI-O16G)";
 
-    // umart gpu product testing constants
+    // umart product testing constants
     public static final String TESTING_VENDOR_UMART = "UMART";
+
+    // umart gpu product testing constants
     public static final String TESTING_GPU_PRICE = "1,499.00";
     public static final String PRODUCT_TYPE_GPU = "GPU";
+
+    // umart ram product testing constants
+    public static final String TESTING_RAM_PRICE = "1,299.00";
+    public static final String PRODUCT_TYPE_RAM = "RAM";
+
+    // umart cpu product testing constants
+    public static final String TESTING_CPU_MODEL_NUMBER = "100-100001084WOF";
+    public static final String TESTING_CPU_PRICE = "715.00";
 
     // ram testing constants
     public static final String TESTING_RAM_MODEL_NUMBER = "KF560C36BBE2K2-64";
@@ -26,7 +36,7 @@ public final class TestingConstants {
     public static final String TESTING_RAM_LATENCY = "CL36";
     public static final Integer TESTING_RAM_VOLUME = 64;
     public static final Integer TESTING_RAM_DIMM_COUNT = 2;
-    public static final Integer TESTING_RAM_CLOCKRATE = 6000;
+    public static final Integer TESTING_RAM_CLOCK_RATE = 6000;
     public static final Double TESTING_RAM_VOLTAGE = 1.35;
 
     // secondary ram testing constants
@@ -35,10 +45,6 @@ public final class TestingConstants {
     public static final String SECOND_TESTING_RAM_BRAND = "G.SKILL";
     public static final Integer SECOND_TESTING_RAM_VOLUME = 32;
     public static final Double SECOND_TESTING_RAM_VOLTAGE = 1.10;
-
-    // umart ram product testing constants
-    public static final String TESTING_RAM_PRICE = "1,299.00";
-    public static final String PRODUCT_TYPE_RAM = "RAM";
 
     // workstation gpu testing constants
     public static final String TESTING_WS_GPU_MODEL_NUMBER = "900-5G144-2500-000";

@@ -10,9 +10,11 @@ import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.mappers.vendor_mappers.UmartProductMapper;
+import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import static com.price_tracker.constants.TestingConstants.*;
@@ -66,7 +68,7 @@ public class TestDataUtility {
                 .latency(TESTING_RAM_LATENCY)
                 .volume(TESTING_RAM_VOLUME)
                 .dimmCount(TESTING_RAM_DIMM_COUNT)
-                .clockRate(TESTING_RAM_CLOCKRATE)
+                .clockRate(TESTING_RAM_CLOCK_RATE)
                 .voltage(TESTING_RAM_VOLTAGE)
                 .isActive(true)
                 .build();
@@ -81,7 +83,7 @@ public class TestDataUtility {
                 .latency(TESTING_RAM_LATENCY)
                 .volume(SECOND_TESTING_RAM_VOLUME)
                 .dimmCount(TESTING_RAM_DIMM_COUNT)
-                .clockRate(TESTING_RAM_CLOCKRATE)
+                .clockRate(TESTING_RAM_CLOCK_RATE)
                 .voltage(SECOND_TESTING_RAM_VOLTAGE)
                 .isActive(true)
                 .build();
@@ -135,17 +137,10 @@ public class TestDataUtility {
                 .build();
     }
 
-    public String[] createSampleTestScrapedGPUData() {
-        String[] scrapedData = new String[2];
-        scrapedData[0] = TESTING_GPU_MODEL_NUMBER;
-        scrapedData[1] = TESTING_GPU_PRICE;
-        return scrapedData;
-    }
-
-    public String[] createSampleTestScrapedRAMData() {
-        String[] scrapedData = new String[2];
-        scrapedData[0] = TESTING_RAM_MODEL_NUMBER;
-        scrapedData[1] = TESTING_RAM_PRICE;
-        return scrapedData;
+    public ScrapedDataDTO createSampleCPUPricePointData() {
+        return ScrapedDataDTO.builder()
+                .modelNumber(TESTING_CPU_MODEL_NUMBER)
+                .price(new BigDecimal(TESTING_CPU_PRICE))
+                .build();
     }
 }
