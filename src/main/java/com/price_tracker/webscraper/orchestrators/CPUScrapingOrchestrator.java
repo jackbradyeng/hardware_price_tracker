@@ -1,7 +1,7 @@
 package com.price_tracker.webscraper.orchestrators;
 
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
-import com.price_tracker.repositories.price_point_repos.CPUPricePointRepository;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.CPUPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.product_services.impl.UmartCPUScrapingService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import static com.price_tracker.constants.ScrapingConstants.SLEEPING_CONSTANT;
 @Log
 public class CPUScrapingOrchestrator {
 
-    private final CPUPricePointRepository cpuPricePointRepository;
+    private final CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
     private final UmartCPUScrapingService umartCPUScrapingService;
 
@@ -31,12 +31,15 @@ public class CPUScrapingOrchestrator {
 
     private void runUmartCPUScrape() {
         Instant start = Instant.now();
+
         List<CPUPricePoint> pricePoints = umartProductRepository.findUrlsForActiveCPU()
                 .stream()
                 .map(this::processCPU)
                 .flatMap(Optional::stream)
                 .toList();
-        cpuPricePointRepository.saveAll(pricePoints);
+
+        cpuPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
         log.info("CPU scraping service took " + timeElapsed.toSeconds() + " seconds to execute.");
