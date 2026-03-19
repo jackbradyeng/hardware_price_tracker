@@ -1,7 +1,7 @@
 package com.price_tracker.webscraper.orchestrators;
 
 import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
-import com.price_tracker.repositories.price_point_repos.RAMPricePointRepository;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.RAMPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.product_services.impl.UmartRAMScrapingService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import static com.price_tracker.constants.ScrapingConstants.*;
 @Log
 public class RAMScrapingOrchestrator {
 
-    private final RAMPricePointRepository ramPricePointRepository;
+    private final RAMPricePointJDBCTemplate ramPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
     private final UmartRAMScrapingService umartRAMScrapingService;
 
@@ -33,12 +33,15 @@ public class RAMScrapingOrchestrator {
     @SneakyThrows
     private void runUmartRAMScrape() {
         Instant start = Instant.now();
+
         List<RAMPricePoint> pricePoints = umartProductRepository.findUrlsForActiveRAM()
                 .stream()
                 .map(this::processRAM)
                 .flatMap(Optional::stream)
                 .toList();
-        ramPricePointRepository.saveAll(pricePoints);
+
+        ramPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
         log.info("RAM scraping service took " + timeElapsed.toSeconds() + " seconds to execute.");

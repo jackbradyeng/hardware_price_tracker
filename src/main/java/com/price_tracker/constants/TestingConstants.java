@@ -11,38 +11,51 @@ public final class TestingConstants {
 
     // secondary gpu testing constants
     public static final String SECOND_TESTING_GPU_MODEL_NUMBER = "PROART-RTX5070TI-O16G";
-    public static final String SECOND_TESTING_GPU_NAME = "Asus ProArt GeForce RTX 5070 Ti OC 16G Graphics Card (PROART-RTX5070TI-O16G)";
+    public static final String SECOND_TESTING_GPU_NAME =
+            "Asus ProArt GeForce RTX 5070 Ti OC 16G Graphics Card (PROART-RTX5070TI-O16G)";
+
+    // umart product testing constants
+    public static final String TESTING_VENDOR_UMART = "UMART";
 
     // umart gpu product testing constants
-    public static final String TESTING_VENDOR_UMART = "UMART";
-    public static final String TESTING_GPU_PRICE = "1,499.00";
+    public static final String TESTING_GPU_PRICE = "1499.00";
     public static final String PRODUCT_TYPE_GPU = "GPU";
+
+    // umart ram product testing constants
+    public static final String TESTING_RAM_PRICE = "1299.00";
+    public static final String PRODUCT_TYPE_RAM = "RAM";
+
+    // umart cpu product testing constants
+    public static final String TESTING_CPU_MODEL_NUMBER = "100-100001084WOF";
+    public static final String TESTING_CPU_PRICE = "715.00";
+
+    // umart workstation gpu product testing constants
+    public static final String TESTING_WS_GPU_PRICE = "14999.00";
 
     // ram testing constants
     public static final String TESTING_RAM_MODEL_NUMBER = "KF560C36BBE2K2-64";
-    public static final String TESTING_RAM_NAME = "Kingston 64GB (2x32GB) Fury Beast CL36 6000MHz DDR5 RAM (KF560C36BBE2K2-64)";
+    public static final String TESTING_RAM_NAME =
+            "Kingston 64GB (2x32GB) Fury Beast CL36 6000MHz DDR5 RAM (KF560C36BBE2K2-64)";
     public static final String TESTING_RAM_BRAND = "KINGSTON";
     public static final String TESTING_RAM_STANDARD = "DDR5";
     public static final String TESTING_RAM_LATENCY = "CL36";
     public static final Integer TESTING_RAM_VOLUME = 64;
     public static final Integer TESTING_RAM_DIMM_COUNT = 2;
-    public static final Integer TESTING_RAM_CLOCKRATE = 6000;
+    public static final Integer TESTING_RAM_CLOCK_RATE = 6000;
     public static final Double TESTING_RAM_VOLTAGE = 1.35;
 
     // secondary ram testing constants
     public static final String SECOND_TESTING_RAM_MODEL_NUMBER = "F5-6000J3636F16GX2-TZ5NR";
-    public static final String SECOND_TESTING_RAM_NAME = "G.Skill 32GB (2x16GB) F5-6000J3636F16GX2-TZ5NR Trident Z5 Neo RGB 6000MHz CL36 DDR5 RAM";
+    public static final String SECOND_TESTING_RAM_NAME =
+            "G.Skill 32GB (2x16GB) F5-6000J3636F16GX2-TZ5NR Trident Z5 Neo RGB 6000MHz CL36 DDR5 RAM";
     public static final String SECOND_TESTING_RAM_BRAND = "G.SKILL";
     public static final Integer SECOND_TESTING_RAM_VOLUME = 32;
     public static final Double SECOND_TESTING_RAM_VOLTAGE = 1.10;
 
-    // umart ram product testing constants
-    public static final String TESTING_RAM_PRICE = "1,299.00";
-    public static final String PRODUCT_TYPE_RAM = "RAM";
-
     // workstation gpu testing constants
     public static final String TESTING_WS_GPU_MODEL_NUMBER = "900-5G144-2500-000";
-    public static final String TESTING_WS_GPU_NAME = "NVIDIA RTX Pro 6000 Blackwell Edition 96GB Workstation Graphics Card (900-5G144-2500-000)";
+    public static final String TESTING_WS_GPU_NAME =
+            "NVIDIA RTX Pro 6000 Blackwell Edition 96GB Workstation Graphics Card (900-5G144-2500-000)";
     public static final String TESTING_WS_GPU_CHIP_MANUFACTURER = "NVIDIA";
     public static final Integer TESTING_WS_GPU_MEMORY = 96;
     public static final Integer TESTING_WS_GPU_MEMORY_INTERFACE = 512;

@@ -1,7 +1,7 @@
 package com.price_tracker.webscraper.orchestrators;
 
 import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
-import com.price_tracker.repositories.price_point_repos.GPUPricePointRepository;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import static com.price_tracker.constants.ScrapingConstants.SLEEPING_CONSTANT;
 @Log
 public class GPUScrapingOrchestrator {
 
-    private final GPUPricePointRepository gpuPricePointRepository;
+    private final GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
     private final UmartGPUScrapingService umartGPUScrapingService;
 
@@ -37,12 +37,15 @@ public class GPUScrapingOrchestrator {
         * implementation bypasses the need for either the service or the scraper to maintain its own list. Additionally,
         * we avoid the N+1 problem by saving all PricePoints to the persistence layer at once via the saveAll call.*/
         Instant start = Instant.now();
+
         List<GPUPricePoint> pricePoints = umartProductRepository.findUrlsForActiveGPUs()
                 .stream()
                 .map(this::processGPU)
                 .flatMap(Optional::stream)
                 .toList();
-        gpuPricePointRepository.saveAll(pricePoints);
+
+        gpuPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
         log.info("GPU scraping service took " + timeElapsed.toSeconds() + " seconds to execute.");
