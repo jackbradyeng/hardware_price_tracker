@@ -143,4 +143,25 @@ public class TestDataUtility {
                 .price(new BigDecimal(TESTING_CPU_PRICE))
                 .build();
     }
+
+    public ScrapedDataDTO createSampleGPUPricePointData() {
+        return ScrapedDataDTO.builder()
+                .modelNumber(TESTING_GPU_MODEL_NUMBER)
+                .price(new BigDecimal(TESTING_GPU_PRICE))
+                .build();
+    }
+
+    public ScrapedDataDTO createSampleRAMPricePointData() {
+        return ScrapedDataDTO.builder()
+                .modelNumber(TESTING_RAM_MODEL_NUMBER)
+                .price(new BigDecimal(TESTING_RAM_PRICE))
+                .build();
+    }
+
+    public ScrapedDataDTO createSampleWSGPUPricePointData() {
+        return ScrapedDataDTO.builder()
+                .modelNumber(TESTING_WS_GPU_MODEL_NUMBER)
+                .price(new BigDecimal(TESTING_WS_GPU_PRICE))
+                .build();
+    }
 }
