@@ -7,7 +7,7 @@ public final class ScrapingConstants {
 
     // CRON timestamps
     public static final String GPU_SCRAPING_TIME = "0 00 22 * * ?";
-    public static final String RAM_SCRAPING_TIME = "0 20 22 * * ?";
-    public static final String CPU_SCRAPING_TIME = "0 40 22 * * ?";
-    public static final String GPU_WORKSTATION_SCRAPING_TIME = "0 00 23 * * ?";
+    public static final String RAM_SCRAPING_TIME = "0 10 22 * * ?";
+    public static final String CPU_SCRAPING_TIME = "0 20 22 * * ?";
+    public static final String GPU_WORKSTATION_SCRAPING_TIME = "0 30 22 * * ?";
 }
