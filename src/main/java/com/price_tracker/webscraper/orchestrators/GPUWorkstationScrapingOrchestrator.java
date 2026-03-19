@@ -1,7 +1,7 @@
 package com.price_tracker.webscraper.orchestrators;
 
 import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
-import com.price_tracker.repositories.price_point_repos.GPUWorkstationPricePointRepository;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUWorkstationPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUWorkstationScrapingService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import static com.price_tracker.constants.ScrapingConstants.SLEEPING_CONSTANT;
 @Log
 public class GPUWorkstationScrapingOrchestrator {
 
-    private final GPUWorkstationPricePointRepository gpuWorkstationPricePointRepository;
+    private final GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
     private final UmartGPUWorkstationScrapingService umartGPUWorkstationScrapingService;
 
@@ -31,12 +31,15 @@ public class GPUWorkstationScrapingOrchestrator {
 
     private void runUmartWorkstationGPUScrape() {
         Instant start = Instant.now();
+
         List<GPUWorkstationPricePoint> pricePoints = umartProductRepository.findUrlsForActiveWorkstationGPUs()
                 .stream()
                 .map(this::processWorkstationGPU)
                 .flatMap(Optional::stream)
                 .toList();
-        gpuWorkstationPricePointRepository.saveAll(pricePoints);
+
+        gpuWorkstationPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
         log.info("GPU workstation scraping service took " + timeElapsed.toSeconds() + " seconds to execute.");
