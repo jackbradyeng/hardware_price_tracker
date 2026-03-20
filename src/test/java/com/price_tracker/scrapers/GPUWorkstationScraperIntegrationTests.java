@@ -70,7 +70,7 @@ public class GPUWorkstationScraperIntegrationTests {
         gpuWorkstationPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/workstation_gpu_pricepoints")
+                MockMvcRequestBuilders.get("/api/workstation_gpu_pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -87,7 +87,7 @@ public class GPUWorkstationScraperIntegrationTests {
         gpuWorkstationPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/workstation_gpu_pricepoints/" + returnList.getFirst().getId())
+                MockMvcRequestBuilders.get("/api/workstation_gpu_pricepoints/" + returnList.getFirst().getId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -106,7 +106,7 @@ public class GPUWorkstationScraperIntegrationTests {
         gpuWorkstationPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
-                        MockMvcRequestBuilders.get("/workstation_gpu_pricepoints")
+                        MockMvcRequestBuilders.get("/api/workstation_gpu_pricepoints")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())

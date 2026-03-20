@@ -22,7 +22,7 @@ public class UmartProductController {
     private final UmartProductMapper umartProductMapper;
 
     // umart product create endpoint
-    @PostMapping(path = "/umartproducts")
+    @PostMapping(path = "/api/umartproducts")
     public ResponseEntity<UmartProductDTO> createProduct(@RequestBody final UmartProductDTO umartProductDTO) {
         log.info("Got product {}" + umartProductDTO.toString());
         UmartProductEntity umartProductEntity = umartProductMapper.mapFrom(umartProductDTO);
@@ -31,7 +31,7 @@ public class UmartProductController {
     }
 
     // umart product create-all endpoint
-    @PostMapping(path = "/umartproducts/saveall")
+    @PostMapping(path = "/api/umartproducts/saveall")
     public ResponseEntity<List<UmartProductDTO>> createProducts(@RequestBody final List<UmartProductDTO> umartProductDTOs) {
         ArrayList<UmartProductDTO> responseList = new ArrayList<>();
         for (UmartProductDTO umartProductDTO : umartProductDTOs) {
@@ -44,14 +44,14 @@ public class UmartProductController {
     }
 
     // umart product read-all endpoint
-    @GetMapping(path = "/umartproducts")
+    @GetMapping(path = "/api/umartproducts")
     public List<UmartProductDTO> listUmartProducts() {
         List<UmartProductEntity> umartProducts = umartProductService.findAll();
         return umartProducts.stream().map(umartProductMapper::mapTo).toList();
     }
 
     // umart product read-one endpoint
-    @GetMapping(path = "/umartproducts/{id}")
+    @GetMapping(path = "/api/umartproducts/{id}")
     public ResponseEntity<UmartProductDTO> getProduct(@PathVariable String id) {
         Optional<UmartProductEntity> foundProduct = umartProductService.findOne(id);
         return foundProduct.map(umartProduct -> {
@@ -61,7 +61,7 @@ public class UmartProductController {
     }
 
     // umart product update endpoint
-    @PutMapping(path = "/umartproducts/{id}")
+    @PutMapping(path = "/api/umartproducts/{id}")
     public ResponseEntity<UmartProductDTO> fullUpdateProduct(@PathVariable String id, @RequestBody UmartProductDTO umartProductDTO) {
         if(!umartProductService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -73,7 +73,7 @@ public class UmartProductController {
     }
 
     // umart product delete endpoint
-    @DeleteMapping(path = "/umartproducts/{id}")
+    @DeleteMapping(path = "/api/umartproducts/{id}")
     public ResponseEntity<UmartProductDTO> deleteProduct(@PathVariable String id) {
         umartProductService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

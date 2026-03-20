@@ -21,7 +21,7 @@ public class CPUController {
     private final Mapper<CPUEntity, CPUDTO> cpuMapper;
 
     // cpu create endpoint
-    @PostMapping(path = "/cpus")
+    @PostMapping(path = "/api/cpus")
     public ResponseEntity<CPUDTO> createCPU(@RequestBody final CPUDTO cpuDTO) {
         log.info("Got CPU: {}" + cpuDTO.toString());
         CPUEntity cpuEntity = cpuMapper.mapFrom(cpuDTO);
@@ -30,7 +30,7 @@ public class CPUController {
     }
 
     // cpu create-all endpoint
-    @PostMapping(path = "/cpus/saveall")
+    @PostMapping(path = "/api/cpus/saveall")
     public ResponseEntity<List<CPUDTO>> createCPU(@RequestBody final List<CPUDTO> cpuDTOs) {
         log.info("Processing batch of " + cpuDTOs.size() + " CPU records.");
 
@@ -48,14 +48,14 @@ public class CPUController {
     }
 
     // cpu read-all endpoint
-    @GetMapping(path = "/cpus")
+    @GetMapping(path = "/api/cpus")
     public ResponseEntity<List<CPUDTO>> listCPUs() {
         List<CPUEntity> cpus = cpuService.findAll();
         return new ResponseEntity<>(cpus.stream().map(cpuMapper::mapTo).toList(), HttpStatus.OK);
     }
 
     // cpu read-one endpoint
-    @GetMapping(path = "/cpus/{id}")
+    @GetMapping(path = "/api/cpus/{id}")
     public ResponseEntity<CPUDTO> getCPU(@PathVariable String id) {
         Optional<CPUEntity> foundCPU = cpuService.findOne(id);
         return foundCPU.map(cpu -> {
@@ -65,7 +65,7 @@ public class CPUController {
     }
 
     // cpu full-update endpoint
-    @PutMapping(path = "/cpus/{id}")
+    @PutMapping(path = "/api/cpus/{id}")
     public ResponseEntity<CPUDTO> fullUpdateCPU(@PathVariable String id, @RequestBody CPUDTO cpudto) {
         if(!cpuService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -77,7 +77,7 @@ public class CPUController {
     }
 
     // cpu delete endpoint
-    @DeleteMapping(path = "/cpus/{id}")
+    @DeleteMapping(path = "/api/cpus/{id}")
     public ResponseEntity<CPUDTO> deleteCPU(@PathVariable String id) {
         cpuService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
