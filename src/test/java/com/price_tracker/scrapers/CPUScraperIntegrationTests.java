@@ -70,7 +70,7 @@ public class CPUScraperIntegrationTests {
         cpuPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/cpu_pricepoints")
+                MockMvcRequestBuilders.get("/api/cpu_pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -87,7 +87,7 @@ public class CPUScraperIntegrationTests {
         cpuPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/cpu_pricepoints/" + returnList.getFirst().getId())
+                MockMvcRequestBuilders.get("/api/cpu_pricepoints/" + returnList.getFirst().getId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -106,7 +106,7 @@ public class CPUScraperIntegrationTests {
         cpuPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
-                        MockMvcRequestBuilders.get("/cpu_pricepoints")
+                        MockMvcRequestBuilders.get("/api/cpu_pricepoints")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())

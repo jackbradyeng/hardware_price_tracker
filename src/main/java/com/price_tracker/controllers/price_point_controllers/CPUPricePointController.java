@@ -20,13 +20,13 @@ public class CPUPricePointController {
     private final CPUPricePointService cpuPricePointService;
 
     // cpu price point read-all endpoint
-    @GetMapping(path = "/cpu_pricepoints")
+    @GetMapping(path = "/api/cpu_pricepoints")
     public ResponseEntity<List<CPUPricePointDTO>> listCPUPricePoints() {
         return new ResponseEntity<>(cpuPricePointService.findAll(), HttpStatus.OK);
     }
 
     // cpu price point read-one endpoint
-    @GetMapping(path = "/cpu_pricepoints/{id}")
+    @GetMapping(path = "/api/cpu_pricepoints/{id}")
     public ResponseEntity<CPUPricePointDTO> getCPUPricePoint(@PathVariable Long id) {
 
         Optional<CPUPricePointDTO> foundCPU = cpuPricePointService.findOne(id);

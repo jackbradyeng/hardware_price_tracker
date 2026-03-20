@@ -22,7 +22,7 @@ public class VendorController {
     private final Mapper<VendorEntity, VendorDTO> vendorMapper;
 
     // vendor create endpoint
-    @PostMapping(path = "/vendors")
+    @PostMapping(path = "/api/vendors")
     public ResponseEntity<VendorDTO> createVendor(@RequestBody final VendorDTO vendorDTO) {
         log.info("Got vendor: {}" + vendorDTO.toString());
         VendorEntity vendorEntity = vendorMapper.mapFrom(vendorDTO);
@@ -31,14 +31,14 @@ public class VendorController {
     }
 
     // vendor read-all endpoint
-    @GetMapping(path = "/vendors")
+    @GetMapping(path = "/api/vendors")
     public List<VendorDTO> listVendors() {
         List<VendorEntity> vendors = vendorService.findAll();
         return vendors.stream().map(vendorMapper::mapTo).toList();
     }
 
     // vendor read-one endpoint
-    @GetMapping(path = "/vendors/{id}")
+    @GetMapping(path = "/api/vendors/{id}")
     public ResponseEntity<VendorDTO> getVendor(@PathVariable String id) {
         Optional<VendorEntity> foundVendor = vendorService.findOne(id);
         return foundVendor.map(vendor -> {
@@ -48,7 +48,7 @@ public class VendorController {
     }
 
     //vendor update endpoint
-    @PutMapping(path = "/vendors/{id}")
+    @PutMapping(path = "/api/vendors/{id}")
     public ResponseEntity<VendorDTO> fullUpdateVendor(@PathVariable String id, @RequestBody VendorDTO vendorDTO) {
         if (!vendorService.exists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -60,7 +60,7 @@ public class VendorController {
     }
 
     //vendor delete endpoint
-    @DeleteMapping(path = "/vendors/{id}")
+    @DeleteMapping(path = "/api/vendors/{id}")
     public ResponseEntity<VendorDTO> deleteVendor(@PathVariable String id) {
         vendorService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -20,13 +20,13 @@ public class RAMPricePointController {
     private final RAMPricePointService ramPricePointService;
 
     // ram price point read-all endpoint
-    @GetMapping(path = "/ram_pricepoints")
+    @GetMapping(path = "/api/ram_pricepoints")
     public ResponseEntity<List<RAMPricePointDTO>> listRAMPricePoints() {
         return new ResponseEntity<>(ramPricePointService.findAll(), HttpStatus.OK);
     }
 
     // ram price point read-one endpoint
-    @GetMapping(path = "/ram_pricepoints/{id}")
+    @GetMapping(path = "/api/ram_pricepoints/{id}")
     public ResponseEntity<RAMPricePointDTO> getRAMPricePoint(@PathVariable Long id) {
 
         Optional<RAMPricePointDTO> foundRAM = ramPricePointService.findOne(id);

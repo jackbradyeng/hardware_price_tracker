@@ -27,8 +27,8 @@ public class UmartProductRepoIntegrationTests {
     private final UmartProductRepository umartProductRepository;
     private final UmartProductService umartProductService;
     private final GPUService gpuService;
-    private final TestDataUtility tdl;
     private final RAMService ramService;
+    private final TestDataUtility tdl;
 
     @Autowired
     public UmartProductRepoIntegrationTests(UmartProductRepository umartProductRepository,
@@ -45,10 +45,8 @@ public class UmartProductRepoIntegrationTests {
 
     @Test
     public void testThatActiveSavedGPUProductIsReturnedByGetURLs() {
-        GPUEntity gpuEntity = tdl.createTestGPU();
-        GPUEntity savedGPU = gpuService.save(gpuEntity);
-        UmartProductEntity testUmartGPU = tdl.createTestUmartGPU();
-        UmartProductEntity savedUmartGPU = umartProductService.save(testUmartGPU);
+        gpuService.save(tdl.createTestGPU());
+        UmartProductEntity savedUmartGPU = umartProductService.save(tdl.createTestUmartGPU());
         assert umartProductRepository.findUrlsForActiveGPUs().getFirst().equals(savedUmartGPU.getUrl());
     }
 
@@ -56,18 +54,15 @@ public class UmartProductRepoIntegrationTests {
     public void testThatSavedInactiveGPUProductIsNotReturnedBGetURLs() {
         GPUEntity gpuEntity = tdl.createTestGPU();
         gpuEntity.setIsActive(false);
-        GPUEntity savedGPU = gpuService.save(gpuEntity);
-        UmartProductEntity testUmartGPU = tdl.createTestUmartGPU();
-        UmartProductEntity savedUmartGPU = umartProductService.save(testUmartGPU);
+        gpuService.save(gpuEntity);
+        umartProductService.save(tdl.createTestUmartGPU());
         assert umartProductRepository.findUrlsForActiveGPUs().isEmpty();
     }
 
     @Test
     public void testThatSavedActiveRAMProductIsReturnedByGetURLs() {
-        RAMEntity ramEntity = tdl.createTestRAM();
-        RAMEntity savedRAM = ramService.save(ramEntity);
-        UmartProductEntity testUmartRAM = tdl.createTestUmartRAM();
-        UmartProductEntity savedUmartRAM = umartProductRepository.save(testUmartRAM);
+        ramService.save(tdl.createTestRAM());
+        UmartProductEntity savedUmartRAM = umartProductRepository.save(tdl.createTestUmartRAM());
         assert umartProductRepository.findUrlsForActiveRAM().getFirst().equals(savedUmartRAM.getUrl());
     }
 
@@ -75,9 +70,8 @@ public class UmartProductRepoIntegrationTests {
     public void testThatSavedInactiveRAMProductIsNotReturnedByGetURLs() {
         RAMEntity ramEntity = tdl.createTestRAM();
         ramEntity.setIsActive(false);
-        RAMEntity savedRAM = ramService.save(ramEntity);
-        UmartProductEntity testUmartRAM = tdl.createTestUmartRAM();
-        UmartProductEntity savedUmartRAM = umartProductRepository.save(testUmartRAM);
+        ramService.save(ramEntity);
+        umartProductRepository.save(tdl.createTestUmartRAM());
         assert umartProductRepository.findUrlsForActiveRAM().isEmpty();
     }
 }
