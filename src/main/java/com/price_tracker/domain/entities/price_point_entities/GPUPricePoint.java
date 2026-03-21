@@ -19,11 +19,6 @@ public class GPUPricePoint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = GPU_PRICE_SEQUENCE)
-    @SequenceGenerator(
-            name = GPU_PRICE_GEN,
-            sequenceName = GPU_PRICE_SEQUENCE,
-            allocationSize = 50
-    )
     private Long id;
     private String modelNumber;
     private String vendor;
