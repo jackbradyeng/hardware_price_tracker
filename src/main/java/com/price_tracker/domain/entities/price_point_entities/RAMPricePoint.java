@@ -19,6 +19,11 @@ public class RAMPricePoint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = RAM_PRICE_SEQUENCE)
+    @SequenceGenerator(
+            name = RAM_PRICE_SEQUENCE,
+            sequenceName = RAM_PRICE_SEQUENCE,
+            allocationSize = 1
+    )
     private Long id;
     private String modelNumber;
     private String vendor;

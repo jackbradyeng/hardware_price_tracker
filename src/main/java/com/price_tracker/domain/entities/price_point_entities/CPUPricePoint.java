@@ -19,6 +19,11 @@ public class CPUPricePoint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = CPU_PRICE_SEQUENCE)
+    @SequenceGenerator(
+            name = CPU_PRICE_SEQUENCE,
+            sequenceName = CPU_PRICE_SEQUENCE,
+            allocationSize = 1
+    )
     private Long id;
     private String modelNumber;
     private String vendor;
