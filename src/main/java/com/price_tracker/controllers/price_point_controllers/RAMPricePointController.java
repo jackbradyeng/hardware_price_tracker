@@ -1,5 +1,6 @@
 package com.price_tracker.controllers.price_point_controllers;
 
+import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
 import com.price_tracker.services.price_point_services.RAMPricePointService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,12 @@ public class RAMPricePointController {
     @GetMapping(path = "/api/ram_pricepoints")
     public ResponseEntity<List<RAMPricePointDTO>> listRAMPricePoints() {
         return new ResponseEntity<>(ramPricePointService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/ram_pricepoints/{modelNumber}")
+    public ResponseEntity<RAMDataAndPricePointDTO> findRAMPricePointsBYModelNumber(
+            @PathVariable String modelNumber) {
+        return new ResponseEntity<>(ramPricePointService.findByModelNumber(modelNumber), HttpStatus.OK);
     }
 
     // ram price point read-one endpoint
