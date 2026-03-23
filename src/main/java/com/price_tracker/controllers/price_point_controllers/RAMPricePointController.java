@@ -25,6 +25,7 @@ public class RAMPricePointController {
         return new ResponseEntity<>(ramPricePointService.findAll(), HttpStatus.OK);
     }
 
+    // get ram price-points and ram data by model number
     @GetMapping(path = "/api/ram_pricepoints/{modelNumber}")
     public ResponseEntity<RAMDataAndPricePointDTO> findRAMPricePointsBYModelNumber(
             @PathVariable String modelNumber) {

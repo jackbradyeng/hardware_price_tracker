@@ -36,17 +36,21 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
         List<RAMDataAndPricePointProjection> resultList = ramPricePointRepository
                 .getPricePointsByModelNumber(modelNumber);
 
+        // if list is empty return a 404
         if(resultList.isEmpty()) {
             return null;
         }
 
+        // convert RAM to a DTO so we can expose it in our API
         RAMEntity ram = resultList.getFirst().getRAMEntity();
         RAMDTO ramDTO = ramMapper.mapTo(ram);
 
+        // convert RAM price points to a list of DTOs
         List<RAMPricePointDTO> ramPricePointDTOS = resultList.stream()
                 .map(result -> ramPricePointMapper.mapTo(result.getRAMPricePoint()))
                 .toList();
 
+        // construct the return object for our API
         return RAMDataAndPricePointDTO.builder()
                 .ramDTO(ramDTO)
                 .ramPricePointDTOList(ramPricePointDTOS)
