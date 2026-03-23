@@ -1,9 +1,16 @@
 package com.price_tracker.scrapers;
 
 import com.price_tracker.TestDataUtility;
+import com.price_tracker.domain.dto.hybrid_dtos.GPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
+import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
+import com.price_tracker.domain.entities.product_entities.GPUEntity;
+import com.price_tracker.mappers.price_point_mappers.GPUPricePointMapper;
+import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUPricePointJDBCTemplate;
+import com.price_tracker.services.price_point_services.GPUPricePointService;
+import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
 import org.junit.jupiter.api.Test;
@@ -40,18 +47,29 @@ public class GPUScraperIntegrationTests {
     private final UmartGPUScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate;
-
+    private final GPUService gpuService;
+    private final GPUMapper gpuMapper;
+    private final GPUPricePointMapper gpuPricePointMapper;
+    private final GPUPricePointService gpuPricePointService;
     @Autowired
     public GPUScraperIntegrationTests(MockMvc mockMVC,
                                       TestDataUtility tdl,
                                       UmartGPUScrapingService scraper,
                                       ObjectMapper objectMapper,
-                                      GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate) {
+                                      GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate,
+                                      GPUService gpuService,
+                                      GPUMapper gpuMapper,
+                                      GPUPricePointMapper gpuPricePointMapper,
+                                      GPUPricePointService gpuPricePointService) {
         this.mockMVC = mockMVC;
         this.tdl = tdl;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
         this.gpuPricePointJDBCTemplate = gpuPricePointJDBCTemplate;
+        this.gpuService = gpuService;
+        this.gpuMapper = gpuMapper;
+        this.gpuPricePointMapper = gpuPricePointMapper;
+        this.gpuPricePointService = gpuPricePointService;
     }
 
     @Test
@@ -61,7 +79,7 @@ public class GPUScraperIntegrationTests {
     }
 
     @Test
-    public void testThatGPUPricePointInsertionWithJDBCTemplateReturnsOK() throws Exception {
+    public void testThatGPUPricePointInsertionWithJDBCTemplateReturnsHttpStatus200Ok() throws Exception {
         List<GPUPricePoint> returnList = Stream.generate(() ->
                         scraper.createGPUPricePoint(tdl.createSampleGPUPricePointData()))
                 .limit(10)
@@ -74,25 +92,6 @@ public class GPUScraperIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
-        );
-    }
-
-    @Test
-    public void testThatGPUPricePointInsertionWithJDBCTemplateReturnsExpectedModelNumber() throws Exception {
-        List<GPUPricePoint> returnList = Stream.generate(() ->
-                        scraper.createGPUPricePoint(tdl.createSampleGPUPricePointData()))
-                .limit(10)
-                .toList();
-
-        gpuPricePointJDBCTemplate.batchInsertPricePoints(returnList);
-
-        mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/gpu_pricepoints/" + returnList.getFirst().getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(
-                MockMvcResultMatchers.status().isOk()
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.modelNumber").value(returnList.getFirst().getModelNumber())
         );
     }
 
@@ -142,5 +141,75 @@ public class GPUScraperIntegrationTests {
 
         // 110 price points -> three round-trips or three insertions
         testThatGPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(110);
+    }
+
+    @Test
+    public void testThatFindByModelNumberReturnsHttpStatus200Ok() throws Exception {
+
+        GPUEntity savedGPU = gpuService.save(tdl.createTestGPU());
+
+        List<GPUPricePoint> sampleList = Stream.generate(() ->
+                        scraper.createGPUPricePoint(tdl.createSampleGPUPricePointData()))
+                .limit(10)
+                .toList();
+
+        gpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/gpu_pricepoints/" + savedGPU.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFindByModelNumberReturnsExpectedPricePoints() throws Exception {
+
+        // first we save the GPU to the DB
+        GPUEntity savedGPU = gpuService.save(tdl.createTestGPU());
+
+        // next we generate and save a collection of price points with the same model number to the DB
+        List<GPUPricePoint> sampleList = Stream.generate(() ->
+                        scraper.createGPUPricePoint(tdl.createSampleGPUPricePointData()))
+                .limit(10)
+                .toList();
+
+        gpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+
+        // convert price points to DTO for comparison's sake
+        List<GPUPricePointDTO> pricePointDTOS =  sampleList.stream()
+                .map(gpuPricePointMapper::mapTo)
+                .toList();
+
+        // next we query by the GPU's model number - this should return a collection of composite DTOs
+        GPUDataAndPricePointDTO returnList = gpuPricePointService.findByModelNumber(savedGPU.getModelNumber());
+
+        assertThat(returnList.getGpuPricePointDTOList())
+                .hasSize(10)
+                .containsExactlyElementsOf(pricePointDTOS);
+    }
+
+    @Test
+    public void testThatFindByModelNumberReturnsExpectedGPUData() throws Exception {
+
+        // first we save the GPU to the DB
+        GPUEntity savedGPU = gpuService.save(tdl.createTestGPU());
+
+        // map to a DTO for comparison's sake
+        GPUDTO gpuDTO = gpuMapper.mapTo(savedGPU);
+
+        // next we generate and save a collection of price points with the same model number to the DB
+        List<GPUPricePoint> sampleList = Stream.generate(() ->
+                        scraper.createGPUPricePoint(tdl.createSampleGPUPricePointData()))
+                .limit(10)
+                .toList();
+
+        gpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+
+        // next we query by the GPU's model number - this should return a collection of composite DTOs
+        GPUDataAndPricePointDTO returnList = gpuPricePointService.findByModelNumber(savedGPU.getModelNumber());
+
+        assert returnList.getGpuDTO().equals(gpuDTO);
     }
 }
