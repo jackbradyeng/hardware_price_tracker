@@ -1,7 +1,12 @@
 package com.price_tracker.services.price_point_services.impl;
 
+import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
+import com.price_tracker.domain.dto.hybrid_interfaces.RAMDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
+import com.price_tracker.domain.dto.product_dtos.RAMDTO;
+import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.mappers.price_point_mappers.RAMPricePointMapper;
+import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.repositories.price_point_repos.RAMPricePointRepository;
 import com.price_tracker.services.price_point_services.RAMPricePointService;
 import jakarta.transaction.Transactional;
@@ -17,12 +22,36 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
 
     private final RAMPricePointRepository ramPricePointRepository;
     private final RAMPricePointMapper ramPricePointMapper;
+    private final RAMMapper ramMapper;
 
     @Override
     public List<RAMPricePointDTO> findAll() {
         return ramPricePointRepository.findAll().stream()
                 .map(ramPricePointMapper::mapTo)
                 .toList();
+    }
+
+    @Override
+    public RAMDataAndPricePointDTO findByModelNumber(String modelNumber) {
+
+        List<RAMDataAndPricePointProjection> resultList = ramPricePointRepository
+                .getPricePointsByModelNumber(modelNumber);
+
+        if(resultList.isEmpty()) {
+            return null;
+        }
+
+        RAMEntity ram = resultList.getFirst().getRAMEntity();
+        RAMDTO ramDTO = ramMapper.mapTo(ram);
+
+        List<RAMPricePointDTO> ramPricePointDTOS = resultList.stream()
+                .map(result -> ramPricePointMapper.mapTo(result.getRAMPricePoint()))
+                .toList();
+
+        return RAMDataAndPricePointDTO.builder()
+                .ramDTO(ramDTO)
+                .ramPricePointDTOList(ramPricePointDTOS)
+                .build();
     }
 
     @Override
