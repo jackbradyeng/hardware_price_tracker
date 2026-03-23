@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -52,11 +51,5 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
                 .ramDTO(ramDTO)
                 .ramPricePointDTOList(ramPricePointDTOS)
                 .build();
-    }
-
-    @Override
-    public Optional<RAMPricePointDTO> findOne(Long id) {
-        return ramPricePointRepository.findById(id)
-                .map(ramPricePointMapper::mapTo);
     }
 }

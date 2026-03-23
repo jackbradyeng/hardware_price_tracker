@@ -77,25 +77,6 @@ public class RAMScraperIntegrationTests {
         );
     }
 
-    @Test
-    public void testThatRAMPricePointInsertionWithJDBCTemplateReturnsExpectedModelNumber() throws Exception {
-        List<RAMPricePoint> returnList = Stream.generate(() ->
-                        scraper.createRAMPricePoint(tdl.createSampleRAMPricePointData()))
-                .limit(10)
-                .toList();
-
-        ramPricePointJDBCTemplate.batchInsertPricePoints(returnList);
-
-        mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/ram_pricepoints/" + returnList.getFirst().getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(
-                MockMvcResultMatchers.status().isOk()
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.modelNumber").value(returnList.getFirst().getModelNumber())
-        );
-    }
-
     public void testThatRAMPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<RAMPricePoint> returnList = Stream.generate(() ->
