@@ -9,10 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,19 +27,8 @@ public class GPUPricePointController {
 
     // gpu get price-points and gpu data by model number
     @GetMapping(path = "/api/gpu_pricepoints/{modelNumber}")
-    public ResponseEntity<List<GPUDataAndPricePointDTO>> findGPUPricePointsByModelNumber(
-            @RequestParam String modelNumber) {
+    public ResponseEntity<GPUDataAndPricePointDTO> findGPUPricePointsByModelNumber(
+            @PathVariable String modelNumber) {
         return new ResponseEntity<>(gpuPricePointService.findByModelNumber(modelNumber), HttpStatus.OK);
-    }
-
-    // gpu price point read-one endpoint
-    @GetMapping(path = "/api/gpu_pricepoints/{id}")
-    public ResponseEntity<GPUPricePointDTO> getGPUPricePoint(@PathVariable Long id) {
-
-        Optional<GPUPricePointDTO> foundGPU = gpuPricePointService.findOne(id);
-
-        return foundGPU.map(gpu ->
-                new ResponseEntity<>(gpu, HttpStatus.OK)
-        ).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

@@ -14,7 +14,7 @@ public interface GPUPricePointRepository extends JpaRepository<GPUPricePoint, Lo
     /** currently this method will return ALL price points present in the DB. As the volume of price points scales, it
      * will need to be refactored so that it returns a tolerable amount (i.e. all from the previous year). Otherwise,
      * there may be problems with RAM usage and networking latency. I've decided to just go ahead and BUILD FIRST
-     * however we will OPTIMIZE LATER. */
+     * however this will be optimized LATER. */
     @Query("select p as GPUPricePoint, e as GPUEntity from GPUPricePoint p " + // Aliases updated
             "left join GPUEntity e on p.modelNumber = e.modelNumber " +
             "where p.modelNumber = :modelNumber")

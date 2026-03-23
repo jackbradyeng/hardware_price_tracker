@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GPUDataAndPricePointDTO {
 
+    // only returns a SINGLE GPU instance along with it's associated price history
     private GPUDTO gpuDTO;
-    private GPUPricePointDTO gpuPricePointDTO;
+    private List<GPUPricePointDTO> gpuPricePointDTOList;
 }
