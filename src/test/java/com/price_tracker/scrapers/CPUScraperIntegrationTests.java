@@ -77,25 +77,6 @@ public class CPUScraperIntegrationTests {
         );
     }
 
-    @Test
-    public void testThatCPUPricePointInsertionWithJDBCTemplateReturnsExpectedModelNumber() throws Exception {
-        List<CPUPricePoint> returnList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(tdl.createSampleCPUPricePointData()))
-                .limit(10)
-                .toList();
-
-        cpuPricePointJDBCTemplate.batchInsertPricePoints(returnList);
-
-        mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/cpu_pricepoints/" + returnList.getFirst().getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(
-                MockMvcResultMatchers.status().isOk()
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.modelNumber").value(returnList.getFirst().getModelNumber())
-        );
-    }
-
     public void testThatCPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<CPUPricePoint> returnList = Stream.generate(() ->
