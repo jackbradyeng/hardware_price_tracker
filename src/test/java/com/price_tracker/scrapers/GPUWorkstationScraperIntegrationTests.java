@@ -77,25 +77,6 @@ public class GPUWorkstationScraperIntegrationTests {
         );
     }
 
-    @Test
-    public void testThatWSGPUPricePointInsertionWithJDBCTemplateReturnsExpectedModelNumber() throws Exception {
-        List<GPUWorkstationPricePoint> returnList = Stream.generate(() ->
-                        scraper.createGPUWorkstationPricePoint(tdl.createSampleWSGPUPricePointData()))
-                .limit(10)
-                .toList();
-
-        gpuWorkstationPricePointJDBCTemplate.batchInsertPricePoints(returnList);
-
-        mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/workstation_gpu_pricepoints/" + returnList.getFirst().getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(
-                MockMvcResultMatchers.status().isOk()
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.modelNumber").value(returnList.getFirst().getModelNumber())
-        );
-    }
-
     public void testThatWSGPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<GPUWorkstationPricePoint> returnList = Stream.generate(() ->

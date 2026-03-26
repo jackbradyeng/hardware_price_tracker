@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,11 +29,6 @@ public class GPUWorkstationPricePointServiceImpl implements GPUWorkstationPriceP
                 .stream()
                 .map(gpuPricePointMapper::mapTo)
                 .toList();
-    }
-
-    @Override
-    public Optional<GPUWorkstationPricePointDTO> findOne(Long id) {
-        return gpuWorkstationPricePointRepository.findById(id).map(gpuPricePointMapper::mapTo);
     }
 
     @Override
