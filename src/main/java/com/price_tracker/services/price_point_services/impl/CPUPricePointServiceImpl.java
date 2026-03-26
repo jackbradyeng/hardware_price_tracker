@@ -1,7 +1,7 @@
 package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
-import com.price_tracker.domain.dto.hybrid_interfaces.CPUDataANdPricePointProjection;
+import com.price_tracker.domain.dto.hybrid_interfaces.CPUDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
@@ -33,7 +33,7 @@ public class CPUPricePointServiceImpl implements CPUPricePointService {
     @Override
     public CPUDataAndPricePointDTO findByModelNumber(String modelNumber) {
 
-        List<CPUDataANdPricePointProjection> resultList = cpuPricePointRepository
+        List<CPUDataAndPricePointProjection> resultList = cpuPricePointRepository
                 .getPricePointsByModelNumber(modelNumber);
 
         // if list is empty return a 404

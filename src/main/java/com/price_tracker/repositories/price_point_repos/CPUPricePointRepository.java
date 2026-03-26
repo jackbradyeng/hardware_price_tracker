@@ -1,6 +1,6 @@
 package com.price_tracker.repositories.price_point_repos;
 
-import com.price_tracker.domain.dto.hybrid_interfaces.CPUDataANdPricePointProjection;
+import com.price_tracker.domain.dto.hybrid_interfaces.CPUDataAndPricePointProjection;
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +14,5 @@ public interface CPUPricePointRepository extends JpaRepository<CPUPricePoint, Lo
     @Query("select p as CPUPricePoint, e as CPUEntity from CPUPricePoint p " +
             "left join CPUEntity e on p.modelNumber = e.modelNumber " +
             "where p.modelNumber = :modelNumber")
-    List<CPUDataANdPricePointProjection> getPricePointsByModelNumber(@Param("modelNumber") String modelNumber);
+    List<CPUDataAndPricePointProjection> getPricePointsByModelNumber(@Param("modelNumber") String modelNumber);
 }
