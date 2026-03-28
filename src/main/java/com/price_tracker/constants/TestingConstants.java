@@ -14,6 +14,25 @@ public final class TestingConstants {
     public static final String SECOND_TESTING_GPU_NAME =
             "Asus ProArt GeForce RTX 5070 Ti OC 16G Graphics Card (PROART-RTX5070TI-O16G)";
 
+    // cpu testing constants
+    public static final String TESTING_CPU_MODEL_NUMBER = "100-100001405WOF";
+    public static final String TESTING_CPU_NAME =
+            "AMD Ryzen 5 9600X 6 Core AM5 5.40GHz CPU Processor (100-100001405WOF)";
+    public static final String TESTING_CPU_CHIP_MANUFACTURER = "AMD";
+    public static final String TESTING_CPU_CHIP_SERIES = "Ryzen 9000 Series";
+    public static final Integer TESTING_CPU_CORES = 6;
+    public static final Integer TESTING_CPU_THREADS = 12;
+    public static final Double TESTING_CPU_BASE_CLOCK = 3.9;
+    public static final Double TESTING_CPU_BOOST_CLOCK = 5.4;
+    public static final Double TESTING_CPU_L1_CACHE = 0.384;
+    public static final Double TESTING_CPU_L2_CACHE = 6.0;
+    public static final Double TESTING_CPU_L3_CACHE = 32.0;
+    public static final Integer TESTING_CPU_TDP = 65;
+    public static final Integer TESTING_CPU_MAX_TEMPERATURE = 95;
+    public static final Integer TESTING_CPU_MAX_MEMORY = 192;
+    public static final String TESTING_CPU_MEMORY_SUPPORTED = "DDR5";
+    public static final Boolean TESTING_CPU_INTEGRATED_GPU = true;
+
     // umart product testing constants
     public static final String TESTING_VENDOR_UMART = "UMART";
 
@@ -26,8 +45,7 @@ public final class TestingConstants {
     public static final String PRODUCT_TYPE_RAM = "RAM";
 
     // umart cpu product testing constants
-    public static final String TESTING_CPU_MODEL_NUMBER = "100-100001084WOF";
-    public static final String TESTING_CPU_PRICE = "715.00";
+    public static final String TESTING_CPU_PRICE = "360.00";
 
     // umart workstation gpu product testing constants
     public static final String TESTING_WS_GPU_PRICE = "14999.00";

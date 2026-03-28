@@ -1,5 +1,6 @@
 package com.price_tracker.controllers.price_point_controllers;
 
+import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
 import com.price_tracker.services.price_point_services.RAMPricePointService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,14 +25,10 @@ public class RAMPricePointController {
         return new ResponseEntity<>(ramPricePointService.findAll(), HttpStatus.OK);
     }
 
-    // ram price point read-one endpoint
-    @GetMapping(path = "/api/ram_pricepoints/{id}")
-    public ResponseEntity<RAMPricePointDTO> getRAMPricePoint(@PathVariable Long id) {
-
-        Optional<RAMPricePointDTO> foundRAM = ramPricePointService.findOne(id);
-
-        return foundRAM.map(ram ->
-                new ResponseEntity<>(ram, HttpStatus.OK)
-        ).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    // get ram price-points and ram data by model number
+    @GetMapping(path = "/api/ram_pricepoints/{modelNumber}")
+    public ResponseEntity<RAMDataAndPricePointDTO> findRAMPricePointsBYModelNumber(
+            @PathVariable String modelNumber) {
+        return new ResponseEntity<>(ramPricePointService.findByModelNumber(modelNumber), HttpStatus.OK);
     }
 }

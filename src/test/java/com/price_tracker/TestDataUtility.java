@@ -1,8 +1,10 @@
 package com.price_tracker;
 
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
+import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
+import com.price_tracker.domain.entities.product_entities.CPUEntity;
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
@@ -30,6 +32,48 @@ public class TestDataUtility {
     private final RAMMapper ramMapper;
     private final UmartProductMapper umartProductMapper;
 
+    public List<GPUDTO> createListOfGPUs() {
+        ArrayList<GPUDTO> gpuDTOs = new ArrayList<>();
+        gpuDTOs.add(gpuMapper.mapTo(createTestGPU()));
+        gpuDTOs.add(gpuMapper.mapTo(createSecondTestGPU()));
+        return gpuDTOs;
+    }
+
+    public List<RAMDTO> createListOfRAM() {
+        ArrayList<RAMDTO> ramDTOs = new ArrayList<>();
+        ramDTOs.add(ramMapper.mapTo(createTestRAM()));
+        ramDTOs.add(ramMapper.mapTo(createSecondTestRAM()));
+        return ramDTOs;
+    }
+
+    /// SAMPLE PRODUCTS
+    public UmartProductEntity createTestUmartGPU() {
+        return UmartProductEntity.builder()
+                .productType(PRODUCT_TYPE_GPU)
+                .modelNumber(TESTING_GPU_MODEL_NUMBER)
+                .vendor(TESTING_VENDOR_UMART)
+                .url(UMART_ASUS_5070TI)
+                .build();
+    }
+
+    public UmartProductEntity createTestUmartRAM() {
+        return UmartProductEntity.builder()
+                .productType(PRODUCT_TYPE_RAM)
+                .modelNumber(TESTING_RAM_MODEL_NUMBER)
+                .vendor(TESTING_VENDOR_UMART)
+                .url(UMART_KINGSTON_KINGSTON_F64G)
+                .build();
+    }
+
+    public List<UmartProductDTO> createTestUmartProducts() {
+        ArrayList<UmartProductDTO> umartProductDTOs = new ArrayList<>();
+        umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartGPU()));
+        umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartRAM()));
+        return umartProductDTOs;
+    }
+
+
+    /// SAMPLE ENTITIES/DTOS
     public GPUEntity createTestGPU() {
         return GPUEntity.builder()
                 .modelNumber(TESTING_GPU_MODEL_NUMBER)
@@ -50,13 +94,6 @@ public class TestDataUtility {
                 .name(SECOND_TESTING_GPU_NAME)
                 .isActive(true)
                 .build();
-    }
-
-    public List<GPUDTO> createListOfGPUs() {
-        ArrayList<GPUDTO> gpuDTOs = new ArrayList<>();
-        gpuDTOs.add(gpuMapper.mapTo(createTestGPU()));
-        gpuDTOs.add(gpuMapper.mapTo(createSecondTestGPU()));
-        return gpuDTOs;
     }
 
     public RAMEntity createTestRAM() {
@@ -89,36 +126,26 @@ public class TestDataUtility {
                 .build();
     }
 
-    public List<RAMDTO> createListOfRAM() {
-        ArrayList<RAMDTO> ramDTOs = new ArrayList<>();
-        ramDTOs.add(ramMapper.mapTo(createTestRAM()));
-        ramDTOs.add(ramMapper.mapTo(createSecondTestRAM()));
-        return ramDTOs;
-    }
-
-    public UmartProductEntity createTestUmartGPU() {
-        return UmartProductEntity.builder()
-                .productType(PRODUCT_TYPE_GPU)
-                .modelNumber(TESTING_GPU_MODEL_NUMBER)
-                .vendor(TESTING_VENDOR_UMART)
-                .url(UMART_ASUS_5070TI)
+    public CPUEntity createTestCPU() {
+        return CPUEntity.builder()
+                .modelNumber(TESTING_CPU_MODEL_NUMBER)
+                .name(TESTING_CPU_NAME)
+                .chipManufacturer(TESTING_CPU_CHIP_MANUFACTURER)
+                .series(TESTING_CPU_CHIP_SERIES)
+                .cores(TESTING_CPU_CORES)
+                .threads(TESTING_CPU_THREADS)
+                .baseClock(TESTING_CPU_BASE_CLOCK)
+                .boostClock(TESTING_CPU_BOOST_CLOCK)
+                .l1Cache(TESTING_CPU_L1_CACHE)
+                .l2Cache(TESTING_CPU_L2_CACHE)
+                .l3Cache(TESTING_CPU_L3_CACHE)
+                .thermalDesignPower(TESTING_CPU_TDP)
+                .maxTemperature(TESTING_CPU_MAX_TEMPERATURE)
+                .maxMemory(TESTING_CPU_MAX_MEMORY)
+                .memorySupported(TESTING_CPU_MEMORY_SUPPORTED)
+                .hasIntegratedGPU(TESTING_CPU_INTEGRATED_GPU)
+                .isActive(true)
                 .build();
-    }
-
-    public UmartProductEntity createTestUmartRAM() {
-        return UmartProductEntity.builder()
-                .productType(PRODUCT_TYPE_RAM)
-                .modelNumber(TESTING_RAM_MODEL_NUMBER)
-                .vendor(TESTING_VENDOR_UMART)
-                .url(UMART_KINGSTON_KINGSTON_F64G)
-                .build();
-    }
-
-    public List<UmartProductDTO> createTestUmartProducts() {
-        ArrayList<UmartProductDTO> umartProductDTOs = new ArrayList<>();
-        umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartGPU()));
-        umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartRAM()));
-        return umartProductDTOs;
     }
 
     public GPUWorkstationEntity createTestWorkstationGPU() {
@@ -137,6 +164,23 @@ public class TestDataUtility {
                 .build();
     }
 
+    public GPUWorkstationDTO createTestWorkstationGPUDTO() {
+        return GPUWorkstationDTO.builder()
+                .modelNumber(TESTING_WS_GPU_MODEL_NUMBER)
+                .name(TESTING_WS_GPU_NAME)
+                .chipManufacturer(TESTING_WS_GPU_CHIP_MANUFACTURER)
+                .gpuMemory(TESTING_WS_GPU_MEMORY)
+                .memoryInterface(TESTING_WS_GPU_MEMORY_INTERFACE)
+                .memoryBandwidth(TESTING_WS_GPU_MEMORY_BANDWIDTH)
+                .cudaCores(TESTING_WS_GPU_CUDA_CORES)
+                .tensorCores(TESTING_WS_GPU_TENSOR_CORES)
+                .raytracingCores(TESTING_WS_GPU_RT_CORES)
+                .systemInterface(TESTING_WS_GPU_SYS_INTERFACE)
+                .isActive(true)
+                .build();
+    }
+
+    /// SAMPLE PRICE POINTS
     public ScrapedDataDTO createSampleCPUPricePointData() {
         return ScrapedDataDTO.builder()
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)

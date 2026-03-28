@@ -1,5 +1,6 @@
 package com.price_tracker.controllers.price_point_controllers;
 
+import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
 import com.price_tracker.services.price_point_services.CPUPricePointService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,14 +25,10 @@ public class CPUPricePointController {
         return new ResponseEntity<>(cpuPricePointService.findAll(), HttpStatus.OK);
     }
 
-    // cpu price point read-one endpoint
-    @GetMapping(path = "/api/cpu_pricepoints/{id}")
-    public ResponseEntity<CPUPricePointDTO> getCPUPricePoint(@PathVariable Long id) {
-
-        Optional<CPUPricePointDTO> foundCPU = cpuPricePointService.findOne(id);
-
-        return foundCPU.map(cpu ->
-                 new ResponseEntity<>(cpu, HttpStatus.OK)
-        ).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    // cpu get price-points and cpu data by model number
+    @GetMapping(path = "/api/cpu_pricepoints/{modelNumber}")
+    public ResponseEntity<CPUDataAndPricePointDTO> findCPUPricePointsByModelNumber(
+            @PathVariable String modelNumber) {
+        return new ResponseEntity<>(cpuPricePointService.findByModelNumber(modelNumber), HttpStatus.OK);
     }
 }
