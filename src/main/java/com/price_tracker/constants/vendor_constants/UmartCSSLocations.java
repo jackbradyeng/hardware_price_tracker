@@ -1,4 +1,4 @@
-package com.price_tracker.constants;
+package com.price_tracker.constants.vendor_constants;
 
 public class UmartCSSLocations {
 

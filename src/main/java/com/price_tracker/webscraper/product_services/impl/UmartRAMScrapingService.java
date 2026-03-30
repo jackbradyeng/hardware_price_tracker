@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static com.price_tracker.constants.CurrencyConstants.AUD;
-import static com.price_tracker.constants.VendorConstants.UMART;
+import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @Service
 @Log
