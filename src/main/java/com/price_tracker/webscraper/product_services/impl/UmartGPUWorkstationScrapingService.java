@@ -8,7 +8,7 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import static com.price_tracker.constants.CurrencyConstants.AUD;
+import static com.price_tracker.constants.other_constants.CurrencyConstants.AUD;
 import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @Service

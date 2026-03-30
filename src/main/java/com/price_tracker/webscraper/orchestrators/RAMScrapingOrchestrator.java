@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import static com.price_tracker.constants.ScrapingConstants.*;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.*;
 
 @Service
 @RequiredArgsConstructor

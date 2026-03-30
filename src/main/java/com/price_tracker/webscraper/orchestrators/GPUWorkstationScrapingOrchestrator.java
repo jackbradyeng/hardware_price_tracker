@@ -12,8 +12,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import static com.price_tracker.constants.ScrapingConstants.GPU_WORKSTATION_SCRAPING_TIME;
-import static com.price_tracker.constants.ScrapingConstants.SLEEPING_CONSTANT;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.GPU_WORKSTATION_SCRAPING_TIME;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.SLEEPING_CONSTANT;
 
 @Service
 @RequiredArgsConstructor

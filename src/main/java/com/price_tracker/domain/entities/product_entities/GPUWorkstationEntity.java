@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
-import static com.price_tracker.constants.DatabaseConstants.WORKSTATION_GPU_TABLE_NAME;
+import static com.price_tracker.constants.other_constants.DatabaseConstants.WORKSTATION_GPU_TABLE_NAME;
 
 @Data
 @AllArgsConstructor
