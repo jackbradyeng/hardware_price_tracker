@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import static com.price_tracker.constants.DatabaseTableNames.VENDOR_TABLE_NAME;
+import static com.price_tracker.constants.DatabaseConstants.VENDOR_TABLE_NAME;
 
 @Data
 @AllArgsConstructor

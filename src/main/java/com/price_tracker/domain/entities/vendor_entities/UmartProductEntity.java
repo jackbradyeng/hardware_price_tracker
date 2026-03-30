@@ -2,7 +2,7 @@ package com.price_tracker.domain.entities.vendor_entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import static com.price_tracker.constants.DatabaseTableNames.UMART_PRODUCT_NAME;
+import static com.price_tracker.constants.DatabaseConstants.UMART_PRODUCT_NAME;
 
 @Data
 @AllArgsConstructor

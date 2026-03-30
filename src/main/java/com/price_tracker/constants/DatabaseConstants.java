@@ -1,7 +1,8 @@
 package com.price_tracker.constants;
 
-public final class DatabaseTableNames {
+public final class DatabaseConstants {
 
+    // table names
     public static final String GPU_TABLE_NAME = "GPUs";
     public static final String GPU_PRICE_HISTORY = "GPU_PRICE_HISTORY";
     public static final String WORKSTATION_GPU_TABLE_NAME = "WS_GPUs";

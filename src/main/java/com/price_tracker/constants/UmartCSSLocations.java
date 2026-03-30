@@ -2,7 +2,9 @@ package com.price_tracker.constants;
 
 public class UmartCSSLocations {
 
-    public static final String UMART_CSS_NAME_LOCATION = ".goods_title h1";
+    // price location
     public static final String UMART_CSS_PRICE_LOCATION = "span.goods-price";
+
+    // model number location
     public static final String UMART_CSS_MODEL_LOCATION = "li:contains(Model Number:)";
 }
