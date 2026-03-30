@@ -29,8 +29,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.constants.TestingConstants.TESTING_WS_GPU_MODEL_NUMBER;
-import static com.price_tracker.constants.WebDomainNames.UMART_RTX_PRO_6000;
+import static com.price_tracker.testing_data.TestingConstants.TESTING_WS_GPU_MODEL_NUMBER;
+import static com.price_tracker.testing_data.WebDomainNames.UMART_RTX_PRO_6000;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

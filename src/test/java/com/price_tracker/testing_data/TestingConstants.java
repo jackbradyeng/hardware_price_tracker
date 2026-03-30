@@ -1,4 +1,4 @@
-package com.price_tracker.constants;
+package com.price_tracker.testing_data;
 
 public final class TestingConstants {
 

@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
-import static com.price_tracker.constants.TestingConstants.*;
+import static com.price_tracker.testing_data.TestingConstants.*;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
