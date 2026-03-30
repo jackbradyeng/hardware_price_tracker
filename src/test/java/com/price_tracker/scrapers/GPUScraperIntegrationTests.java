@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import static com.price_tracker.testing_data.TestingConstants.TESTING_GPU_MODEL_NUMBER;
-import static com.price_tracker.testing_data.WebDomainNames.UMART_ASUS_5070TI;
+import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_ASUS_5070TI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

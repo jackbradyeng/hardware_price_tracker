@@ -1,6 +1,6 @@
 package com.price_tracker.testing_data;
 
-public class WebDomainNames {
+public class UmartWebDomainNames {
 
     // umart product domains
     public static final String UMART_RYZEN_9_9600X =

@@ -20,8 +20,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import static com.price_tracker.testing_data.TestingConstants.*;
-import static com.price_tracker.testing_data.WebDomainNames.UMART_ASUS_5070TI;
-import static com.price_tracker.testing_data.WebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
+import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_ASUS_5070TI;
+import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 
 @Data
 @Component
