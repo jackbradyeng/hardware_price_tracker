@@ -1,6 +1,5 @@
 package com.price_tracker.scrapers;
 
-import com.price_tracker.TestDataUtility;
 import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
@@ -11,6 +10,7 @@ import com.price_tracker.mappers.product_mappers.CPUMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.CPUPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.CPUPricePointService;
 import com.price_tracker.services.product_services.CPUService;
+import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartCPUScrapingService;
 import org.junit.jupiter.api.Test;
@@ -31,8 +31,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.TestingConstants.TESTING_CPU_MODEL_NUMBER;
 import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_RYZEN_9_9600X;
+import static com.price_tracker.testing_data.cpu_data.CPUTestingData.TESTING_CPU_MODEL_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CPUScraperIntegrationTests {
 
     private final MockMvc mockMVC;
-    private final TestDataUtility tdl;
+    private final CPUTestingUtility cpuTestingUtility;
     private final UmartCPUScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate;
@@ -54,7 +54,7 @@ public class CPUScraperIntegrationTests {
 
     @Autowired
     public CPUScraperIntegrationTests(MockMvc mockMVC,
-                                      TestDataUtility tdl,
+                                      CPUTestingUtility cpuTestingUtility,
                                       UmartCPUScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate,
@@ -63,7 +63,7 @@ public class CPUScraperIntegrationTests {
                                       CPUPricePointMapper cpuPricePointMapper,
                                       CPUPricePointService cpuPricePointService) {
         this.mockMVC = mockMVC;
-        this.tdl = tdl;
+        this.cpuTestingUtility = cpuTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
         this.cpuPricePointJDBCTemplate = cpuPricePointJDBCTemplate;
@@ -82,7 +82,7 @@ public class CPUScraperIntegrationTests {
     @Test
     public void testThatCPUPricePointInsertionWithJDBCTemplateReturnsOK() throws Exception {
         List<CPUPricePoint> returnList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(tdl.createSampleCPUPricePointData()))
+                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
                 .limit(10)
                 .toList();
 
@@ -99,7 +99,7 @@ public class CPUScraperIntegrationTests {
     public void testThatCPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<CPUPricePoint> returnList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(tdl.createSampleCPUPricePointData()))
+                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
                 .limit(insertionCount)
                 .toList();
 
@@ -147,10 +147,10 @@ public class CPUScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatus200Ok() throws Exception {
 
-        CPUEntity savedCPU = cpuService.save(tdl.createTestCPU());
+        CPUEntity savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
 
         List<CPUPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(tdl.createSampleCPUPricePointData()))
+                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
                 .limit(10)
                 .toList();
 
@@ -168,11 +168,11 @@ public class CPUScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the CPU to the DB
-        CPUEntity savedCPU = cpuService.save(tdl.createTestCPU());
+        CPUEntity savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<CPUPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(tdl.createSampleCPUPricePointData()))
+                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
                 .limit(10)
                 .toList();
 
@@ -195,14 +195,14 @@ public class CPUScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedCPUData() {
 
         // first we save the CPU to the DB
-        CPUEntity savedCPU = cpuService.save(tdl.createTestCPU());
+        CPUEntity savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
 
         // map to a DTO for comparison's sake
         CPUDTO cpuDTO = cpuMapper.mapTo(savedCPU);
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<CPUPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(tdl.createSampleCPUPricePointData()))
+                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
                 .limit(10)
                 .toList();
 

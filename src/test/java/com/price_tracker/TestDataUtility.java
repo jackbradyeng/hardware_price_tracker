@@ -3,7 +3,6 @@ package com.price_tracker;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
-import com.price_tracker.domain.entities.product_entities.CPUEntity;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
@@ -85,28 +84,6 @@ public class TestDataUtility {
                 .build();
     }
 
-    public CPUEntity createTestCPU() {
-        return CPUEntity.builder()
-                .modelNumber(TESTING_CPU_MODEL_NUMBER)
-                .name(TESTING_CPU_NAME)
-                .chipManufacturer(TESTING_CPU_CHIP_MANUFACTURER)
-                .series(TESTING_CPU_CHIP_SERIES)
-                .cores(TESTING_CPU_CORES)
-                .threads(TESTING_CPU_THREADS)
-                .baseClock(TESTING_CPU_BASE_CLOCK)
-                .boostClock(TESTING_CPU_BOOST_CLOCK)
-                .l1Cache(TESTING_CPU_L1_CACHE)
-                .l2Cache(TESTING_CPU_L2_CACHE)
-                .l3Cache(TESTING_CPU_L3_CACHE)
-                .thermalDesignPower(TESTING_CPU_TDP)
-                .maxTemperature(TESTING_CPU_MAX_TEMPERATURE)
-                .maxMemory(TESTING_CPU_MAX_MEMORY)
-                .memorySupported(TESTING_CPU_MEMORY_SUPPORTED)
-                .hasIntegratedGPU(TESTING_CPU_INTEGRATED_GPU)
-                .isActive(true)
-                .build();
-    }
-
     public GPUWorkstationEntity createTestWorkstationGPU() {
         return GPUWorkstationEntity.builder()
                 .modelNumber(TESTING_WS_GPU_MODEL_NUMBER)
@@ -140,13 +117,6 @@ public class TestDataUtility {
     }
 
     /// SAMPLE PRICE POINTS
-    public ScrapedDataDTO createSampleCPUPricePointData() {
-        return ScrapedDataDTO.builder()
-                .modelNumber(TESTING_CPU_MODEL_NUMBER)
-                .price(new BigDecimal(TESTING_CPU_PRICE))
-                .build();
-    }
-
     public ScrapedDataDTO createSampleRAMPricePointData() {
         return ScrapedDataDTO.builder()
                 .modelNumber(TESTING_RAM_MODEL_NUMBER)

@@ -37,7 +37,6 @@ public class UmartProductControllerIntegrationTests {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final UmartProductService umartProductService;
-    private final UmartProductMapper umartProductMapper;
     private final GPUTestingUtility gpuTestingUtility;
     private final TestDataUtility tdl;
 
@@ -49,7 +48,6 @@ public class UmartProductControllerIntegrationTests {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
         this.umartProductService = new UmartProductServiceImpl(umartProductRepository);
-        this.umartProductMapper = new UmartProductMapper(new ModelMapper());
         this.gpuTestingUtility = gpuTestingUtility;
         this.tdl = tdl;
     }
