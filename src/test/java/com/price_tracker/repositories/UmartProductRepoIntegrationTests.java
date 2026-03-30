@@ -8,6 +8,7 @@ import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.services.product_services.RAMService;
 import com.price_tracker.services.vendor_services.UmartProductService;
+import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class UmartProductRepoIntegrationTests {
     private final UmartProductService umartProductService;
     private final GPUService gpuService;
     private final RAMService ramService;
+    private final GPUTestingUtility gpuTestingUtility;
     private final TestDataUtility tdl;
 
     @Autowired
@@ -35,27 +37,29 @@ public class UmartProductRepoIntegrationTests {
                                             UmartProductService umartProductService,
                                             GPUService gpuService,
                                             RAMService ramService,
+                                            GPUTestingUtility gpuTestingUtility,
                                             TestDataUtility tdl) {
         this.umartProductRepository = umartProductRepository;
         this.umartProductService  = umartProductService;
         this.ramService = ramService;
         this.gpuService = gpuService;
+        this.gpuTestingUtility = gpuTestingUtility;
         this.tdl = tdl;
     }
 
     @Test
     public void testThatActiveSavedGPUProductIsReturnedByGetURLs() {
-        gpuService.save(tdl.createTestGPU());
-        UmartProductEntity savedUmartGPU = umartProductService.save(tdl.createTestUmartGPU());
+        gpuService.save(gpuTestingUtility.createTestGPU());
+        UmartProductEntity savedUmartGPU = umartProductService.save(gpuTestingUtility.createTestUmartGPU());
         assert umartProductRepository.findUrlsForActiveGPUs().getFirst().equals(savedUmartGPU.getUrl());
     }
 
     @Test
     public void testThatSavedInactiveGPUProductIsNotReturnedBGetURLs() {
-        GPUEntity gpuEntity = tdl.createTestGPU();
+        GPUEntity gpuEntity = gpuTestingUtility.createTestGPU();
         gpuEntity.setIsActive(false);
         gpuService.save(gpuEntity);
-        umartProductService.save(tdl.createTestUmartGPU());
+        umartProductService.save(gpuTestingUtility.createTestUmartGPU());
         assert umartProductRepository.findUrlsForActiveGPUs().isEmpty();
     }
 

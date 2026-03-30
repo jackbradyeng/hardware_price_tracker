@@ -1,17 +1,15 @@
 package com.price_tracker;
 
-import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
-import com.price_tracker.domain.entities.product_entities.GPUEntity;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
-import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.mappers.vendor_mappers.UmartProductMapper;
+import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import static com.price_tracker.testing_data.TestingConstants.*;
-import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_ASUS_5070TI;
 import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 
 @Data
@@ -28,16 +25,9 @@ import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_KINGSTON_
 @AllArgsConstructor
 public class TestDataUtility {
 
-    private final GPUMapper gpuMapper;
     private final RAMMapper ramMapper;
+    private final GPUTestingUtility gpuTestingUtility;
     private final UmartProductMapper umartProductMapper;
-
-    public List<GPUDTO> createListOfGPUs() {
-        ArrayList<GPUDTO> gpuDTOs = new ArrayList<>();
-        gpuDTOs.add(gpuMapper.mapTo(createTestGPU()));
-        gpuDTOs.add(gpuMapper.mapTo(createSecondTestGPU()));
-        return gpuDTOs;
-    }
 
     public List<RAMDTO> createListOfRAM() {
         ArrayList<RAMDTO> ramDTOs = new ArrayList<>();
@@ -47,15 +37,6 @@ public class TestDataUtility {
     }
 
     /// SAMPLE PRODUCTS
-    public UmartProductEntity createTestUmartGPU() {
-        return UmartProductEntity.builder()
-                .productType(PRODUCT_TYPE_GPU)
-                .modelNumber(TESTING_GPU_MODEL_NUMBER)
-                .vendor(TESTING_VENDOR_UMART)
-                .url(UMART_ASUS_5070TI)
-                .build();
-    }
-
     public UmartProductEntity createTestUmartRAM() {
         return UmartProductEntity.builder()
                 .productType(PRODUCT_TYPE_RAM)
@@ -67,33 +48,11 @@ public class TestDataUtility {
 
     public List<UmartProductDTO> createTestUmartProducts() {
         ArrayList<UmartProductDTO> umartProductDTOs = new ArrayList<>();
-        umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartGPU()));
+        umartProductDTOs.add(
+                umartProductMapper.mapTo(gpuTestingUtility.createTestUmartGPU())
+        );
         umartProductDTOs.add(umartProductMapper.mapTo(createTestUmartRAM()));
         return umartProductDTOs;
-    }
-
-
-    /// SAMPLE ENTITIES/DTOS
-    public GPUEntity createTestGPU() {
-        return GPUEntity.builder()
-                .modelNumber(TESTING_GPU_MODEL_NUMBER)
-                .chip(TESTING_GPU_CHIP)
-                .chipManufacturer(TESTING_GPU_CHIP_MANUFACTURER)
-                .boardManufacturer(TESTING_GPU_BOARD_MANUFACTURER)
-                .name(TESTING_GPU_NAME)
-                .isActive(true)
-                .build();
-    }
-
-    public GPUEntity createSecondTestGPU() {
-        return GPUEntity.builder()
-                .modelNumber(SECOND_TESTING_GPU_MODEL_NUMBER)
-                .chip(TESTING_GPU_CHIP)
-                .chipManufacturer(TESTING_GPU_CHIP_MANUFACTURER)
-                .boardManufacturer(TESTING_GPU_BOARD_MANUFACTURER)
-                .name(SECOND_TESTING_GPU_NAME)
-                .isActive(true)
-                .build();
     }
 
     public RAMEntity createTestRAM() {
@@ -185,13 +144,6 @@ public class TestDataUtility {
         return ScrapedDataDTO.builder()
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .price(new BigDecimal(TESTING_CPU_PRICE))
-                .build();
-    }
-
-    public ScrapedDataDTO createSampleGPUPricePointData() {
-        return ScrapedDataDTO.builder()
-                .modelNumber(TESTING_GPU_MODEL_NUMBER)
-                .price(new BigDecimal(TESTING_GPU_PRICE))
                 .build();
     }
 
