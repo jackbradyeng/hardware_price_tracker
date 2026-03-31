@@ -1,0 +1,28 @@
+package com.price_tracker.testing_data.ram_data;
+
+public class RAMTestingData {
+
+    // ram testing constants
+    public static final String TESTING_RAM_MODEL_NUMBER = "KF560C36BBE2K2-64";
+    public static final String TESTING_RAM_NAME =
+            "Kingston 64GB (2x32GB) Fury Beast CL36 6000MHz DDR5 RAM (KF560C36BBE2K2-64)";
+    public static final String TESTING_RAM_BRAND = "KINGSTON";
+    public static final String TESTING_RAM_STANDARD = "DDR5";
+    public static final String TESTING_RAM_LATENCY = "CL36";
+    public static final Integer TESTING_RAM_VOLUME = 64;
+    public static final Integer TESTING_RAM_DIMM_COUNT = 2;
+    public static final Integer TESTING_RAM_CLOCK_RATE = 6000;
+    public static final Double TESTING_RAM_VOLTAGE = 1.35;
+
+    // secondary ram testing constants
+    public static final String SECOND_TESTING_RAM_MODEL_NUMBER = "F5-6000J3636F16GX2-TZ5NR";
+    public static final String SECOND_TESTING_RAM_NAME =
+            "G.Skill 32GB (2x16GB) F5-6000J3636F16GX2-TZ5NR Trident Z5 Neo RGB 6000MHz CL36 DDR5 RAM";
+    public static final String SECOND_TESTING_RAM_BRAND = "G.SKILL";
+    public static final Integer SECOND_TESTING_RAM_VOLUME = 32;
+    public static final Double SECOND_TESTING_RAM_VOLTAGE = 1.10;
+
+    // umart ram product testing constants
+    public static final String TESTING_RAM_PRICE = "1299.00";
+    public static final String PRODUCT_TYPE_RAM = "RAM";
+}

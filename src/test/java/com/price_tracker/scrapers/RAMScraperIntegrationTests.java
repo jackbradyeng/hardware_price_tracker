@@ -1,6 +1,5 @@
 package com.price_tracker.scrapers;
 
-import com.price_tracker.TestDataUtility;
 import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
@@ -11,6 +10,7 @@ import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.RAMPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.RAMPricePointService;
 import com.price_tracker.services.product_services.RAMService;
+import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartRAMScrapingService;
 import org.junit.jupiter.api.Test;
@@ -31,8 +31,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.TestingConstants.TESTING_RAM_MODEL_NUMBER;
 import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
+import static com.price_tracker.testing_data.ram_data.RAMTestingData.TESTING_RAM_MODEL_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RAMScraperIntegrationTests {
 
     private final MockMvc mockMVC;
-    private final TestDataUtility tdl;
+    private final RAMTestingUtility ramTestingUtility;
     private final UmartRAMScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final RAMPricePointJDBCTemplate ramPricePointJDBCTemplate;
@@ -54,7 +54,7 @@ public class RAMScraperIntegrationTests {
 
     @Autowired
     public RAMScraperIntegrationTests(MockMvc mockMVC,
-                                      TestDataUtility tdl,
+                                      RAMTestingUtility ramTestingUtility,
                                       UmartRAMScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       RAMPricePointJDBCTemplate ramPricePointJDBCTemplate,
@@ -63,7 +63,7 @@ public class RAMScraperIntegrationTests {
                                       RAMPricePointMapper ramPricePointMapper,
                                       RAMPricePointService ramPricePointService) {
         this.mockMVC = mockMVC;
-        this.tdl = tdl;
+        this.ramTestingUtility = ramTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
         this.ramPricePointJDBCTemplate = ramPricePointJDBCTemplate;
@@ -82,7 +82,7 @@ public class RAMScraperIntegrationTests {
     @Test
     public void testThatRAMPricePointInsertionWithJDBCTemplateReturnsOK() throws Exception {
         List<RAMPricePoint> returnList = Stream.generate(() ->
-                        scraper.createRAMPricePoint(tdl.createSampleRAMPricePointData()))
+                        scraper.createRAMPricePoint(ramTestingUtility.createSampleRAMPricePointData()))
                 .limit(10)
                 .toList();
 
@@ -99,7 +99,7 @@ public class RAMScraperIntegrationTests {
     public void testThatRAMPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<RAMPricePoint> returnList = Stream.generate(() ->
-                        scraper.createRAMPricePoint(tdl.createSampleRAMPricePointData()))
+                        scraper.createRAMPricePoint(ramTestingUtility.createSampleRAMPricePointData()))
                 .limit(insertionCount)
                 .toList();
 
@@ -147,10 +147,10 @@ public class RAMScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatus200Ok() throws Exception {
 
-        RAMEntity savedRAM = ramService.save(tdl.createTestRAM());
+        RAMEntity savedRAM = ramService.save(ramTestingUtility.createTestRAM());
 
         List<RAMPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createRAMPricePoint(tdl.createSampleRAMPricePointData()))
+                        scraper.createRAMPricePoint(ramTestingUtility.createSampleRAMPricePointData()))
                 .limit(10)
                 .toList();
 
@@ -168,11 +168,11 @@ public class RAMScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedPricePoints() throws Exception {
 
         // first we save the RAM to the DB
-        RAMEntity savedRAM = ramService.save(tdl.createTestRAM());
+        RAMEntity savedRAM = ramService.save(ramTestingUtility.createTestRAM());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<RAMPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createRAMPricePoint(tdl.createSampleRAMPricePointData()))
+                        scraper.createRAMPricePoint(ramTestingUtility.createSampleRAMPricePointData()))
                 .limit(10)
                 .toList();
 
@@ -195,14 +195,14 @@ public class RAMScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedRAMData() throws Exception {
 
         // first we save the RAM to the DB
-        RAMEntity savedRAM = ramService.save(tdl.createTestRAM());
+        RAMEntity savedRAM = ramService.save(ramTestingUtility.createTestRAM());
 
         // map to a DTO for comparison's sake
         RAMDTO ramDTO = ramMapper.mapTo(savedRAM);
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<RAMPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createRAMPricePoint(tdl.createSampleRAMPricePointData()))
+                        scraper.createRAMPricePoint(ramTestingUtility.createSampleRAMPricePointData()))
                 .limit(10)
                 .toList();
 
