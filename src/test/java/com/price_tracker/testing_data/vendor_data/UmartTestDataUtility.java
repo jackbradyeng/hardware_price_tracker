@@ -1,4 +1,4 @@
-package com.price_tracker;
+package com.price_tracker.testing_data.vendor_data;
 
 import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
 import com.price_tracker.mappers.product_mappers.RAMMapper;
@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @Component
 @AllArgsConstructor
-public class TestDataUtility {
+public class UmartTestDataUtility {
 
     private final RAMMapper ramMapper;
     private final GPUTestingUtility gpuTestingUtility;

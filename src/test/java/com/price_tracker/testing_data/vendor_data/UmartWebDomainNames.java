@@ -1,4 +1,4 @@
-package com.price_tracker.testing_data;
+package com.price_tracker.testing_data.vendor_data;
 
 public class UmartWebDomainNames {
 

@@ -1,16 +1,14 @@
 package com.price_tracker.controllers;
 
-import com.price_tracker.TestDataUtility;
+import com.price_tracker.testing_data.vendor_data.UmartTestDataUtility;
 import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
-import com.price_tracker.mappers.vendor_mappers.UmartProductMapper;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.vendor_services.UmartProductService;
 import com.price_tracker.services.vendor_services.impl.UmartProductServiceImpl;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -23,7 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
 import java.util.List;
-import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_ASUS_5070TI;
+import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_ASUS_5070TI;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.PRODUCT_TYPE_GPU;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
 
@@ -38,13 +36,13 @@ public class UmartProductControllerIntegrationTests {
     private final ObjectMapper objectMapper;
     private final UmartProductService umartProductService;
     private final GPUTestingUtility gpuTestingUtility;
-    private final TestDataUtility tdl;
+    private final UmartTestDataUtility tdl;
 
     @Autowired
     public UmartProductControllerIntegrationTests(MockMvc mockMvc,
                                                   UmartProductRepository umartProductRepository,
                                                   GPUTestingUtility gpuTestingUtility,
-                                                  TestDataUtility tdl) {
+                                                  UmartTestDataUtility tdl) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
         this.umartProductService = new UmartProductServiceImpl(umartProductRepository);

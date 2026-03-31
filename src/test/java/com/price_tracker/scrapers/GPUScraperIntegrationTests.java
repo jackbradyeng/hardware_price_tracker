@@ -1,6 +1,6 @@
 package com.price_tracker.scrapers;
 
-import com.price_tracker.TestDataUtility;
+import com.price_tracker.testing_data.vendor_data.UmartTestDataUtility;
 import com.price_tracker.domain.dto.hybrid_dtos.GPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
@@ -32,7 +32,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_ASUS_5070TI;
+import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_ASUS_5070TI;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GPUScraperIntegrationTests {
 
     private final MockMvc mockMVC;
-    private final TestDataUtility tdl;
+    private final UmartTestDataUtility tdl;
     private final GPUTestingUtility gpuTestingUtility;
     private final UmartGPUScrapingService scraper;
     private final ObjectMapper objectMapper;
@@ -56,7 +56,7 @@ public class GPUScraperIntegrationTests {
 
     @Autowired
     public GPUScraperIntegrationTests(MockMvc mockMVC,
-                                      TestDataUtility tdl,
+                                      UmartTestDataUtility tdl,
                                       GPUTestingUtility gpuTestingUtility,
                                       UmartGPUScrapingService scraper,
                                       ObjectMapper objectMapper,
