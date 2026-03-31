@@ -1,6 +1,5 @@
 package com.price_tracker.scrapers;
 
-import com.price_tracker.TestDataUtility;
 import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
@@ -9,6 +8,7 @@ import com.price_tracker.mappers.price_point_mappers.GPUWorkstationPricePointMap
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUWorkstationPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.GPUWorkstationPricePointService;
 import com.price_tracker.services.product_services.GPUWorkstationService;
+import com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingUtility;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUWorkstationScrapingService;
 import org.junit.jupiter.api.Test;
@@ -29,8 +29,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.TestingConstants.TESTING_WS_GPU_MODEL_NUMBER;
 import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_RTX_PRO_6000;
+import static com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingData.TESTING_WS_GPU_MODEL_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GPUWorkstationScraperIntegrationTests {
 
     private final MockMvc mockMVC;
-    private final TestDataUtility tdl;
+    private final WorkstationGPUTestingUtility workstationGPUTestingUtility;
     private final UmartGPUWorkstationScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate;
@@ -51,7 +51,7 @@ public class GPUWorkstationScraperIntegrationTests {
 
     @Autowired
     public GPUWorkstationScraperIntegrationTests(MockMvc mockMVC,
-                                                 TestDataUtility tdl,
+                                                 WorkstationGPUTestingUtility workstationGPUTestingUtility,
                                                  UmartGPUWorkstationScrapingService scraper,
                                                  ObjectMapper objectMapper,
                                                  GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate,
@@ -59,7 +59,7 @@ public class GPUWorkstationScraperIntegrationTests {
                                                  GPUWorkstationPricePointMapper gpuWorkstationPricePointMapper,
                                                  GPUWorkstationPricePointService gpuWorkstationPricePointService) {
         this.mockMVC = mockMVC;
-        this.tdl = tdl;
+        this.workstationGPUTestingUtility = workstationGPUTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
         this.gpuWorkstationPricePointJDBCTemplate = gpuWorkstationPricePointJDBCTemplate;
@@ -77,7 +77,8 @@ public class GPUWorkstationScraperIntegrationTests {
     @Test
     public void testThatWSGPUPricePointInsertionWithJDBCTemplateReturnsOK() throws Exception {
         List<GPUWorkstationPricePoint> returnList = Stream.generate(() ->
-                        scraper.createGPUWorkstationPricePoint(tdl.createSampleWSGPUPricePointData()))
+                        scraper.createGPUWorkstationPricePoint(workstationGPUTestingUtility
+                                .createSampleWSGPUPricePointData()))
                 .limit(10)
                 .toList();
 
@@ -94,7 +95,8 @@ public class GPUWorkstationScraperIntegrationTests {
     public void testThatWSGPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<GPUWorkstationPricePoint> returnList = Stream.generate(() ->
-                        scraper.createGPUWorkstationPricePoint(tdl.createSampleWSGPUPricePointData()))
+                        scraper.createGPUWorkstationPricePoint(workstationGPUTestingUtility
+                                .createSampleWSGPUPricePointData()))
                 .limit(insertionCount)
                 .toList();
 
@@ -142,10 +144,12 @@ public class GPUWorkstationScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatus200Ok() throws Exception {
 
-        GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(tdl.createTestWorkstationGPUDTO());
+        GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(workstationGPUTestingUtility
+                .createTestWorkstationGPUDTO());
 
         List<GPUWorkstationPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createGPUWorkstationPricePoint(tdl.createSampleWSGPUPricePointData()))
+                        scraper.createGPUWorkstationPricePoint(workstationGPUTestingUtility
+                                .createSampleWSGPUPricePointData()))
                 .limit(10)
                 .toList();
 
@@ -163,11 +167,13 @@ public class GPUWorkstationScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedPricePoints() throws Exception {
 
         // first we save the workstation GPU to the DB
-        GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(tdl.createTestWorkstationGPUDTO());
+        GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(workstationGPUTestingUtility
+                .createTestWorkstationGPUDTO());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<GPUWorkstationPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createGPUWorkstationPricePoint(tdl.createSampleWSGPUPricePointData()))
+                        scraper.createGPUWorkstationPricePoint(workstationGPUTestingUtility
+                                .createSampleWSGPUPricePointData()))
                 .limit(10)
                 .toList();
 
@@ -191,11 +197,13 @@ public class GPUWorkstationScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedWSGPUData() throws Exception {
 
         // first we save the workstation GPU to the DB
-        GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(tdl.createTestWorkstationGPUDTO());
+        GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(workstationGPUTestingUtility
+                .createTestWorkstationGPUDTO());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<GPUWorkstationPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createGPUWorkstationPricePoint(tdl.createSampleWSGPUPricePointData()))
+                        scraper.createGPUWorkstationPricePoint(workstationGPUTestingUtility
+                                .createSampleWSGPUPricePointData()))
                 .limit(10)
                 .toList();
 
