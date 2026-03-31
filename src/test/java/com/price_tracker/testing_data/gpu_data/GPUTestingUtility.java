@@ -7,12 +7,10 @@ import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.price_tracker.testing_data.TestingConstants.TESTING_VENDOR_UMART;
+import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 import static com.price_tracker.testing_data.UmartWebDomainNames.UMART_ASUS_5070TI;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.*;
 
@@ -56,7 +54,7 @@ public class GPUTestingUtility {
         return UmartProductEntity.builder()
                 .productType(PRODUCT_TYPE_GPU)
                 .modelNumber(TESTING_GPU_MODEL_NUMBER)
-                .vendor(TESTING_VENDOR_UMART)
+                .vendor(UMART)
                 .url(UMART_ASUS_5070TI)
                 .build();
     }
