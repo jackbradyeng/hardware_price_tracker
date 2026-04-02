@@ -30,6 +30,7 @@ public class CPUTestingUtility {
                 .build();
     }
 
+    /// SAMPLE PRICE POINTS
     public ScrapedDataDTO createSampleCPUPricePointData() {
         return ScrapedDataDTO.builder()
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)

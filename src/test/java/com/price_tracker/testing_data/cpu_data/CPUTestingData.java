@@ -2,7 +2,7 @@ package com.price_tracker.testing_data.cpu_data;
 
 public class CPUTestingData {
 
-    // cpu testing constants
+    // CPU ENTITY/DTO TESTING CONSTANTS
     public static final String TESTING_CPU_MODEL_NUMBER = "100-100001405WOF";
     public static final String TESTING_CPU_NAME = "AMD Ryzen 5 9600X 6 Core AM5 5.40GHz CPU Processor (100-100001405WOF)";
     public static final String TESTING_CPU_CHIP_MANUFACTURER = "AMD";
@@ -20,7 +20,7 @@ public class CPUTestingData {
     public static final String TESTING_CPU_MEMORY_SUPPORTED = "DDR5";
     public static final Boolean TESTING_CPU_INTEGRATED_GPU = true;
 
-    // umart cpu product testing constants
+    // UMART CPU PRODUCT TESTING CONSTANTS
     public static final String TESTING_CPU_PRICE = "360.00";
     public static final String PRODUCT_TYPE_CPU = "CPU";
 }
