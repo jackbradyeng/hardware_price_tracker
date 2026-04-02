@@ -50,6 +50,7 @@ public class GPUTestingUtility {
         return gpuDTOs;
     }
 
+    /// SAMPLE PRODUCTS
     public UmartProductEntity createTestUmartGPU() {
         return UmartProductEntity.builder()
                 .productType(PRODUCT_TYPE_GPU)
@@ -59,6 +60,7 @@ public class GPUTestingUtility {
                 .build();
     }
 
+    /// SAMPLE PRICE POINTS
     public ScrapedDataDTO createSampleGPUPricePointData() {
         return ScrapedDataDTO.builder()
                 .modelNumber(TESTING_GPU_MODEL_NUMBER)
