@@ -2,9 +2,13 @@ package com.price_tracker.testing_data.cpu_data;
 
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import static com.price_tracker.testing_data.cpu_data.CPUTestingData.*;
+import java.math.BigDecimal;
 
+@Component
+@AllArgsConstructor
 public class CPUTestingUtility {
 
     /// SAMPLE ENTITIES/DTOS
