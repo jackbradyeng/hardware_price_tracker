@@ -2,7 +2,7 @@ package com.price_tracker.testing_data.wsgpu_data;
 
 public class WorkstationGPUTestingData {
 
-    // workstation gpu testing constants
+    // WORKSTATION GPU ENTITY/DTO TESTING CONSTANTS
     public static final String TESTING_WS_GPU_MODEL_NUMBER = "900-5G144-2500-000";
     public static final String TESTING_WS_GPU_NAME =
             "NVIDIA RTX Pro 6000 Blackwell Edition 96GB Workstation Graphics Card (900-5G144-2500-000)";
@@ -15,7 +15,7 @@ public class WorkstationGPUTestingData {
     public static final Integer TESTING_WS_GPU_RT_CORES = 188;
     public static final String TESTING_WS_GPU_SYS_INTERFACE = "PCI Express 5.0 x16";
 
-    // umart workstation gpu product testing constants
+    // UMART WORKSTATION GPU PRODUCT TESTING CONSTANTS
     public static final String TESTING_WS_GPU_PRICE = "14999.00";
     public static final String TESTING_WS_GPU_PRODUCT_NAME = "WORKSTATION GPU";
 }
