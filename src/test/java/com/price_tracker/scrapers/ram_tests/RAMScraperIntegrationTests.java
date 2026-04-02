@@ -1,4 +1,4 @@
-package com.price_tracker.scrapers;
+package com.price_tracker.scrapers.ram_tests;
 
 import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
@@ -31,8 +31,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 import static com.price_tracker.testing_data.ram_data.RAMTestingData.TESTING_RAM_MODEL_NUMBER;
+import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -165,7 +165,7 @@ public class RAMScraperIntegrationTests {
     }
 
     @Test
-    public void testThatFindByModelNumberReturnsExpectedPricePoints() throws Exception {
+    public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the RAM to the DB
         RAMEntity savedRAM = ramService.save(ramTestingUtility.createTestRAM());
@@ -192,7 +192,7 @@ public class RAMScraperIntegrationTests {
     }
 
     @Test
-    public void testThatFindByModelNumberReturnsExpectedRAMData() throws Exception {
+    public void testThatFindByModelNumberReturnsExpectedRAMData() {
 
         // first we save the RAM to the DB
         RAMEntity savedRAM = ramService.save(ramTestingUtility.createTestRAM());

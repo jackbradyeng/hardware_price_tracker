@@ -1,4 +1,4 @@
-package com.price_tracker.scrapers;
+package com.price_tracker.scrapers.wsgpu_tests;
 
 import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
@@ -164,7 +164,7 @@ public class GPUWorkstationScraperIntegrationTests {
     }
 
     @Test
-    public void testThatFindByModelNumberReturnsExpectedPricePoints() throws Exception {
+    public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the workstation GPU to the DB
         GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(workstationGPUTestingUtility
@@ -194,7 +194,7 @@ public class GPUWorkstationScraperIntegrationTests {
     }
 
     @Test
-    public void testThatFindByModelNumberReturnsExpectedWSGPUData() throws Exception {
+    public void testThatFindByModelNumberReturnsExpectedWSGPUData() {
 
         // first we save the workstation GPU to the DB
         GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(workstationGPUTestingUtility

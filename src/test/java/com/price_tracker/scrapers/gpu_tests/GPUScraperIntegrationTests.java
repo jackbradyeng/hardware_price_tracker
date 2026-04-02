@@ -1,6 +1,5 @@
-package com.price_tracker.scrapers;
+package com.price_tracker.scrapers.gpu_tests;
 
-import com.price_tracker.testing_data.vendor_data.UmartTestDataUtility;
 import com.price_tracker.domain.dto.hybrid_dtos.GPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
@@ -32,8 +31,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_ASUS_5070TI;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
+import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_ASUS_5070TI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -44,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GPUScraperIntegrationTests {
 
     private final MockMvc mockMVC;
-    private final UmartTestDataUtility tdl;
     private final GPUTestingUtility gpuTestingUtility;
     private final UmartGPUScrapingService scraper;
     private final ObjectMapper objectMapper;
@@ -56,7 +54,6 @@ public class GPUScraperIntegrationTests {
 
     @Autowired
     public GPUScraperIntegrationTests(MockMvc mockMVC,
-                                      UmartTestDataUtility tdl,
                                       GPUTestingUtility gpuTestingUtility,
                                       UmartGPUScrapingService scraper,
                                       ObjectMapper objectMapper,
@@ -66,7 +63,6 @@ public class GPUScraperIntegrationTests {
                                       GPUPricePointMapper gpuPricePointMapper,
                                       GPUPricePointService gpuPricePointService) {
         this.mockMVC = mockMVC;
-        this.tdl = tdl;
         this.gpuTestingUtility = gpuTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
@@ -169,7 +165,7 @@ public class GPUScraperIntegrationTests {
     }
 
     @Test
-    public void testThatFindByModelNumberReturnsExpectedPricePoints() throws Exception {
+    public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the GPU to the DB
         GPUEntity savedGPU = gpuService.save(gpuTestingUtility.createTestGPU());
@@ -196,7 +192,7 @@ public class GPUScraperIntegrationTests {
     }
 
     @Test
-    public void testThatFindByModelNumberReturnsExpectedGPUData() throws Exception {
+    public void testThatFindByModelNumberReturnsExpectedGPUData() {
 
         // first we save the GPU to the DB
         GPUEntity savedGPU = gpuService.save(gpuTestingUtility.createTestGPU());
