@@ -165,6 +165,16 @@ public class CPUScraperIntegrationTests {
     }
 
     @Test
+    public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/cpu_pricepoints/" + "random_model_number")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
     public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the CPU to the DB
