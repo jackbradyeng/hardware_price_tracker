@@ -36,13 +36,16 @@ public class RAMEntityControllerIntegrationTests {
     private final RAMMapper ramMapper;
 
     @Autowired
-    public RAMEntityControllerIntegrationTests(MockMvc mockMvc, ObjectMapper objectMapper,
-                                               RAMTestingUtility ramTestingUtility, RAMService ramService) {
+    public RAMEntityControllerIntegrationTests(MockMvc mockMvc,
+                                               ObjectMapper objectMapper,
+                                               RAMTestingUtility ramTestingUtility,
+                                               RAMService ramService,
+                                               RAMMapper ramMapper) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
         this.ramTestingUtility = ramTestingUtility;
         this.ramService = ramService;
-        this.ramMapper = new RAMMapper(new ModelMapper());
+        this.ramMapper = ramMapper;
     }
 
     /// create tests
