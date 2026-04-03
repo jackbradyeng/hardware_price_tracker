@@ -184,9 +184,10 @@ public class CPUScraperIntegrationTests {
                 .toList();
 
         // next we query by the CPU's model number - this should return a collection of composite DTOs
-        CPUDataAndPricePointDTO returnList = cpuPricePointService.findByModelNumber(savedCPU.getModelNumber());
+        Optional<CPUDataAndPricePointDTO> returnList = cpuPricePointService.findByModelNumber(savedCPU.getModelNumber());
 
-        assertThat(returnList.getCpuPricePointDTOList())
+        assertThat(returnList.isPresent());
+        assertThat(returnList.get().getCpuPricePointDTOList())
                 .hasSize(10)
                 .containsExactlyElementsOf(pricePointDTOS);
     }
@@ -209,8 +210,9 @@ public class CPUScraperIntegrationTests {
         cpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // next we query by the CPU's model number - this should return a collection of composite DTOs
-        CPUDataAndPricePointDTO returnList = cpuPricePointService.findByModelNumber(savedCPU.getModelNumber());
+        Optional<CPUDataAndPricePointDTO> returnList = cpuPricePointService.findByModelNumber(savedCPU.getModelNumber());
 
-        assert returnList.getCpuDTO().equals(cpuDTO);
+        assertThat(returnList).isPresent();
+        assertThat(returnList.get().getCpuDTO().equals(cpuDTO));
     }
 }

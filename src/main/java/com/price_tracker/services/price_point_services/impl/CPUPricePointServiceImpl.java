@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,14 +32,14 @@ public class CPUPricePointServiceImpl implements CPUPricePointService {
     }
 
     @Override
-    public CPUDataAndPricePointDTO findByModelNumber(String modelNumber) {
+    public Optional<CPUDataAndPricePointDTO> findByModelNumber(String modelNumber) {
 
         List<CPUDataAndPricePointProjection> resultList = cpuPricePointRepository
                 .getPricePointsByModelNumber(modelNumber);
 
-        // if list is empty return a 404
+        // throw a 404 if not found
         if (resultList.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
 
         // convert CPU to a DTO so we can expose it in our API
@@ -50,9 +51,10 @@ public class CPUPricePointServiceImpl implements CPUPricePointService {
                 .map(result -> cpuPricePointMapper.mapTo(result.getCPUPricePoint()))
                 .toList();
 
-        return CPUDataAndPricePointDTO.builder()
+        return Optional.ofNullable(
+                CPUDataAndPricePointDTO.builder()
                 .cpuDTO(cpuDTO)
                 .cpuPricePointDTOList(cpuPricePointDTOS)
-                .build();
+                .build());
     }
 }
