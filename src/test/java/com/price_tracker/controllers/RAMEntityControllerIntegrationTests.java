@@ -8,7 +8,6 @@ import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import static com.price_tracker.testing_data.ram_data.RAMTestingData.TESTING_RAM_MODEL_NUMBER;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -136,8 +135,6 @@ public class RAMEntityControllerIntegrationTests {
         RAMDTO updatedRAM = ramMapper.mapTo(testRAMEntity);
         updatedRAM.setName("Updated RAM name");
         String ramJson = objectMapper.writeValueAsString(updatedRAM);
-
-        System.out.println("Model number is " + savedRAMEntity.getModelNumber());
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/ram/" + savedRAMEntity.getModelNumber())
