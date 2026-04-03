@@ -165,6 +165,16 @@ public class GPUScraperIntegrationTests {
     }
 
     @Test
+    public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/gpu_pricepoints/" + "random_model_number")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
     public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the GPU to the DB
