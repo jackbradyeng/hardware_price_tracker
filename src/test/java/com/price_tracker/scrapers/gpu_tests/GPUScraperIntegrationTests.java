@@ -184,9 +184,10 @@ public class GPUScraperIntegrationTests {
                 .toList();
 
         // next we query by the GPU's model number - this should return a collection of composite DTOs
-        GPUDataAndPricePointDTO returnList = gpuPricePointService.findByModelNumber(savedGPU.getModelNumber());
+        Optional<GPUDataAndPricePointDTO> returnList = gpuPricePointService.findByModelNumber(savedGPU.getModelNumber());
 
-        assertThat(returnList.getGpuPricePointDTOList())
+        assertThat(returnList.isPresent());
+        assertThat(returnList.get().getGpuPricePointDTOList())
                 .hasSize(10)
                 .containsExactlyElementsOf(pricePointDTOS);
     }
@@ -209,8 +210,9 @@ public class GPUScraperIntegrationTests {
         gpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // next we query by the GPU's model number - this should return a collection of composite DTOs
-        GPUDataAndPricePointDTO returnList = gpuPricePointService.findByModelNumber(savedGPU.getModelNumber());
+        Optional<GPUDataAndPricePointDTO> returnList = gpuPricePointService.findByModelNumber(savedGPU.getModelNumber());
 
-        assert returnList.getGpuDTO().equals(gpuDTO);
+        assertThat(returnList.isPresent());
+        assertThat(returnList.get().getGpuDTO().equals(gpuDTO));
     }
 }
