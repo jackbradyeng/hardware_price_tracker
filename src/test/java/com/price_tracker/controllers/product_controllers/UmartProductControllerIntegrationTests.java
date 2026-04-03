@@ -1,4 +1,4 @@
-package com.price_tracker.controllers;
+package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.testing_data.vendor_data.UmartTestDataUtility;
 import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
