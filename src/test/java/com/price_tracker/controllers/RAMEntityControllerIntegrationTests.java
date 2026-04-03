@@ -174,7 +174,7 @@ public class RAMEntityControllerIntegrationTests {
 
     /// delete tests
     @Test
-    public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingGPU() throws Exception {
+    public void testThatDeleteRAMReturnsHttpStatus204FromNonExistingRAM() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/ram/ramDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -182,7 +182,7 @@ public class RAMEntityControllerIntegrationTests {
     }
 
     @Test
-    public void testThatDeleteGPUReturnsHttpStatus204ForExisting() throws Exception {
+    public void testThatDeleteRAMReturnsHttpStatus204ForExisting() throws Exception {
         RAMEntity testRAMEntity = ramTestingUtility.createTestRAM();
         RAMEntity savedRAMEntity = ramService.save(testRAMEntity);
 

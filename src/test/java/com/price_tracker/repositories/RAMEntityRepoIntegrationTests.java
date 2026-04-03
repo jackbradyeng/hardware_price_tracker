@@ -30,7 +30,7 @@ public class RAMEntityRepoIntegrationTests {
     }
 
     @Test
-    public void testCreateANdRecall() {
+    public void testCreateAndRecall() {
         RAMEntity ramEntity = ramTestingUtility.createTestRAM();
         testInstance.save(ramEntity);
         Optional<RAMEntity> result = testInstance.findById(ramEntity.getModelNumber());
