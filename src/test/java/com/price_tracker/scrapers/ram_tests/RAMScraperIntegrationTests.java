@@ -165,6 +165,16 @@ public class RAMScraperIntegrationTests {
     }
 
     @Test
+    public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/ram_pricepoints/" + "random_model_number")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
     public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the RAM to the DB
