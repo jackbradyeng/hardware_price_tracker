@@ -136,9 +136,19 @@ CORS is configured for `localhost:3000`. This enables communication with the fro
 
 ## Testing
 
-- TO BE COMPLETED.
+All tests are integration tests — there are no unit tests with mocked dependencies. Every test spins up the full Spring context against a real PostgreSQL instance and exercises the actual beans end-to-end.
 
-NOTE: Tests use `@DirtiesContext` to rebuild the schema between test methods, and `@ActiveProfiles("test")` to switch to a `create-drop` database. This ensures full isolation without manual teardown.
+Tests are organised into three layers, mirroring the application's layered architecture:
+
+**Repository tests** (`repositories/`) — exercises JPA repositories directly, verifying that entities can be persisted and retrieved correctly from the database.
+
+**Controller tests** (`controllers/`) — tests REST endpoints via `MockMvc`, covering the full request/response cycle (status codes, response body shape, CRUD operations, and 404 handling for missing resources).
+
+**Scraper tests** (`scrapers/`) — the most comprehensive layer. These tests hit live vendor URLs to verify that the scraper extracts the expected model number, then persist price points via the JDBC batch template and assert on the returned data through the price point API. Batch insertion correctness is verified across both small (10 items) and large (110 items, spanning multiple round-trips) insertion counts.
+
+**Test data** is centralised in per-domain utility classes (`testing_data/`), e.g. `GPUTestingUtility` and `GPUTestingData`, which provide shared fixture creation methods used across all three test layers.
+
+**NOTE:** Tests use `@DirtiesContext` to rebuild the schema between test methods, and `@ActiveProfiles("test")` to switch to a `create-drop` database. This ensures full isolation without manual teardown.
 
 ---
 
