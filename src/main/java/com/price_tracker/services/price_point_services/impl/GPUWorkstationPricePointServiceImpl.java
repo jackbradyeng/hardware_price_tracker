@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,14 +33,14 @@ public class GPUWorkstationPricePointServiceImpl implements GPUWorkstationPriceP
     }
 
     @Override
-    public GPUWorkstationDataAndPricePointDTO findByModelNumber(String modelNumber) {
+    public Optional<GPUWorkstationDataAndPricePointDTO> findByModelNumber(String modelNumber) {
 
         List<GPUWorkstationDataAndPricePointProjection> resultList = gpuWorkstationPricePointRepository
                 .getPricePointsByModelNumber(modelNumber);
 
         // if list is empty return a 404
         if (resultList.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
 
         // convert GPUWorkstation to a DTO so we can expose it in our API
@@ -51,9 +52,10 @@ public class GPUWorkstationPricePointServiceImpl implements GPUWorkstationPriceP
                 .map(result -> gpuPricePointMapper.mapTo(result.getGPUWorkstationPricePoint()))
                 .toList();
 
-        return GPUWorkstationDataAndPricePointDTO.builder()
+        return Optional.ofNullable(
+                GPUWorkstationDataAndPricePointDTO.builder()
                 .gpuWorkstationDTO(gpuWorkstationDTO)
                 .gpuWorkstationPricePointDTOList(gpuWorkstationPricePointDTOS)
-                .build();
+                .build());
     }
 }

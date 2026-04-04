@@ -1,8 +1,8 @@
-package com.price_tracker.constants;
+package com.price_tracker.testing_data.vendor_data;
 
-public class WebDomainNames {
+public class UmartWebDomainNames {
 
-    /// UMART DOMAINS
+    // UMART PRODUCT DOMAINS
     public static final String UMART_RYZEN_9_9600X =
             "https://www.umart.com.au/product/amd-ryzen-5-9600x-6-core-am5-5-40ghz-cpu-processor-100-100001405wof-78588";
 

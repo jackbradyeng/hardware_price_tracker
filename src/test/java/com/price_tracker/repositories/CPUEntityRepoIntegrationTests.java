@@ -1,8 +1,8 @@
 package com.price_tracker.repositories;
 
-import com.price_tracker.domain.entities.product_entities.GPUEntity;
-import com.price_tracker.repositories.product_repos.GPURepository;
-import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
+import com.price_tracker.domain.entities.product_entities.CPUEntity;
+import com.price_tracker.repositories.product_repos.CPURepository;
+import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,23 +18,23 @@ import java.util.Optional;
 @DirtiesContext(classMode =  DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class GPUEntityRepoIntegrationTests {
+public class CPUEntityRepoIntegrationTests {
 
-    private final GPURepository testInstance;
-    private final GPUTestingUtility gpuTestingUtility;
+    private final CPURepository testInstance;
+    private final CPUTestingUtility cpuTestingUtility;
 
     @Autowired
-    public GPUEntityRepoIntegrationTests(GPURepository testInstance, GPUTestingUtility gpuTestingUtility) {
+    public CPUEntityRepoIntegrationTests(CPURepository testInstance, CPUTestingUtility cpuTestingUtility) {
         this.testInstance = testInstance;
-        this.gpuTestingUtility = gpuTestingUtility;
+        this.cpuTestingUtility = cpuTestingUtility;
     }
 
     @Test
     public void testCreateAndRecall() {
-        GPUEntity gpuEntity = gpuTestingUtility.createTestGPU();
-        testInstance.save(gpuEntity);
-        Optional<GPUEntity> result = testInstance.findById(gpuEntity.getModelNumber());
+        CPUEntity cpuEntity = cpuTestingUtility.createTestCPU();
+        testInstance.save(cpuEntity);
+        Optional<CPUEntity> result = testInstance.findById(cpuEntity.getModelNumber());
         assert (result).isPresent();
-        assert (result.get()).equals(gpuEntity);
+        assert (result.get()).equals(cpuEntity);
     }
 }

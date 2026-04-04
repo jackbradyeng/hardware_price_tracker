@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +30,11 @@ public class RAMPricePointController {
     @GetMapping(path = "/api/ram_pricepoints/{modelNumber}")
     public ResponseEntity<RAMDataAndPricePointDTO> findRAMPricePointsBYModelNumber(
             @PathVariable String modelNumber) {
-        return new ResponseEntity<>(ramPricePointService.findByModelNumber(modelNumber), HttpStatus.OK);
+
+        Optional<RAMDataAndPricePointDTO> pricePointDTOS = ramPricePointService.findByModelNumber(modelNumber);
+
+        return pricePointDTOS.map(foundPriceHistory ->
+                new ResponseEntity<>(foundPriceHistory, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

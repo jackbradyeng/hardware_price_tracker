@@ -1,6 +1,5 @@
 package com.price_tracker.repositories;
 
-import com.price_tracker.TestDataUtility;
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
@@ -8,6 +7,8 @@ import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.services.product_services.RAMService;
 import com.price_tracker.services.vendor_services.UmartProductService;
+import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
+import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,50 +29,53 @@ public class UmartProductRepoIntegrationTests {
     private final UmartProductService umartProductService;
     private final GPUService gpuService;
     private final RAMService ramService;
-    private final TestDataUtility tdl;
+    private final GPUTestingUtility gpuTestingUtility;
+    private final RAMTestingUtility ramTestingUtility;
 
     @Autowired
     public UmartProductRepoIntegrationTests(UmartProductRepository umartProductRepository,
                                             UmartProductService umartProductService,
                                             GPUService gpuService,
                                             RAMService ramService,
-                                            TestDataUtility tdl) {
+                                            GPUTestingUtility gpuTestingUtility,
+                                            RAMTestingUtility ramTestingUtility) {
         this.umartProductRepository = umartProductRepository;
         this.umartProductService  = umartProductService;
         this.ramService = ramService;
         this.gpuService = gpuService;
-        this.tdl = tdl;
+        this.gpuTestingUtility = gpuTestingUtility;
+        this.ramTestingUtility = ramTestingUtility;
     }
 
     @Test
     public void testThatActiveSavedGPUProductIsReturnedByGetURLs() {
-        gpuService.save(tdl.createTestGPU());
-        UmartProductEntity savedUmartGPU = umartProductService.save(tdl.createTestUmartGPU());
+        gpuService.save(gpuTestingUtility.createTestGPU());
+        UmartProductEntity savedUmartGPU = umartProductService.save(gpuTestingUtility.createTestUmartGPU());
         assert umartProductRepository.findUrlsForActiveGPUs().getFirst().equals(savedUmartGPU.getUrl());
     }
 
     @Test
     public void testThatSavedInactiveGPUProductIsNotReturnedBGetURLs() {
-        GPUEntity gpuEntity = tdl.createTestGPU();
+        GPUEntity gpuEntity = gpuTestingUtility.createTestGPU();
         gpuEntity.setIsActive(false);
         gpuService.save(gpuEntity);
-        umartProductService.save(tdl.createTestUmartGPU());
+        umartProductService.save(gpuTestingUtility.createTestUmartGPU());
         assert umartProductRepository.findUrlsForActiveGPUs().isEmpty();
     }
 
     @Test
     public void testThatSavedActiveRAMProductIsReturnedByGetURLs() {
-        ramService.save(tdl.createTestRAM());
-        UmartProductEntity savedUmartRAM = umartProductRepository.save(tdl.createTestUmartRAM());
+        ramService.save(ramTestingUtility.createTestRAM());
+        UmartProductEntity savedUmartRAM = umartProductRepository.save(ramTestingUtility.createTestUmartRAM());
         assert umartProductRepository.findUrlsForActiveRAM().getFirst().equals(savedUmartRAM.getUrl());
     }
 
     @Test
     public void testThatSavedInactiveRAMProductIsNotReturnedByGetURLs() {
-        RAMEntity ramEntity = tdl.createTestRAM();
+        RAMEntity ramEntity = ramTestingUtility.createTestRAM();
         ramEntity.setIsActive(false);
         ramService.save(ramEntity);
-        umartProductRepository.save(tdl.createTestUmartRAM());
+        umartProductRepository.save(ramTestingUtility.createTestUmartRAM());
         assert umartProductRepository.findUrlsForActiveRAM().isEmpty();
     }
 }

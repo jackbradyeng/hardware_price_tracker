@@ -1,10 +1,10 @@
-package com.price_tracker.controllers;
+package com.price_tracker.controllers.product_controllers;
 
-import com.price_tracker.TestDataUtility;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
 import com.price_tracker.mappers.product_mappers.GPUWorkstationMapper;
 import com.price_tracker.services.product_services.GPUWorkstationService;
+import com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
-import static com.price_tracker.constants.TestingConstants.*;
+import static com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingData.TESTING_WS_GPU_MODEL_NUMBER;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -29,7 +29,7 @@ public class GPUWorkstationControllerIntegrationTests {
 
     private final MockMvc mockMVC;
     private final ObjectMapper objectMapper;
-    private final TestDataUtility tdl;
+    private final WorkstationGPUTestingUtility workstationGPUTestingUtility;
     private final GPUWorkstationService gpuWorkstationService;
     private final GPUWorkstationMapper gpuWorkstationMapper;
 
@@ -37,13 +37,13 @@ public class GPUWorkstationControllerIntegrationTests {
     public GPUWorkstationControllerIntegrationTests(
             MockMvc mockMVC,
             ObjectMapper objectMapper,
-            TestDataUtility tdl,
+            WorkstationGPUTestingUtility workstationGPUTestingUtility,
             GPUWorkstationService gpuWorkstationService,
             GPUWorkstationMapper gpuWorkstationMapper) {
 
         this.mockMVC = mockMVC;
         this.objectMapper = objectMapper;
-        this.tdl = tdl;
+        this.workstationGPUTestingUtility = workstationGPUTestingUtility;
         this.gpuWorkstationService = gpuWorkstationService;
         this.gpuWorkstationMapper = gpuWorkstationMapper;
     }
@@ -51,7 +51,7 @@ public class GPUWorkstationControllerIntegrationTests {
     /// create tests
     @Test
     public void testThatCreateWSGPUReturnsHttpStatus201Created() throws Exception {
-        GPUWorkstationEntity testGPUEntity = tdl.createTestWorkstationGPU();
+        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
         String gpuString = objectMapper.writeValueAsString(testGPUEntity);
 
         mockMVC.perform(
@@ -65,7 +65,7 @@ public class GPUWorkstationControllerIntegrationTests {
 
     @Test
     public void testThatCreateWSGPUReturnsSavedGPU() throws Exception {
-        GPUWorkstationEntity testGPUEntity = tdl.createTestWorkstationGPU();
+        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
         String gpuString = objectMapper.writeValueAsString(testGPUEntity);
 
         mockMVC.perform(
@@ -92,7 +92,7 @@ public class GPUWorkstationControllerIntegrationTests {
 
     @Test
     public void testThatGetWSGPUByIDReturnsHttpStatusOkWhenGPUExists() throws Exception {
-        GPUWorkstationEntity testGPUEntity = tdl.createTestWorkstationGPU();
+        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
         GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(gpuWorkstationMapper.mapTo(testGPUEntity));
 
         mockMVC.perform(
@@ -116,7 +116,7 @@ public class GPUWorkstationControllerIntegrationTests {
     /// update tests
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
-        GPUWorkstationEntity testGPUEntity = tdl.createTestWorkstationGPU();
+        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
         GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(gpuWorkstationMapper.mapTo(testGPUEntity));
 
         savedGPUEntity.setName("Updated GPU name");
@@ -133,7 +133,7 @@ public class GPUWorkstationControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateReturnsUpdatedWSGPU() throws Exception {
-        GPUWorkstationEntity testGPUEntity = tdl.createTestWorkstationGPU();
+        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
         GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(gpuWorkstationMapper.mapTo(testGPUEntity));
         savedGPUEntity.setName("Updated GPU name");
         savedGPUEntity.setChipManufacturer("Updated GPU chip manufacturer");
@@ -167,7 +167,7 @@ public class GPUWorkstationControllerIntegrationTests {
 
     @Test
     public void testThatDeleteWSGPUReturnsHttpStatus204ForExisting() throws Exception {
-        GPUWorkstationEntity testGPUEntity = tdl.createTestWorkstationGPU();
+        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
         GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(gpuWorkstationMapper.mapTo(testGPUEntity));
 
         mockMVC.perform(

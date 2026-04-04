@@ -1,8 +1,8 @@
 package com.price_tracker.repositories;
 
-import com.price_tracker.TestDataUtility;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.repositories.product_repos.RAMRepository;
+import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +21,17 @@ import java.util.Optional;
 public class RAMEntityRepoIntegrationTests {
 
     private final RAMRepository testInstance;
-    private final TestDataUtility data;
+    private final RAMTestingUtility ramTestingUtility;
 
     @Autowired
-    public RAMEntityRepoIntegrationTests(RAMRepository testInstance, TestDataUtility data) {
+    public RAMEntityRepoIntegrationTests(RAMRepository testInstance, RAMTestingUtility ramTestingUtility) {
         this.testInstance = testInstance;
-        this.data = data;
+        this.ramTestingUtility = ramTestingUtility;
     }
 
     @Test
-    public void testCreateANdRecall() {
-        RAMEntity ramEntity = data.createTestRAM();
+    public void testCreateAndRecall() {
+        RAMEntity ramEntity = ramTestingUtility.createTestRAM();
         testInstance.save(ramEntity);
         Optional<RAMEntity> result = testInstance.findById(ramEntity.getModelNumber());
         assert (result).isPresent();

@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import static com.price_tracker.constants.DatabaseTableNames.*;
+import static com.price_tracker.constants.other_constants.DatabaseConstants.*;
 
 @Data
 @AllArgsConstructor

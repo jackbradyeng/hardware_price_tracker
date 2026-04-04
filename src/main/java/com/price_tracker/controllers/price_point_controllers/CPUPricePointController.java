@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +30,11 @@ public class CPUPricePointController {
     @GetMapping(path = "/api/cpu_pricepoints/{modelNumber}")
     public ResponseEntity<CPUDataAndPricePointDTO> findCPUPricePointsByModelNumber(
             @PathVariable String modelNumber) {
-        return new ResponseEntity<>(cpuPricePointService.findByModelNumber(modelNumber), HttpStatus.OK);
+
+        Optional<CPUDataAndPricePointDTO> cpuPricePointDTOS = cpuPricePointService.findByModelNumber(modelNumber);
+
+        return cpuPricePointDTOS.map(foundPriceHistory ->
+                new ResponseEntity<>(foundPriceHistory, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

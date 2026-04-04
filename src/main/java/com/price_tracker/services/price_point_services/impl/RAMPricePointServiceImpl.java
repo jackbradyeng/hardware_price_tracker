@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,14 +32,14 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
     }
 
     @Override
-    public RAMDataAndPricePointDTO findByModelNumber(String modelNumber) {
+    public Optional<RAMDataAndPricePointDTO> findByModelNumber(String modelNumber) {
 
         List<RAMDataAndPricePointProjection> resultList = ramPricePointRepository
                 .getPricePointsByModelNumber(modelNumber);
 
         // if list is empty return a 404
         if(resultList.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
 
         // convert RAM to a DTO so we can expose it in our API
@@ -51,9 +52,10 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
                 .toList();
 
         // construct the return object for our API
-        return RAMDataAndPricePointDTO.builder()
+        return Optional.ofNullable(
+                RAMDataAndPricePointDTO.builder()
                 .ramDTO(ramDTO)
                 .ramPricePointDTOList(ramPricePointDTOS)
-                .build();
+                .build());
     }
 }

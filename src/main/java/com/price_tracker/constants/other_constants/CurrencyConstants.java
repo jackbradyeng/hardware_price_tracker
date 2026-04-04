@@ -1,7 +1,6 @@
-package com.price_tracker.constants;
+package com.price_tracker.constants.other_constants;
 
 public class CurrencyConstants {
 
-    // currency types
     public static final String AUD = "AUD";
 }
