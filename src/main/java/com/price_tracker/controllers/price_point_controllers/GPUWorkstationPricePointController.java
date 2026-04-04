@@ -2,7 +2,6 @@ package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
-import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
 import com.price_tracker.services.price_point_services.GPUWorkstationPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
