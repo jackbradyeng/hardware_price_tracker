@@ -184,9 +184,11 @@ public class RAMScraperIntegrationTests {
                 .toList();
 
         // next we query by the RAM's model number - this should return a collection of composite DTOs
-        RAMDataAndPricePointDTO returnList = ramPricePointService.findByModelNumber(savedRAM.getModelNumber());
+        Optional<RAMDataAndPricePointDTO> returnList = ramPricePointService
+                .findByModelNumber(savedRAM.getModelNumber());
 
-        assertThat(returnList.getRamPricePointDTOList())
+        assertThat(returnList).isPresent();
+        assertThat(returnList.get().getRamPricePointDTOList())
                 .hasSize(10)
                 .containsExactlyElementsOf(pricePointDTOS);
     }
@@ -209,8 +211,10 @@ public class RAMScraperIntegrationTests {
         ramPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // next we query by the RAM's model number - this should return a collection of composite DTOs
-        RAMDataAndPricePointDTO returnList = ramPricePointService.findByModelNumber(savedRAM.getModelNumber());
+        Optional<RAMDataAndPricePointDTO> returnList = ramPricePointService
+                .findByModelNumber(savedRAM.getModelNumber());
 
-        assert returnList.getRamDTO().equals(ramDTO);
+        assertThat(returnList.isPresent());
+        assertThat(returnList.get().getRamDTO().equals(ramDTO));
     }
 }
