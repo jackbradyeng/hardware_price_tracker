@@ -20,7 +20,6 @@ public class CPUController {
     private final CPUService cpuService;
     private final Mapper<CPUEntity, CPUDTO> cpuMapper;
 
-    // cpu create endpoint
     @PostMapping(path = "/api/cpus")
     public ResponseEntity<CPUDTO> createCPU(@RequestBody final CPUDTO cpuDTO) {
         log.info("Got CPU: {}" + cpuDTO.toString());
@@ -29,7 +28,6 @@ public class CPUController {
         return new ResponseEntity<>(cpuMapper.mapTo(savedCPU), HttpStatus.CREATED);
     }
 
-    // cpu create-all endpoint
     @PostMapping(path = "/api/cpus/saveall")
     public ResponseEntity<List<CPUDTO>> createCPU(@RequestBody final List<CPUDTO> cpuDTOs) {
         log.info("Processing batch of " + cpuDTOs.size() + " CPU records.");
@@ -47,14 +45,12 @@ public class CPUController {
         return new ResponseEntity<>(responseList, HttpStatus.CREATED);
     }
 
-    // cpu read-all endpoint
     @GetMapping(path = "/api/cpus")
     public ResponseEntity<List<CPUDTO>> listCPUs() {
         List<CPUEntity> cpus = cpuService.findAll();
         return new ResponseEntity<>(cpus.stream().map(cpuMapper::mapTo).toList(), HttpStatus.OK);
     }
 
-    // cpu read-one endpoint
     @GetMapping(path = "/api/cpus/{id}")
     public ResponseEntity<CPUDTO> getCPU(@PathVariable String id) {
         Optional<CPUEntity> foundCPU = cpuService.findOne(id);
@@ -64,7 +60,6 @@ public class CPUController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // cpu full-update endpoint
     @PutMapping(path = "/api/cpus/{id}")
     public ResponseEntity<CPUDTO> fullUpdateCPU(@PathVariable String id, @RequestBody CPUDTO cpudto) {
         if(!cpuService.exists(id)) {
@@ -76,7 +71,6 @@ public class CPUController {
         return new ResponseEntity<>(cpuMapper.mapTo(savedCPU), HttpStatus.OK);
     }
 
-    // cpu delete endpoint
     @DeleteMapping(path = "/api/cpus/{id}")
     public ResponseEntity<CPUDTO> deleteCPU(@PathVariable String id) {
         cpuService.delete(id);

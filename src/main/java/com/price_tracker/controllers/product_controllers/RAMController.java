@@ -21,7 +21,6 @@ public class RAMController {
     private final RAMService ramService;
     private final Mapper<RAMEntity, RAMDTO> ramMapper;
 
-    // ram create endpoint
     @PostMapping(path = "/api/ram")
     public ResponseEntity<RAMDTO> createRAM(@RequestBody final RAMDTO ramDTO) {
         log.info("Got RAM: {}" + ramDTO.toString());
@@ -30,7 +29,6 @@ public class RAMController {
         return new ResponseEntity<>(ramMapper.mapTo(savedRAMEntity), HttpStatus.CREATED);
     }
 
-    // ram create-all endpoint
     @PostMapping(path = "/api/ram/saveall")
     public ResponseEntity<List<RAMDTO>> createRam(@RequestBody final List<RAMDTO> ramDTOs) {
         log.info("Processing batch of " + ramDTOs.size() + " RAM records");
@@ -48,14 +46,12 @@ public class RAMController {
         return new ResponseEntity<>(responseLIst, HttpStatus.CREATED);
     }
 
-    // ram read-all endpoint
     @GetMapping(path = "/api/ram")
     public List<RAMDTO> listRAM() {
         List<RAMEntity> ramEntity = ramService.findAll();
         return ramEntity.stream().map(ramMapper::mapTo).toList();
     }
 
-    // ram get-one endpoint
     @GetMapping(path = "/api/ram/{id}")
     public ResponseEntity<RAMDTO> getRAM(@PathVariable String id) {
         Optional<RAMEntity> foundRAM = ramService.findOne(id);
@@ -65,7 +61,6 @@ public class RAMController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // ram update endpoint
     @PutMapping(path = "/api/ram/{id}")
     public ResponseEntity<RAMDTO> fullUpdateRAM(@PathVariable String id, @RequestBody RAMDTO ramDTO) {
         if(!ramService.exists(id)) {
@@ -77,7 +72,6 @@ public class RAMController {
         return new ResponseEntity<>(ramMapper.mapTo(savedRAMEntity), HttpStatus.OK);
     }
 
-    // ram partial-update endpoint
     @PatchMapping(path = "/api/ram/{id}")
     public ResponseEntity<RAMDTO> partialUpdate(@PathVariable String id, @RequestBody RAMDTO ramDTO) {
         if(!ramService.exists(id)) {
@@ -88,7 +82,6 @@ public class RAMController {
         return new ResponseEntity<>(ramMapper.mapTo(updatedRAMEntity), HttpStatus.OK);
     }
 
-    // ram delete endpoint
     @DeleteMapping(path = "/api/ram/{id}")
     public ResponseEntity<RAMDTO> deleteRAM(@PathVariable String id) {
         ramService.delete(id);

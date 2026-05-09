@@ -20,7 +20,6 @@ public class GPUController {
     private final GPUService gpuService;
     private final Mapper<GPUEntity, GPUDTO> gpuMapper;
 
-    // gpu create endpoint
     @PostMapping(path = "/api/gpus")
     public ResponseEntity<GPUDTO> createGPU(@RequestBody final GPUDTO gpuDTO) {
         log.info("Got GPU: {}" + gpuDTO.toString());
@@ -29,7 +28,6 @@ public class GPUController {
         return new ResponseEntity<>(gpuMapper.mapTo(savedGPUEntity), HttpStatus.CREATED);
     }
 
-    // gpu create-all endpoint
     @PostMapping(path = "/api/gpus/saveall")
     public ResponseEntity<List<GPUDTO>> createGPU(@RequestBody final List<GPUDTO> gpuDTOs) {
         log.info("Processing batch of " + gpuDTOs.size() + " GPU records.");
@@ -47,14 +45,12 @@ public class GPUController {
         return new ResponseEntity<>(responseList, HttpStatus.CREATED);
     }
 
-    // gpu read-all endpoint
     @GetMapping(path = "/api/gpus")
     public ResponseEntity<List<GPUDTO>> listGPUs() {
         List<GPUEntity> gpus = gpuService.findAll();
         return new ResponseEntity<>(gpus.stream().map(gpuMapper::mapTo).toList(), HttpStatus.OK);
     }
 
-    // gpu get-one endpoint
     @GetMapping(path = "/api/gpus/{id}")
     public ResponseEntity<GPUDTO> getGPU(@PathVariable String id) {
         Optional<GPUEntity> foundGPU = gpuService.findOne(id);
@@ -64,7 +60,6 @@ public class GPUController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // gpu update endpoint
     @PutMapping(path = "/api/gpus/{id}")
     public ResponseEntity<GPUDTO> fullUpdateGPU(@PathVariable String id, @RequestBody GPUDTO gpuDTO) {
         if(!gpuService.exists(id)) {
@@ -76,7 +71,6 @@ public class GPUController {
         return new ResponseEntity<>(gpuMapper.mapTo(savedGPUEntity), HttpStatus.OK);
     }
 
-    // gpu partial-update endpoint
     @PatchMapping(path = "/api/gpus/{id}")
     public ResponseEntity<GPUDTO> partialUpdate(@PathVariable String id, @RequestBody GPUDTO gpuDTO) {
         if(!gpuService.exists(id)) {
@@ -87,7 +81,6 @@ public class GPUController {
         return new ResponseEntity<>(gpuMapper.mapTo(updatedGPUEntity), HttpStatus.OK);
     }
 
-    // gpu delete endpoint
     @DeleteMapping(path = "/api/gpus/{id}")
     public ResponseEntity<GPUDTO> deleteGPU(@PathVariable String id) {
         gpuService.delete(id);
