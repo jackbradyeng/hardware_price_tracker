@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-/** Fully functional REST API with CRUD functionality. */
 @RestController
 @RequiredArgsConstructor
 @Log
@@ -21,7 +20,6 @@ public class VendorController {
     private final VendorService vendorService;
     private final Mapper<VendorEntity, VendorDTO> vendorMapper;
 
-    // vendor create endpoint
     @PostMapping(path = "/api/vendors")
     public ResponseEntity<VendorDTO> createVendor(@RequestBody final VendorDTO vendorDTO) {
         log.info("Got vendor: {}" + vendorDTO.toString());
@@ -30,14 +28,12 @@ public class VendorController {
         return new ResponseEntity<>(vendorMapper.mapTo(savedVendor), HttpStatus.CREATED);
     }
 
-    // vendor read-all endpoint
     @GetMapping(path = "/api/vendors")
     public List<VendorDTO> listVendors() {
         List<VendorEntity> vendors = vendorService.findAll();
         return vendors.stream().map(vendorMapper::mapTo).toList();
     }
 
-    // vendor read-one endpoint
     @GetMapping(path = "/api/vendors/{id}")
     public ResponseEntity<VendorDTO> getVendor(@PathVariable String id) {
         Optional<VendorEntity> foundVendor = vendorService.findOne(id);
@@ -47,7 +43,6 @@ public class VendorController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    //vendor update endpoint
     @PutMapping(path = "/api/vendors/{id}")
     public ResponseEntity<VendorDTO> fullUpdateVendor(@PathVariable String id, @RequestBody VendorDTO vendorDTO) {
         if (!vendorService.exists(id)) {
@@ -59,7 +54,6 @@ public class VendorController {
         return new ResponseEntity<>(vendorMapper.mapTo(savedVendor), HttpStatus.OK);
     }
 
-    //vendor delete endpoint
     @DeleteMapping(path = "/api/vendors/{id}")
     public ResponseEntity<VendorDTO> deleteVendor(@PathVariable String id) {
         vendorService.delete(id);
