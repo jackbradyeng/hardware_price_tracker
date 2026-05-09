@@ -20,13 +20,11 @@ public class CPUPricePointController {
 
     private final CPUPricePointService cpuPricePointService;
 
-    // cpu price point read-all endpoint
     @GetMapping(path = "/api/cpu_pricepoints")
     public ResponseEntity<List<CPUPricePointDTO>> listCPUPricePoints() {
         return new ResponseEntity<>(cpuPricePointService.findAll(), HttpStatus.OK);
     }
 
-    // cpu get price-points and cpu data by model number
     @GetMapping(path = "/api/cpu_pricepoints/{modelNumber}")
     public ResponseEntity<CPUDataAndPricePointDTO> findCPUPricePointsByModelNumber(
             @PathVariable String modelNumber) {
