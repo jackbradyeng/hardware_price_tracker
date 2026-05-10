@@ -1,8 +1,6 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
-import com.price_tracker.domain.entities.product_entities.CPUEntity;
-import com.price_tracker.mappers.product_mappers.CPUMapper;
 import com.price_tracker.services.product_services.CPUService;
 import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
 import org.junit.jupiter.api.Test;
@@ -31,25 +29,22 @@ public class CPUEntityControllerIntegrationTests {
     private final ObjectMapper objectMapper;
     private final CPUTestingUtility cpuTestingUtility;
     private final CPUService cpuService;
-    private final CPUMapper cpuMapper;
 
     @Autowired
     public CPUEntityControllerIntegrationTests(MockMvc mockMVC,
                                                CPUTestingUtility cpuTestingUtility,
-                                               CPUService cpuService,
-                                               CPUMapper cpuMapper) {
+                                               CPUService cpuService) {
         this.mockMVC = mockMVC;
         this.objectMapper = new ObjectMapper();
         this.cpuTestingUtility = cpuTestingUtility;
         this.cpuService = cpuService;
-        this.cpuMapper = cpuMapper;
     }
 
     /// create tests
     @Test
     public void testThatCreateCPUReturnsHttpStatus201Created() throws Exception {
-        CPUEntity testCPUEntity = cpuTestingUtility.createTestCPU();
-        String cpuString = objectMapper.writeValueAsString(testCPUEntity);
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        String cpuString = objectMapper.writeValueAsString(testCPU);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.post("/api/cpus")
@@ -62,8 +57,8 @@ public class CPUEntityControllerIntegrationTests {
 
     @Test
     public void testThatCreateCPUReturnsSavedCPU() throws Exception {
-        CPUEntity testCPUEntity = cpuTestingUtility.createTestCPU();
-        String cpuString = objectMapper.writeValueAsString(testCPUEntity);
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        String cpuString = objectMapper.writeValueAsString(testCPU);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.post("/api/cpus")
@@ -89,11 +84,11 @@ public class CPUEntityControllerIntegrationTests {
 
     @Test
     public void testThatGetCPUByIDReturnsHttpStatusOkWhenCPUExists() throws Exception {
-        CPUEntity testCPUEntity = cpuTestingUtility.createTestCPU();
-        CPUEntity savedCPUEntity = cpuService.save(testCPUEntity);
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        CPUDTO savedCPU = cpuService.save(testCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/cpus/" + savedCPUEntity.getModelNumber())
+                MockMvcRequestBuilders.get("/api/cpus/" + savedCPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -113,10 +108,10 @@ public class CPUEntityControllerIntegrationTests {
     /// update tests
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
-        CPUEntity testCPUEntity = cpuTestingUtility.createTestCPU();
-        CPUEntity savedCPU = cpuService.save(testCPUEntity);
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        CPUDTO savedCPU = cpuService.save(testCPU);
 
-        CPUDTO updatedCPU = cpuMapper.mapTo(testCPUEntity);
+        CPUDTO updatedCPU = cpuTestingUtility.createTestCPU();
         updatedCPU.setName("Updated CPU name");
         String cpuJson = objectMapper.writeValueAsString(updatedCPU);
 
@@ -131,10 +126,10 @@ public class CPUEntityControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateReturnsUpdatedCPU() throws Exception {
-        CPUEntity testCPUEntity = cpuTestingUtility.createTestCPU();
-        CPUEntity savedCPU = cpuService.save(testCPUEntity);
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        CPUDTO savedCPU = cpuService.save(testCPU);
 
-        CPUDTO updatedCPU = cpuMapper.mapTo(cpuTestingUtility.createTestCPU());
+        CPUDTO updatedCPU = cpuTestingUtility.createTestCPU();
         updatedCPU.setName("Updated CPU name");
         updatedCPU.setChipManufacturer("Updated CPU chip manufacturer");
         updatedCPU.setSeries("Updated CPU series");
@@ -164,11 +159,11 @@ public class CPUEntityControllerIntegrationTests {
 
     @Test
     public void testThatDeleteCPUReturnsHttpStatus204ForExisting() throws Exception {
-        CPUEntity testCPUEntity = cpuTestingUtility.createTestCPU();
-        CPUEntity savedCPUEntity = cpuService.save(testCPUEntity);
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        CPUDTO savedCPU = cpuService.save(testCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.delete("/api/cpus/" + savedCPUEntity.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/cpus/" + savedCPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

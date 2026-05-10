@@ -1,6 +1,8 @@
 package com.price_tracker.testing_data.cpu_data;
 
+import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
+import com.price_tracker.mappers.product_mappers.CPUMapper;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,9 +13,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class CPUTestingUtility {
 
+    private final CPUMapper cpuMapper;
+
     /// SAMPLE ENTITIES/DTOS
-    public CPUEntity createTestCPU() {
-        return CPUEntity.builder()
+    public CPUDTO createTestCPU() {
+        return cpuMapper.mapTo(CPUEntity.builder()
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .name(TESTING_CPU_NAME)
                 .chipManufacturer(TESTING_CPU_CHIP_MANUFACTURER)
@@ -31,7 +35,7 @@ public class CPUTestingUtility {
                 .memorySupported(TESTING_CPU_MEMORY_SUPPORTED)
                 .hasIntegratedGPU(TESTING_CPU_INTEGRATED_GPU)
                 .isActive(true)
-                .build();
+                .build());
     }
 
     /// SAMPLE PRICE POINTS

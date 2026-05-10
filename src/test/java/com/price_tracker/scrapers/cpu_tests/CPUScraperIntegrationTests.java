@@ -4,7 +4,6 @@ import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
-import com.price_tracker.domain.entities.product_entities.CPUEntity;
 import com.price_tracker.mappers.price_point_mappers.CPUPricePointMapper;
 import com.price_tracker.mappers.product_mappers.CPUMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.CPUPricePointJDBCTemplate;
@@ -147,7 +146,7 @@ public class CPUScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatus200Ok() throws Exception {
 
-        CPUEntity savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
+        CPUDTO savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
 
         List<CPUPricePoint> sampleList = Stream.generate(() ->
                         scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
@@ -178,7 +177,7 @@ public class CPUScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the CPU to the DB
-        CPUEntity savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
+        CPUDTO savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<CPUPricePoint> sampleList = Stream.generate(() ->
@@ -206,10 +205,7 @@ public class CPUScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedCPUData() {
 
         // first we save the CPU to the DB
-        CPUEntity savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
-
-        // map to a DTO for comparison's sake
-        CPUDTO cpuDTO = cpuMapper.mapTo(savedCPU);
+        CPUDTO savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<CPUPricePoint> sampleList = Stream.generate(() ->
@@ -223,6 +219,6 @@ public class CPUScraperIntegrationTests {
         Optional<CPUDataAndPricePointDTO> returnList = cpuPricePointService.findByModelNumber(savedCPU.getModelNumber());
 
         assertThat(returnList).isPresent();
-        assertThat(returnList.get().getCpuDTO().equals(cpuDTO));
+        assertThat(returnList.get().getCpuDTO().equals(savedCPU));
     }
 }
