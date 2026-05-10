@@ -1,8 +1,6 @@
 package com.price_tracker.controllers.product_controllers;
 
-import com.price_tracker.domain.entities.product_entities.GPUEntity;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
-import com.price_tracker.mappers.Mapper;
 import com.price_tracker.services.product_services.GPUService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -18,67 +16,45 @@ import java.util.Optional;
 public class GPUController {
 
     private final GPUService gpuService;
-    private final Mapper<GPUEntity, GPUDTO> gpuMapper;
 
     @PostMapping(path = "/api/gpus")
     public ResponseEntity<GPUDTO> createGPU(@RequestBody final GPUDTO gpuDTO) {
         log.info("Got GPU: {}" + gpuDTO.toString());
-        GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
-        GPUEntity savedGPUEntity = gpuService.save(gpuEntity);
-        return new ResponseEntity<>(gpuMapper.mapTo(savedGPUEntity), HttpStatus.CREATED);
+        GPUDTO savedGPU = gpuService.save(gpuDTO);
+        return new ResponseEntity<>(savedGPU, HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/api/gpus/saveall")
     public ResponseEntity<List<GPUDTO>> createGPU(@RequestBody final List<GPUDTO> gpuDTOs) {
         log.info("Processing batch of " + gpuDTOs.size() + " GPU records.");
-
-        List<GPUEntity> gpuEntities = gpuDTOs.stream()
-                .map(gpuMapper::mapFrom)
-                .toList();
-
-        List<GPUEntity> savedEntities = gpuService.saveAll(gpuEntities);
-
-        List<GPUDTO> responseList = savedEntities.stream()
-                .map(gpuMapper::mapTo)
-                .toList();
-
-        return new ResponseEntity<>(responseList, HttpStatus.CREATED);
+        List<GPUDTO> savedEntities = gpuService.saveAll(gpuDTOs);
+        return new ResponseEntity<>(savedEntities, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/api/gpus")
     public ResponseEntity<List<GPUDTO>> listGPUs() {
-        List<GPUEntity> gpus = gpuService.findAll();
-        return new ResponseEntity<>(gpus.stream().map(gpuMapper::mapTo).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(gpuService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/gpus/{id}")
     public ResponseEntity<GPUDTO> getGPU(@PathVariable String id) {
-        Optional<GPUEntity> foundGPU = gpuService.findOne(id);
-        return foundGPU.map(gpu -> {
-            GPUDTO gpudto = gpuMapper.mapTo(gpu);
-            return new ResponseEntity<>(gpudto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<GPUDTO> foundGPU = gpuService.findOne(id);
+        return foundGPU.map(gpu -> new ResponseEntity<>(gpu, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping(path = "/api/gpus/{id}")
     public ResponseEntity<GPUDTO> fullUpdateGPU(@PathVariable String id, @RequestBody GPUDTO gpuDTO) {
-        if(!gpuService.exists(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        gpuDTO.setModelNumber(id);
-        GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
-        GPUEntity savedGPUEntity = gpuService.save(gpuEntity);
-        return new ResponseEntity<>(gpuMapper.mapTo(savedGPUEntity), HttpStatus.OK);
+        return gpuService.fullUpdate(id, gpuDTO)
+                .map(gpu -> new ResponseEntity<>(gpu, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PatchMapping(path = "/api/gpus/{id}")
     public ResponseEntity<GPUDTO> partialUpdate(@PathVariable String id, @RequestBody GPUDTO gpuDTO) {
-        if(!gpuService.exists(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        GPUEntity gpuEntity = gpuMapper.mapFrom(gpuDTO);
-        GPUEntity updatedGPUEntity = gpuService.partialUpdate(id, gpuEntity);
-        return new ResponseEntity<>(gpuMapper.mapTo(updatedGPUEntity), HttpStatus.OK);
+        return gpuService.partialUpdate(id, gpuDTO)
+                .map(gpu -> new ResponseEntity<>(gpu, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping(path = "/api/gpus/{id}")
