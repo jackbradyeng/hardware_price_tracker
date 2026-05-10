@@ -1,4 +1,4 @@
-package com.price_tracker.scrapers.ram_tests;
+package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;

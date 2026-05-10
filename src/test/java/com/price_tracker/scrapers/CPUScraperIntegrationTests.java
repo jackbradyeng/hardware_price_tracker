@@ -1,4 +1,4 @@
-package com.price_tracker.scrapers.cpu_tests;
+package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
