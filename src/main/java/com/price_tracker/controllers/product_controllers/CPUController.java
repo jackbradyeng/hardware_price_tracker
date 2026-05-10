@@ -1,8 +1,6 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
-import com.price_tracker.domain.entities.product_entities.CPUEntity;
-import com.price_tracker.mappers.Mapper;
 import com.price_tracker.services.product_services.CPUService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -18,65 +16,47 @@ import java.util.Optional;
 public class CPUController {
 
     private final CPUService cpuService;
-    private final Mapper<CPUEntity, CPUDTO> cpuMapper;
 
-    // cpu create endpoint
     @PostMapping(path = "/api/cpus")
     public ResponseEntity<CPUDTO> createCPU(@RequestBody final CPUDTO cpuDTO) {
         log.info("Got CPU: {}" + cpuDTO.toString());
-        CPUEntity cpuEntity = cpuMapper.mapFrom(cpuDTO);
-        CPUEntity savedCPU = cpuService.save(cpuEntity);
-        return new ResponseEntity<>(cpuMapper.mapTo(savedCPU), HttpStatus.CREATED);
+        CPUDTO savedCPU = cpuService.save(cpuDTO);
+        return new ResponseEntity<>(savedCPU, HttpStatus.CREATED);
     }
 
-    // cpu create-all endpoint
     @PostMapping(path = "/api/cpus/saveall")
     public ResponseEntity<List<CPUDTO>> createCPU(@RequestBody final List<CPUDTO> cpuDTOs) {
         log.info("Processing batch of " + cpuDTOs.size() + " CPU records.");
-
-        List<CPUEntity> cpuEntities = cpuDTOs.stream()
-                .map(cpuMapper::mapFrom)
-                .toList();
-
-        List<CPUEntity> savedEntities = cpuService.saveAll(cpuEntities);
-
-        List<CPUDTO> responseList = savedEntities.stream()
-                .map(cpuMapper::mapTo)
-                .toList();
-
-        return new ResponseEntity<>(responseList, HttpStatus.CREATED);
+        List<CPUDTO> savedEntities = cpuService.saveAll(cpuDTOs);
+        return new ResponseEntity<>(savedEntities, HttpStatus.CREATED);
     }
 
-    // cpu read-all endpoint
     @GetMapping(path = "/api/cpus")
     public ResponseEntity<List<CPUDTO>> listCPUs() {
-        List<CPUEntity> cpus = cpuService.findAll();
-        return new ResponseEntity<>(cpus.stream().map(cpuMapper::mapTo).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(cpuService.findAll(), HttpStatus.OK);
     }
 
-    // cpu read-one endpoint
     @GetMapping(path = "/api/cpus/{id}")
     public ResponseEntity<CPUDTO> getCPU(@PathVariable String id) {
-        Optional<CPUEntity> foundCPU = cpuService.findOne(id);
-        return foundCPU.map(cpu -> {
-            CPUDTO cpudto = cpuMapper.mapTo(cpu);
-            return new ResponseEntity<>(cpudto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<CPUDTO> foundCPU = cpuService.findOne(id);
+        return foundCPU.map(cpu -> new ResponseEntity<>(cpu, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // cpu full-update endpoint
     @PutMapping(path = "/api/cpus/{id}")
-    public ResponseEntity<CPUDTO> fullUpdateCPU(@PathVariable String id, @RequestBody CPUDTO cpudto) {
-        if(!cpuService.exists(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        cpudto.setModelNumber(id);
-        CPUEntity cpuEntity = cpuMapper.mapFrom(cpudto);
-        CPUEntity savedCPU = cpuService.save(cpuEntity);
-        return new ResponseEntity<>(cpuMapper.mapTo(savedCPU), HttpStatus.OK);
+    public ResponseEntity<CPUDTO> fullUpdateCPU(@PathVariable String id, @RequestBody CPUDTO cpuDTO) {
+        return cpuService.fullUpdate(id, cpuDTO)
+                .map(cpu -> new ResponseEntity<>(cpu, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // cpu delete endpoint
+    @PatchMapping(path = "/api/cpus/{id}")
+    public ResponseEntity<CPUDTO> partialUpdate(@PathVariable String id, @RequestBody CPUDTO cpuDTO) {
+        return cpuService.partialUpdate(id, cpuDTO)
+                .map(cpu -> new ResponseEntity<>(cpu, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @DeleteMapping(path = "/api/cpus/{id}")
     public ResponseEntity<CPUDTO> deleteCPU(@PathVariable String id) {
         cpuService.delete(id);

@@ -20,13 +20,11 @@ public class GPUWorkstationPricePointController {
 
     private final GPUWorkstationPricePointService gpuWorkstationPricePointService;
 
-    // workstation gpu price point read-all endpoint
     @GetMapping(path = "/api/workstation_gpu_pricepoints")
     public ResponseEntity<List<GPUWorkstationPricePointDTO>> listWorkstationGPUPricePoints() {
         return new ResponseEntity<>(gpuWorkstationPricePointService.findAll(), HttpStatus.OK);
     }
 
-    // workstation gpu get price-points and gpu data by model number
     @GetMapping(path = "/api/workstation_gpu_pricepoints/{modelNumber}")
     public ResponseEntity<GPUWorkstationDataAndPricePointDTO> findWorkstationGPUPricePointsByModelNumber(
             @PathVariable String modelNumber) {

@@ -1,10 +1,9 @@
-package com.price_tracker.scrapers.ram_tests;
+package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
-import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.mappers.price_point_mappers.RAMPricePointMapper;
 import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.RAMPricePointJDBCTemplate;
@@ -147,7 +146,7 @@ public class RAMScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatus200Ok() throws Exception {
 
-        RAMEntity savedRAM = ramService.save(ramTestingUtility.createTestRAM());
+        RAMDTO savedRAM = ramService.save(ramTestingUtility.createTestRAM());
 
         List<RAMPricePoint> sampleList = Stream.generate(() ->
                         scraper.createRAMPricePoint(ramTestingUtility.createSampleRAMPricePointData()))
@@ -178,7 +177,7 @@ public class RAMScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the RAM to the DB
-        RAMEntity savedRAM = ramService.save(ramTestingUtility.createTestRAM());
+        RAMDTO savedRAM = ramService.save(ramTestingUtility.createTestRAM());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<RAMPricePoint> sampleList = Stream.generate(() ->
@@ -207,10 +206,7 @@ public class RAMScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedRAMData() {
 
         // first we save the RAM to the DB
-        RAMEntity savedRAM = ramService.save(ramTestingUtility.createTestRAM());
-
-        // map to a DTO for comparison's sake
-        RAMDTO ramDTO = ramMapper.mapTo(savedRAM);
+        RAMDTO savedRAM = ramService.save(ramTestingUtility.createTestRAM());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<RAMPricePoint> sampleList = Stream.generate(() ->
@@ -225,6 +221,6 @@ public class RAMScraperIntegrationTests {
                 .findByModelNumber(savedRAM.getModelNumber());
 
         assertThat(returnList.isPresent());
-        assertThat(returnList.get().getRamDTO().equals(ramDTO));
+        assertThat(returnList.get().getRamDTO().equals(savedRAM));
     }
 }

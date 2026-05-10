@@ -1,6 +1,8 @@
 package com.price_tracker.services.product_services.impl;
 
+import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
+import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.repositories.product_repos.GPURepository;
 import com.price_tracker.services.product_services.GPUService;
 import jakarta.transaction.Transactional;
@@ -15,42 +17,61 @@ import java.util.Optional;
 public class GPUServiceImpl implements GPUService {
 
     private final GPURepository gpuRepository;
+    private final GPUMapper modelMapper;
 
     @Override
-    public GPUEntity save(GPUEntity gpuEntity) {
-        return gpuRepository.save(gpuEntity);
+    public GPUDTO save(GPUDTO gpuDTO) {
+        GPUEntity gpuEntity = modelMapper.mapFrom(gpuDTO);
+        GPUEntity savedGPUEntity = gpuRepository.save(gpuEntity);
+        return modelMapper.mapTo(savedGPUEntity);
     }
 
     @Override
-    public List<GPUEntity> saveAll(List<GPUEntity> gpuEntities) {
-        return gpuRepository.saveAll(gpuEntities);
-    }
+    public List<GPUDTO> saveAll(List<GPUDTO> gpuDTOs) {
+        List<GPUEntity> gpuEntityList = gpuDTOs.stream()
+                .map(modelMapper::mapFrom)
+                .toList();
 
-    @Override
-    public List<GPUEntity> findAll() {
-        return gpuRepository.findAll().stream()
+        List<GPUEntity> savedGPUEntityList = gpuRepository.saveAll(gpuEntityList);
+
+        return savedGPUEntityList.stream()
+                .map(modelMapper::mapTo)
                 .toList();
     }
 
     @Override
-    public Optional<GPUEntity> findOne(String id) {
-        return gpuRepository.findById(id);
+    public List<GPUDTO> findAll() {
+        return gpuRepository.findAll().stream()
+                .map(modelMapper::mapTo)
+                .toList();
     }
 
     @Override
-    public boolean exists(String id) {
+    public Optional<GPUDTO> findOne(String id) {
+        return gpuRepository.findById(id).map(modelMapper::mapTo);
+    }
+
+    @Override
+    public Boolean exists(String id) {
         return gpuRepository.existsById(id);
     }
 
     @Override
-    public GPUEntity partialUpdate(String id, GPUEntity gpuEntity) {
-        gpuEntity.setModelNumber(id);
+    public Optional<GPUDTO> fullUpdate(String id, GPUDTO gpuDTO) {
+        return gpuRepository.findById(id).map(existing -> {
+            GPUEntity gpuEntity = modelMapper.mapFrom(gpuDTO);
+            GPUEntity savedGPUEntity = gpuRepository.save(gpuEntity);
+            return modelMapper.mapTo(savedGPUEntity);
+        });
+    }
 
-        // first retrieve gpu instance, then update and save
-        return gpuRepository.findById(id).map(existingGPU -> {
-            Optional.ofNullable(gpuEntity.getName()).ifPresent(existingGPU::setName);
-            return gpuRepository.save(existingGPU);
-        }).orElseThrow(() -> new RuntimeException("GPU does not exist."));
+    @Override
+    public Optional<GPUDTO> partialUpdate(String id, GPUDTO gpuDTO) {
+        return gpuRepository.findById(id).map(existing -> {
+            if (gpuDTO.getName() != null) existing.setName(gpuDTO.getName());
+            GPUEntity savedGPU = gpuRepository.save(existing);
+            return modelMapper.mapTo(savedGPU);
+        });
     }
 
     @Override

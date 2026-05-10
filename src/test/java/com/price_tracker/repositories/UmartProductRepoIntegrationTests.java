@@ -1,7 +1,7 @@
 package com.price_tracker.repositories;
 
-import com.price_tracker.domain.entities.product_entities.GPUEntity;
-import com.price_tracker.domain.entities.product_entities.RAMEntity;
+import com.price_tracker.domain.dto.product_dtos.GPUDTO;
+import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.product_services.GPUService;
@@ -56,7 +56,7 @@ public class UmartProductRepoIntegrationTests {
 
     @Test
     public void testThatSavedInactiveGPUProductIsNotReturnedBGetURLs() {
-        GPUEntity gpuEntity = gpuTestingUtility.createTestGPU();
+        GPUDTO gpuEntity = gpuTestingUtility.createTestGPU();
         gpuEntity.setIsActive(false);
         gpuService.save(gpuEntity);
         umartProductService.save(gpuTestingUtility.createTestUmartGPU());
@@ -72,7 +72,7 @@ public class UmartProductRepoIntegrationTests {
 
     @Test
     public void testThatSavedInactiveRAMProductIsNotReturnedByGetURLs() {
-        RAMEntity ramEntity = ramTestingUtility.createTestRAM();
+        RAMDTO ramEntity = ramTestingUtility.createTestRAM();
         ramEntity.setIsActive(false);
         ramService.save(ramEntity);
         umartProductRepository.save(ramTestingUtility.createTestUmartRAM());

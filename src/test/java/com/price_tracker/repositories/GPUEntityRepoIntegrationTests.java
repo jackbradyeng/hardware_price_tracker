@@ -1,6 +1,7 @@
 package com.price_tracker.repositories;
 
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
+import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.repositories.product_repos.GPURepository;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import org.junit.jupiter.api.Test;
@@ -22,16 +23,20 @@ public class GPUEntityRepoIntegrationTests {
 
     private final GPURepository testInstance;
     private final GPUTestingUtility gpuTestingUtility;
+    private final GPUMapper gpuMapper;
 
     @Autowired
-    public GPUEntityRepoIntegrationTests(GPURepository testInstance, GPUTestingUtility gpuTestingUtility) {
+    public GPUEntityRepoIntegrationTests(GPURepository testInstance,
+                                         GPUTestingUtility gpuTestingUtility,
+                                         GPUMapper gpuMapper) {
         this.testInstance = testInstance;
         this.gpuTestingUtility = gpuTestingUtility;
+        this.gpuMapper = gpuMapper;
     }
 
     @Test
     public void testCreateAndRecall() {
-        GPUEntity gpuEntity = gpuTestingUtility.createTestGPU();
+        GPUEntity gpuEntity = gpuMapper.mapFrom(gpuTestingUtility.createTestGPU());
         testInstance.save(gpuEntity);
         Optional<GPUEntity> result = testInstance.findById(gpuEntity.getModelNumber());
         assert (result).isPresent();

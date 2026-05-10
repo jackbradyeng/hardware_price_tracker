@@ -1,6 +1,8 @@
 package com.price_tracker.services.product_services.impl;
 
+import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
+import com.price_tracker.mappers.product_mappers.CPUMapper;
 import com.price_tracker.repositories.product_repos.CPURepository;
 import com.price_tracker.services.product_services.CPUService;
 import jakarta.transaction.Transactional;
@@ -15,42 +17,61 @@ import java.util.Optional;
 public class CPUServiceImpl implements CPUService {
 
     private final CPURepository cpuRepository;
+    private final CPUMapper modelMapper;
 
     @Override
-    public CPUEntity save(CPUEntity cpuEntity) {
-        return cpuRepository.save(cpuEntity);
+    public CPUDTO save(CPUDTO cpuDTO) {
+        CPUEntity cpuEntity = modelMapper.mapFrom(cpuDTO);
+        CPUEntity savedCPUEntity = cpuRepository.save(cpuEntity);
+        return modelMapper.mapTo(savedCPUEntity);
     }
 
     @Override
-    public List<CPUEntity> saveAll(List<CPUEntity> cpuEntities) {
-        return cpuRepository.saveAll(cpuEntities);
-    }
+    public List<CPUDTO> saveAll(List<CPUDTO> cpuDTOs) {
+        List<CPUEntity> cpuEntityList = cpuDTOs.stream()
+                .map(modelMapper::mapFrom)
+                .toList();
 
-    @Override
-    public List<CPUEntity> findAll() {
-        return cpuRepository.findAll()
-                .stream()
+        List<CPUEntity> savedCPUEntityList = cpuRepository.saveAll(cpuEntityList);
+
+        return savedCPUEntityList.stream()
+                .map(modelMapper::mapTo)
                 .toList();
     }
 
     @Override
-    public Optional<CPUEntity> findOne(String id) {
-        return cpuRepository.findById(id);
+    public List<CPUDTO> findAll() {
+        return cpuRepository.findAll().stream()
+                .map(modelMapper::mapTo)
+                .toList();
     }
 
     @Override
-    public boolean exists(String id) {
+    public Optional<CPUDTO> findOne(String id) {
+        return cpuRepository.findById(id).map(modelMapper::mapTo);
+    }
+
+    @Override
+    public Boolean exists(String id) {
         return cpuRepository.existsById(id);
     }
 
     @Override
-    public CPUEntity partialUpdate(String id, CPUEntity cpuEntity) {
-        cpuEntity.setModelNumber(id);
+    public Optional<CPUDTO> fullUpdate(String id, CPUDTO cpuDTO) {
+        return cpuRepository.findById(id).map(existing -> {
+            CPUEntity cpuEntity = modelMapper.mapFrom(cpuDTO);
+            CPUEntity savedCPUEntity = cpuRepository.save(cpuEntity);
+            return modelMapper.mapTo(savedCPUEntity);
+        });
+    }
 
-        return cpuRepository.findById(id).map(existingCPU -> {
-            Optional.ofNullable(cpuEntity.getName()).ifPresent(existingCPU::setName);
-            return cpuRepository.save(existingCPU);
-        }).orElseThrow(() -> new RuntimeException("CPU does not exist."));
+    @Override
+    public Optional<CPUDTO> partialUpdate(String id, CPUDTO cpuDTO) {
+        return cpuRepository.findById(id).map(existing -> {
+            if (cpuDTO.getName() != null) existing.setName(cpuDTO.getName());
+            CPUEntity savedCPU = cpuRepository.save(existing);
+            return modelMapper.mapTo(savedCPU);
+        });
     }
 
     @Override

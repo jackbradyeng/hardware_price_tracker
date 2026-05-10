@@ -21,32 +21,32 @@ public class GPUTestingUtility {
     private final GPUMapper gpuMapper;
 
     /// SAMPLE ENTITIES/DTOS
-    public GPUEntity createTestGPU() {
-        return GPUEntity.builder()
+    public GPUDTO createTestGPU() {
+        return gpuMapper.mapTo(GPUEntity.builder()
                 .modelNumber(TESTING_GPU_MODEL_NUMBER)
                 .chip(TESTING_GPU_CHIP)
                 .chipManufacturer(TESTING_GPU_CHIP_MANUFACTURER)
                 .boardManufacturer(TESTING_GPU_BOARD_MANUFACTURER)
                 .name(TESTING_GPU_NAME)
                 .isActive(true)
-                .build();
+                .build());
     }
 
-    public GPUEntity createSecondTestGPU() {
-        return GPUEntity.builder()
+    public GPUDTO createSecondTestGPU() {
+        return gpuMapper.mapTo(GPUEntity.builder()
                 .modelNumber(SECOND_TESTING_GPU_MODEL_NUMBER)
                 .chip(TESTING_GPU_CHIP)
                 .chipManufacturer(TESTING_GPU_CHIP_MANUFACTURER)
                 .boardManufacturer(TESTING_GPU_BOARD_MANUFACTURER)
                 .name(SECOND_TESTING_GPU_NAME)
                 .isActive(true)
-                .build();
+                .build());
     }
 
     public List<GPUDTO> createListOfGPUs() {
         ArrayList<GPUDTO> gpuDTOs = new ArrayList<>();
-        gpuDTOs.add(gpuMapper.mapTo(createTestGPU()));
-        gpuDTOs.add(gpuMapper.mapTo(createSecondTestGPU()));
+        gpuDTOs.add(createTestGPU());
+        gpuDTOs.add(createSecondTestGPU());
         return gpuDTOs;
     }
 

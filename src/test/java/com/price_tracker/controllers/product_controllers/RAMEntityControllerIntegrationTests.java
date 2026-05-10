@@ -1,8 +1,6 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
-import com.price_tracker.domain.entities.product_entities.RAMEntity;
-import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.services.product_services.RAMService;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import static com.price_tracker.testing_data.ram_data.RAMTestingData.TESTING_RAM_MODEL_NUMBER;
@@ -32,26 +30,23 @@ public class RAMEntityControllerIntegrationTests {
     private final ObjectMapper objectMapper;
     private final RAMTestingUtility ramTestingUtility;
     private final RAMService ramService;
-    private final RAMMapper ramMapper;
 
     @Autowired
     public RAMEntityControllerIntegrationTests(MockMvc mockMvc,
                                                ObjectMapper objectMapper,
                                                RAMTestingUtility ramTestingUtility,
-                                               RAMService ramService,
-                                               RAMMapper ramMapper) {
+                                               RAMService ramService) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
         this.ramTestingUtility = ramTestingUtility;
         this.ramService = ramService;
-        this.ramMapper = ramMapper;
     }
 
     /// create tests
     @Test
     public void testThatCreateRAMReturnsHttpStatus201Created()  throws Exception {
-        RAMEntity testRAMEntity = ramTestingUtility.createTestRAM();
-        String ramString = objectMapper.writeValueAsString(testRAMEntity);
+        RAMDTO testRAM = ramTestingUtility.createTestRAM();
+        String ramString = objectMapper.writeValueAsString(testRAM);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/ram")
@@ -64,8 +59,8 @@ public class RAMEntityControllerIntegrationTests {
 
     @Test
     public void testThatCreateRAMReturnsSavedRAM() throws Exception {
-        RAMEntity testRAMEntity = ramTestingUtility.createTestRAM();
-        String ramString = objectMapper.writeValueAsString(testRAMEntity);
+        RAMDTO testRAM = ramTestingUtility.createTestRAM();
+        String ramString = objectMapper.writeValueAsString(testRAM);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/ram")
@@ -105,11 +100,11 @@ public class RAMEntityControllerIntegrationTests {
 
     @Test
     public void testThatGetRAMByIDReturnsHttpStatusOkWhenRAMExists() throws Exception {
-        RAMEntity testRAMEntity = ramTestingUtility.createTestRAM();
-        RAMEntity savedRAMEntity = ramService.save(testRAMEntity);
+        RAMDTO testRAM = ramTestingUtility.createTestRAM();
+        RAMDTO savedRAM = ramService.save(testRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/ram/" + savedRAMEntity.getModelNumber())
+                MockMvcRequestBuilders.get("/api/ram/" + savedRAM.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -129,15 +124,15 @@ public class RAMEntityControllerIntegrationTests {
     /// update tests
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
-        RAMEntity testRAMEntity = ramTestingUtility.createTestRAM();
-        RAMEntity savedRAMEntity = ramService.save(testRAMEntity);
+        RAMDTO testRAM = ramTestingUtility.createTestRAM();
+        RAMDTO savedRAM = ramService.save(testRAM);
 
-        RAMDTO updatedRAM = ramMapper.mapTo(testRAMEntity);
+        RAMDTO updatedRAM = ramTestingUtility.createTestRAM();
         updatedRAM.setName("Updated RAM name");
         String ramJson = objectMapper.writeValueAsString(updatedRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/ram/" + savedRAMEntity.getModelNumber())
+                MockMvcRequestBuilders.put("/api/ram/" + savedRAM.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ramJson)
         ).andExpect(
@@ -147,10 +142,10 @@ public class RAMEntityControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateReturnsUpdatedRAM() throws Exception {
-        RAMEntity testRAMEntity = ramTestingUtility.createTestRAM();
-        RAMEntity savedRAMEntity = ramService.save(testRAMEntity);
+        RAMDTO testRAM = ramTestingUtility.createTestRAM();
+        RAMDTO savedRAM = ramService.save(testRAM);
 
-        RAMDTO updatedRAM = ramMapper.mapTo(testRAMEntity);
+        RAMDTO updatedRAM = ramTestingUtility.createTestRAM();
         updatedRAM.setName("Updated RAM name");
         updatedRAM.setBrand("Updated brand");
         updatedRAM.setClockRate(1000);
@@ -158,7 +153,7 @@ public class RAMEntityControllerIntegrationTests {
         String ramJson = objectMapper.writeValueAsString(updatedRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/ram/" + savedRAMEntity.getModelNumber())
+                MockMvcRequestBuilders.put("/api/ram/" + savedRAM.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ramJson)
         ).andExpect(
@@ -183,11 +178,11 @@ public class RAMEntityControllerIntegrationTests {
 
     @Test
     public void testThatDeleteRAMReturnsHttpStatus204ForExisting() throws Exception {
-        RAMEntity testRAMEntity = ramTestingUtility.createTestRAM();
-        RAMEntity savedRAMEntity = ramService.save(testRAMEntity);
+        RAMDTO testRAM = ramTestingUtility.createTestRAM();
+        RAMDTO savedRAM = ramService.save(testRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/ram/" + savedRAMEntity.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/ram/" + savedRAM.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

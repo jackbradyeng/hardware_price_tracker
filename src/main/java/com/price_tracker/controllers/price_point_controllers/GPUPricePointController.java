@@ -20,13 +20,11 @@ public class GPUPricePointController {
 
     private final GPUPricePointService gpuPricePointService;
 
-    // gpu price point read-all endpoint
     @GetMapping(path = "/api/gpu_pricepoints")
     public ResponseEntity<List<GPUPricePointDTO>> listGPUPricePoints() {
         return new ResponseEntity<>(gpuPricePointService.findAll(), HttpStatus.OK);
     }
 
-    // gpu get price-points and gpu data by model number
     @GetMapping(path = "/api/gpu_pricepoints/{modelNumber}")
     public ResponseEntity<GPUDataAndPricePointDTO> findGPUPricePointsByModelNumber(
             @PathVariable String modelNumber) {

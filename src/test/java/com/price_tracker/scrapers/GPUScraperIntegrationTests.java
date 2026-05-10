@@ -1,10 +1,9 @@
-package com.price_tracker.scrapers.gpu_tests;
+package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.GPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
-import com.price_tracker.domain.entities.product_entities.GPUEntity;
 import com.price_tracker.mappers.price_point_mappers.GPUPricePointMapper;
 import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUPricePointJDBCTemplate;
@@ -147,7 +146,7 @@ public class GPUScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatus200Ok() throws Exception {
 
-        GPUEntity savedGPU = gpuService.save(gpuTestingUtility.createTestGPU());
+        GPUDTO savedGPU = gpuService.save(gpuTestingUtility.createTestGPU());
 
         List<GPUPricePoint> sampleList = Stream.generate(() ->
                         scraper.createGPUPricePoint(gpuTestingUtility.createSampleGPUPricePointData()))
@@ -178,7 +177,7 @@ public class GPUScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedPricePoints() {
 
         // first we save the GPU to the DB
-        GPUEntity savedGPU = gpuService.save(gpuTestingUtility.createTestGPU());
+        GPUDTO savedGPU = gpuService.save(gpuTestingUtility.createTestGPU());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<GPUPricePoint> sampleList = Stream.generate(() ->
@@ -206,10 +205,7 @@ public class GPUScraperIntegrationTests {
     public void testThatFindByModelNumberReturnsExpectedGPUData() {
 
         // first we save the GPU to the DB
-        GPUEntity savedGPU = gpuService.save(gpuTestingUtility.createTestGPU());
-
-        // map to a DTO for comparison's sake
-        GPUDTO gpuDTO = gpuMapper.mapTo(savedGPU);
+        GPUDTO savedGPU = gpuService.save(gpuTestingUtility.createTestGPU());
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<GPUPricePoint> sampleList = Stream.generate(() ->
@@ -223,6 +219,6 @@ public class GPUScraperIntegrationTests {
         Optional<GPUDataAndPricePointDTO> returnList = gpuPricePointService.findByModelNumber(savedGPU.getModelNumber());
 
         assertThat(returnList.isPresent());
-        assertThat(returnList.get().getGpuDTO().equals(gpuDTO));
+        assertThat(returnList.get().getGpuDTO().equals(savedGPU));
     }
 }

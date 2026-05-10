@@ -1,22 +1,24 @@
 package com.price_tracker.services.product_services;
 
-import com.price_tracker.domain.entities.product_entities.CPUEntity;
+import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import java.util.List;
 import java.util.Optional;
 
 public interface CPUService {
 
-    CPUEntity save(CPUEntity cpuEntity);
+    CPUDTO save(CPUDTO cpuDTO);
 
-    List<CPUEntity> saveAll(List<CPUEntity> cpuEntities);
+    List<CPUDTO> saveAll(List<CPUDTO> cpuDTOs);
 
-    List<CPUEntity> findAll();
+    List<CPUDTO> findAll();
 
-    Optional<CPUEntity> findOne(String id);
+    Optional<CPUDTO> findOne(String id);
 
-    boolean exists(String id);
+    Boolean exists(String id);
 
-    CPUEntity partialUpdate(String id, CPUEntity cpuEntity);
+    Optional<CPUDTO> fullUpdate(String id, CPUDTO cpuDTO);
+
+    Optional<CPUDTO> partialUpdate(String id, CPUDTO cpuDTO);
 
     void delete(String id);
 }

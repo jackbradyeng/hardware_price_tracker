@@ -1,22 +1,24 @@
 package com.price_tracker.services.product_services;
 
-import com.price_tracker.domain.entities.product_entities.GPUEntity;
+import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import java.util.List;
 import java.util.Optional;
 
 public interface GPUService {
 
-    GPUEntity save(GPUEntity gpuEntity);
+    GPUDTO save(GPUDTO gpuDTO);
 
-    List<GPUEntity> saveAll(List<GPUEntity> gpuEntities);
+    List<GPUDTO> saveAll(List<GPUDTO> gpuDTOs);
 
-    List<GPUEntity> findAll();
+    List<GPUDTO> findAll();
 
-    Optional<GPUEntity> findOne(String id);
+    Optional<GPUDTO> findOne(String id);
 
-    boolean exists(String id);
+    Boolean exists(String id);
 
-    GPUEntity partialUpdate(String id, GPUEntity gpuEntity);
+    Optional<GPUDTO> fullUpdate(String id, GPUDTO gpuDTO);
+
+    Optional<GPUDTO> partialUpdate(String id, GPUDTO gpuDTO);
 
     void delete(String id);
 }

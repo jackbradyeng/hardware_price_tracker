@@ -1,15 +1,10 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
-import com.price_tracker.domain.entities.product_entities.GPUEntity;
-import com.price_tracker.mappers.product_mappers.GPUMapper;
-import com.price_tracker.repositories.product_repos.GPURepository;
 import com.price_tracker.services.product_services.GPUService;
-import com.price_tracker.services.product_services.impl.GPUServiceImpl;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -35,24 +30,22 @@ public class GPUEntityControllerIntegrationTests {
     private final ObjectMapper objectMapper;
     private final GPUTestingUtility gpuTestingUtility;
     private final GPUService gpuService;
-    private final GPUMapper gpuMapper;
 
     @Autowired
     public GPUEntityControllerIntegrationTests(MockMvc mockMVC,
-                                               GPURepository gpuRepository,
-                                               GPUTestingUtility gpuTestingUtility) {
+                                               GPUTestingUtility gpuTestingUtility,
+                                               GPUService gpuService) {
         this.mockMVC = mockMVC;
         this.objectMapper = new ObjectMapper();
         this.gpuTestingUtility = gpuTestingUtility;
-        this.gpuService = new GPUServiceImpl(gpuRepository);
-        this.gpuMapper = new GPUMapper(new ModelMapper());
+        this.gpuService = gpuService;
     }
 
     /// create tests
     @Test
     public void testThatCreateGPUReturnsHttpStatus201Created() throws Exception {
-        GPUEntity testGPUEntity = gpuTestingUtility.createTestGPU();
-        String gpuString = objectMapper.writeValueAsString(testGPUEntity);
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        String gpuString = objectMapper.writeValueAsString(testGPU);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.post("/api/gpus")
@@ -65,8 +58,8 @@ public class GPUEntityControllerIntegrationTests {
 
     @Test
     public void testThatCreateGPUReturnsSavedGPU() throws Exception {
-        GPUEntity testGPUEntity = gpuTestingUtility.createTestGPU();
-        String gpuString = objectMapper.writeValueAsString(testGPUEntity);
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        String gpuString = objectMapper.writeValueAsString(testGPU);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.post("/api/gpus")
@@ -106,11 +99,11 @@ public class GPUEntityControllerIntegrationTests {
 
     @Test
     public void testThatGetGPUByIDReturnsHttpStatusOkWhenGPUExists() throws Exception {
-        GPUEntity testGPUEntity = gpuTestingUtility.createTestGPU();
-        GPUEntity savedGPUEntity = gpuService.save(testGPUEntity);
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        GPUDTO savedGPU = gpuService.save(testGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/gpus/" + savedGPUEntity.getModelNumber())
+                MockMvcRequestBuilders.get("/api/gpus/" + savedGPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -130,10 +123,10 @@ public class GPUEntityControllerIntegrationTests {
     /// update tests
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
-        GPUEntity testGPUENtity = gpuTestingUtility.createTestGPU();
-        GPUEntity savedGPU = gpuService.save(testGPUENtity);
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        GPUDTO savedGPU = gpuService.save(testGPU);
 
-        GPUDTO updatedGPU = gpuMapper.mapTo(testGPUENtity);
+        GPUDTO updatedGPU = gpuTestingUtility.createTestGPU();
         updatedGPU.setName("Updated GPU name");
         String gpuJson = objectMapper.writeValueAsString(updatedGPU);
 
@@ -148,10 +141,10 @@ public class GPUEntityControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateReturnsUpdatedGPU() throws Exception {
-        GPUEntity testGPUENtity = gpuTestingUtility.createTestGPU();
-        GPUEntity savedGPU = gpuService.save(testGPUENtity);
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        GPUDTO savedGPU = gpuService.save(testGPU);
 
-        GPUDTO updatedGPU = gpuMapper.mapTo(gpuTestingUtility.createTestGPU());
+        GPUDTO updatedGPU = gpuTestingUtility.createTestGPU();
         updatedGPU.setName("Updated GPU name");
         updatedGPU.setChip("Updated GPU chip");
         updatedGPU.setChipManufacturer("Updated GPU chip manufacturer");
@@ -186,11 +179,11 @@ public class GPUEntityControllerIntegrationTests {
 
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204ForExisting() throws Exception {
-        GPUEntity testGPUEntity = gpuTestingUtility.createTestGPU();
-        GPUEntity savedGPUEntity = gpuService.save(testGPUEntity);
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        GPUDTO savedGPU = gpuService.save(testGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.delete("/api/gpus/" + savedGPUEntity.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/gpus/" + savedGPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

@@ -1,22 +1,24 @@
 package com.price_tracker.services.product_services;
 
-import com.price_tracker.domain.entities.product_entities.RAMEntity;
-
+import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import java.util.List;
 import java.util.Optional;
 
 public interface RAMService {
-    RAMEntity save(RAMEntity ramEntity);
 
-    List<RAMEntity> saveAll(List<RAMEntity> ramEntities);
+    RAMDTO save(RAMDTO ramDTO);
 
-    List<RAMEntity> findAll();
+    List<RAMDTO> saveAll(List<RAMDTO> ramDTOs);
 
-    Optional<RAMEntity> findOne(String id);
+    List<RAMDTO> findAll();
 
-    boolean exists(String id);
+    Optional<RAMDTO> findOne(String id);
 
-    RAMEntity partialUpdate(String id, RAMEntity ramEntity);
+    Boolean exists(String id);
+
+    Optional<RAMDTO> fullUpdate(String id, RAMDTO ramDTO);
+
+    Optional<RAMDTO> partialUpdate(String id, RAMDTO ramDTO);
 
     void delete(String id);
 }

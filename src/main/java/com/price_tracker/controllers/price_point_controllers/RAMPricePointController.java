@@ -20,13 +20,11 @@ public class RAMPricePointController {
 
     private final RAMPricePointService ramPricePointService;
 
-    // ram price point read-all endpoint
     @GetMapping(path = "/api/ram_pricepoints")
     public ResponseEntity<List<RAMPricePointDTO>> listRAMPricePoints() {
         return new ResponseEntity<>(ramPricePointService.findAll(), HttpStatus.OK);
     }
 
-    // get ram price-points and ram data by model number
     @GetMapping(path = "/api/ram_pricepoints/{modelNumber}")
     public ResponseEntity<RAMDataAndPricePointDTO> findRAMPricePointsBYModelNumber(
             @PathVariable String modelNumber) {

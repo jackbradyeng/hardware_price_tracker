@@ -1,6 +1,8 @@
 package com.price_tracker.services.product_services.impl;
 
+import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
+import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.repositories.product_repos.RAMRepository;
 import com.price_tracker.services.product_services.RAMService;
 import jakarta.transaction.Transactional;
@@ -8,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -16,40 +17,61 @@ import java.util.stream.StreamSupport;
 public class RAMServiceImpl implements RAMService {
 
     private final RAMRepository ramRepository;
+    private final RAMMapper modelMapper;
 
     @Override
-    public RAMEntity save(RAMEntity ramEntity) {
-        return ramRepository.save(ramEntity);
+    public RAMDTO save(RAMDTO ramDTO) {
+        RAMEntity ramEntity = modelMapper.mapFrom(ramDTO);
+        RAMEntity savedRAMEntity = ramRepository.save(ramEntity);
+        return modelMapper.mapTo(savedRAMEntity);
     }
 
     @Override
-    public List<RAMEntity> saveAll(List<RAMEntity> ramEntities) { return ramRepository.saveAll(ramEntities); }
+    public List<RAMDTO> saveAll(List<RAMDTO> ramDTOs) {
+        List<RAMEntity> ramEntityList = ramDTOs.stream()
+                .map(modelMapper::mapFrom)
+                .toList();
 
-    @Override
-    public List<RAMEntity> findAll() {
-        return StreamSupport
-                .stream(ramRepository.findAll().spliterator(), false)
+        List<RAMEntity> savedRAMEntityList = ramRepository.saveAll(ramEntityList);
+
+        return savedRAMEntityList.stream()
+                .map(modelMapper::mapTo)
                 .toList();
     }
 
     @Override
-    public Optional<RAMEntity> findOne(String id) {
-        return ramRepository.findById(id);
+    public List<RAMDTO> findAll() {
+        return ramRepository.findAll().stream()
+                .map(modelMapper::mapTo)
+                .toList();
     }
 
     @Override
-    public boolean exists(String id) {
+    public Optional<RAMDTO> findOne(String id) {
+        return ramRepository.findById(id).map(modelMapper::mapTo);
+    }
+
+    @Override
+    public Boolean exists(String id) {
         return ramRepository.existsById(id);
     }
 
     @Override
-    public RAMEntity partialUpdate(String id, RAMEntity ramEntity) {
-        ramEntity.setModelNumber(id);
+    public Optional<RAMDTO> fullUpdate(String id, RAMDTO ramDTO) {
+        return ramRepository.findById(id).map(existing -> {
+            RAMEntity ramEntity = modelMapper.mapFrom(ramDTO);
+            RAMEntity savedRAMEntity = ramRepository.save(ramEntity);
+            return modelMapper.mapTo(savedRAMEntity);
+        });
+    }
 
-        return ramRepository.findById(id).map(existingRAM -> {
-            Optional.ofNullable(ramEntity.getName()).ifPresent(existingRAM::setName);
-            return ramRepository.save(existingRAM);
-        }).orElseThrow(() -> new RuntimeException("RAM does not exist"));
+    @Override
+    public Optional<RAMDTO> partialUpdate(String id, RAMDTO ramDTO) {
+        return ramRepository.findById(id).map(existing -> {
+            if (ramDTO.getName() != null) existing.setName(ramDTO.getName());
+            RAMEntity savedRAM = ramRepository.save(existing);
+            return modelMapper.mapTo(savedRAM);
+        });
     }
 
     @Override
