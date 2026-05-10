@@ -1,6 +1,7 @@
 package com.price_tracker.repositories;
 
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
+import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.repositories.product_repos.RAMRepository;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import org.junit.jupiter.api.Test;
@@ -22,16 +23,20 @@ public class RAMEntityRepoIntegrationTests {
 
     private final RAMRepository testInstance;
     private final RAMTestingUtility ramTestingUtility;
+    private final RAMMapper ramMapper;
 
     @Autowired
-    public RAMEntityRepoIntegrationTests(RAMRepository testInstance, RAMTestingUtility ramTestingUtility) {
+    public RAMEntityRepoIntegrationTests(RAMRepository testInstance,
+                                         RAMTestingUtility ramTestingUtility,
+                                         RAMMapper ramMapper) {
         this.testInstance = testInstance;
         this.ramTestingUtility = ramTestingUtility;
+        this.ramMapper = ramMapper;
     }
 
     @Test
     public void testCreateAndRecall() {
-        RAMEntity ramEntity = ramTestingUtility.createTestRAM();
+        RAMEntity ramEntity = ramMapper.mapFrom(ramTestingUtility.createTestRAM());
         testInstance.save(ramEntity);
         Optional<RAMEntity> result = testInstance.findById(ramEntity.getModelNumber());
         assert (result).isPresent();

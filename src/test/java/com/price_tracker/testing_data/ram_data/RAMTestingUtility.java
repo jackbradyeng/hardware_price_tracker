@@ -21,8 +21,8 @@ public class RAMTestingUtility {
     private final RAMMapper ramMapper;
 
     /// SAMPLE ENTITIES/DTOS
-    public RAMEntity createTestRAM() {
-        return RAMEntity.builder()
+    public RAMDTO createTestRAM() {
+        return ramMapper.mapTo(RAMEntity.builder()
                 .modelNumber(TESTING_RAM_MODEL_NUMBER)
                 .name(TESTING_RAM_NAME)
                 .brand(TESTING_RAM_BRAND)
@@ -33,11 +33,11 @@ public class RAMTestingUtility {
                 .clockRate(TESTING_RAM_CLOCK_RATE)
                 .voltage(TESTING_RAM_VOLTAGE)
                 .isActive(true)
-                .build();
+                .build());
     }
 
-    public RAMEntity createSecondTestRAM() {
-        return RAMEntity.builder()
+    public RAMDTO createSecondTestRAM() {
+        return ramMapper.mapTo(RAMEntity.builder()
                 .modelNumber(SECOND_TESTING_RAM_MODEL_NUMBER)
                 .name(SECOND_TESTING_RAM_NAME)
                 .brand(SECOND_TESTING_RAM_BRAND)
@@ -48,13 +48,13 @@ public class RAMTestingUtility {
                 .clockRate(TESTING_RAM_CLOCK_RATE)
                 .voltage(SECOND_TESTING_RAM_VOLTAGE)
                 .isActive(true)
-                .build();
+                .build());
     }
 
     public List<RAMDTO> createListOfRAM() {
         ArrayList<RAMDTO> ramDTOs = new ArrayList<>();
-        ramDTOs.add(ramMapper.mapTo(createTestRAM()));
-        ramDTOs.add(ramMapper.mapTo(createSecondTestRAM()));
+        ramDTOs.add(createTestRAM());
+        ramDTOs.add(createSecondTestRAM());
         return ramDTOs;
     }
 

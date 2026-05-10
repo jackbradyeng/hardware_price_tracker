@@ -1,8 +1,6 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
-import com.price_tracker.domain.entities.product_entities.RAMEntity;
-import com.price_tracker.mappers.Mapper;
 import com.price_tracker.services.product_services.RAMService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -12,74 +10,51 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-/** Fully functional REST API with CRUD functionality. */
 @RestController
 @RequiredArgsConstructor
 @Log
 public class RAMController {
 
     private final RAMService ramService;
-    private final Mapper<RAMEntity, RAMDTO> ramMapper;
 
     @PostMapping(path = "/api/ram")
     public ResponseEntity<RAMDTO> createRAM(@RequestBody final RAMDTO ramDTO) {
         log.info("Got RAM: {}" + ramDTO.toString());
-        RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
-        RAMEntity savedRAMEntity = ramService.save(ramEntity);
-        return new ResponseEntity<>(ramMapper.mapTo(savedRAMEntity), HttpStatus.CREATED);
+        RAMDTO savedRAM = ramService.save(ramDTO);
+        return new ResponseEntity<>(savedRAM, HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/api/ram/saveall")
     public ResponseEntity<List<RAMDTO>> createRam(@RequestBody final List<RAMDTO> ramDTOs) {
         log.info("Processing batch of " + ramDTOs.size() + " RAM records");
-
-        List<RAMEntity> ramEntities = ramDTOs.stream()
-                .map(ramMapper::mapFrom)
-                .toList();
-
-        List<RAMEntity> savedEntities = ramService.saveAll(ramEntities);
-
-        List<RAMDTO> responseLIst = savedEntities.stream()
-                .map(ramMapper::mapTo)
-                .toList();
-
-        return new ResponseEntity<>(responseLIst, HttpStatus.CREATED);
+        List<RAMDTO> savedEntities = ramService.saveAll(ramDTOs);
+        return new ResponseEntity<>(savedEntities, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/api/ram")
     public List<RAMDTO> listRAM() {
-        List<RAMEntity> ramEntity = ramService.findAll();
-        return ramEntity.stream().map(ramMapper::mapTo).toList();
+        return ramService.findAll();
     }
 
     @GetMapping(path = "/api/ram/{id}")
     public ResponseEntity<RAMDTO> getRAM(@PathVariable String id) {
-        Optional<RAMEntity> foundRAM = ramService.findOne(id);
-        return foundRAM.map(ram -> {
-            RAMDTO ramdto = ramMapper.mapTo(ram);
-            return new ResponseEntity<>(ramdto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<RAMDTO> foundRAM = ramService.findOne(id);
+        return foundRAM.map(ram -> new ResponseEntity<>(ram, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping(path = "/api/ram/{id}")
     public ResponseEntity<RAMDTO> fullUpdateRAM(@PathVariable String id, @RequestBody RAMDTO ramDTO) {
-        if(!ramService.exists(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        ramDTO.setModelNumber(id);
-        RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
-        RAMEntity savedRAMEntity = ramService.save(ramEntity);
-        return new ResponseEntity<>(ramMapper.mapTo(savedRAMEntity), HttpStatus.OK);
+        return ramService.fullUpdate(id, ramDTO)
+                .map(ram -> new ResponseEntity<>(ram, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PatchMapping(path = "/api/ram/{id}")
     public ResponseEntity<RAMDTO> partialUpdate(@PathVariable String id, @RequestBody RAMDTO ramDTO) {
-        if(!ramService.exists(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        RAMEntity ramEntity = ramMapper.mapFrom(ramDTO);
-        RAMEntity updatedRAMEntity = ramService.partialUpdate(id, ramEntity);
-        return new ResponseEntity<>(ramMapper.mapTo(updatedRAMEntity), HttpStatus.OK);
+        return ramService.partialUpdate(id, ramDTO)
+                .map(ram -> new ResponseEntity<>(ram, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping(path = "/api/ram/{id}")
