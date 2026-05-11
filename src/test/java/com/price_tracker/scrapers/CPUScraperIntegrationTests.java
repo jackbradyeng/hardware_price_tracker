@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -193,9 +194,10 @@ public class CPUScraperIntegrationTests {
                 .toList();
 
         // next we query by the CPU's model number - this should return a collection of composite DTOs
-        Optional<CPUDataAndPricePointDTO> returnList = cpuPricePointService.findByModelNumber(savedCPU.getModelNumber());
+        Optional<CPUDataAndPricePointDTO> returnList = cpuPricePointService
+                .findByModelNumber(savedCPU.getModelNumber(), Pageable.unpaged());
 
-        assertThat(returnList.isPresent());
+        assertThat(returnList).isPresent();
         assertThat(returnList.get().getCpuPricePointDTOList())
                 .hasSize(10)
                 .containsExactlyElementsOf(pricePointDTOS);
@@ -216,7 +218,8 @@ public class CPUScraperIntegrationTests {
         cpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // next we query by the CPU's model number - this should return a collection of composite DTOs
-        Optional<CPUDataAndPricePointDTO> returnList = cpuPricePointService.findByModelNumber(savedCPU.getModelNumber());
+        Optional<CPUDataAndPricePointDTO> returnList = cpuPricePointService
+                .findByModelNumber(savedCPU.getModelNumber(), Pageable.unpaged());
 
         assertThat(returnList).isPresent();
         assertThat(returnList.get().getCpuDTO().equals(savedCPU));

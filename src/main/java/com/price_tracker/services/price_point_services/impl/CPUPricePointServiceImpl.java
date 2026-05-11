@@ -11,6 +11,8 @@ import com.price_tracker.repositories.price_point_repos.CPUPricePointRepository;
 import com.price_tracker.services.price_point_services.CPUPricePointService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -25,17 +27,16 @@ public class CPUPricePointServiceImpl implements CPUPricePointService {
     private final CPUMapper cpuMapper;
 
     @Override
-    public List<CPUPricePointDTO> findAll() {
-        return cpuPricePointRepository.findAll().stream()
-                .map(cpuPricePointMapper::mapTo)
-                .toList();
+    public Page<CPUPricePointDTO> findAll(Pageable pageable) {
+        return cpuPricePointRepository.findAll(pageable)
+                .map(cpuPricePointMapper::mapTo);
     }
 
     @Override
-    public Optional<CPUDataAndPricePointDTO> findByModelNumber(String modelNumber) {
+    public Optional<CPUDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable) {
 
-        List<CPUDataAndPricePointProjection> resultList = cpuPricePointRepository
-                .getPricePointsByModelNumber(modelNumber);
+        Page<CPUDataAndPricePointProjection> resultList = cpuPricePointRepository
+                .getPricePointsByModelNumber(modelNumber, pageable);
 
         // throw a 404 if not found
         if (resultList.isEmpty()) {
@@ -43,7 +44,7 @@ public class CPUPricePointServiceImpl implements CPUPricePointService {
         }
 
         // convert CPU to a DTO so we can expose it in our API
-        CPUEntity cpu = resultList.getFirst().getCPUEntity();
+        CPUEntity cpu = resultList.stream().toList().getFirst().getCPUEntity();
         CPUDTO cpuDTO = cpuMapper.mapTo(cpu);
 
         // convert CPU price points to a list of DTOs
@@ -51,10 +52,15 @@ public class CPUPricePointServiceImpl implements CPUPricePointService {
                 .map(result -> cpuPricePointMapper.mapTo(result.getCPUPricePoint()))
                 .toList();
 
-        return Optional.ofNullable(
-                CPUDataAndPricePointDTO.builder()
+        CPUDataAndPricePointDTO cpuDataAndPricePointDTO = CPUDataAndPricePointDTO.builder()
                 .cpuDTO(cpuDTO)
                 .cpuPricePointDTOList(cpuPricePointDTOS)
-                .build());
+                .page(resultList.getNumber())
+                .pageSize(resultList.getSize())
+                .totalPages(resultList.getTotalPages())
+                .totalElements(resultList.getTotalElements())
+                .build();
+
+        return Optional.of(cpuDataAndPricePointDTO);
     }
 }

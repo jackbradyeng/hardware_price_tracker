@@ -2,12 +2,13 @@ package com.price_tracker.services.price_point_services;
 
 import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface CPUPricePointService {
 
-    List<CPUPricePointDTO> findAll();
+    Page<CPUPricePointDTO> findAll(Pageable pageable);
 
-    Optional<CPUDataAndPricePointDTO> findByModelNumber(String modelNumber);
+    Optional<CPUDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable);
 }
