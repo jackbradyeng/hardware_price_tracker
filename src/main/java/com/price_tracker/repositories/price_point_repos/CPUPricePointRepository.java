@@ -14,7 +14,8 @@ public interface CPUPricePointRepository extends JpaRepository<CPUPricePoint, Lo
 
     @Query(value = "select p as CPUPricePoint, e as CPUEntity from CPUPricePoint p " +
             "left join CPUEntity e on p.modelNumber = e.modelNumber " +
-            "where p.modelNumber = :modelNumber",
+            "where p.modelNumber = :modelNumber " +
+            "order by p.scrapedAt desc",
             countQuery = "select count(p) from CPUPricePoint p where p.modelNumber = :modelNumber")
     Page<CPUDataAndPricePointProjection> getPricePointsByModelNumber(@Param("modelNumber") String modelNumber, Pageable pageable);
 }
