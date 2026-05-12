@@ -11,6 +11,8 @@ import com.price_tracker.repositories.price_point_repos.RAMPricePointRepository;
 import com.price_tracker.services.price_point_services.RAMPricePointService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -25,17 +27,16 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
     private final RAMMapper ramMapper;
 
     @Override
-    public List<RAMPricePointDTO> findAll() {
-        return ramPricePointRepository.findAll().stream()
-                .map(ramPricePointMapper::mapTo)
-                .toList();
+    public Page<RAMPricePointDTO> findAll(Pageable pageable) {
+        return ramPricePointRepository.findAll(pageable)
+                .map(ramPricePointMapper::mapTo);
     }
 
     @Override
-    public Optional<RAMDataAndPricePointDTO> findByModelNumber(String modelNumber) {
+    public Optional<RAMDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable) {
 
-        List<RAMDataAndPricePointProjection> resultList = ramPricePointRepository
-                .getPricePointsByModelNumber(modelNumber);
+        Page<RAMDataAndPricePointProjection> resultList = ramPricePointRepository
+                .getPricePointsByModelNumber(modelNumber, pageable);
 
         // if list is empty return a 404
         if(resultList.isEmpty()) {
@@ -43,7 +44,7 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
         }
 
         // convert RAM to a DTO so we can expose it in our API
-        RAMEntity ram = resultList.getFirst().getRAMEntity();
+        RAMEntity ram = resultList.stream().toList().getFirst().getRAMEntity();
         RAMDTO ramDTO = ramMapper.mapTo(ram);
 
         // convert RAM price points to a list of DTOs
@@ -52,10 +53,15 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
                 .toList();
 
         // construct the return object for our API
-        return Optional.ofNullable(
-                RAMDataAndPricePointDTO.builder()
+        RAMDataAndPricePointDTO ramDataAndPricePointDTO = RAMDataAndPricePointDTO.builder()
                 .ramDTO(ramDTO)
                 .ramPricePointDTOList(ramPricePointDTOS)
-                .build());
+                .page(resultList.getNumber())
+                .pageSize(resultList.getSize())
+                .totalPages(resultList.getTotalPages())
+                .totalElements(resultList.getTotalElements())
+                .build();
+
+        return Optional.of(ramDataAndPricePointDTO);
     }
 }

@@ -16,4 +16,8 @@ public class RAMDataAndPricePointDTO {
 
     private RAMDTO ramDTO;
     private List<RAMPricePointDTO> ramPricePointDTOList;
+    private int page;
+    private int pageSize;
+    private int totalPages;
+    private long totalElements;
 }
