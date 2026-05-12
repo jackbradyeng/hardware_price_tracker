@@ -11,6 +11,8 @@ import com.price_tracker.repositories.price_point_repos.GPUPricePointRepository;
 import com.price_tracker.services.price_point_services.GPUPricePointService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -25,17 +27,16 @@ public class GPUPricePointServiceImpl implements GPUPricePointService {
     private final GPUMapper gpuMapper;
 
     @Override
-    public List<GPUPricePointDTO> findAll() {
-        return gpuPricePointRepository.findAll().stream()
-                .map(gpuPricePointMapper::mapTo)
-                .toList();
+    public Page<GPUPricePointDTO> findAll(Pageable pageable) {
+        return gpuPricePointRepository.findAll(pageable)
+                .map(gpuPricePointMapper::mapTo);
     }
 
     @Override
-    public Optional<GPUDataAndPricePointDTO> findByModelNumber(String modelNumber) {
+    public Optional<GPUDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable) {
 
-        List<GPUDataAndPricePointProjection> resultList = gpuPricePointRepository
-                .getPricePointsByModelNumber(modelNumber);
+        Page<GPUDataAndPricePointProjection> resultList = gpuPricePointRepository
+                .getPricePointsByModelNumber(modelNumber, pageable);
 
         // throw a 404 if not found
         if (resultList.isEmpty()) {
@@ -43,7 +44,7 @@ public class GPUPricePointServiceImpl implements GPUPricePointService {
         }
 
         // convert GPU to a DTO so we can expose it in our API
-        GPUEntity gpu = resultList.getFirst().getGPUEntity();
+        GPUEntity gpu = resultList.stream().toList().getFirst().getGPUEntity();
         GPUDTO gpuDTO = gpuMapper.mapTo(gpu);
 
         // convert GPU price points to a list of DTOs
@@ -51,10 +52,15 @@ public class GPUPricePointServiceImpl implements GPUPricePointService {
                 .map(result -> gpuPricePointMapper.mapTo(result.getGPUPricePoint()))
                 .toList();
 
-        return Optional.ofNullable(
-                GPUDataAndPricePointDTO.builder()
+        GPUDataAndPricePointDTO gpuDataAndPricePointDTO = GPUDataAndPricePointDTO.builder()
                 .gpuDTO(gpuDTO)
                 .gpuPricePointDTOList(gpuPricePointDTOS)
-                .build());
+                .page(resultList.getNumber())
+                .pageSize(resultList.getSize())
+                .totalPages(resultList.getTotalPages())
+                .totalElements(resultList.getTotalElements())
+                .build();
+
+        return Optional.ofNullable(gpuDataAndPricePointDTO);
     }
 }

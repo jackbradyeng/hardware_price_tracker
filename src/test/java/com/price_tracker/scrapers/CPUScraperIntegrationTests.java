@@ -188,7 +188,8 @@ public class CPUScraperIntegrationTests {
         List<CPUPricePoint> sampleList = Stream.generate(() ->
                         scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
                 .limit(10)
-                .toList();
+                .toList()
+                .reversed();
 
         cpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
