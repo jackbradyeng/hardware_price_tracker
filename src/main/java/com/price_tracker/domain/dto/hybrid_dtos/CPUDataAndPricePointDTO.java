@@ -16,4 +16,8 @@ public class CPUDataAndPricePointDTO {
 
     private CPUDTO cpuDTO;
     private List<CPUPricePointDTO> cpuPricePointDTOList;
+    private int page;
+    private int pageSize;
+    private int totalPages;
+    private long totalElements;
 }

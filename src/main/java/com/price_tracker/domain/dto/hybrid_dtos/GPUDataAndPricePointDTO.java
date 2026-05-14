@@ -14,7 +14,10 @@ import java.util.List;
 @Builder
 public class GPUDataAndPricePointDTO {
 
-    // only returns a SINGLE GPU instance along with it's associated price history
     private GPUDTO gpuDTO;
     private List<GPUPricePointDTO> gpuPricePointDTOList;
+    private int page;
+    private int pageSize;
+    private int totalPages;
+    private long totalElements;
 }

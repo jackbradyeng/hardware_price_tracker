@@ -16,4 +16,8 @@ public class GPUWorkstationDataAndPricePointDTO {
 
     private GPUWorkstationDTO gpuWorkstationDTO;
     private List<GPUWorkstationPricePointDTO> gpuWorkstationPricePointDTOList;
+    private int page;
+    private int pageSize;
+    private int totalPages;
+    private long totalElements;
 }
