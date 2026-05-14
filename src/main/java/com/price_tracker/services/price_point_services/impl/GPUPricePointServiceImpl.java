@@ -61,6 +61,6 @@ public class GPUPricePointServiceImpl implements GPUPricePointService {
                 .totalElements(resultList.getTotalElements())
                 .build();
 
-        return Optional.ofNullable(gpuDataAndPricePointDTO);
+        return Optional.of(gpuDataAndPricePointDTO);
     }
 }
