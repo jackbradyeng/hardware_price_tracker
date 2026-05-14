@@ -73,10 +73,12 @@ src/main/java/com/price_tracker/
 Product entities use **JPA** for standard CRUD and custom HQL queries, including projection interfaces for joins. This is useful for communicating data to the frontend efficiently, where it is transformed into time-series charts:
 
 ```java
-@Query("select p as GPUPricePoint, e as GPUEntity from GPUPricePoint p " +
-       "left join GPUEntity e on p.modelNumber = e.modelNumber " +
-       "where p.modelNumber = :modelNumber")
-List<GPUDataAndPricePointProjection> getPricePointsByModelNumber(@Param("modelNumber") String modelNumber);
+@Query(value = "select p as GPUPricePoint, e as GPUEntity from GPUPricePoint p " +
+        "left join GPUEntity e on p.modelNumber = e.modelNumber " +
+        "where p.modelNumber = :modelNumber " +
+        "order by p.scrapedAt desc",
+        countQuery = "select count(p) from GPUPricePoint p where p.modelNumber = :modelNumber")
+Page<GPUDataAndPricePointProjection> getPricePointsByModelNumber(@Param("modelNumber") String modelNumber, Pageable pageable);
 ```
 
 Price point inserts on the other hand use **JDBC Template** for performance. Pricing data arrives in bulk daily, so the JDBC template pre-allocates a batch of sequence IDs in a single round-trip before inserting. This implementation was conceived as a solution to the HIbernate N+1 problem:
@@ -129,6 +131,31 @@ Each hardware category exposes the same RESTful interface. Using GPU as an examp
 Identical endpoints exist for `/api/cpus`, `/api/rams`, and `/api/gpu-workstations`.
 
 Price point history endpoints follow the same pattern under `/api/gpu-price-points`, etc.
+
+### Price Point Endpoints (Paginated)
+
+Price point endpoints return paginated responses. Using GPU as an example:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/gpu_pricepoints` | List all GPU price points (paginated) |
+| `GET` | `/api/gpu_pricepoints/{modelNumber}` | Get price history for a specific GPU (paginated) |
+
+Both endpoints accept standard Spring `Pageable` query parameters with a default page size of 30:
+
+| Parameter | Description | Example |
+|-----------|-------------|---------|
+| `page` | Zero-based page index | `?page=0` |
+| `size` | Number of results per page (default: 30) | `?size=50` |
+| `sort` | Sort field and direction | `?sort=dateRecorded,desc` |
+
+Responses are wrapped in a Spring `Page<T>` envelope with `content`, `totalElements`, `totalPages`, `number`, and `size` fields.
+
+Identical paginated endpoints exist for `/api/cpu_pricepoints`, `/api/ram_pricepoints`, and `/api/gpu_workstation_pricepoints`.
+
+---
+
+## Frontend Networking
 
 CORS is configured for `localhost:3000`. This enables communication with the frontend - a separate repo called hardware_price_tracker.fe.
 
