@@ -42,7 +42,7 @@ public class GPUWorkstationScrapingOrchestrator {
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
-        log.info("GPU workstation scraping service took " + timeElapsed.toSeconds() + " seconds to execute.");
+        log.info("GPU workstation scraping service took %d seconds to execute.".formatted(timeElapsed.toSeconds()));
     }
 
     private Optional<GPUWorkstationPricePoint> processWorkstationGPU(String url) {

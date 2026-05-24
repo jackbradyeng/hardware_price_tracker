@@ -18,7 +18,6 @@ public class UmartGPUScrapingService extends GenericUmartScraper implements GPUS
     @Override
     public GPUPricePoint createGPUPricePoint(ScrapedDataDTO scrapedData) {
 
-        // converting time to microseconds as nanosecond accuracy is not required for scraping
         return GPUPricePoint.builder()
                 .modelNumber(scrapedData.modelNumber())
                 .vendor(UMART)
