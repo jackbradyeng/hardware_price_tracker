@@ -19,4 +19,5 @@ public class SSDDTO {
     private Integer sequentialWrite;
     private Long meanTimeBetweenFailures;
     private String storageInterface;
+    private Boolean isActive;
 }

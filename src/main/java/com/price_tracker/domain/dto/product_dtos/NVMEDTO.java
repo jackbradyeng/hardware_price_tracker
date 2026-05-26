@@ -20,4 +20,5 @@ public class NVMEDTO {
     private Long meanTimeBetweenFailures;
     private String storageInterface;
     private Boolean includesHeatSink;
+    private Boolean isActive;
 }

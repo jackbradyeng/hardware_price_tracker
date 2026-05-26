@@ -20,4 +20,5 @@ public class HDDDTO {
     private Long meanTimeBetweenFailures;
     private String storageInterface;
     private Float formFactor;
+    private Boolean isActive;
 }
