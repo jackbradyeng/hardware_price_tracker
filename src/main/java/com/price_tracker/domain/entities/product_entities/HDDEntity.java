@@ -25,4 +25,5 @@ public class HDDEntity {
     private Long meanTimeBetweenFailures;
     private String storageInterface;
     private Float formFactor;
+    private Boolean isActive;
 }
