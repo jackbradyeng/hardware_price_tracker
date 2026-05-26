@@ -10,7 +10,7 @@ public final class ScrapingConstants {
     public static final String RAM_SCRAPING_TIME = "0 5 22 * * ?";
     public static final String CPU_SCRAPING_TIME = "0 10 22 * * ?";
     public static final String GPU_WORKSTATION_SCRAPING_TIME = "0 15 22 * * ?";
-    public static final String HDD_SCRAPING_TOME = "0 20 22 * * ?";
+    public static final String HDD_SCRAPING_TIME = "0 20 22 * * ?";
     public static final String SSD_SCRAPING_TIME = "0 25 22 * * ?";
     public static final String NVME_SCRAPING_TIME = "0 30 22 * * ?";
 }
