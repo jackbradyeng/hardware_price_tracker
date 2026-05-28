@@ -18,6 +18,8 @@ public class HDDDTO {
     private Integer sequentialRead;
     private Integer sequentialWrite;
     private Long meanTimeBetweenFailures;
+    private Integer rpm;
+    private Integer cache;
     private String storageInterface;
     private Float formFactor;
     private Boolean isActive;
