@@ -18,6 +18,12 @@ import static com.price_tracker.constants.other_constants.DatabaseConstants.*;
 public class GPUWorkstationPricePoint {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = WS_GPU_PRICE_SEQUENCE)
+    @SequenceGenerator(
+            name = WS_GPU_PRICE_SEQUENCE,
+            sequenceName = WS_GPU_PRICE_SEQUENCE,
+            allocationSize = 1
+    )
     private Long id;
     private String modelNumber;
     private String vendor;
