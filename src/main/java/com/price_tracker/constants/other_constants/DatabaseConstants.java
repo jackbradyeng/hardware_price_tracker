@@ -16,6 +16,9 @@ public final class DatabaseConstants {
     public static final String WORKSTATION_GPU_PRICE_HISTORY = "WS_GPU_PRICE_HISTORY";
     public static final String RAM_PRICE_HISTORY = "RAM_PRICE_HISTORY";
     public static final String CPU_PRICE_HISTORY = "CPU_PRICE_HISTORY";
+    public static final String HDD_PRICE_HISTORY = "HDD_PRICE_HISTORY";
+    public static final String SSD_PRICE_HISTORY = "SSD_PRICE_HISTORY";
+    public static final String NVME_PRICE_HISTORY = "NVME_PRICE_HISTORY";
 
     // VENDORS
     public static final String VENDOR_TABLE_NAME = "VENDORS";
@@ -26,4 +29,7 @@ public final class DatabaseConstants {
     public static final String WS_GPU_PRICE_SEQUENCE = "ws_price_sequence";
     public static final String RAM_PRICE_SEQUENCE = "ram_price_sequence";
     public static final String CPU_PRICE_SEQUENCE = "cpu_price_sequence";
+    public static final String HDD_PRICE_SEQUENCE = "hdd_price_sequence";
+    public static final String SSD_PRICE_SEQUENCE = "ssd_price_sequence";
+    public static final String NVME_PRICE_SEQUENCE = "nvme_price_sequence";
 }
