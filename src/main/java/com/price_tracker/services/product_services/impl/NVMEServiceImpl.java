@@ -76,6 +76,7 @@ public class NVMEServiceImpl implements NVMEService {
             if (nvmeDTO.getMeanTimeBetweenFailures() != null) existing.setMeanTimeBetweenFailures(nvmeDTO.getMeanTimeBetweenFailures());
             if (nvmeDTO.getStorageInterface() != null) existing.setStorageInterface(nvmeDTO.getStorageInterface());
             if (nvmeDTO.getIncludesHeatSink() != null) existing.setIncludesHeatSink(nvmeDTO.getIncludesHeatSink());
+            if (nvmeDTO.getIsActive() != null) existing.setIsActive(nvmeDTO.getIsActive());
             NVMEEntity savedNVME = nvmeRepository.save(existing);
             return modelMapper.mapTo(savedNVME);
         });

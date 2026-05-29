@@ -75,6 +75,7 @@ public class SSDServiceImpl implements SSDService {
             if (ssdDTO.getSequentialWrite() != null) existing.setSequentialWrite(ssdDTO.getSequentialWrite());
             if (ssdDTO.getMeanTimeBetweenFailures() != null) existing.setMeanTimeBetweenFailures(ssdDTO.getMeanTimeBetweenFailures());
             if (ssdDTO.getStorageInterface() != null) existing.setStorageInterface(ssdDTO.getStorageInterface());
+            if (ssdDTO.getIsActive() != null) existing.setIsActive(ssdDTO.getIsActive());
             SSDEntity savedSSD = ssdRepository.save(existing);
             return modelMapper.mapTo(savedSSD);
         });

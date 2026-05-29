@@ -76,6 +76,9 @@ public class HDDServiceImpl implements HDDService {
             if (hddDTO.getMeanTimeBetweenFailures() != null) existing.setMeanTimeBetweenFailures(hddDTO.getMeanTimeBetweenFailures());
             if (hddDTO.getStorageInterface() != null) existing.setStorageInterface(hddDTO.getStorageInterface());
             if (hddDTO.getFormFactor() != null) existing.setFormFactor(hddDTO.getFormFactor());
+            if (hddDTO.getRpm() != null) existing.setRpm(hddDTO.getRpm());
+            if (hddDTO.getCache() != null) existing.setCache(hddDTO.getCache());
+            if (hddDTO.getIsActive() != null) existing.setIsActive(hddDTO.getIsActive());
             HDDEntity savedHDD = hddRepository.save(existing);
             return modelMapper.mapTo(savedHDD);
         });
