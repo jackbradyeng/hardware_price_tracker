@@ -29,4 +29,19 @@ public interface UmartProductRepository extends JpaRepository<UmartProductEntity
             "join GPUWorkstationEntity g on u.modelNumber = g.modelNumber " +
             "where u.productType='WORKSTATION GPU' and g.isActive = true")
     List<String> findUrlsForActiveWorkstationGPUs();
+
+    @Query("select u.url from UmartProductEntity u " +
+            "join HDDEntity h on u.modelNumber = h.modelNumber " +
+            "where u.productType='HDD' and h.isActive = true")
+    List<String> findUrlsForActiveHDDs();
+
+    @Query("select u.url from UmartProductEntity u " +
+            "join SSDEntity s on u.modelNumber = s.modelNumber " +
+            "where u.productType='SSD' and s.isActive = true")
+    List<String> findUrlsForActiveSSDs();
+
+    @Query("select u.url from UmartProductEntity u " +
+            "join NVMEEntity n on u.modelNumber = n.modelNumber " +
+            "where u.productType='NVME' and n.isActive = true")
+    List<String> findUrlsForActiveNVMEs();
 }

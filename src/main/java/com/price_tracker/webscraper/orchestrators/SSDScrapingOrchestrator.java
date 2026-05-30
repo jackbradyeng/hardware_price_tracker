@@ -1,9 +1,9 @@
 package com.price_tracker.webscraper.orchestrators;
 
-import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.CPUPricePointJDBCTemplate;
+import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.SSDPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.webscraper.product_services.impl.UmartCPUScrapingService;
+import com.price_tracker.webscraper.product_services.impl.UmartSSDScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,44 +12,44 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import static com.price_tracker.constants.other_constants.ScrapingConstants.CPU_SCRAPING_TIME;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.SSD_SCRAPING_TIME;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.SLEEPING_CONSTANT;
 
 @Service
 @RequiredArgsConstructor
 @Log
-public class CPUScrapingOrchestrator {
+public class SSDScrapingOrchestrator {
 
-    private final CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate;
+    private final SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
-    private final UmartCPUScrapingService umartCPUScrapingService;
+    private final UmartSSDScrapingService umartSSDScrapingService;
 
-    @Scheduled(cron = CPU_SCRAPING_TIME)
+    @Scheduled(cron = SSD_SCRAPING_TIME)
     public void runDailyScrape() {
-        runUmartCPUScrape();
+        runUmartSSDScrape();
     }
 
-    private void runUmartCPUScrape() {
+    private void runUmartSSDScrape() {
         Instant start = Instant.now();
 
-        List<CPUPricePoint> pricePoints = umartProductRepository.findUrlsForActiveCPU()
+        List<SSDPricePoint> pricePoints = umartProductRepository.findUrlsForActiveSSDs()
                 .stream()
-                .map(this::processCPU)
+                .map(this::processSSD)
                 .flatMap(Optional::stream)
                 .toList();
 
-        cpuPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+        ssdPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
-        log.info("CPU scraping service took %d seconds to execute.".formatted(timeElapsed.toSeconds()));
+        log.info("SSD scraping service took %d seconds to execute.".formatted(timeElapsed.toSeconds()));
     }
 
-    private Optional<CPUPricePoint> processCPU(String url) {
+    private Optional<SSDPricePoint> processSSD(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartCPUScrapingService.scrapeProductData(url)
-                    .map(umartCPUScrapingService::createCPUPricePoint);
+            return umartSSDScrapingService.scrapeProductData(url)
+                    .map(umartSSDScrapingService::createSSDPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.warning("Scraping interrupted for URL: " + url);

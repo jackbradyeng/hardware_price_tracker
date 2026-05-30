@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-    // TypeScript-React-Vite front-end is being hsoted on port 3000
+    // TypeScript-React-Vite front-end hosted on port 3000
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")

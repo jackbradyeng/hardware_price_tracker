@@ -1,8 +1,8 @@
 package com.price_tracker.webscraper.product_services.impl;
 
-import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
+import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.product_services.GPUScraper;
+import com.price_tracker.webscraper.product_services.SSDScraper;
 import com.price_tracker.webscraper.vendor_templates.GenericUmartScraper;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -13,12 +13,12 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @Service
 @Log
-public class UmartGPUScrapingService extends GenericUmartScraper implements GPUScraper {
+public class UmartSSDScrapingService extends GenericUmartScraper implements SSDScraper {
 
     @Override
-    public GPUPricePoint createGPUPricePoint(ScrapedDataDTO scrapedData) {
+    public SSDPricePoint createSSDPricePoint(ScrapedDataDTO scrapedData) {
 
-        return GPUPricePoint.builder()
+        return SSDPricePoint.builder()
                 .modelNumber(scrapedData.modelNumber())
                 .vendor(UMART)
                 .currency(AUD)

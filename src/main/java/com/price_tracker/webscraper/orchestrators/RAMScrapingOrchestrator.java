@@ -44,7 +44,7 @@ public class RAMScrapingOrchestrator {
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
-        log.info("RAM scraping service took " + timeElapsed.toSeconds() + " seconds to execute.");
+        log.info("RAM scraping service took %d seconds to execute.".formatted(timeElapsed.toSeconds()));
     }
 
     private Optional<RAMPricePoint> processRAM(String url) {
