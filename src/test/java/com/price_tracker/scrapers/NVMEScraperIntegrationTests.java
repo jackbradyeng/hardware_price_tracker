@@ -5,7 +5,6 @@ import com.price_tracker.domain.dto.price_point_dtos.NVMEPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.NVMEDTO;
 import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
 import com.price_tracker.mappers.price_point_mappers.NVMEPricePointMapper;
-import com.price_tracker.mappers.product_mappers.NVMEMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.NVMEPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.NVMEPricePointService;
 import com.price_tracker.services.product_services.NVMEService;
@@ -49,7 +48,6 @@ public class NVMEScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate;
     private final NVMEService nvmeService;
-    private final NVMEMapper nvmeMapper;
     private final NVMEPricePointMapper nvmePricePointMapper;
     private final NVMEPricePointService nvmePricePointService;
 
@@ -60,7 +58,6 @@ public class NVMEScraperIntegrationTests {
                                        ObjectMapper objectMapper,
                                        NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate,
                                        NVMEService nvmeService,
-                                       NVMEMapper nvmeMapper,
                                        NVMEPricePointMapper nvmePricePointMapper,
                                        NVMEPricePointService nvmePricePointService) {
         this.mockMVC = mockMVC;
@@ -69,7 +66,6 @@ public class NVMEScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.nvmePricePointJDBCTemplate = nvmePricePointJDBCTemplate;
         this.nvmeService = nvmeService;
-        this.nvmeMapper = nvmeMapper;
         this.nvmePricePointMapper = nvmePricePointMapper;
         this.nvmePricePointService = nvmePricePointService;
     }
