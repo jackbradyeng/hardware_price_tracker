@@ -1,37 +1,37 @@
 package com.price_tracker.repositories;
 
+import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
-import com.price_tracker.mappers.product_mappers.RAMMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.product_repos.RAMRepository;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 @DirtiesContext(classMode =  DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class RAMEntityRepoIntegrationTests {
 
     private final RAMRepository testInstance;
     private final RAMTestingUtility ramTestingUtility;
-    private final RAMMapper ramMapper;
+    private final GenericMapper<RAMEntity, RAMDTO> ramMapper;
 
     @Autowired
     public RAMEntityRepoIntegrationTests(RAMRepository testInstance,
                                          RAMTestingUtility ramTestingUtility,
-                                         RAMMapper ramMapper) {
+                                         MapperFactory mapperFactory) {
         this.testInstance = testInstance;
         this.ramTestingUtility = ramTestingUtility;
-        this.ramMapper = ramMapper;
+        this.ramMapper = mapperFactory.create(RAMEntity.class, RAMDTO.class);
     }
 
     @Test

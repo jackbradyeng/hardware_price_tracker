@@ -5,7 +5,6 @@ import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
 import com.price_tracker.mappers.price_point_mappers.RAMPricePointMapper;
-import com.price_tracker.mappers.product_mappers.RAMMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.RAMPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.RAMPricePointService;
 import com.price_tracker.services.product_services.RAMService;
@@ -50,7 +49,6 @@ public class RAMScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final RAMPricePointJDBCTemplate ramPricePointJDBCTemplate;
     private final RAMService ramService;
-    private final RAMMapper ramMapper;
     private final RAMPricePointMapper ramPricePointMapper;
     private final RAMPricePointService ramPricePointService;
 
@@ -61,7 +59,6 @@ public class RAMScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       RAMPricePointJDBCTemplate ramPricePointJDBCTemplate,
                                       RAMService ramService,
-                                      RAMMapper ramMapper,
                                       RAMPricePointMapper ramPricePointMapper,
                                       RAMPricePointService ramPricePointService) {
         this.mockMVC = mockMVC;
@@ -70,7 +67,6 @@ public class RAMScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.ramPricePointJDBCTemplate = ramPricePointJDBCTemplate;
         this.ramService = ramService;
-        this.ramMapper = ramMapper;
         this.ramPricePointMapper = ramPricePointMapper;
         this.ramPricePointService = ramPricePointService;
     }

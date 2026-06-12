@@ -3,9 +3,10 @@ package com.price_tracker.testing_data.ram_data;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
-import com.price_tracker.mappers.product_mappers.RAMMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,10 +16,14 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 import static com.price_tracker.testing_data.ram_data.RAMTestingData.*;
 
 @Component
-@AllArgsConstructor
 public class RAMTestingUtility {
 
-    private final RAMMapper ramMapper;
+    private final GenericMapper<RAMEntity, RAMDTO> ramMapper;
+
+    @Autowired
+    public RAMTestingUtility(MapperFactory mapperFactory) {
+        this.ramMapper = mapperFactory.create(RAMEntity.class, RAMDTO.class);
+    }
 
     /// SAMPLE ENTITIES/DTOS
     public RAMDTO createTestRAM() {
