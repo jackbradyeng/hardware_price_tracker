@@ -4,7 +4,6 @@ import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
-import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.mappers.price_point_mappers.CPUPricePointMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.CPUPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.CPUPricePointService;
@@ -60,7 +59,6 @@ public class CPUScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate,
                                       CPUService cpuService,
-                                      MapperFactory mapperFactory,
                                       CPUPricePointMapper cpuPricePointMapper,
                                       CPUPricePointService cpuPricePointService) {
         this.mockMVC = mockMVC;

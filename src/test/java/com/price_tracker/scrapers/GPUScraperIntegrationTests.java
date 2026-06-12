@@ -5,7 +5,6 @@ import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
 import com.price_tracker.mappers.price_point_mappers.GPUPricePointMapper;
-import com.price_tracker.mappers.product_mappers.GPUMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.GPUPricePointService;
 import com.price_tracker.services.product_services.GPUService;
@@ -50,7 +49,6 @@ public class GPUScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate;
     private final GPUService gpuService;
-    private final GPUMapper gpuMapper;
     private final GPUPricePointMapper gpuPricePointMapper;
     private final GPUPricePointService gpuPricePointService;
 
@@ -61,7 +59,6 @@ public class GPUScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate,
                                       GPUService gpuService,
-                                      GPUMapper gpuMapper,
                                       GPUPricePointMapper gpuPricePointMapper,
                                       GPUPricePointService gpuPricePointService) {
         this.mockMVC = mockMVC;
@@ -70,7 +67,6 @@ public class GPUScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.gpuPricePointJDBCTemplate = gpuPricePointJDBCTemplate;
         this.gpuService = gpuService;
-        this.gpuMapper = gpuMapper;
         this.gpuPricePointMapper = gpuPricePointMapper;
         this.gpuPricePointService = gpuPricePointService;
     }
