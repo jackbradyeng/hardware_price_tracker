@@ -5,12 +5,13 @@ import com.price_tracker.domain.dto.hybrid_interfaces.GPUWorkstationDataAndPrice
 import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.mappers.price_point_mappers.GPUWorkstationPricePointMapper;
-import com.price_tracker.mappers.product_mappers.GPUWorkstationMapper;
 import com.price_tracker.repositories.price_point_repos.GPUWorkstationPricePointRepository;
 import com.price_tracker.services.price_point_services.GPUWorkstationPricePointService;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,20 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class GPUWorkstationPricePointServiceImpl implements GPUWorkstationPricePointService {
 
     private final GPUWorkstationPricePointRepository gpuWorkstationPricePointRepository;
     private final GPUWorkstationPricePointMapper gpuPricePointMapper;
-    private final GPUWorkstationMapper gpuWorkstationMapper;
+    private final GenericMapper<GPUWorkstationEntity, GPUWorkstationDTO> gpuWorkstationMapper;
+
+    @Autowired
+    public GPUWorkstationPricePointServiceImpl(GPUWorkstationPricePointRepository gpuWorkstationPricePointRepository,
+                                    GPUWorkstationPricePointMapper gpuPricePointMapper,
+                                    MapperFactory mapperFactory) {
+        this.gpuWorkstationPricePointRepository = gpuWorkstationPricePointRepository;
+        this.gpuPricePointMapper = gpuPricePointMapper;
+        this.gpuWorkstationMapper = mapperFactory.create(GPUWorkstationEntity.class, GPUWorkstationDTO.class);
+    }
 
     @Override
     public Page<GPUWorkstationPricePointDTO> findAll(Pageable pageable) {

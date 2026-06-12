@@ -2,7 +2,6 @@ package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
-import com.price_tracker.mappers.product_mappers.GPUWorkstationMapper;
 import com.price_tracker.services.product_services.GPUWorkstationService;
 import com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingUtility;
 import org.junit.jupiter.api.Test;
@@ -31,21 +30,18 @@ public class GPUWorkstationControllerIntegrationTests {
     private final ObjectMapper objectMapper;
     private final WorkstationGPUTestingUtility workstationGPUTestingUtility;
     private final GPUWorkstationService gpuWorkstationService;
-    private final GPUWorkstationMapper gpuWorkstationMapper;
 
     @Autowired
     public GPUWorkstationControllerIntegrationTests(
             MockMvc mockMVC,
             ObjectMapper objectMapper,
             WorkstationGPUTestingUtility workstationGPUTestingUtility,
-            GPUWorkstationService gpuWorkstationService,
-            GPUWorkstationMapper gpuWorkstationMapper) {
+            GPUWorkstationService gpuWorkstationService) {
 
         this.mockMVC = mockMVC;
         this.objectMapper = objectMapper;
         this.workstationGPUTestingUtility = workstationGPUTestingUtility;
         this.gpuWorkstationService = gpuWorkstationService;
-        this.gpuWorkstationMapper = gpuWorkstationMapper;
     }
 
     /// create tests
@@ -92,8 +88,8 @@ public class GPUWorkstationControllerIntegrationTests {
 
     @Test
     public void testThatGetWSGPUByIDReturnsHttpStatusOkWhenGPUExists() throws Exception {
-        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
-        GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(gpuWorkstationMapper.mapTo(testGPUEntity));
+        GPUWorkstationDTO testGPUDTO = workstationGPUTestingUtility.createTestWorkstationGPUDTO();
+        GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(testGPUDTO);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/workstation_gpus/" + savedGPUEntity.getModelNumber())
@@ -116,8 +112,8 @@ public class GPUWorkstationControllerIntegrationTests {
     /// update tests
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
-        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
-        GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(gpuWorkstationMapper.mapTo(testGPUEntity));
+        GPUWorkstationDTO testGPUDTO = workstationGPUTestingUtility.createTestWorkstationGPUDTO();
+        GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(testGPUDTO);
 
         savedGPUEntity.setName("Updated GPU name");
         String gpuJson = objectMapper.writeValueAsString(savedGPUEntity);
@@ -133,8 +129,8 @@ public class GPUWorkstationControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateReturnsUpdatedWSGPU() throws Exception {
-        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
-        GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(gpuWorkstationMapper.mapTo(testGPUEntity));
+        GPUWorkstationDTO testGPUDTO = workstationGPUTestingUtility.createTestWorkstationGPUDTO();
+        GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(testGPUDTO);
         savedGPUEntity.setName("Updated GPU name");
         savedGPUEntity.setChipManufacturer("Updated GPU chip manufacturer");
         savedGPUEntity.setGpuMemory(32);
@@ -167,8 +163,8 @@ public class GPUWorkstationControllerIntegrationTests {
 
     @Test
     public void testThatDeleteWSGPUReturnsHttpStatus204ForExisting() throws Exception {
-        GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
-        GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(gpuWorkstationMapper.mapTo(testGPUEntity));
+        GPUWorkstationDTO testGPUDTO = workstationGPUTestingUtility.createTestWorkstationGPUDTO();
+        GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(testGPUDTO);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.delete("/api/workstation_gpus/" + savedGPUEntity.getModelNumber())
