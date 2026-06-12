@@ -5,7 +5,6 @@ import com.price_tracker.domain.dto.price_point_dtos.HDDPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.HDDDTO;
 import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
 import com.price_tracker.mappers.price_point_mappers.HDDPricePointMapper;
-import com.price_tracker.mappers.product_mappers.HDDMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.HDDPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.HDDPricePointService;
 import com.price_tracker.services.product_services.HDDService;
@@ -49,7 +48,6 @@ public class HDDScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
     private final HDDService hddService;
-    private final HDDMapper hddMapper;
     private final HDDPricePointMapper hddPricePointMapper;
     private final HDDPricePointService hddPricePointService;
 
@@ -60,7 +58,6 @@ public class HDDScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       HDDPricePointJDBCTemplate hddPricePointJDBCTemplate,
                                       HDDService hddService,
-                                      HDDMapper hddMapper,
                                       HDDPricePointMapper hddPricePointMapper,
                                       HDDPricePointService hddPricePointService) {
         this.mockMVC = mockMVC;
@@ -69,7 +66,6 @@ public class HDDScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.hddPricePointJDBCTemplate = hddPricePointJDBCTemplate;
         this.hddService = hddService;
-        this.hddMapper = hddMapper;
         this.hddPricePointMapper = hddPricePointMapper;
         this.hddPricePointService = hddPricePointService;
     }

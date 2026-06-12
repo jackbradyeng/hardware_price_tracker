@@ -5,12 +5,13 @@ import com.price_tracker.domain.dto.hybrid_interfaces.HDDDataAndPricePointProjec
 import com.price_tracker.domain.dto.price_point_dtos.HDDPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.HDDDTO;
 import com.price_tracker.domain.entities.product_entities.HDDEntity;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.mappers.price_point_mappers.HDDPricePointMapper;
-import com.price_tracker.mappers.product_mappers.HDDMapper;
 import com.price_tracker.repositories.price_point_repos.HDDPricePointRepository;
 import com.price_tracker.services.price_point_services.HDDPricePointService;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,20 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class HDDPricePointServiceImpl implements HDDPricePointService {
 
     private final HDDPricePointRepository hddPricePointRepository;
     private final HDDPricePointMapper hddPricePointMapper;
-    private final HDDMapper hddMapper;
+    private final GenericMapper<HDDEntity, HDDDTO> hddMapper;
+
+    @Autowired
+    public HDDPricePointServiceImpl(HDDPricePointRepository hddPricePointRepository,
+                                    HDDPricePointMapper hddPricePointMapper,
+                                    MapperFactory mapperFactory) {
+        this.hddPricePointRepository = hddPricePointRepository;
+        this.hddPricePointMapper = hddPricePointMapper;
+        this.hddMapper = mapperFactory.create(HDDEntity.class, HDDDTO.class);
+    }
 
     @Override
     public Page<HDDPricePointDTO> findAll(Pageable pageable) {
