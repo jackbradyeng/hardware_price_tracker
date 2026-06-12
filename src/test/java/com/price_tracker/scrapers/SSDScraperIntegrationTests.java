@@ -5,7 +5,6 @@ import com.price_tracker.domain.dto.price_point_dtos.SSDPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.SSDDTO;
 import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
 import com.price_tracker.mappers.price_point_mappers.SSDPricePointMapper;
-import com.price_tracker.mappers.product_mappers.SSDMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.SSDPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.SSDPricePointService;
 import com.price_tracker.services.product_services.SSDService;
@@ -50,7 +49,6 @@ public class SSDScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate;
     private final SSDService ssdService;
-    private final SSDMapper ssdMapper;
     private final SSDPricePointMapper ssdPricePointMapper;
     private final SSDPricePointService ssdPricePointService;
 
@@ -61,7 +59,6 @@ public class SSDScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate,
                                       SSDService ssdService,
-                                      SSDMapper ssdMapper,
                                       SSDPricePointMapper ssdPricePointMapper,
                                       SSDPricePointService ssdPricePointService) {
         this.mockMVC = mockMVC;
@@ -70,7 +67,6 @@ public class SSDScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.ssdPricePointJDBCTemplate = ssdPricePointJDBCTemplate;
         this.ssdService = ssdService;
-        this.ssdMapper = ssdMapper;
         this.ssdPricePointMapper = ssdPricePointMapper;
         this.ssdPricePointService = ssdPricePointService;
     }
