@@ -4,8 +4,8 @@ import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.mappers.price_point_mappers.CPUPricePointMapper;
-import com.price_tracker.mappers.product_mappers.CPUMapper;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.CPUPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.CPUPricePointService;
 import com.price_tracker.services.product_services.CPUService;
@@ -50,7 +50,6 @@ public class CPUScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate;
     private final CPUService cpuService;
-    private final CPUMapper cpuMapper;
     private final CPUPricePointMapper cpuPricePointMapper;
     private final CPUPricePointService cpuPricePointService;
 
@@ -61,7 +60,7 @@ public class CPUScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate,
                                       CPUService cpuService,
-                                      CPUMapper cpuMapper,
+                                      MapperFactory mapperFactory,
                                       CPUPricePointMapper cpuPricePointMapper,
                                       CPUPricePointService cpuPricePointService) {
         this.mockMVC = mockMVC;
@@ -70,7 +69,6 @@ public class CPUScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.cpuPricePointJDBCTemplate = cpuPricePointJDBCTemplate;
         this.cpuService = cpuService;
-        this.cpuMapper = cpuMapper;
         this.cpuPricePointMapper = cpuPricePointMapper;
         this.cpuPricePointService = cpuPricePointService;
     }

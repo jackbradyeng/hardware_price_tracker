@@ -2,18 +2,23 @@ package com.price_tracker.testing_data.cpu_data;
 
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
-import com.price_tracker.mappers.product_mappers.CPUMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import static com.price_tracker.testing_data.cpu_data.CPUTestingData.*;
 import java.math.BigDecimal;
 
 @Component
-@AllArgsConstructor
 public class CPUTestingUtility {
 
-    private final CPUMapper cpuMapper;
+    private final GenericMapper<CPUEntity, CPUDTO> cpuMapper;
+
+    @Autowired
+    public CPUTestingUtility(MapperFactory mapperFactory) {
+        this.cpuMapper = mapperFactory.create(CPUEntity.class, CPUDTO.class);
+    }
 
     /// SAMPLE ENTITIES/DTOS
     public CPUDTO createTestCPU() {
