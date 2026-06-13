@@ -2,10 +2,12 @@ package com.price_tracker.controllers.vendor_controllers;
 
 import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
-import com.price_tracker.mappers.vendor_mappers.UmartProductMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.services.vendor_services.UmartProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Log
 @RestController
 @RequiredArgsConstructor
-@Log
 public class UmartProductController {
 
     private final UmartProductService umartProductService;
-    private final UmartProductMapper umartProductMapper;
+    private final GenericMapper<UmartProductEntity, UmartProductDTO> umartProductMapper;
+
+    @Autowired
+    public UmartProductController(UmartProductService umartProductService, MapperFactory mapperFactory) {
+        this.umartProductService = umartProductService;
+        this.umartProductMapper = mapperFactory.create(UmartProductEntity.class, UmartProductDTO.class);
+    }
 
     @PostMapping(path = "/api/umartproducts")
     public ResponseEntity<UmartProductDTO> createProduct(@RequestBody final UmartProductDTO umartProductDTO) {
