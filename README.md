@@ -6,7 +6,7 @@ A Spring Boot REST API that tracks computer hardware prices over time by scrapin
 
 ## Overview
 
-This application maintains a catalogue of computer hardware products (CPUs, GPUs, RAM, GPU Workstations, etc.) and records their price points from vendors daily. Price history is stored as time-series data, enabling price trend analysis over time.
+This application maintains a catalogue of computer hardware products (CPUs, GPUs, RAM, GPU Workstations, HDDs, SSDs, NVMEs, etc.) and records their price points from vendors daily. Price history is stored as time-series data, enabling price trend analysis over time.
 
 **Key capabilities:**
 - Full CRUD API for hardware product management across various product types
@@ -33,7 +33,7 @@ This application maintains a catalogue of computer hardware products (CPUs, GPUs
 
 ## Architecture
 
-The application follows a layered architecture with four hardware product domains (CPU, GPU, RAM, GPUWorkstation), each with identical structure:
+The application follows a layered architecture with seven hardware product domains (CPU, GPU, RAM, GPUWorkstation, HDD, SSD, NVME), each with identical structure:
 
 ```
 Controller → Service (interface + implementation) → Repository (JPA + JDBC) → PostgreSQL
@@ -108,6 +108,18 @@ List<GPUPricePoint> pricePoints = umartProductRepository.findUrlsForActiveGPUs()
     .toList();
 ```
 
+### Generic Mapper
+
+Entity ↔ DTO mapping is handled by a single `Mapper<A, B>` interface backed by `GenericMapper<A, B>`, which wraps `ModelMapper`. A `MapperFactory` bean constructs a `GenericMapper` for any entity/DTO pair on demand, so services no longer need a hand-written mapper class per domain:
+
+```java
+public CPUServiceImpl(CPURepository cpuRepository, MapperFactory mapperFactory) {
+    this.cpuMapper = mapperFactory.create(CPUEntity.class, CPUDTO.class);
+}
+```
+
+This replaced the previous approach of one bespoke mapper class per product and price point type.
+
 ### Centralised Constants
 
 All magic values are defined in a `/constants/` package rather than scattered through the codebase. This includes CSS selectors, vendor URLs, database table and sequence names, and CRON expressions. Adapting to a vendor site change means updating one file.
@@ -128,7 +140,7 @@ Each hardware category exposes the same RESTful interface. Using GPU as an examp
 | `PATCH` | `/api/gpus/{id}` | Partial update |
 | `DELETE` | `/api/gpus/{id}` | Delete GPU |
 
-Identical endpoints exist for `/api/cpus`, `/api/rams`, and `/api/gpu-workstations`.
+Identical endpoints exist for `/api/cpus`, `/api/rams`, `/api/gpu-workstations`, `/api/hdds`, `/api/ssds`, and `/api/nvmes`.
 
 Price point history endpoints follow the same pattern under `/api/gpu-price-points`, etc.
 
@@ -151,7 +163,7 @@ Both endpoints accept standard Spring `Pageable` query parameters with a default
 
 Responses are wrapped in a Spring `Page<T>` envelope with `content`, `totalElements`, `totalPages`, `number`, and `size` fields.
 
-Identical paginated endpoints exist for `/api/cpu_pricepoints`, `/api/ram_pricepoints`, and `/api/gpu_workstation_pricepoints`.
+Identical paginated endpoints exist for `/api/cpu_pricepoints`, `/api/ram_pricepoints`, `/api/gpu_workstation_pricepoints`, `/api/hdd_pricepoints`, `/api/ssd_pricepoints`, and `/api/nvme_pricepoints`.
 
 ---
 
