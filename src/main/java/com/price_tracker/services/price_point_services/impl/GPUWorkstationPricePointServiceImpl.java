@@ -4,10 +4,10 @@ import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointD
 import com.price_tracker.domain.dto.hybrid_interfaces.GPUWorkstationDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
+import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.mappers.price_point_mappers.GPUWorkstationPricePointMapper;
 import com.price_tracker.repositories.price_point_repos.GPUWorkstationPricePointRepository;
 import com.price_tracker.services.price_point_services.GPUWorkstationPricePointService;
 import jakarta.transaction.Transactional;
@@ -23,15 +23,14 @@ import java.util.Optional;
 public class GPUWorkstationPricePointServiceImpl implements GPUWorkstationPricePointService {
 
     private final GPUWorkstationPricePointRepository gpuWorkstationPricePointRepository;
-    private final GPUWorkstationPricePointMapper gpuPricePointMapper;
+    private final GenericMapper<GPUWorkstationPricePoint, GPUWorkstationPricePointDTO> gpuPricePointMapper;
     private final GenericMapper<GPUWorkstationEntity, GPUWorkstationDTO> gpuWorkstationMapper;
 
     @Autowired
     public GPUWorkstationPricePointServiceImpl(GPUWorkstationPricePointRepository gpuWorkstationPricePointRepository,
-                                    GPUWorkstationPricePointMapper gpuPricePointMapper,
                                     MapperFactory mapperFactory) {
         this.gpuWorkstationPricePointRepository = gpuWorkstationPricePointRepository;
-        this.gpuPricePointMapper = gpuPricePointMapper;
+        this.gpuPricePointMapper = mapperFactory.create(GPUWorkstationPricePoint.class, GPUWorkstationPricePointDTO.class);
         this.gpuWorkstationMapper = mapperFactory.create(GPUWorkstationEntity.class, GPUWorkstationDTO.class);
     }
 

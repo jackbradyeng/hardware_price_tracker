@@ -4,10 +4,10 @@ import com.price_tracker.domain.dto.hybrid_dtos.NVMEDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.NVMEDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.NVMEPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.NVMEDTO;
+import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
 import com.price_tracker.domain.entities.product_entities.NVMEEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.mappers.price_point_mappers.NVMEPricePointMapper;
 import com.price_tracker.repositories.price_point_repos.NVMEPricePointRepository;
 import com.price_tracker.services.price_point_services.NVMEPricePointService;
 import jakarta.transaction.Transactional;
@@ -23,15 +23,14 @@ import java.util.Optional;
 public class NVMEPricePointServiceImpl implements NVMEPricePointService {
 
     private final NVMEPricePointRepository nvmePricePointRepository;
-    private final NVMEPricePointMapper nvmePricePointMapper;
+    private final GenericMapper<NVMEPricePoint, NVMEPricePointDTO> nvmePricePointMapper;
     private final GenericMapper<NVMEEntity, NVMEDTO> nvmeMapper;
 
     @Autowired
     public NVMEPricePointServiceImpl(NVMEPricePointRepository nvmePricePointRepository,
-                                    NVMEPricePointMapper nvmePricePointMapper,
                                     MapperFactory mapperFactory) {
         this.nvmePricePointRepository = nvmePricePointRepository;
-        this.nvmePricePointMapper = nvmePricePointMapper;
+        this.nvmePricePointMapper = mapperFactory.create(NVMEPricePoint.class, NVMEPricePointDTO.class);
         this.nvmeMapper = mapperFactory.create(NVMEEntity.class, NVMEDTO.class);
     }
 

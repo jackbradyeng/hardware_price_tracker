@@ -4,10 +4,10 @@ import com.price_tracker.domain.dto.hybrid_dtos.SSDDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.SSDDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.SSDPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.SSDDTO;
+import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
 import com.price_tracker.domain.entities.product_entities.SSDEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.mappers.price_point_mappers.SSDPricePointMapper;
 import com.price_tracker.repositories.price_point_repos.SSDPricePointRepository;
 import com.price_tracker.services.price_point_services.SSDPricePointService;
 import jakarta.transaction.Transactional;
@@ -23,15 +23,14 @@ import java.util.Optional;
 public class SSDPricePointServiceImpl implements SSDPricePointService {
 
     private final SSDPricePointRepository ssdPricePointRepository;
-    private final SSDPricePointMapper ssdPricePointMapper;
+    private final GenericMapper<SSDPricePoint, SSDPricePointDTO> ssdPricePointMapper;
     private final GenericMapper<SSDEntity, SSDDTO> ssdMapper;
 
     @Autowired
     public SSDPricePointServiceImpl(SSDPricePointRepository ssdPricePointRepository,
-                                    SSDPricePointMapper ssdPricePointMapper,
                                     MapperFactory mapperFactory) {
         this.ssdPricePointRepository = ssdPricePointRepository;
-        this.ssdPricePointMapper = ssdPricePointMapper;
+        this.ssdPricePointMapper = mapperFactory.create(SSDPricePoint.class, SSDPricePointDTO.class);
         this.ssdMapper = mapperFactory.create(SSDEntity.class, SSDDTO.class);
     }
 

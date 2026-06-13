@@ -4,7 +4,8 @@ import com.price_tracker.domain.dto.hybrid_dtos.HDDDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.HDDPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.HDDDTO;
 import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
-import com.price_tracker.mappers.price_point_mappers.HDDPricePointMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.HDDPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.HDDPricePointService;
 import com.price_tracker.services.product_services.HDDService;
@@ -48,7 +49,7 @@ public class HDDScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
     private final HDDService hddService;
-    private final HDDPricePointMapper hddPricePointMapper;
+    private final GenericMapper<HDDPricePoint, HDDPricePointDTO> hddPricePointMapper;
     private final HDDPricePointService hddPricePointService;
 
     @Autowired
@@ -56,9 +57,9 @@ public class HDDScraperIntegrationTests {
                                       HDDTestingUtility hddTestingUtility,
                                       UmartHDDScrapingService scraper,
                                       ObjectMapper objectMapper,
+                                      MapperFactory mapperFactory,
                                       HDDPricePointJDBCTemplate hddPricePointJDBCTemplate,
                                       HDDService hddService,
-                                      HDDPricePointMapper hddPricePointMapper,
                                       HDDPricePointService hddPricePointService) {
         this.mockMVC = mockMVC;
         this.hddTestingUtility = hddTestingUtility;
@@ -66,7 +67,7 @@ public class HDDScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.hddPricePointJDBCTemplate = hddPricePointJDBCTemplate;
         this.hddService = hddService;
-        this.hddPricePointMapper = hddPricePointMapper;
+        this.hddPricePointMapper = mapperFactory.create(HDDPricePoint.class, HDDPricePointDTO.class);
         this.hddPricePointService = hddPricePointService;
     }
 

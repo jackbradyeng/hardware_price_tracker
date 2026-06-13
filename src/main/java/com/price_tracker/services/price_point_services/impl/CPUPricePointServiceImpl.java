@@ -4,10 +4,10 @@ import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.CPUDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
+import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.mappers.price_point_mappers.CPUPricePointMapper;
 import com.price_tracker.repositories.price_point_repos.CPUPricePointRepository;
 import com.price_tracker.services.price_point_services.CPUPricePointService;
 import jakarta.transaction.Transactional;
@@ -23,15 +23,14 @@ import java.util.Optional;
 public class CPUPricePointServiceImpl implements CPUPricePointService {
 
     private final CPUPricePointRepository cpuPricePointRepository;
-    private final CPUPricePointMapper cpuPricePointMapper;
+    private final GenericMapper<CPUPricePoint, CPUPricePointDTO> cpuPricePointMapper;
     private final GenericMapper<CPUEntity, CPUDTO> cpuMapper;
 
     @Autowired
     public CPUPricePointServiceImpl(CPUPricePointRepository cpuPricePointRepository,
-                                    CPUPricePointMapper cpuPricePointMapper,
                                     MapperFactory mapperFactory) {
         this.cpuPricePointRepository = cpuPricePointRepository;
-        this.cpuPricePointMapper = cpuPricePointMapper;
+        this.cpuPricePointMapper = mapperFactory.create(CPUPricePoint.class, CPUPricePointDTO.class);
         this.cpuMapper = mapperFactory.create(CPUEntity.class, CPUDTO.class);
     }
 
