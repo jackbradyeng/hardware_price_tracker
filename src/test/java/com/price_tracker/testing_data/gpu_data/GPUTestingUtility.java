@@ -3,9 +3,10 @@ package com.price_tracker.testing_data.gpu_data;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
-import com.price_tracker.mappers.product_mappers.GPUMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,10 +16,14 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.*;
 
 @Component
-@AllArgsConstructor
 public class GPUTestingUtility {
 
-    private final GPUMapper gpuMapper;
+    private final GenericMapper<GPUEntity, GPUDTO> gpuMapper;
+
+    @Autowired
+    public GPUTestingUtility(MapperFactory mapperFactory) {
+        this.gpuMapper = mapperFactory.create(GPUEntity.class, GPUDTO.class);
+    }
 
     /// SAMPLE ENTITIES/DTOS
     public GPUDTO createTestGPU() {

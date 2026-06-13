@@ -4,13 +4,14 @@ import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.RAMDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
+import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
-import com.price_tracker.mappers.price_point_mappers.RAMPricePointMapper;
-import com.price_tracker.mappers.product_mappers.RAMMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.RAMPricePointRepository;
 import com.price_tracker.services.price_point_services.RAMPricePointService;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,19 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class RAMPricePointServiceImpl implements RAMPricePointService {
 
     private final RAMPricePointRepository ramPricePointRepository;
-    private final RAMPricePointMapper ramPricePointMapper;
-    private final RAMMapper ramMapper;
+    private final GenericMapper<RAMPricePoint, RAMPricePointDTO> ramPricePointMapper;
+    private final GenericMapper<RAMEntity, RAMDTO> ramMapper;
+
+    @Autowired
+    public RAMPricePointServiceImpl(RAMPricePointRepository ramPricePointRepository,
+                                    MapperFactory mapperFactory) {
+        this.ramPricePointRepository = ramPricePointRepository;
+        this.ramPricePointMapper = mapperFactory.create(RAMPricePoint.class, RAMPricePointDTO.class);
+        this.ramMapper = mapperFactory.create(RAMEntity.class, RAMDTO.class);
+    }
 
     @Override
     public Page<RAMPricePointDTO> findAll(Pageable pageable) {

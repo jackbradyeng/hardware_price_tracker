@@ -2,41 +2,47 @@ package com.price_tracker.services.product_services.impl;
 
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
-import com.price_tracker.mappers.product_mappers.GPUWorkstationMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.product_repos.GPUWorkstationRepository;
 import com.price_tracker.services.product_services.GPUWorkstationService;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class GPUWorkstationServiceImpl implements GPUWorkstationService {
 
     private final GPUWorkstationRepository gpuWorkstationRepository;
-    private final GPUWorkstationMapper modelMapper;
+    private final GenericMapper<GPUWorkstationEntity, GPUWorkstationDTO> gpuWorkstationMapper;
+
+    @Autowired
+    public GPUWorkstationServiceImpl(GPUWorkstationRepository gpuWorkstationRepository, MapperFactory mapperFactory) {
+        this.gpuWorkstationRepository = gpuWorkstationRepository;
+        this.gpuWorkstationMapper = mapperFactory.create(GPUWorkstationEntity.class, GPUWorkstationDTO.class);
+    }
 
     @Override
     public GPUWorkstationDTO save(GPUWorkstationDTO gpuWorkstationDTO) {
-        GPUWorkstationEntity gpuWorkstation = modelMapper.mapFrom(gpuWorkstationDTO);
+        GPUWorkstationEntity gpuWorkstation = gpuWorkstationMapper.mapFrom(gpuWorkstationDTO);
         GPUWorkstationEntity savedGPUWorkstation = gpuWorkstationRepository.save(gpuWorkstation);
-        return modelMapper.mapTo(savedGPUWorkstation);
+        return gpuWorkstationMapper.mapTo(savedGPUWorkstation);
     }
 
     @Override
     public List<GPUWorkstationDTO> saveAll(List<GPUWorkstationDTO> gpuWorkstationDTOList) {
         List<GPUWorkstationEntity> gpuWorkstationEntityList = gpuWorkstationDTOList.stream()
-                .map(modelMapper::mapFrom)
+                .map(gpuWorkstationMapper::mapFrom)
                 .toList();
 
         List<GPUWorkstationEntity> savedGPUWorktstationEntityList = gpuWorkstationRepository.
                 saveAll(gpuWorkstationEntityList);
 
         return savedGPUWorktstationEntityList.stream()
-                .map(modelMapper::mapTo)
+                .map(gpuWorkstationMapper::mapTo)
                 .toList();
     }
 
@@ -45,13 +51,13 @@ public class GPUWorkstationServiceImpl implements GPUWorkstationService {
         List<GPUWorkstationEntity> gpuWorkstationEntityList = gpuWorkstationRepository.findAll();
 
         return gpuWorkstationEntityList.stream()
-                .map(modelMapper::mapTo)
+                .map(gpuWorkstationMapper::mapTo)
                 .toList();
     }
 
     @Override
     public Optional<GPUWorkstationDTO> findOne(String id) {
-        return gpuWorkstationRepository.findById(id).map(modelMapper::mapTo);
+        return gpuWorkstationRepository.findById(id).map(gpuWorkstationMapper::mapTo);
     }
 
     @Override
@@ -63,9 +69,9 @@ public class GPUWorkstationServiceImpl implements GPUWorkstationService {
     public Optional<GPUWorkstationDTO> fullUpdate(String id, GPUWorkstationDTO gpuWorkstationDTO) {
 
         return gpuWorkstationRepository.findById(id).map(existing -> {
-            GPUWorkstationEntity gpuWorkstation = modelMapper.mapFrom(gpuWorkstationDTO);
+            GPUWorkstationEntity gpuWorkstation = gpuWorkstationMapper.mapFrom(gpuWorkstationDTO);
             GPUWorkstationEntity savedGPUWorkstationEntity = gpuWorkstationRepository.save(gpuWorkstation);
-            return modelMapper.mapTo(savedGPUWorkstationEntity);
+            return gpuWorkstationMapper.mapTo(savedGPUWorkstationEntity);
         });
     }
 
@@ -77,7 +83,7 @@ public class GPUWorkstationServiceImpl implements GPUWorkstationService {
             if (gpuWorkstationDTO.getName() != null) existing.setName(gpuWorkstationDTO.getName());
 
             GPUWorkstationEntity savedGPUWorkstation = gpuWorkstationRepository.save(existing);
-            return modelMapper.mapTo(savedGPUWorkstation);
+            return gpuWorkstationMapper.mapTo(savedGPUWorkstation);
         });
     }
 

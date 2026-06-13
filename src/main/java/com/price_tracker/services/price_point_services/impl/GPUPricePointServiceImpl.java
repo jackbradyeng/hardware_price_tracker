@@ -4,13 +4,14 @@ import com.price_tracker.domain.dto.hybrid_dtos.GPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.GPUDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
+import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
-import com.price_tracker.mappers.price_point_mappers.GPUPricePointMapper;
-import com.price_tracker.mappers.product_mappers.GPUMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.GPUPricePointRepository;
 import com.price_tracker.services.price_point_services.GPUPricePointService;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,19 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class GPUPricePointServiceImpl implements GPUPricePointService {
 
     private final GPUPricePointRepository gpuPricePointRepository;
-    private final GPUPricePointMapper gpuPricePointMapper;
-    private final GPUMapper gpuMapper;
+    private final GenericMapper<GPUPricePoint, GPUPricePointDTO> gpuPricePointMapper;
+    private final GenericMapper<GPUEntity, GPUDTO> gpuMapper;
+
+    @Autowired
+    public GPUPricePointServiceImpl(GPUPricePointRepository gpuPricePointRepository,
+                                    MapperFactory mapperFactory) {
+        this.gpuPricePointRepository = gpuPricePointRepository;
+        this.gpuPricePointMapper = mapperFactory.create(GPUPricePoint.class, GPUPricePointDTO.class);
+        this.gpuMapper = mapperFactory.create(GPUEntity.class, GPUDTO.class);
+    }
 
     @Override
     public Page<GPUPricePointDTO> findAll(Pageable pageable) {

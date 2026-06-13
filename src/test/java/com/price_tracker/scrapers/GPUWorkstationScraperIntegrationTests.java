@@ -4,7 +4,8 @@ import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointD
 import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
-import com.price_tracker.mappers.price_point_mappers.GPUWorkstationPricePointMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUWorkstationPricePointJDBCTemplate;
 import com.price_tracker.services.price_point_services.GPUWorkstationPricePointService;
 import com.price_tracker.services.product_services.GPUWorkstationService;
@@ -49,7 +50,7 @@ public class GPUWorkstationScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate;
     private final GPUWorkstationService gpuWorkstationService;
-    private final GPUWorkstationPricePointMapper gpuWorkstationPricePointMapper;
+    private final GenericMapper<GPUWorkstationPricePoint, GPUWorkstationPricePointDTO> gpuWorkstationPricePointMapper;
     private final GPUWorkstationPricePointService gpuWorkstationPricePointService;
 
     @Autowired
@@ -57,9 +58,9 @@ public class GPUWorkstationScraperIntegrationTests {
                                                  WorkstationGPUTestingUtility workstationGPUTestingUtility,
                                                  UmartGPUWorkstationScrapingService scraper,
                                                  ObjectMapper objectMapper,
+                                                 MapperFactory mapperFactory,
                                                  GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate,
                                                  GPUWorkstationService gpuWorkstationService,
-                                                 GPUWorkstationPricePointMapper gpuWorkstationPricePointMapper,
                                                  GPUWorkstationPricePointService gpuWorkstationPricePointService) {
         this.mockMVC = mockMVC;
         this.workstationGPUTestingUtility = workstationGPUTestingUtility;
@@ -67,7 +68,7 @@ public class GPUWorkstationScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.gpuWorkstationPricePointJDBCTemplate = gpuWorkstationPricePointJDBCTemplate;
         this.gpuWorkstationService = gpuWorkstationService;
-        this.gpuWorkstationPricePointMapper = gpuWorkstationPricePointMapper;
+        this.gpuWorkstationPricePointMapper = mapperFactory.create(GPUWorkstationPricePoint.class, GPUWorkstationPricePointDTO.class);
         this.gpuWorkstationPricePointService = gpuWorkstationPricePointService;
     }
 

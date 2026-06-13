@@ -3,9 +3,10 @@ package com.price_tracker.testing_data.nvme_data;
 import com.price_tracker.domain.dto.product_dtos.NVMEDTO;
 import com.price_tracker.domain.entities.product_entities.NVMEEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
-import com.price_tracker.mappers.product_mappers.NVMEMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,10 +16,14 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 import static com.price_tracker.testing_data.nvme_data.NVMETestingData.*;
 
 @Component
-@AllArgsConstructor
 public class NVMETestingUtility {
 
-    private final NVMEMapper nvmeMapper;
+    private final GenericMapper<NVMEEntity, NVMEDTO> nvmeMapper;
+
+    @Autowired
+    public NVMETestingUtility(MapperFactory mapperFactory) {
+        this.nvmeMapper = mapperFactory.create(NVMEEntity.class, NVMEDTO.class);
+    }
 
     /// SAMPLE ENTITIES/DTOS
     public NVMEDTO createTestNVME() {

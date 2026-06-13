@@ -3,9 +3,10 @@ package com.price_tracker.testing_data.ssd_data;
 import com.price_tracker.domain.dto.product_dtos.SSDDTO;
 import com.price_tracker.domain.entities.product_entities.SSDEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
-import com.price_tracker.mappers.product_mappers.SSDMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,10 +16,14 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 import static com.price_tracker.testing_data.ssd_data.SSDTestingData.*;
 
 @Component
-@AllArgsConstructor
 public class SSDTestingUtility {
 
-    private final SSDMapper ssdMapper;
+    private final GenericMapper<SSDEntity, SSDDTO> ssdMapper;
+
+    @Autowired
+    public SSDTestingUtility(MapperFactory mapperFactory) {
+        this.ssdMapper = mapperFactory.create(SSDEntity.class, SSDDTO.class);
+    }
 
     /// SAMPLE ENTITIES/DTOS
     public SSDDTO createTestSSD() {

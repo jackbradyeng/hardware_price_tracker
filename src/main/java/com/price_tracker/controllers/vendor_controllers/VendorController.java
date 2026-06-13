@@ -3,22 +3,30 @@ package com.price_tracker.controllers.vendor_controllers;
 import com.price_tracker.domain.dto.vendor_dtos.VendorDTO;
 import com.price_tracker.domain.entities.vendor_entities.VendorEntity;
 import com.price_tracker.mappers.Mapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.services.vendor_services.VendorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@Log
 @RestController
 @RequiredArgsConstructor
-@Log
 public class VendorController {
 
     private final VendorService vendorService;
     private final Mapper<VendorEntity, VendorDTO> vendorMapper;
+
+    @Autowired
+    public VendorController(VendorService vendorService, MapperFactory mapperFactory) {
+        this.vendorService = vendorService;
+        this.vendorMapper = mapperFactory.create(VendorEntity.class, VendorDTO.class);
+    }
 
     @PostMapping(path = "/api/vendors")
     public ResponseEntity<VendorDTO> createVendor(@RequestBody final VendorDTO vendorDTO) {

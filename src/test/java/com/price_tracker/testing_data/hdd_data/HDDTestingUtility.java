@@ -3,9 +3,10 @@ package com.price_tracker.testing_data.hdd_data;
 import com.price_tracker.domain.dto.product_dtos.HDDDTO;
 import com.price_tracker.domain.entities.product_entities.HDDEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
-import com.price_tracker.mappers.product_mappers.HDDMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,10 +16,14 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 import static com.price_tracker.testing_data.hdd_data.HDDTestingData.*;
 
 @Component
-@AllArgsConstructor
 public class HDDTestingUtility {
 
-    private final HDDMapper hddMapper;
+    private final GenericMapper<HDDEntity, HDDDTO> hddMapper;
+
+    @Autowired
+    public HDDTestingUtility(MapperFactory mapperFactory) {
+        this.hddMapper = mapperFactory.create(HDDEntity.class, HDDDTO.class);
+    }
 
     /// SAMPLE ENTITIES/DTOS
     public HDDDTO createTestHDD() {

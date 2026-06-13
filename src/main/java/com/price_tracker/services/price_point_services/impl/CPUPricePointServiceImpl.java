@@ -4,13 +4,14 @@ import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.CPUDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
+import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
-import com.price_tracker.mappers.price_point_mappers.CPUPricePointMapper;
-import com.price_tracker.mappers.product_mappers.CPUMapper;
+import com.price_tracker.mappers.GenericMapper;
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.CPUPricePointRepository;
 import com.price_tracker.services.price_point_services.CPUPricePointService;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,19 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class CPUPricePointServiceImpl implements CPUPricePointService {
 
     private final CPUPricePointRepository cpuPricePointRepository;
-    private final CPUPricePointMapper cpuPricePointMapper;
-    private final CPUMapper cpuMapper;
+    private final GenericMapper<CPUPricePoint, CPUPricePointDTO> cpuPricePointMapper;
+    private final GenericMapper<CPUEntity, CPUDTO> cpuMapper;
+
+    @Autowired
+    public CPUPricePointServiceImpl(CPUPricePointRepository cpuPricePointRepository,
+                                    MapperFactory mapperFactory) {
+        this.cpuPricePointRepository = cpuPricePointRepository;
+        this.cpuPricePointMapper = mapperFactory.create(CPUPricePoint.class, CPUPricePointDTO.class);
+        this.cpuMapper = mapperFactory.create(CPUEntity.class, CPUDTO.class);
+    }
 
     @Override
     public Page<CPUPricePointDTO> findAll(Pageable pageable) {
