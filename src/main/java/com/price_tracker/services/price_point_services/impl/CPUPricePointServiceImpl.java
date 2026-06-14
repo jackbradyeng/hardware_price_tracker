@@ -2,7 +2,7 @@ package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.CPUDataAndPricePointProjection;
-import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
@@ -23,19 +23,19 @@ import java.util.Optional;
 public class CPUPricePointServiceImpl implements CPUPricePointService {
 
     private final CPUPricePointRepository cpuPricePointRepository;
-    private final GenericMapper<CPUPricePoint, CPUPricePointDTO> cpuPricePointMapper;
+    private final GenericMapper<CPUPricePoint, GenericPricePointDTO> cpuPricePointMapper;
     private final GenericMapper<CPUEntity, CPUDTO> cpuMapper;
 
     @Autowired
     public CPUPricePointServiceImpl(CPUPricePointRepository cpuPricePointRepository,
                                     MapperFactory mapperFactory) {
         this.cpuPricePointRepository = cpuPricePointRepository;
-        this.cpuPricePointMapper = mapperFactory.create(CPUPricePoint.class, CPUPricePointDTO.class);
+        this.cpuPricePointMapper = mapperFactory.create(CPUPricePoint.class, GenericPricePointDTO.class);
         this.cpuMapper = mapperFactory.create(CPUEntity.class, CPUDTO.class);
     }
 
     @Override
-    public Page<CPUPricePointDTO> findAll(Pageable pageable) {
+    public Page<GenericPricePointDTO> findAll(Pageable pageable) {
         return cpuPricePointRepository.findAll(pageable)
                 .map(cpuPricePointMapper::mapTo);
     }
@@ -56,7 +56,7 @@ public class CPUPricePointServiceImpl implements CPUPricePointService {
         CPUDTO cpuDTO = cpuMapper.mapTo(cpu);
 
         // convert CPU price points to a list of DTOs
-        List<CPUPricePointDTO> cpuPricePointDTOS = resultList.stream()
+        List<GenericPricePointDTO> cpuPricePointDTOS = resultList.stream()
                 .map(result -> cpuPricePointMapper.mapTo(result.getCPUPricePoint()))
                 .toList();
 
