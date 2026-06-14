@@ -1,7 +1,7 @@
 package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
 import com.price_tracker.mappers.GenericMapper;
@@ -50,7 +50,7 @@ public class GPUWorkstationScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate;
     private final GPUWorkstationService gpuWorkstationService;
-    private final GenericMapper<GPUWorkstationPricePoint, GPUWorkstationPricePointDTO> gpuWorkstationPricePointMapper;
+    private final GenericMapper<GPUWorkstationPricePoint, GenericPricePointDTO> gpuWorkstationPricePointMapper;
     private final GPUWorkstationPricePointService gpuWorkstationPricePointService;
 
     @Autowired
@@ -68,7 +68,7 @@ public class GPUWorkstationScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.gpuWorkstationPricePointJDBCTemplate = gpuWorkstationPricePointJDBCTemplate;
         this.gpuWorkstationService = gpuWorkstationService;
-        this.gpuWorkstationPricePointMapper = mapperFactory.create(GPUWorkstationPricePoint.class, GPUWorkstationPricePointDTO.class);
+        this.gpuWorkstationPricePointMapper = mapperFactory.create(GPUWorkstationPricePoint.class, GenericPricePointDTO.class);
         this.gpuWorkstationPricePointService = gpuWorkstationPricePointService;
     }
 
@@ -115,11 +115,11 @@ public class GPUWorkstationScraperIntegrationTests {
 
         // de-serialize the return object so that it's size and contents can be tested
         String contentAsString = result.getResponse().getContentAsString();
-        RestPage<GPUWorkstationPricePointDTO> actualPage = objectMapper.readValue(
+        RestPage<GenericPricePointDTO> actualPage = objectMapper.readValue(
                 contentAsString,
                 new TypeReference<>() {}
         );
-        List<GPUWorkstationPricePointDTO> actualList = actualPage.getContent();
+        List<GenericPricePointDTO> actualList = actualPage.getContent();
 
         // store the sequence of expected IDs
         List<Long> expectedIds = returnList.stream()
@@ -129,7 +129,7 @@ public class GPUWorkstationScraperIntegrationTests {
         // ensure that the return instance has the expected size and corresponding IDs
         assertThat(actualList)
                 .hasSize(returnList.size())
-                .extracting(GPUWorkstationPricePointDTO::getId)
+                .extracting(GenericPricePointDTO::getId)
                 .containsExactlyElementsOf(expectedIds);
     }
 
@@ -197,7 +197,7 @@ public class GPUWorkstationScraperIntegrationTests {
         gpuWorkstationPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // convert price points to DTO for comparison's sake
-        List<GPUWorkstationPricePointDTO> pricePointDTOS = sampleList.stream()
+        List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
                 .map(gpuWorkstationPricePointMapper::mapTo)
                 .toList();
 

@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.services.price_point_services.GPUWorkstationPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -23,7 +23,7 @@ public class GPUWorkstationPricePointController {
     private final GPUWorkstationPricePointService gpuWorkstationPricePointService;
 
     @GetMapping(path = "/api/workstation_gpu_pricepoints")
-    public ResponseEntity<Page<GPUWorkstationPricePointDTO>> listWorkstationGPUPricePoints(
+    public ResponseEntity<Page<GenericPricePointDTO>> listWorkstationGPUPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(gpuWorkstationPricePointService.findAll(pageable), HttpStatus.OK);
     }
