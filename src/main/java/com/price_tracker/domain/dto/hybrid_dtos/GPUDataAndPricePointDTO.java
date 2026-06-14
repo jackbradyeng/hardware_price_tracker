@@ -1,6 +1,6 @@
 package com.price_tracker.domain.dto.hybrid_dtos;
 
-import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.util.List;
 public class GPUDataAndPricePointDTO {
 
     private GPUDTO gpuDTO;
-    private List<GPUPricePointDTO> gpuPricePointDTOList;
+    private List<GenericPricePointDTO> gpuPricePointDTOList;
     private int page;
     private int pageSize;
     private int totalPages;
