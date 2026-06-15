@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.SSDDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.SSDPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.services.price_point_services.SSDPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -23,7 +23,7 @@ public class SSDPricePointController {
     private final SSDPricePointService ssdPricePointService;
 
     @GetMapping(path = "/api/ssd_pricepoints")
-    public ResponseEntity<Page<SSDPricePointDTO>> listSSDPricePoints(
+    public ResponseEntity<Page<GenericPricePointDTO>> listSSDPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(ssdPricePointService.findAll(pageable), HttpStatus.OK);
     }

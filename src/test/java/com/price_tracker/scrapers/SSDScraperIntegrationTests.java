@@ -1,7 +1,7 @@
 package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.SSDDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.SSDPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.SSDDTO;
 import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
 import com.price_tracker.mappers.GenericMapper;
@@ -50,7 +50,7 @@ public class SSDScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate;
     private final SSDService ssdService;
-    private final GenericMapper<SSDPricePoint, SSDPricePointDTO> ssdPricePointMapper;
+    private final GenericMapper<SSDPricePoint, GenericPricePointDTO> ssdPricePointMapper;
     private final SSDPricePointService ssdPricePointService;
 
     @Autowired
@@ -68,7 +68,7 @@ public class SSDScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.ssdPricePointJDBCTemplate = ssdPricePointJDBCTemplate;
         this.ssdService = ssdService;
-        this.ssdPricePointMapper = mapperFactory.create(SSDPricePoint.class, SSDPricePointDTO.class);
+        this.ssdPricePointMapper = mapperFactory.create(SSDPricePoint.class, GenericPricePointDTO.class);
         this.ssdPricePointService = ssdPricePointService;
     }
 
@@ -113,11 +113,11 @@ public class SSDScraperIntegrationTests {
                 .andReturn();
 
         String contentAsString = result.getResponse().getContentAsString();
-        RestPage<SSDPricePointDTO> actualPage = objectMapper.readValue(
+        RestPage<GenericPricePointDTO> actualPage = objectMapper.readValue(
                 contentAsString,
                 new TypeReference<>() {}
         );
-        List<SSDPricePointDTO> actualList = actualPage.getContent();
+        List<GenericPricePointDTO> actualList = actualPage.getContent();
 
         List<Long> expectedIds = returnList.stream()
                 .map(SSDPricePoint::getId)
@@ -125,7 +125,7 @@ public class SSDScraperIntegrationTests {
 
         assertThat(actualList)
                 .hasSize(returnList.size())
-                .extracting(SSDPricePointDTO::getId)
+                .extracting(GenericPricePointDTO::getId)
                 .containsExactlyElementsOf(expectedIds);
     }
 
@@ -177,7 +177,7 @@ public class SSDScraperIntegrationTests {
 
         ssdPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
-        List<SSDPricePointDTO> pricePointDTOS = sampleList.stream()
+        List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
                 .map(ssdPricePointMapper::mapTo)
                 .toList();
 
