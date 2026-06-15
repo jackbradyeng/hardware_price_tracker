@@ -2,7 +2,7 @@ package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.NVMEDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.NVMEDataAndPricePointProjection;
-import com.price_tracker.domain.dto.price_point_dtos.NVMEPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.NVMEDTO;
 import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
 import com.price_tracker.domain.entities.product_entities.NVMEEntity;
@@ -23,19 +23,19 @@ import java.util.Optional;
 public class NVMEPricePointServiceImpl implements NVMEPricePointService {
 
     private final NVMEPricePointRepository nvmePricePointRepository;
-    private final GenericMapper<NVMEPricePoint, NVMEPricePointDTO> nvmePricePointMapper;
+    private final GenericMapper<NVMEPricePoint, GenericPricePointDTO> nvmePricePointMapper;
     private final GenericMapper<NVMEEntity, NVMEDTO> nvmeMapper;
 
     @Autowired
     public NVMEPricePointServiceImpl(NVMEPricePointRepository nvmePricePointRepository,
                                     MapperFactory mapperFactory) {
         this.nvmePricePointRepository = nvmePricePointRepository;
-        this.nvmePricePointMapper = mapperFactory.create(NVMEPricePoint.class, NVMEPricePointDTO.class);
+        this.nvmePricePointMapper = mapperFactory.create(NVMEPricePoint.class, GenericPricePointDTO.class);
         this.nvmeMapper = mapperFactory.create(NVMEEntity.class, NVMEDTO.class);
     }
 
     @Override
-    public Page<NVMEPricePointDTO> findAll(Pageable pageable) {
+    public Page<GenericPricePointDTO> findAll(Pageable pageable) {
         return nvmePricePointRepository.findAll(pageable)
                 .map(nvmePricePointMapper::mapTo);
     }
@@ -53,7 +53,7 @@ public class NVMEPricePointServiceImpl implements NVMEPricePointService {
         NVMEEntity nvme = resultList.stream().toList().getFirst().getNVMEEntity();
         NVMEDTO nvmeDTO = nvmeMapper.mapTo(nvme);
 
-        List<NVMEPricePointDTO> nvmePricePointDTOS = resultList.stream()
+        List<GenericPricePointDTO> nvmePricePointDTOS = resultList.stream()
                 .map(result -> nvmePricePointMapper.mapTo(result.getNVMEPricePoint()))
                 .toList();
 

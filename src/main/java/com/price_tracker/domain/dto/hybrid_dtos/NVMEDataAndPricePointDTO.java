@@ -1,6 +1,6 @@
 package com.price_tracker.domain.dto.hybrid_dtos;
 
-import com.price_tracker.domain.dto.price_point_dtos.NVMEPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.NVMEDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.util.List;
 public class NVMEDataAndPricePointDTO {
 
     private NVMEDTO nvmeDTO;
-    private List<NVMEPricePointDTO> nvmePricePointDTOList;
+    private List<GenericPricePointDTO> nvmePricePointDTOList;
     private int page;
     private int pageSize;
     private int totalPages;
