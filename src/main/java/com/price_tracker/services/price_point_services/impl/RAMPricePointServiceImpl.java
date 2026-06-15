@@ -2,7 +2,7 @@ package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.RAMDataAndPricePointProjection;
-import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
@@ -23,19 +23,19 @@ import java.util.Optional;
 public class RAMPricePointServiceImpl implements RAMPricePointService {
 
     private final RAMPricePointRepository ramPricePointRepository;
-    private final GenericMapper<RAMPricePoint, RAMPricePointDTO> ramPricePointMapper;
+    private final GenericMapper<RAMPricePoint, GenericPricePointDTO> ramPricePointMapper;
     private final GenericMapper<RAMEntity, RAMDTO> ramMapper;
 
     @Autowired
     public RAMPricePointServiceImpl(RAMPricePointRepository ramPricePointRepository,
                                     MapperFactory mapperFactory) {
         this.ramPricePointRepository = ramPricePointRepository;
-        this.ramPricePointMapper = mapperFactory.create(RAMPricePoint.class, RAMPricePointDTO.class);
+        this.ramPricePointMapper = mapperFactory.create(RAMPricePoint.class, GenericPricePointDTO.class);
         this.ramMapper = mapperFactory.create(RAMEntity.class, RAMDTO.class);
     }
 
     @Override
-    public Page<RAMPricePointDTO> findAll(Pageable pageable) {
+    public Page<GenericPricePointDTO> findAll(Pageable pageable) {
         return ramPricePointRepository.findAll(pageable)
                 .map(ramPricePointMapper::mapTo);
     }
@@ -56,7 +56,7 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
         RAMDTO ramDTO = ramMapper.mapTo(ram);
 
         // convert RAM price points to a list of DTOs
-        List<RAMPricePointDTO> ramPricePointDTOS = resultList.stream()
+        List<GenericPricePointDTO> ramPricePointDTOS = resultList.stream()
                 .map(result -> ramPricePointMapper.mapTo(result.getRAMPricePoint()))
                 .toList();
 
