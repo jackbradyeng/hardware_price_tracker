@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.services.price_point_services.CPUPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -23,7 +23,7 @@ public class CPUPricePointController {
     private final CPUPricePointService cpuPricePointService;
 
     @GetMapping(path = "/api/cpu_pricepoints")
-    public ResponseEntity<Page<CPUPricePointDTO>> listCPUPricePoints(
+    public ResponseEntity<Page<GenericPricePointDTO>> listCPUPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(cpuPricePointService.findAll(pageable), HttpStatus.OK);
     }

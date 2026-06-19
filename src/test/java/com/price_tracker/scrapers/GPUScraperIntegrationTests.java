@@ -1,7 +1,7 @@
 package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.GPUDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.GPUPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
 import com.price_tracker.mappers.GenericMapper;
@@ -50,7 +50,7 @@ public class GPUScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate;
     private final GPUService gpuService;
-    private final GenericMapper<GPUPricePoint, GPUPricePointDTO> gpuPricePointMapper;
+    private final GenericMapper<GPUPricePoint, GenericPricePointDTO> gpuPricePointMapper;
     private final GPUPricePointService gpuPricePointService;
 
     @Autowired
@@ -68,7 +68,7 @@ public class GPUScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.gpuPricePointJDBCTemplate = gpuPricePointJDBCTemplate;
         this.gpuService = gpuService;
-        this.gpuPricePointMapper = mapperFactory.create(GPUPricePoint.class, GPUPricePointDTO.class);
+        this.gpuPricePointMapper = mapperFactory.create(GPUPricePoint.class, GenericPricePointDTO.class);
         this.gpuPricePointService = gpuPricePointService;
     }
 
@@ -113,11 +113,11 @@ public class GPUScraperIntegrationTests {
 
         // de-serialize the return object so that it's size and contents can be tested
         String contentAsString = result.getResponse().getContentAsString();
-        RestPage<GPUPricePointDTO> actualPage = objectMapper.readValue(
+        RestPage<GenericPricePointDTO> actualPage = objectMapper.readValue(
                 contentAsString,
                 new TypeReference<>(){}
         );
-        List<GPUPricePointDTO> actualList = actualPage.getContent();
+        List<GenericPricePointDTO> actualList = actualPage.getContent();
 
         // store the sequence of expected IDs
         List<Long> expectedIds = returnList.stream()
@@ -127,7 +127,7 @@ public class GPUScraperIntegrationTests {
         // ensure that the return instance has the expected size and corresponding IDs
         assertThat(actualList)
                 .hasSize(returnList.size())
-                .extracting(GPUPricePointDTO::getId)
+                .extracting(GenericPricePointDTO::getId)
                 .containsExactlyElementsOf(expectedIds);
     }
 
@@ -190,7 +190,7 @@ public class GPUScraperIntegrationTests {
         gpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // convert price points to DTO for comparison's sake
-        List<GPUPricePointDTO> pricePointDTOS =  sampleList.stream()
+        List<GenericPricePointDTO> pricePointDTOS =  sampleList.stream()
                 .map(gpuPricePointMapper::mapTo)
                 .toList()
                 .reversed();

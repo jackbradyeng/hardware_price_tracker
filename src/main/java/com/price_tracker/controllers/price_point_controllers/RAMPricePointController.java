@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.services.price_point_services.RAMPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -23,7 +23,7 @@ public class RAMPricePointController {
     private final RAMPricePointService ramPricePointService;
 
     @GetMapping(path = "/api/ram_pricepoints")
-    public ResponseEntity<Page<RAMPricePointDTO>> listRAMPricePoints(
+    public ResponseEntity<Page<GenericPricePointDTO>> listRAMPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(ramPricePointService.findAll(pageable), HttpStatus.OK);
     }

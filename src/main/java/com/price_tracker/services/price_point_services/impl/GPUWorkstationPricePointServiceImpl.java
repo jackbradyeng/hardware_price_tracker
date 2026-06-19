@@ -2,7 +2,7 @@ package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.GPUWorkstationDataAndPricePointProjection;
-import com.price_tracker.domain.dto.price_point_dtos.GPUWorkstationPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
@@ -23,19 +23,19 @@ import java.util.Optional;
 public class GPUWorkstationPricePointServiceImpl implements GPUWorkstationPricePointService {
 
     private final GPUWorkstationPricePointRepository gpuWorkstationPricePointRepository;
-    private final GenericMapper<GPUWorkstationPricePoint, GPUWorkstationPricePointDTO> gpuPricePointMapper;
+    private final GenericMapper<GPUWorkstationPricePoint, GenericPricePointDTO> gpuPricePointMapper;
     private final GenericMapper<GPUWorkstationEntity, GPUWorkstationDTO> gpuWorkstationMapper;
 
     @Autowired
     public GPUWorkstationPricePointServiceImpl(GPUWorkstationPricePointRepository gpuWorkstationPricePointRepository,
                                     MapperFactory mapperFactory) {
         this.gpuWorkstationPricePointRepository = gpuWorkstationPricePointRepository;
-        this.gpuPricePointMapper = mapperFactory.create(GPUWorkstationPricePoint.class, GPUWorkstationPricePointDTO.class);
+        this.gpuPricePointMapper = mapperFactory.create(GPUWorkstationPricePoint.class, GenericPricePointDTO.class);
         this.gpuWorkstationMapper = mapperFactory.create(GPUWorkstationEntity.class, GPUWorkstationDTO.class);
     }
 
     @Override
-    public Page<GPUWorkstationPricePointDTO> findAll(Pageable pageable) {
+    public Page<GenericPricePointDTO> findAll(Pageable pageable) {
         return gpuWorkstationPricePointRepository.findAll(pageable)
                 .map(gpuPricePointMapper::mapTo);
     }
@@ -56,7 +56,7 @@ public class GPUWorkstationPricePointServiceImpl implements GPUWorkstationPriceP
         GPUWorkstationDTO gpuWorkstationDTO = gpuWorkstationMapper.mapTo(gpuWorkstation);
 
         // convert GPUWorkstation price points to a list of DTOs
-        List<GPUWorkstationPricePointDTO> gpuWorkstationPricePointDTOS = resultList.stream()
+        List<GenericPricePointDTO> gpuWorkstationPricePointDTOS = resultList.stream()
                 .map(result -> gpuPricePointMapper.mapTo(result.getGPUWorkstationPricePoint()))
                 .toList();
 

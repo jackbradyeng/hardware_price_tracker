@@ -1,7 +1,7 @@
 package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.NVMEDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.NVMEPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.NVMEDTO;
 import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
 import com.price_tracker.mappers.GenericMapper;
@@ -49,7 +49,7 @@ public class NVMEScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate;
     private final NVMEService nvmeService;
-    private final GenericMapper<NVMEPricePoint, NVMEPricePointDTO> nvmePricePointMapper;
+    private final GenericMapper<NVMEPricePoint, GenericPricePointDTO> nvmePricePointMapper;
     private final NVMEPricePointService nvmePricePointService;
 
     @Autowired
@@ -67,7 +67,7 @@ public class NVMEScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.nvmePricePointJDBCTemplate = nvmePricePointJDBCTemplate;
         this.nvmeService = nvmeService;
-        this.nvmePricePointMapper = mapperFactory.create(NVMEPricePoint.class, NVMEPricePointDTO.class);
+        this.nvmePricePointMapper = mapperFactory.create(NVMEPricePoint.class, GenericPricePointDTO.class);
         this.nvmePricePointService = nvmePricePointService;
     }
 
@@ -111,11 +111,11 @@ public class NVMEScraperIntegrationTests {
                 .andReturn();
 
         String contentAsString = result.getResponse().getContentAsString();
-        RestPage<NVMEPricePointDTO> actualPage = objectMapper.readValue(
+        RestPage<GenericPricePointDTO> actualPage = objectMapper.readValue(
                 contentAsString,
                 new TypeReference<>() {}
         );
-        List<NVMEPricePointDTO> actualList = actualPage.getContent();
+        List<GenericPricePointDTO> actualList = actualPage.getContent();
 
         List<Long> expectedIds = returnList.stream()
                 .map(NVMEPricePoint::getId)
@@ -123,7 +123,7 @@ public class NVMEScraperIntegrationTests {
 
         assertThat(actualList)
                 .hasSize(returnList.size())
-                .extracting(NVMEPricePointDTO::getId)
+                .extracting(GenericPricePointDTO::getId)
                 .containsExactlyElementsOf(expectedIds);
     }
 
@@ -175,7 +175,7 @@ public class NVMEScraperIntegrationTests {
 
         nvmePricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
-        List<NVMEPricePointDTO> pricePointDTOS = sampleList.stream()
+        List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
                 .map(nvmePricePointMapper::mapTo)
                 .toList();
 

@@ -2,7 +2,7 @@ package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.HDDDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.HDDDataAndPricePointProjection;
-import com.price_tracker.domain.dto.price_point_dtos.HDDPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.HDDDTO;
 import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
 import com.price_tracker.domain.entities.product_entities.HDDEntity;
@@ -23,19 +23,19 @@ import java.util.Optional;
 public class HDDPricePointServiceImpl implements HDDPricePointService {
 
     private final HDDPricePointRepository hddPricePointRepository;
-    private final GenericMapper<HDDPricePoint, HDDPricePointDTO> hddPricePointMapper;
+    private final GenericMapper<HDDPricePoint, GenericPricePointDTO> hddPricePointMapper;
     private final GenericMapper<HDDEntity, HDDDTO> hddMapper;
 
     @Autowired
     public HDDPricePointServiceImpl(HDDPricePointRepository hddPricePointRepository,
                                     MapperFactory mapperFactory) {
         this.hddPricePointRepository = hddPricePointRepository;
-        this.hddPricePointMapper = mapperFactory.create(HDDPricePoint.class, HDDPricePointDTO.class);
+        this.hddPricePointMapper = mapperFactory.create(HDDPricePoint.class, GenericPricePointDTO.class);
         this.hddMapper = mapperFactory.create(HDDEntity.class, HDDDTO.class);
     }
 
     @Override
-    public Page<HDDPricePointDTO> findAll(Pageable pageable) {
+    public Page<GenericPricePointDTO> findAll(Pageable pageable) {
         return hddPricePointRepository.findAll(pageable)
                 .map(hddPricePointMapper::mapTo);
     }
@@ -53,7 +53,7 @@ public class HDDPricePointServiceImpl implements HDDPricePointService {
         HDDEntity hdd = resultList.stream().toList().getFirst().getHDDEntity();
         HDDDTO hddDTO = hddMapper.mapTo(hdd);
 
-        List<HDDPricePointDTO> hddPricePointDTOS = resultList.stream()
+        List<GenericPricePointDTO> hddPricePointDTOS = resultList.stream()
                 .map(result -> hddPricePointMapper.mapTo(result.getHDDPricePoint()))
                 .toList();
 

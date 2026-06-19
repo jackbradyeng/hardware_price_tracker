@@ -1,7 +1,7 @@
 package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.RAMPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
 import com.price_tracker.mappers.GenericMapper;
@@ -50,7 +50,7 @@ public class RAMScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final RAMPricePointJDBCTemplate ramPricePointJDBCTemplate;
     private final RAMService ramService;
-    private final GenericMapper<RAMPricePoint, RAMPricePointDTO> ramPricePointMapper;
+    private final GenericMapper<RAMPricePoint, GenericPricePointDTO> ramPricePointMapper;
     private final RAMPricePointService ramPricePointService;
 
     @Autowired
@@ -68,7 +68,7 @@ public class RAMScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.ramPricePointJDBCTemplate = ramPricePointJDBCTemplate;
         this.ramService = ramService;
-        this.ramPricePointMapper = mapperFactory.create(RAMPricePoint.class, RAMPricePointDTO.class);
+        this.ramPricePointMapper = mapperFactory.create(RAMPricePoint.class, GenericPricePointDTO.class);
         this.ramPricePointService = ramPricePointService;
     }
 
@@ -113,11 +113,11 @@ public class RAMScraperIntegrationTests {
 
         // de-serialize the return object so that it's size and contents can be tested
         String contentAsString = result.getResponse().getContentAsString();
-        RestPage<RAMPricePointDTO> actualPage = objectMapper.readValue(
+        RestPage<GenericPricePointDTO> actualPage = objectMapper.readValue(
                 contentAsString,
                 new TypeReference<>() {}
         );
-        List<RAMPricePointDTO> actualList = actualPage.getContent();
+        List<GenericPricePointDTO> actualList = actualPage.getContent();
 
         // store the sequence of expected IDs
         List<Long> expectedIds = returnList.stream()
@@ -127,7 +127,7 @@ public class RAMScraperIntegrationTests {
         // ensure that the return instance has the expected size and corresponding IDs
         assertThat(actualList)
                 .hasSize(returnList.size())
-                .extracting(RAMPricePointDTO::getId)
+                .extracting(GenericPricePointDTO::getId)
                 .containsExactlyElementsOf(expectedIds);
     }
 
@@ -191,7 +191,7 @@ public class RAMScraperIntegrationTests {
         ramPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // convert price points to DTO for comparison's sake
-        List<RAMPricePointDTO> pricePointDTOS = sampleList.stream()
+        List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
                 .map(ramPricePointMapper::mapTo)
                 .toList();
 

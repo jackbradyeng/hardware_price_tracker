@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.HDDDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.HDDPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.services.price_point_services.HDDPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -23,7 +23,7 @@ public class HDDPricePointController {
     private final HDDPricePointService hddPricePointService;
 
     @GetMapping(path = "/api/hdd_pricepoints")
-    public ResponseEntity<Page<HDDPricePointDTO>> listHDDPricePoints(
+    public ResponseEntity<Page<GenericPricePointDTO>> listHDDPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(hddPricePointService.findAll(pageable), HttpStatus.OK);
     }

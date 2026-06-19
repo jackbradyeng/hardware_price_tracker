@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SSDPricePointDTO {
+public class GenericPricePointDTO {
 
     private Long id;
     private String modelNumber;

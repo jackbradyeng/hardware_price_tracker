@@ -2,7 +2,7 @@ package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.SSDDataAndPricePointDTO;
 import com.price_tracker.domain.dto.hybrid_interfaces.SSDDataAndPricePointProjection;
-import com.price_tracker.domain.dto.price_point_dtos.SSDPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.SSDDTO;
 import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
 import com.price_tracker.domain.entities.product_entities.SSDEntity;
@@ -23,19 +23,19 @@ import java.util.Optional;
 public class SSDPricePointServiceImpl implements SSDPricePointService {
 
     private final SSDPricePointRepository ssdPricePointRepository;
-    private final GenericMapper<SSDPricePoint, SSDPricePointDTO> ssdPricePointMapper;
+    private final GenericMapper<SSDPricePoint, GenericPricePointDTO> ssdPricePointMapper;
     private final GenericMapper<SSDEntity, SSDDTO> ssdMapper;
 
     @Autowired
     public SSDPricePointServiceImpl(SSDPricePointRepository ssdPricePointRepository,
                                     MapperFactory mapperFactory) {
         this.ssdPricePointRepository = ssdPricePointRepository;
-        this.ssdPricePointMapper = mapperFactory.create(SSDPricePoint.class, SSDPricePointDTO.class);
+        this.ssdPricePointMapper = mapperFactory.create(SSDPricePoint.class, GenericPricePointDTO.class);
         this.ssdMapper = mapperFactory.create(SSDEntity.class, SSDDTO.class);
     }
 
     @Override
-    public Page<SSDPricePointDTO> findAll(Pageable pageable) {
+    public Page<GenericPricePointDTO> findAll(Pageable pageable) {
         return ssdPricePointRepository.findAll(pageable)
                 .map(ssdPricePointMapper::mapTo);
     }
@@ -53,7 +53,7 @@ public class SSDPricePointServiceImpl implements SSDPricePointService {
         SSDEntity ssd = resultList.stream().toList().getFirst().getSSDEntity();
         SSDDTO ssdDTO = ssdMapper.mapTo(ssd);
 
-        List<SSDPricePointDTO> ssdPricePointDTOS = resultList.stream()
+        List<GenericPricePointDTO> ssdPricePointDTOS = resultList.stream()
                 .map(result -> ssdPricePointMapper.mapTo(result.getSSDPricePoint()))
                 .toList();
 

@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.NVMEDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.NVMEPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.services.price_point_services.NVMEPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -23,7 +23,7 @@ public class NVMEPricePointController {
     private final NVMEPricePointService nvmePricePointService;
 
     @GetMapping(path = "/api/nvme_pricepoints")
-    public ResponseEntity<Page<NVMEPricePointDTO>> listNVMEPricePoints(
+    public ResponseEntity<Page<GenericPricePointDTO>> listNVMEPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(nvmePricePointService.findAll(pageable), HttpStatus.OK);
     }

@@ -1,7 +1,7 @@
 package com.price_tracker.scrapers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
-import com.price_tracker.domain.dto.price_point_dtos.CPUPricePointDTO;
+import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
 import com.price_tracker.mappers.GenericMapper;
@@ -50,7 +50,7 @@ public class CPUScraperIntegrationTests {
     private final ObjectMapper objectMapper;
     private final CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate;
     private final CPUService cpuService;
-    private final GenericMapper<CPUPricePoint, CPUPricePointDTO> cpuPricePointMapper;
+    private final GenericMapper<CPUPricePoint, GenericPricePointDTO> cpuPricePointMapper;
     private final CPUPricePointService cpuPricePointService;
 
     @Autowired
@@ -68,7 +68,7 @@ public class CPUScraperIntegrationTests {
         this.objectMapper = objectMapper;
         this.cpuPricePointJDBCTemplate = cpuPricePointJDBCTemplate;
         this.cpuService = cpuService;
-        this.cpuPricePointMapper = mapperFactory.create(CPUPricePoint.class, CPUPricePointDTO.class);
+        this.cpuPricePointMapper = mapperFactory.create(CPUPricePoint.class, GenericPricePointDTO.class);
         this.cpuPricePointService = cpuPricePointService;
     }
 
@@ -113,11 +113,11 @@ public class CPUScraperIntegrationTests {
 
         // de-serialize the return object so that it's size and contents can be tested
         String contentAsString = result.getResponse().getContentAsString();
-        RestPage<CPUPricePointDTO> actualPage = objectMapper.readValue(
+        RestPage<GenericPricePointDTO> actualPage = objectMapper.readValue(
                 contentAsString,
                 new TypeReference<>() {}
         );
-        List<CPUPricePointDTO> actualList = actualPage.getContent();
+        List<GenericPricePointDTO> actualList = actualPage.getContent();
 
         // store the sequence of expected IDs
         List<Long> expectedIds = returnList.stream()
@@ -127,7 +127,7 @@ public class CPUScraperIntegrationTests {
         // ensure that the return instance has the expected size and corresponding IDs
         assertThat(actualList)
                 .hasSize(returnList.size())
-                .extracting(CPUPricePointDTO::getId)
+                .extracting(GenericPricePointDTO::getId)
                 .containsExactlyElementsOf(expectedIds);
     }
 
@@ -191,7 +191,7 @@ public class CPUScraperIntegrationTests {
         cpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // convert price points to DTO for comparison's sake
-        List<CPUPricePointDTO> pricePointDTOS = sampleList.stream()
+        List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
                 .map(cpuPricePointMapper::mapTo)
                 .toList();
 
