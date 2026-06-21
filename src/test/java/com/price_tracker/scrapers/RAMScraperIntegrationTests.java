@@ -13,6 +13,7 @@ import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartRAMScrapingService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -39,9 +39,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 public class RAMScraperIntegrationTests {
 
     private final MockMvc mockMVC;
