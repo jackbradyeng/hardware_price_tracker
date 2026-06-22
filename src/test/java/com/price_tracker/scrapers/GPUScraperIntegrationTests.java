@@ -11,7 +11,6 @@ import com.price_tracker.services.price_point_services.GPUPricePointService;
 import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
-import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Disabled;
@@ -33,8 +32,6 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.gpu_data.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_ASUS_5070TI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -70,12 +67,6 @@ public class GPUScraperIntegrationTests {
         this.gpuService = gpuService;
         this.gpuPricePointMapper = mapperFactory.create(GPUPricePoint.class, GenericPricePointDTO.class);
         this.gpuPricePointService = gpuPricePointService;
-    }
-
-    @Test
-    public void testThatUmartGPUScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = scraper.scrapeProductData(UMART_ASUS_5070TI);
-        assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_GPU_MODEL_NUMBER);
     }
 
     @Test

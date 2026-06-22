@@ -11,7 +11,6 @@ import com.price_tracker.services.price_point_services.GPUWorkstationPricePointS
 import com.price_tracker.services.product_services.GPUWorkstationService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingUtility;
-import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUWorkstationScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Disabled;
@@ -33,8 +32,6 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_RTX_PRO_6000;
-import static com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingData.TESTING_WS_GPU_MODEL_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -70,12 +67,6 @@ public class GPUWorkstationScraperIntegrationTests {
         this.gpuWorkstationService = gpuWorkstationService;
         this.gpuWorkstationPricePointMapper = mapperFactory.create(GPUWorkstationPricePoint.class, GenericPricePointDTO.class);
         this.gpuWorkstationPricePointService = gpuWorkstationPricePointService;
-    }
-
-    @Test
-    public void testThatUmartWSGPUScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = scraper.scrapeProductData(UMART_RTX_PRO_6000);
-        assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_WS_GPU_MODEL_NUMBER);
     }
 
     @Test

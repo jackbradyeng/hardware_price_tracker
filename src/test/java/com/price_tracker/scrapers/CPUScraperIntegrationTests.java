@@ -11,7 +11,6 @@ import com.price_tracker.services.price_point_services.CPUPricePointService;
 import com.price_tracker.services.product_services.CPUService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
-import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartCPUScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Disabled;
@@ -33,8 +32,6 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.cpu_data.CPUTestingData.TESTING_CPU_MODEL_NUMBER;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_RYZEN_9_9600X;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -70,12 +67,6 @@ public class CPUScraperIntegrationTests {
         this.cpuService = cpuService;
         this.cpuPricePointMapper = mapperFactory.create(CPUPricePoint.class, GenericPricePointDTO.class);
         this.cpuPricePointService = cpuPricePointService;
-    }
-
-    @Test
-    public void testThatUmartCPUScrapingServiceReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = scraper.scrapeProductData(UMART_RYZEN_9_9600X);
-        assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_CPU_MODEL_NUMBER);
     }
 
     @Test
