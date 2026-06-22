@@ -1,8 +1,6 @@
 package com.price_tracker.webscraper.vendor_templates;
 
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,10 +11,8 @@ import java.util.logging.Level;
 import static com.price_tracker.constants.vendor_constants.UmartCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.UmartCSSLocations.UMART_CSS_PRICE_LOCATION;
 
-@Data
 @Log
-@RequiredArgsConstructor
-public abstract class GenericUmartScraper {
+public class GenericUmartScraper {
 
     public Optional<ScrapedDataDTO> scrapeProductData(String url) {
         try {
