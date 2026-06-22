@@ -28,13 +28,11 @@ public class GenericUmartScraper {
                 return Optional.empty();
             }
 
-            // remove all residual text from the model number
-            String modelNumber =
-                    rawModelNumber.contains(":") ? rawModelNumber.split(":")[1].trim() : rawModelNumber;
+            // refine scraped data
+            String modelNumber = refineModelNumber(rawModelNumber);
+            BigDecimal price = refinePrice(rawPrice);
 
-            // remove any commas from the price tag
-            BigDecimal price = new BigDecimal(rawPrice.replaceAll(",", ""));
-
+            // log and return scraped data
             logModelNumberAndPrice(modelNumber, price.toString(), url);
             return Optional.ofNullable(ScrapedDataDTO.builder()
                     .modelNumber(modelNumber)
@@ -44,6 +42,16 @@ public class GenericUmartScraper {
             log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
             return Optional.empty();
         }
+    }
+
+    /** Removes any header text and semicolons and returns the model number as a String. */
+    public String refineModelNumber(String rawModelNumber) {
+        return rawModelNumber.contains(":") ? rawModelNumber.split(":")[1].trim() : rawModelNumber;
+    }
+
+    /** Removes any trailing commas form the price tag and returns a BigDecimal object. */
+    public BigDecimal refinePrice(String rawPrice) {
+        return new BigDecimal(rawPrice.replace(",", ""));
     }
 
     /** Logs the scraped model number and price given a particular URL. */
