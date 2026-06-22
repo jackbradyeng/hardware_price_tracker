@@ -1,4 +1,4 @@
-package com.price_tracker.scrapers;
+package com.price_tracker.scrapers.integration_tests;
 
 import com.price_tracker.domain.dto.hybrid_dtos.GPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
