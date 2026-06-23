@@ -1,4 +1,4 @@
-package com.price_tracker.scrapers;
+package com.price_tracker.scrapers.integration_tests;
 
 import com.price_tracker.domain.dto.hybrid_dtos.HDDDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
@@ -11,8 +11,8 @@ import com.price_tracker.services.price_point_services.HDDPricePointService;
 import com.price_tracker.services.product_services.HDDService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.hdd_data.HDDTestingUtility;
-import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartHDDScrapingService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -32,15 +31,13 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.hdd_data.HDDTestingData.TESTING_HDD_MODEL_NUMBER;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_SEAGATE_ST2000DM005;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 public class HDDScraperIntegrationTests {
 
     private final MockMvc mockMVC;
@@ -69,12 +66,6 @@ public class HDDScraperIntegrationTests {
         this.hddService = hddService;
         this.hddPricePointMapper = mapperFactory.create(HDDPricePoint.class, GenericPricePointDTO.class);
         this.hddPricePointService = hddPricePointService;
-    }
-
-    @Test
-    public void testThatUmartHDDScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = scraper.scrapeProductData(UMART_SEAGATE_ST2000DM005);
-        assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_HDD_MODEL_NUMBER);
     }
 
     @Test

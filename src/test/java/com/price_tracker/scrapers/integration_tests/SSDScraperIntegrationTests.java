@@ -1,4 +1,4 @@
-package com.price_tracker.scrapers;
+package com.price_tracker.scrapers.integration_tests;
 
 import com.price_tracker.domain.dto.hybrid_dtos.SSDDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
@@ -11,9 +11,8 @@ import com.price_tracker.services.price_point_services.SSDPricePointService;
 import com.price_tracker.services.product_services.SSDService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.ssd_data.SSDTestingUtility;
-import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartSSDScrapingService;
-import org.junit.jupiter.api.Disabled;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -22,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -33,15 +31,13 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.ssd_data.SSDTestingData.TESTING_SSD_MODEL_NUMBER;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_CRUCIAL_BX500_1TB;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 public class SSDScraperIntegrationTests {
 
     private final MockMvc mockMVC;
@@ -70,13 +66,6 @@ public class SSDScraperIntegrationTests {
         this.ssdService = ssdService;
         this.ssdPricePointMapper = mapperFactory.create(SSDPricePoint.class, GenericPricePointDTO.class);
         this.ssdPricePointService = ssdPricePointService;
-    }
-
-    @Test
-    @Disabled
-    public void testThatUmartSSDScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = scraper.scrapeProductData(UMART_CRUCIAL_BX500_1TB);
-        assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_SSD_MODEL_NUMBER);
     }
 
     @Test

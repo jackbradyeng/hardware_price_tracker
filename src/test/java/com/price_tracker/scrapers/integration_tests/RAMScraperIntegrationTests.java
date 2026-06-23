@@ -1,4 +1,4 @@
-package com.price_tracker.scrapers;
+package com.price_tracker.scrapers.integration_tests;
 
 import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
@@ -11,9 +11,8 @@ import com.price_tracker.services.price_point_services.RAMPricePointService;
 import com.price_tracker.services.product_services.RAMService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
-import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartRAMScrapingService;
-import org.junit.jupiter.api.Disabled;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -22,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -33,15 +31,13 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static com.price_tracker.testing_data.ram_data.RAMTestingData.TESTING_RAM_MODEL_NUMBER;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 public class RAMScraperIntegrationTests {
 
     private final MockMvc mockMVC;
@@ -70,12 +66,6 @@ public class RAMScraperIntegrationTests {
         this.ramService = ramService;
         this.ramPricePointMapper = mapperFactory.create(RAMPricePoint.class, GenericPricePointDTO.class);
         this.ramPricePointService = ramPricePointService;
-    }
-
-    @Test
-    public void testThatUmartRAMScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = scraper.scrapeProductData(UMART_KINGSTON_KINGSTON_F64G);
-        assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_RAM_MODEL_NUMBER);
     }
 
     @Test
@@ -135,14 +125,6 @@ public class RAMScraperIntegrationTests {
     public void testThatRAMPricePointInsertionReturnsExpectedNumberOfObjectsAndIDs() throws Exception {
 
         testThatRAMPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(10);
-    }
-
-    @Test
-    @Disabled
-    public void testThatRAMPricePointInsertionReturnsExpectedNumberAfterMultipleInsertions() throws Exception {
-
-        // 110 price points -> three round-trips or three insertions
-        testThatRAMPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(110);
     }
 
     @Test

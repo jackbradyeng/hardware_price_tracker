@@ -1,22 +1,30 @@
 package com.price_tracker.webscraper.vendor_templates;
 
+import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.logging.Level;
 import static com.price_tracker.constants.vendor_constants.UmartCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.UmartCSSLocations.UMART_CSS_PRICE_LOCATION;
+import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
-@Data
 @Log
-@RequiredArgsConstructor
-public abstract class GenericUmartScraper {
+@Service
+public class GenericUmartScraper {
+
+    private final PricePointObserver pricePointObserver;
+
+    @Autowired
+    public GenericUmartScraper(PricePointObserver pricePointObserver) {
+        this.pricePointObserver = pricePointObserver;
+    }
 
     public Optional<ScrapedDataDTO> scrapeProductData(String url) {
         try {
@@ -28,18 +36,16 @@ public abstract class GenericUmartScraper {
             // fail-fast if the document selection returns nothing
             if(rawModelNumber.isEmpty() || rawPrice.isEmpty()) {
                 log.warning("WARNING: One or more fields returned no data.");
-                logModelNumberAndPrice(rawModelNumber, rawPrice, url);
+                pricePointObserver.logModelNumberAndPrice(UMART, rawModelNumber, rawPrice, url);
                 return Optional.empty();
             }
 
-            // remove all residual text from the model number
-            String modelNumber =
-                    rawModelNumber.contains(":") ? rawModelNumber.split(":")[1].trim() : rawModelNumber;
+            // refine scraped data
+            String modelNumber = refineModelNumber(rawModelNumber);
+            BigDecimal price = refinePrice(rawPrice);
 
-            // remove any commas from the price tag
-            BigDecimal price = new BigDecimal(rawPrice.replaceAll(",", ""));
-
-            logModelNumberAndPrice(modelNumber, price.toString(), url);
+            // log and return scraped data
+            pricePointObserver.logModelNumberAndPrice(UMART, modelNumber, price.toString(), url);
             return Optional.ofNullable(ScrapedDataDTO.builder()
                     .modelNumber(modelNumber)
                     .price(price)
@@ -50,17 +56,13 @@ public abstract class GenericUmartScraper {
         }
     }
 
-    /** Logs the scraped model number and price given a particular URL. */
-    private void logModelNumberAndPrice(String modelNumber, String price, String url) {
-        String logEntry = """
-            
-            ========================================
-            UMART - PRODUCT - FROM: %s
-            Model: %s
-            Price: %s
-            ========================================
-            """.formatted(url, modelNumber, price);
+    /** Removes any header text and semicolons and returns the model number as a String. */
+    public String refineModelNumber(String rawModelNumber) {
+        return rawModelNumber.contains(":") ? rawModelNumber.split(":")[1].trim() : rawModelNumber;
+    }
 
-        log.info(logEntry);
+    /** Removes any trailing commas form the price tag and returns a BigDecimal object. */
+    public BigDecimal refinePrice(String rawPrice) {
+        return new BigDecimal(rawPrice.replace(",", ""));
     }
 }
