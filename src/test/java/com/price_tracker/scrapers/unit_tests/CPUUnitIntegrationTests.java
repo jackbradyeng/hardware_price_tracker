@@ -18,4 +18,22 @@ public class CPUUnitIntegrationTests {
         Optional<ScrapedDataDTO> scrapedDataDTO = scraper.scrapeProductData(UMART_RYZEN_9_9600X);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_CPU_MODEL_NUMBER);
     }
+
+    @Test
+    public void testThatUmartCPUScrapingServiceRemovesSemicolon() {
+        String refinedModelNumber = scraper.refineModelNumber("Model Number : 100-100001405WOF");
+        assert refinedModelNumber.equals("100-100001405WOF");
+    }
+
+    @Test
+    public void testThatUmartCPUScrapingServiceRemovesSingleComma() {
+        BigDecimal refinedPrice = scraper.refinePrice("1,444.00");
+        assert refinedPrice.equals(new BigDecimal("1444.00"));
+    }
+
+    @Test
+    public void testThatUmartCPUScrapingServiceRemovesMultipleCommas() {
+        BigDecimal refinedPrice = scraper.refinePrice("1,240,000.00");
+        assert  refinedPrice.equals(new BigDecimal("1240000.00"));
+    }
 }

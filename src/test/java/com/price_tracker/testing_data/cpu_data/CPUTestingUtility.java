@@ -47,7 +47,7 @@ public class CPUTestingUtility {
     public ScrapedDataDTO createSampleCPUPricePointData() {
         return ScrapedDataDTO.builder()
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
-                .price(new BigDecimal(TESTING_CPU_PRICE))
+                .price(new BigDecimal("360.00"))
                 .build();
     }
 }
