@@ -8,7 +8,7 @@ import java.util.Optional;
 import static com.price_tracker.testing_data.ram_data.RAMTestingData.TESTING_RAM_MODEL_NUMBER;
 import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 
-public class RAMUnitIntegrationTests {
+public class RAMScraperUnitTests {
 
     private final UmartRAMScrapingService scraper = new UmartRAMScrapingService(new PricePointObserver());
 

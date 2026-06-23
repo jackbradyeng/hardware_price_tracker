@@ -9,7 +9,7 @@ import java.util.Optional;
 import static com.price_tracker.testing_data.cpu_data.CPUTestingData.*;
 import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_RYZEN_9_9600X;
 
-public class CPUUnitIntegrationTests {
+public class CPUScraperUnitTests {
 
     private final UmartCPUScrapingService scraper = new UmartCPUScrapingService(new PricePointObserver());
 

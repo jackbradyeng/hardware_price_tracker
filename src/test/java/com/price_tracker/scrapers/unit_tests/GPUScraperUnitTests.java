@@ -8,7 +8,7 @@ import java.util.Optional;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
 import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_ASUS_5070TI;
 
-public class GPUUnitIntegrationTests {
+public class GPUScraperUnitTests {
 
     private final UmartGPUScrapingService scraper = new UmartGPUScrapingService(new PricePointObserver());
 

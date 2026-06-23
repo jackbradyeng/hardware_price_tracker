@@ -8,7 +8,7 @@ import java.util.Optional;
 import static com.price_tracker.testing_data.nvme_data.NVMETestingData.TESTING_NVME_MODEL_NUMBER;
 import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_CRUCIAL_P510_1TB;
 
-public class NVMEUnitIntegrationTests {
+public class NVMEScraperUnitTests {
 
     private final UmartNVMEScrapingService scraper = new UmartNVMEScrapingService(new PricePointObserver());
 

@@ -8,7 +8,7 @@ import java.util.Optional;
 import static com.price_tracker.testing_data.hdd_data.HDDTestingData.TESTING_HDD_MODEL_NUMBER;
 import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_SEAGATE_ST2000DM005;
 
-public class HDDUnitIntegrationTests {
+public class HDDScraperUnitTests {
 
     private final UmartHDDScrapingService scraper = new UmartHDDScrapingService(new PricePointObserver());
 

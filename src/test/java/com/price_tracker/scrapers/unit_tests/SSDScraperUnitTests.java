@@ -9,7 +9,7 @@ import java.util.Optional;
 import static com.price_tracker.testing_data.ssd_data.SSDTestingData.TESTING_SSD_MODEL_NUMBER;
 import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_CRUCIAL_BX500_1TB;
 
-public class SSDUnitIntegrationTests {
+public class SSDScraperUnitTests {
 
     private final UmartSSDScrapingService scraper = new UmartSSDScrapingService(new PricePointObserver());
 
