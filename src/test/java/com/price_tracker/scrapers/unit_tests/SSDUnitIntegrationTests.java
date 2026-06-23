@@ -1,5 +1,6 @@
 package com.price_tracker.scrapers.unit_tests;
 
+import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartSSDScrapingService;
 import org.junit.jupiter.api.Disabled;
@@ -10,7 +11,7 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 
 public class SSDUnitIntegrationTests {
 
-    private final UmartSSDScrapingService scraper = new UmartSSDScrapingService();
+    private final UmartSSDScrapingService scraper = new UmartSSDScrapingService(new PricePointObserver());
 
     @Test
     @Disabled

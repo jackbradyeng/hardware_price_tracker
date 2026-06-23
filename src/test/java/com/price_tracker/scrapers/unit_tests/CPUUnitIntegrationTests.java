@@ -1,15 +1,17 @@
 package com.price_tracker.scrapers.unit_tests;
 
+import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartCPUScrapingService;
 import org.junit.jupiter.api.Test;
+import java.math.BigDecimal;
 import java.util.Optional;
-import static com.price_tracker.testing_data.cpu_data.CPUTestingData.TESTING_CPU_MODEL_NUMBER;
+import static com.price_tracker.testing_data.cpu_data.CPUTestingData.*;
 import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_RYZEN_9_9600X;
 
 public class CPUUnitIntegrationTests {
 
-    private final UmartCPUScrapingService scraper = new UmartCPUScrapingService();
+    private final UmartCPUScrapingService scraper = new UmartCPUScrapingService(new PricePointObserver());
 
     @Test
     public void testThatUmartCPUScrapingServiceReturnsExpectedModelNumber() {

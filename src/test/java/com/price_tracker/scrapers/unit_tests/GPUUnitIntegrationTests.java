@@ -1,5 +1,6 @@
 package com.price_tracker.scrapers.unit_tests;
 
+import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 
 public class GPUUnitIntegrationTests {
 
-    private final UmartGPUScrapingService scraper = new UmartGPUScrapingService();
+    private final UmartGPUScrapingService scraper = new UmartGPUScrapingService(new PricePointObserver());
 
     @Test
     public void testThatUmartGPUScraperReturnsExpectedModelNumber() {
