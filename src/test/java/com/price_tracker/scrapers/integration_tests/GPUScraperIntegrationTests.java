@@ -13,7 +13,6 @@ import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -126,14 +125,6 @@ public class GPUScraperIntegrationTests {
     public void testThatGPUPricePointInsertionReturnsExpectedNumberOfObjectsAndIDs() throws Exception {
 
         testThatGPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(10);
-    }
-
-    @Test
-    @Disabled
-    public void testThatGPUPricePointInsertionReturnsExpectedNumberAfterMultipleInsertions() throws Exception {
-
-        // 110 price points -> three round-trips or three insertions
-        testThatGPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(110);
     }
 
     @Test

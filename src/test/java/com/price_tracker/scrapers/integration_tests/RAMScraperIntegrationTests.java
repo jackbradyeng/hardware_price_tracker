@@ -13,7 +13,6 @@ import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import com.price_tracker.webscraper.product_services.impl.UmartRAMScrapingService;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -126,14 +125,6 @@ public class RAMScraperIntegrationTests {
     public void testThatRAMPricePointInsertionReturnsExpectedNumberOfObjectsAndIDs() throws Exception {
 
         testThatRAMPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(10);
-    }
-
-    @Test
-    @Disabled
-    public void testThatRAMPricePointInsertionReturnsExpectedNumberAfterMultipleInsertions() throws Exception {
-
-        // 110 price points -> three round-trips or three insertions
-        testThatRAMPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(110);
     }
 
     @Test
