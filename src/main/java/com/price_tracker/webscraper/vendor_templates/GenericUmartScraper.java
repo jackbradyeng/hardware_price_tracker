@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.logging.Level;
-import static com.price_tracker.constants.vendor_constants.UmartCSSLocations.UMART_CSS_MODEL_LOCATION;
-import static com.price_tracker.constants.vendor_constants.UmartCSSLocations.UMART_CSS_PRICE_LOCATION;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @Log
