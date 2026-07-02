@@ -17,12 +17,12 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @Log
 @Service
-public class GenericUmartScraper implements GenericVendorScraper {
+public class UmartProductScraper implements GenericVendorScraper {
 
     private final PricePointObserver pricePointObserver;
 
     @Autowired
-    public GenericUmartScraper(PricePointObserver pricePointObserver) {
+    public UmartProductScraper(PricePointObserver pricePointObserver) {
         this.pricePointObserver = pricePointObserver;
     }
 

@@ -3,7 +3,7 @@ package com.price_tracker.scrapers.unit_tests;
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.VendorHDDScrapingService;
-import com.price_tracker.webscraper.vendor_templates.GenericUmartScraper;
+import com.price_tracker.webscraper.vendor_templates.UmartProductScraper;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -14,8 +14,8 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 
 public class HDDScraperUnitTests {
 
-    private final GenericUmartScraper genericUmartScraper = new GenericUmartScraper(new PricePointObserver());
-    private final VendorHDDScrapingService vendorScraper = new VendorHDDScrapingService(genericUmartScraper);
+    private final UmartProductScraper umartProductScraper = new UmartProductScraper(new PricePointObserver());
+    private final VendorHDDScrapingService vendorScraper = new VendorHDDScrapingService(umartProductScraper);
 
     @Test
     public void testThatUmartHDDScraperReturnsExpectedModelNumber() {
@@ -27,19 +27,19 @@ public class HDDScraperUnitTests {
 
     @Test
     public void testThatUmartHDDScraperRemovesSemicolon() {
-        String refinedModelNumber = genericUmartScraper.refineModelNumber("Model Number : " + TESTING_HDD_MODEL_NUMBER);
+        String refinedModelNumber = umartProductScraper.refineModelNumber("Model Number : " + TESTING_HDD_MODEL_NUMBER);
         assert refinedModelNumber.equals(TESTING_HDD_MODEL_NUMBER);
     }
 
     @Test
     public void testThatUmartHDDScraperRemovesSingleComma() {
-        BigDecimal refinedPrice = genericUmartScraper.refinePrice("1,099.00");
+        BigDecimal refinedPrice = umartProductScraper.refinePrice("1,099.00");
         assert refinedPrice.equals(new BigDecimal("1099.00"));
     }
 
     @Test
     public void testThatUmartHDDScraperRemovesMultipleCommas() {
-        BigDecimal refinedPrice = genericUmartScraper.refinePrice("1,240,000.00");
+        BigDecimal refinedPrice = umartProductScraper.refinePrice("1,240,000.00");
         assert refinedPrice.equals(new BigDecimal("1240000.00"));
     }
 }
