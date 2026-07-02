@@ -60,6 +60,7 @@ public class GPUScrapingOrchestrator {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
             return umartGPUScrapingService
+                    .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
                     .map(umartGPUScrapingService::createGPUPricePoint);
         } catch (InterruptedException e) {

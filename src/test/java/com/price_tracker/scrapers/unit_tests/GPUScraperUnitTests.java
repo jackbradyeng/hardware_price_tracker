@@ -3,10 +3,10 @@ package com.price_tracker.scrapers.unit_tests;
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
+import com.price_tracker.webscraper.vendor_templates.GenericUmartScraper;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
-
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
@@ -14,30 +14,33 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 
 public class GPUScraperUnitTests {
 
-    private final UmartGPUScrapingService scraper = new UmartGPUScrapingService(new PricePointObserver());
+    private final GenericUmartScraper genericUmartScraper = new GenericUmartScraper(new PricePointObserver());
+    private final UmartGPUScrapingService vendorScraper = new UmartGPUScrapingService(genericUmartScraper);
 
     @Test
     public void testThatUmartGPUScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = scraper
+        Optional<ScrapedDataDTO> scrapedDataDTO = vendorScraper
+                .getGenericVendorScraper()
                 .scrapeProductData(UMART_ASUS_5070TI, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_GPU_MODEL_NUMBER);
     }
 
     @Test
     public void testThatUmartGPUScraperRemovesSemicolon() {
-        String refinedModelNumber = scraper.refineModelNumber("Model Number : " + TESTING_GPU_MODEL_NUMBER);
+        String refinedModelNumber = genericUmartScraper
+                .refineModelNumber("Model Number : " + TESTING_GPU_MODEL_NUMBER);
         assert refinedModelNumber.equals(TESTING_GPU_MODEL_NUMBER);
     }
 
     @Test
     public void testThatUmartGPUScraperRemovesSingleComma() {
-        BigDecimal refinedPrice = scraper.refinePrice("1,380.00");
+        BigDecimal refinedPrice = genericUmartScraper.refinePrice("1,380.00");
         assert refinedPrice.equals(new BigDecimal("1380.00"));
     }
 
     @Test
     public void testThatUmartGPUScraperRemovesMultipleCommas() {
-        BigDecimal refinedPrice = scraper.refinePrice("1,380,000.00");
+        BigDecimal refinedPrice = genericUmartScraper.refinePrice("1,380,000.00");
         assert refinedPrice.equals(new BigDecimal("1380000.00"));
     }
 }
