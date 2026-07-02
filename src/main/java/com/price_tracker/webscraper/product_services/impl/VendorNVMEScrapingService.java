@@ -15,7 +15,7 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 @Log
 @Service
 @AllArgsConstructor
-public class UmartNVMEScrapingService {
+public class VendorNVMEScrapingService {
 
     @Getter private GenericVendorScraper genericVendorScraper;
 

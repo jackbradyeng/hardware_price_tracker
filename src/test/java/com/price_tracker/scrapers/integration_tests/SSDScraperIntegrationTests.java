@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.SSDPricePointService;
 import com.price_tracker.services.product_services.SSDService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.ssd_data.SSDTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.UmartSSDScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorSSDScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +42,7 @@ public class SSDScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final SSDTestingUtility ssdTestingUtility;
-    private final UmartSSDScrapingService scraper;
+    private final VendorSSDScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate;
     private final SSDService ssdService;
@@ -52,7 +52,7 @@ public class SSDScraperIntegrationTests {
     @Autowired
     public SSDScraperIntegrationTests(MockMvc mockMVC,
                                       SSDTestingUtility ssdTestingUtility,
-                                      UmartSSDScrapingService scraper,
+                                      VendorSSDScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate,

@@ -3,7 +3,7 @@ package com.price_tracker.webscraper.orchestrators;
 import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.NVMEPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.webscraper.product_services.impl.UmartNVMEScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorNVMEScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,7 +24,7 @@ public class NVMEScrapingOrchestrator {
 
     private final NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
-    private final UmartNVMEScrapingService umartNVMEScrapingService;
+    private final VendorNVMEScrapingService vendorNVMEScrapingService;
 
     @Scheduled(cron = NVME_SCRAPING_TIME)
     public void runDailyScrape() {
@@ -50,10 +50,10 @@ public class NVMEScrapingOrchestrator {
     private Optional<NVMEPricePoint> processNVME(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartNVMEScrapingService
+            return vendorNVMEScrapingService
                     .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
-                    .map(umartNVMEScrapingService::createNVMEPricePoint);
+                    .map(vendorNVMEScrapingService::createNVMEPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.warning("Scraping interrupted for URL: " + url);

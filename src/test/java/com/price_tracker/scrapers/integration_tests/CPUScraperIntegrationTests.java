@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.CPUPricePointService;
 import com.price_tracker.services.product_services.CPUService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.UmartCPUScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorCPUScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +42,7 @@ public class CPUScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final CPUTestingUtility cpuTestingUtility;
-    private final UmartCPUScrapingService scraper;
+    private final VendorCPUScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate;
     private final CPUService cpuService;
@@ -52,7 +52,7 @@ public class CPUScraperIntegrationTests {
     @Autowired
     public CPUScraperIntegrationTests(MockMvc mockMVC,
                                       CPUTestingUtility cpuTestingUtility,
-                                      UmartCPUScrapingService scraper,
+                                      VendorCPUScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate,

@@ -3,7 +3,7 @@ package com.price_tracker.webscraper.orchestrators;
 import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.RAMPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.webscraper.product_services.impl.UmartRAMScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorRAMScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
@@ -24,7 +24,7 @@ public class RAMScrapingOrchestrator {
 
     private final RAMPricePointJDBCTemplate ramPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
-    private final UmartRAMScrapingService umartRAMScrapingService;
+    private final VendorRAMScrapingService vendorRAMScrapingService;
 
     /** Core scraping service. Runs automatically each day as per the CRON notation below. */
     @Scheduled(cron = RAM_SCRAPING_TIME)
@@ -52,10 +52,10 @@ public class RAMScrapingOrchestrator {
     private Optional<RAMPricePoint> processRAM(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartRAMScrapingService
+            return vendorRAMScrapingService
                     .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
-                    .map(umartRAMScrapingService::createRAMPricePoint);
+                    .map(vendorRAMScrapingService::createRAMPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.warning("Scraping interrupted for URL: " + url);

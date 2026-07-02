@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.RAMPricePointService;
 import com.price_tracker.services.product_services.RAMService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.UmartRAMScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorRAMScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +42,7 @@ public class RAMScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final RAMTestingUtility ramTestingUtility;
-    private final UmartRAMScrapingService scraper;
+    private final VendorRAMScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final RAMPricePointJDBCTemplate ramPricePointJDBCTemplate;
     private final RAMService ramService;
@@ -52,7 +52,7 @@ public class RAMScraperIntegrationTests {
     @Autowired
     public RAMScraperIntegrationTests(MockMvc mockMVC,
                                       RAMTestingUtility ramTestingUtility,
-                                      UmartRAMScrapingService scraper,
+                                      VendorRAMScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       RAMPricePointJDBCTemplate ramPricePointJDBCTemplate,

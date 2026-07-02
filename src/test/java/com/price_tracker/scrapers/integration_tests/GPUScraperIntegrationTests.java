@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.GPUPricePointService;
 import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorGPUScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +42,7 @@ public class GPUScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final GPUTestingUtility gpuTestingUtility;
-    private final UmartGPUScrapingService scraper;
+    private final VendorGPUScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate;
     private final GPUService gpuService;
@@ -52,7 +52,7 @@ public class GPUScraperIntegrationTests {
     @Autowired
     public GPUScraperIntegrationTests(MockMvc mockMVC,
                                       GPUTestingUtility gpuTestingUtility,
-                                      UmartGPUScrapingService scraper,
+                                      VendorGPUScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate,

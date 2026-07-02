@@ -1,6 +1,6 @@
 package com.price_tracker.webscraper.product_services.impl;
 
-import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
+import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.vendor_templates.GenericVendorScraper;
 import lombok.AllArgsConstructor;
@@ -15,13 +15,13 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 @Log
 @Service
 @AllArgsConstructor
-public class UmartRAMScrapingService {
+public class VendorSSDScrapingService {
 
     @Getter private GenericVendorScraper genericVendorScraper;
 
-    public RAMPricePoint createRAMPricePoint(ScrapedDataDTO scrapedData) {
+    public SSDPricePoint createSSDPricePoint(ScrapedDataDTO scrapedData) {
 
-        return RAMPricePoint.builder()
+        return SSDPricePoint.builder()
                 .modelNumber(scrapedData.modelNumber())
                 .vendor(UMART)
                 .currency(AUD)

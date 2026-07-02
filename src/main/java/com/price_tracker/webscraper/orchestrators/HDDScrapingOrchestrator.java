@@ -3,7 +3,7 @@ package com.price_tracker.webscraper.orchestrators;
 import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.HDDPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.webscraper.product_services.impl.UmartHDDScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorHDDScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,7 +23,7 @@ public class HDDScrapingOrchestrator {
 
     private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
-    private final UmartHDDScrapingService umartHDDScrapingService;
+    private final VendorHDDScrapingService vendorHDDScrapingService;
 
     @Scheduled(cron = HDD_SCRAPING_TIME)
     public void runDailyScrape() {
@@ -49,10 +49,10 @@ public class HDDScrapingOrchestrator {
     private Optional<HDDPricePoint> processHDD(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartHDDScrapingService
+            return vendorHDDScrapingService
                     .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
-                    .map(umartHDDScrapingService::createHDDPricePoint);
+                    .map(vendorHDDScrapingService::createHDDPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.warning("Scraping interrupted for URL: " + url);

@@ -2,7 +2,7 @@ package com.price_tracker.scrapers.unit_tests;
 
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.product_services.impl.UmartSSDScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorSSDScrapingService;
 import com.price_tracker.webscraper.vendor_templates.GenericUmartScraper;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
@@ -16,7 +16,7 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 public class SSDScraperUnitTests {
 
     private final GenericUmartScraper genericUmartScraper = new GenericUmartScraper(new PricePointObserver());
-    private final UmartSSDScrapingService vendorScraper = new UmartSSDScrapingService(genericUmartScraper);
+    private final VendorSSDScrapingService vendorScraper = new VendorSSDScrapingService(genericUmartScraper);
 
     @Test
     public void testThatUmartSSDScraperReturnsExpectedModelNumber() {

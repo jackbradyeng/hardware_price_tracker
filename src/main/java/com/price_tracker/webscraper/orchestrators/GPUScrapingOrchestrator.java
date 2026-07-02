@@ -3,7 +3,7 @@ package com.price_tracker.webscraper.orchestrators;
 import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorGPUScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,7 +24,7 @@ public class GPUScrapingOrchestrator {
 
     private final GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
-    private final UmartGPUScrapingService umartGPUScrapingService;
+    private final VendorGPUScrapingService vendorGPUScrapingService;
 
     /** Core scraping service. Runs automatically each day as per the CRON notation below. */
     @Scheduled(cron = GPU_SCRAPING_TIME)
@@ -59,10 +59,10 @@ public class GPUScrapingOrchestrator {
         * error will be thrown unless processGPU handles the InterruptedException every time.*/
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartGPUScrapingService
+            return vendorGPUScrapingService
                     .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
-                    .map(umartGPUScrapingService::createGPUPricePoint);
+                    .map(vendorGPUScrapingService::createGPUPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.warning("Scraping interrupted for URL: " + url);

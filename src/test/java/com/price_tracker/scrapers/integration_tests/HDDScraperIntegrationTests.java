@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.HDDPricePointService;
 import com.price_tracker.services.product_services.HDDService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.hdd_data.HDDTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.UmartHDDScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorHDDScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +42,7 @@ public class HDDScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final HDDTestingUtility hddTestingUtility;
-    private final UmartHDDScrapingService scraper;
+    private final VendorHDDScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
     private final HDDService hddService;
@@ -52,7 +52,7 @@ public class HDDScraperIntegrationTests {
     @Autowired
     public HDDScraperIntegrationTests(MockMvc mockMVC,
                                       HDDTestingUtility hddTestingUtility,
-                                      UmartHDDScrapingService scraper,
+                                      VendorHDDScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       HDDPricePointJDBCTemplate hddPricePointJDBCTemplate,

@@ -3,7 +3,7 @@ package com.price_tracker.webscraper.orchestrators;
 import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUWorkstationPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.webscraper.product_services.impl.UmartGPUWorkstationScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorGPUWorkstationScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,7 +24,7 @@ public class GPUWorkstationScrapingOrchestrator {
 
     private final GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
-    private final UmartGPUWorkstationScrapingService umartGPUWorkstationScrapingService;
+    private final VendorGPUWorkstationScrapingService vendorGPUWorkstationScrapingService;
 
     @Scheduled(cron = GPU_WORKSTATION_SCRAPING_TIME)
     public void runDailyScrape() {
@@ -50,10 +50,10 @@ public class GPUWorkstationScrapingOrchestrator {
     private Optional<GPUWorkstationPricePoint> processWorkstationGPU(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartGPUWorkstationScrapingService
+            return vendorGPUWorkstationScrapingService
                     .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
-                    .map(umartGPUWorkstationScrapingService::createGPUWorkstationPricePoint);
+                    .map(vendorGPUWorkstationScrapingService::createGPUWorkstationPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.warning("Scraping interrupted for URL: " + url);

@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.NVMEPricePointService;
 import com.price_tracker.services.product_services.NVMEService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.nvme_data.NVMETestingUtility;
-import com.price_tracker.webscraper.product_services.impl.UmartNVMEScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorNVMEScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +42,7 @@ public class NVMEScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final NVMETestingUtility nvmeTestingUtility;
-    private final UmartNVMEScrapingService scraper;
+    private final VendorNVMEScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate;
     private final NVMEService nvmeService;
@@ -52,7 +52,7 @@ public class NVMEScraperIntegrationTests {
     @Autowired
     public NVMEScraperIntegrationTests(MockMvc mockMVC,
                                        NVMETestingUtility nvmeTestingUtility,
-                                       UmartNVMEScrapingService scraper,
+                                       VendorNVMEScrapingService scraper,
                                        ObjectMapper objectMapper,
                                        MapperFactory mapperFactory,
                                        NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate,
