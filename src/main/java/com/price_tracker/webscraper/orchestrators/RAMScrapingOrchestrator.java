@@ -53,6 +53,7 @@ public class RAMScrapingOrchestrator {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
             return umartRAMScrapingService
+                    .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
                     .map(umartRAMScrapingService::createRAMPricePoint);
         } catch (InterruptedException e) {
