@@ -7,6 +7,6 @@ public class VendorCSSLocations {
     public static final String UMART_CSS_MODEL_LOCATION = "li:contains(Model Number:)";
 
     // SCORPTEC PRICE & MODEL NUMBER LOCATIONS
-    public static final String SCORPTEC_CSS_PRICE_LOCATION = "product-page-model mb-4";
-    public static final String SCORPTEC_CSS_MODEL_LOCATION = "product-page-price product-main-price";
+    public static final String SCORPTEC_CSS_MODEL_LOCATION = ".product-page-model.mb-4";
+    public static final String SCORPTEC_CSS_PRICE_LOCATION = ".product-page-desktop .product-page-price.product-main-price";
 }
