@@ -1,9 +1,9 @@
 package com.price_tracker.webscraper.product_services.impl;
 
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
-import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.vendor_templates.GenericUmartScraper;
+import com.price_tracker.webscraper.vendor_templates.GenericVendorScraper;
+import lombok.Getter;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -13,11 +13,9 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @Log
 @Service
-public class UmartCPUScrapingService extends GenericUmartScraper {
+public class UmartCPUScrapingService {
 
-    public UmartCPUScrapingService(PricePointObserver pricePointObserver) {
-        super(pricePointObserver);
-    }
+    @Getter private GenericVendorScraper genericVendorScraper;
 
     public CPUPricePoint createCPUPricePoint(ScrapedDataDTO scrapedData) {
 
