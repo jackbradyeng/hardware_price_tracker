@@ -23,6 +23,7 @@ public final class DatabaseConstants {
     // VENDORS
     public static final String VENDOR_TABLE_NAME = "VENDORS";
     public static final String UMART_PRODUCT_NAME = "UMART_PRODUCTS";
+    public static final String SCORPTEC_PRODUCT_NAME = "SCORPTEC_PRODUCTS";
 
     // SEQUENCES
     public static final String GPU_PRICE_SEQUENCE = "gpu_price_sequence";
