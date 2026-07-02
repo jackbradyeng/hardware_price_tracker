@@ -17,7 +17,7 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @Log
 @Service
-public class GenericUmartScraper {
+public class GenericUmartScraper implements GenericVendorScraper {
 
     private final PricePointObserver pricePointObserver;
 
@@ -26,7 +26,7 @@ public class GenericUmartScraper {
         this.pricePointObserver = pricePointObserver;
     }
 
-    public Optional<ScrapedDataDTO> scrapeProductData(String url) {
+    public Optional<ScrapedDataDTO> scrapeProductData(String url, String modelNumberLocation, String priceLocation) {
         try {
             // connect to the url and extract raw HTML
             Document document = Jsoup.connect(url).get();

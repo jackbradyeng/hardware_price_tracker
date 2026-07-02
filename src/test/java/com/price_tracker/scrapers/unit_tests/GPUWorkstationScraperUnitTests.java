@@ -6,6 +6,9 @@ import com.price_tracker.webscraper.product_services.impl.UmartGPUWorkstationScr
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
+
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_RTX_PRO_6000;
 import static com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingData.TESTING_WS_GPU_MODEL_NUMBER;
 
@@ -16,7 +19,8 @@ public class GPUWorkstationScraperUnitTests {
 
     @Test
     public void testThatUmartWSGPUScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = scraper.scrapeProductData(UMART_RTX_PRO_6000);
+        Optional<ScrapedDataDTO> scrapedDataDTO = scraper
+                .scrapeProductData(UMART_RTX_PRO_6000, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_WS_GPU_MODEL_NUMBER);
     }
 

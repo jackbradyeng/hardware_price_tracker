@@ -13,6 +13,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.*;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +49,8 @@ public class HDDScrapingOrchestrator {
     private Optional<HDDPricePoint> processHDD(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartHDDScrapingService.scrapeProductData(url)
+            return umartHDDScrapingService
+                    .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
                     .map(umartHDDScrapingService::createHDDPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

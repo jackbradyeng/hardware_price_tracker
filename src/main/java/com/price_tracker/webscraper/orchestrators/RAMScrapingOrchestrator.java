@@ -14,6 +14,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.*;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +52,8 @@ public class RAMScrapingOrchestrator {
     private Optional<RAMPricePoint> processRAM(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartRAMScrapingService.scrapeProductData(url)
+            return umartRAMScrapingService
+                    .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
                     .map(umartRAMScrapingService::createRAMPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

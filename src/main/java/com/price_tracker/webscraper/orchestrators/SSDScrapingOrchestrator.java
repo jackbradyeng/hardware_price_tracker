@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.SSD_SCRAPING_TIME;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.SLEEPING_CONSTANT;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +50,8 @@ public class SSDScrapingOrchestrator {
     private Optional<SSDPricePoint> processSSD(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return umartSSDScrapingService.scrapeProductData(url)
+            return umartSSDScrapingService
+                    .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
                     .map(umartSSDScrapingService::createSSDPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
