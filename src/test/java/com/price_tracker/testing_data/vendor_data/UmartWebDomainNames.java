@@ -17,4 +17,8 @@ public class UmartWebDomainNames {
             "https://www.umart.com.au/product/crucial-bx500-1tb-2-5in-3d-nand-sata-ssd-ct1000bx500ssd1-53577";
     public static final String UMART_CRUCIAL_P510_1TB =
             "https://www.umart.com.au/product/crucial-p510-1tb-pcie-gen5-m-2-2280-nvme-ssd-ct1000p510ssd8-84983";
+
+    // SCORPTEC PRODUCT DOMAINS
+    public static final String SCORPTEC_RYZEN_5_9600X =
+            "https://www.scorptec.com.au/product/cpu/amd-socket-am5/111723-100-100001405wof";
 }
