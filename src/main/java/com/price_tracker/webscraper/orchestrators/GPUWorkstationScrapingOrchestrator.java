@@ -51,6 +51,7 @@ public class GPUWorkstationScrapingOrchestrator {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
             return umartGPUWorkstationScrapingService
+                    .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
                     .map(umartGPUWorkstationScrapingService::createGPUWorkstationPricePoint);
         } catch (InterruptedException e) {
