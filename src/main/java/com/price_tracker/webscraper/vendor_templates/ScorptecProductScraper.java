@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 import java.util.logging.Level;
 import static com.price_tracker.constants.vendor_constants.VendorNames.SCORPTEC;
@@ -36,6 +37,10 @@ public class ScorptecProductScraper implements GenericVendorScraper {
             String rawModelNumber = document.select(modelNumberLocation).text();
             String rawPrice = document.select(priceLocation).text();
 
+            // refine scraped data
+            BigDecimal refinedPrice = new BigDecimal(rawPrice.replace(",", ""))
+                    .setScale(2, RoundingMode.HALF_UP);
+
             // fail-fast if the document selection returns nothing
             if(rawModelNumber.isEmpty() || rawPrice.isEmpty()) {
                 log.warning("WARNING: One or more fields returned no data.");
@@ -44,10 +49,10 @@ public class ScorptecProductScraper implements GenericVendorScraper {
             }
 
             // log and return scraped data
-            pricePointObserver.logModelNumberAndPrice(SCORPTEC, rawModelNumber, rawPrice, url);
+            pricePointObserver.logModelNumberAndPrice(SCORPTEC, rawModelNumber, refinedPrice.toString(), url);
             return Optional.ofNullable(ScrapedDataDTO.builder()
                     .modelNumber(rawModelNumber)
-                    .price(new BigDecimal(rawPrice))
+                    .price(refinedPrice)
                     .build());
         } catch (IOException | NumberFormatException e) {
             log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
