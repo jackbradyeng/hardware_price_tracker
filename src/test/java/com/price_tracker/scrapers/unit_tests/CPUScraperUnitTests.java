@@ -15,12 +15,15 @@ import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMA
 
 public class CPUScraperUnitTests {
 
-    private final GenericUmartScraper genericUmartScraper = new GenericUmartScraper(new PricePointObserver());
-    private final UmartCPUScrapingService vendorScraper = new UmartCPUScrapingService();
+    private final PricePointObserver pricePointObserver = new PricePointObserver();
+    private final GenericUmartScraper genericUmartScraper = new GenericUmartScraper(pricePointObserver);
+    private final ScorptecProductScraper scorptecProductScraper = new ScorptecProductScraper(pricePointObserver);
+    private final UmartCPUScrapingService umartScraper = new UmartCPUScrapingService(genericUmartScraper);
+    private final UmartCPUScrapingService scorptecScraper = new UmartCPUScrapingService(scorptecProductScraper);
 
     @Test
     public void testThatUmartCPUScrapingServiceReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = vendorScraper
+        Optional<ScrapedDataDTO> scrapedDataDTO = umartScraper
                 .getGenericVendorScraper()
                 .scrapeProductData(UMART_RYZEN_9_9600X,UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
 
@@ -29,7 +32,7 @@ public class CPUScraperUnitTests {
 
     @Test
     public void testThatScorptecCPUScrapingServiceReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = vendorScraper
+        Optional<ScrapedDataDTO> scrapedDataDTO = scorptecScraper
                 .getGenericVendorScraper()
                 .scrapeProductData(SCORPTEC_RYZEN_5_9600X, SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION);
 
