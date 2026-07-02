@@ -1,6 +1,6 @@
 package com.price_tracker.testing_data.vendor_data;
 
-import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
+import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
@@ -20,24 +20,24 @@ public class UmartTestDataUtility {
 
     private final GPUTestingUtility gpuTestingUtility;
     private final RAMTestingUtility ramTestingUtility;
-    private final GenericMapper<UmartProductEntity, UmartProductDTO> umartProductMapper;
+    private final GenericMapper<UmartProductEntity, VendorProductDTO> umartProductMapper;
 
     @Autowired
     public UmartTestDataUtility(GPUTestingUtility gpuTestingUtility, RAMTestingUtility ramTestingUtility,
                                 MapperFactory mapperFactory) {
         this.gpuTestingUtility = gpuTestingUtility;
         this.ramTestingUtility = ramTestingUtility;
-        this.umartProductMapper = mapperFactory.create(UmartProductEntity.class, UmartProductDTO.class);
+        this.umartProductMapper = mapperFactory.create(UmartProductEntity.class, VendorProductDTO.class);
     }
 
-    public List<UmartProductDTO> createTestUmartProducts() {
-        ArrayList<UmartProductDTO> umartProductDTOs = new ArrayList<>();
-        umartProductDTOs.add(
+    public List<VendorProductDTO> createTestUmartProducts() {
+        ArrayList<VendorProductDTO> vendorProductDTOS = new ArrayList<>();
+        vendorProductDTOS.add(
                 umartProductMapper.mapTo(gpuTestingUtility.createTestUmartGPU())
         );
-        umartProductDTOs.add(
+        vendorProductDTOS.add(
                 umartProductMapper.mapTo(ramTestingUtility.createTestUmartRAM())
         );
-        return umartProductDTOs;
+        return vendorProductDTOS;
     }
 }

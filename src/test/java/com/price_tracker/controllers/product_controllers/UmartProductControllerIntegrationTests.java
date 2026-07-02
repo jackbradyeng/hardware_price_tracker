@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.testing_data.vendor_data.UmartTestDataUtility;
-import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
+import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.vendor_services.UmartProductService;
@@ -83,8 +83,8 @@ public class UmartProductControllerIntegrationTests {
 
     @Test
     public void testThatCreateListOfUmartProductsReturns201Created() throws Exception {
-        List<UmartProductDTO> testUmartProductDTOs = tdl.createTestUmartProducts();
-        String jsonString = objectMapper.writeValueAsString(testUmartProductDTOs);
+        List<VendorProductDTO> testVendorProductDTOS = tdl.createTestUmartProducts();
+        String jsonString = objectMapper.writeValueAsString(testVendorProductDTOS);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/umartproducts/saveall")
