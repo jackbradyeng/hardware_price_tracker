@@ -51,6 +51,7 @@ public class NVMEScrapingOrchestrator {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
             return umartNVMEScrapingService
+                    .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
                     .map(umartNVMEScrapingService::createNVMEPricePoint);
         } catch (InterruptedException e) {
