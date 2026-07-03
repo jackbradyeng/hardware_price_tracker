@@ -4,24 +4,36 @@ import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.product_services.impl.VendorGPUScrapingService;
 import com.price_tracker.webscraper.vendor_templates.UmartProductScraper;
+import com.price_tracker.webscraper.vendor_templates.ScorptecProductScraper;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
-import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
-import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
+import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.*;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.SCORPTEC_ASUS_5070TI;
 import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.UMART_ASUS_5070TI;
 
 public class GPUScraperUnitTests {
 
-    private final UmartProductScraper umartProductScraper = new UmartProductScraper(new PricePointObserver());
-    private final VendorGPUScrapingService vendorScraper = new VendorGPUScrapingService(umartProductScraper);
+    private final PricePointObserver pricePointObserver = new PricePointObserver();
+    private final UmartProductScraper umartProductScraper = new UmartProductScraper(pricePointObserver);
+    private final ScorptecProductScraper scorptecProductScraper = new ScorptecProductScraper(pricePointObserver);
+    private final VendorGPUScrapingService umartScraper = new VendorGPUScrapingService(umartProductScraper);
+    private final VendorGPUScrapingService scorptecScraper = new VendorGPUScrapingService(scorptecProductScraper);
 
     @Test
     public void testThatUmartGPUScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = vendorScraper
+        Optional<ScrapedDataDTO> scrapedDataDTO = umartScraper
                 .getGenericVendorScraper()
                 .scrapeProductData(UMART_ASUS_5070TI, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
+        assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_GPU_MODEL_NUMBER);
+    }
+
+    @Test
+    public void testThatScorptecGPUScraperReturnsExpectedModelNumber() {
+        Optional<ScrapedDataDTO> scrapedDataDTO = scorptecScraper
+                .getGenericVendorScraper()
+                .scrapeProductData(SCORPTEC_ASUS_5070TI, SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_GPU_MODEL_NUMBER);
     }
 
