@@ -54,6 +54,7 @@ public class ScorptecProductScraper implements GenericVendorScraper {
                     .modelNumber(rawModelNumber)
                     .price(refinedPrice)
                     .build());
+
         } catch (IOException | NumberFormatException e) {
             log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
             return Optional.empty();

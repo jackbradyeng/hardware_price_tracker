@@ -22,9 +22,7 @@ public class UmartProductScraper implements GenericVendorScraper {
     private final PricePointObserver pricePointObserver;
 
     @Autowired
-    public UmartProductScraper(PricePointObserver pricePointObserver) {
-        this.pricePointObserver = pricePointObserver;
-    }
+    public UmartProductScraper(PricePointObserver pricePointObserver) { this.pricePointObserver = pricePointObserver; }
 
     public Optional<ScrapedDataDTO> scrapeProductData(String url, String modelNumberLocation, String priceLocation) {
         try {
@@ -50,6 +48,7 @@ public class UmartProductScraper implements GenericVendorScraper {
                     .modelNumber(modelNumber)
                     .price(price)
                     .build());
+
         } catch (IOException | NumberFormatException e) {
             log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
             return Optional.empty();
