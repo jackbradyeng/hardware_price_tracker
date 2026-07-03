@@ -2,6 +2,7 @@ package com.price_tracker.testing_data.gpu_data;
 
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
+import com.price_tracker.domain.entities.vendor_entities.ScorptecProductEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import static com.price_tracker.constants.vendor_constants.VendorNames.SCORPTEC;
 import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.SCORPTEC_ASUS_5070TI;
 import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.UMART_ASUS_5070TI;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.*;
 
@@ -62,6 +65,15 @@ public class GPUTestingUtility {
                 .modelNumber(TESTING_GPU_MODEL_NUMBER)
                 .vendor(UMART)
                 .url(UMART_ASUS_5070TI)
+                .build();
+    }
+
+    public ScorptecProductEntity createTestScorptecGPU() {
+        return ScorptecProductEntity.builder()
+                .productType(PRODUCT_TYPE_GPU)
+                .modelNumber(TESTING_GPU_MODEL_NUMBER)
+                .vendor(SCORPTEC)
+                .url(SCORPTEC_ASUS_5070TI)
                 .build();
     }
 

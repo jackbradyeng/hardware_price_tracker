@@ -21,4 +21,6 @@ public class VendorWebDomainNames {
     // SCORPTEC PRODUCT DOMAINS
     public static final String SCORPTEC_RYZEN_5_9600X =
             "https://www.scorptec.com.au/product/cpu/amd-socket-am5/111723-100-100001405wof";
+    public static final String SCORPTEC_ASUS_5070TI =
+            "https://www.scorptec.com.au/product/graphics-cards/nvidia/116175-prime-rtx5070ti-o16g";
 }
