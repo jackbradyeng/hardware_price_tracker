@@ -19,4 +19,7 @@ public class CPUTestingData {
     public static final Integer TESTING_CPU_MAX_MEMORY = 192;
     public static final String TESTING_CPU_MEMORY_SUPPORTED = "DDR5";
     public static final Boolean TESTING_CPU_INTEGRATED_GPU = true;
+
+    // SCORPTEC CPU PRODUCT TESTING CONSTANTS
+    public static final String PRODUCT_TYPE_CPU = "CPU";
 }

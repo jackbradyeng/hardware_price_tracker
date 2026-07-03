@@ -2,11 +2,14 @@ package com.price_tracker.testing_data.cpu_data;
 
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
+import com.price_tracker.domain.entities.vendor_entities.ScorptecProductEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import static com.price_tracker.constants.vendor_constants.VendorNames.SCORPTEC;
+import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.SCORPTEC_RYZEN_5_9600X;
 import static com.price_tracker.testing_data.cpu_data.CPUTestingData.*;
 import java.math.BigDecimal;
 
@@ -41,6 +44,16 @@ public class CPUTestingUtility {
                 .hasIntegratedGPU(TESTING_CPU_INTEGRATED_GPU)
                 .isActive(true)
                 .build());
+    }
+
+    /// SAMPLE PRODUCTS
+    public ScorptecProductEntity createTestScorptecCPU() {
+        return ScorptecProductEntity.builder()
+                .productType(PRODUCT_TYPE_CPU)
+                .modelNumber(TESTING_CPU_MODEL_NUMBER)
+                .vendor(SCORPTEC)
+                .url(SCORPTEC_RYZEN_5_9600X)
+                .build();
     }
 
     /// SAMPLE PRICE POINTS
