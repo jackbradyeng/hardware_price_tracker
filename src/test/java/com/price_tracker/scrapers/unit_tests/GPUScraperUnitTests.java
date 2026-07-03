@@ -10,7 +10,7 @@ import java.util.Optional;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_ASUS_5070TI;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.UMART_ASUS_5070TI;
 
 public class GPUScraperUnitTests {
 

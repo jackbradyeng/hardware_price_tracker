@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.*;
 import static com.price_tracker.testing_data.cpu_data.CPUTestingData.*;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.SCORPTEC_RYZEN_5_9600X;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_RYZEN_9_9600X;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.SCORPTEC_RYZEN_5_9600X;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.UMART_RYZEN_9_9600X;
 
 public class CPUScraperUnitTests {
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 import static com.price_tracker.testing_data.ssd_data.SSDTestingData.TESTING_SSD_MODEL_NUMBER;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_CRUCIAL_BX500_1TB;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.UMART_CRUCIAL_BX500_1TB;
 
 public class SSDScraperUnitTests {
 

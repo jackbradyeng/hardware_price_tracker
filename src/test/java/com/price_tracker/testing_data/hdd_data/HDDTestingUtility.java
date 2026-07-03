@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_SEAGATE_ST2000DM005;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.UMART_SEAGATE_ST2000DM005;
 import static com.price_tracker.testing_data.hdd_data.HDDTestingData.*;
 
 @Component

@@ -9,7 +9,7 @@ import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import static com.price_tracker.constants.vendor_constants.VendorNames.SCORPTEC;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.SCORPTEC_RYZEN_5_9600X;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.SCORPTEC_RYZEN_5_9600X;
 import static com.price_tracker.testing_data.cpu_data.CPUTestingData.*;
 import java.math.BigDecimal;
 

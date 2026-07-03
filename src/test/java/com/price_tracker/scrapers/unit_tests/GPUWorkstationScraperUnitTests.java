@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_RTX_PRO_6000;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.UMART_RTX_PRO_6000;
 import static com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingData.TESTING_WS_GPU_MODEL_NUMBER;
 
 public class GPUWorkstationScraperUnitTests {

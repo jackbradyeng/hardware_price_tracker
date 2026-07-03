@@ -10,7 +10,7 @@ import java.util.Optional;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 import static com.price_tracker.testing_data.ram_data.RAMTestingData.TESTING_RAM_MODEL_NUMBER;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 
 public class RAMScraperUnitTests {
 
