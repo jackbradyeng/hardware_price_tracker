@@ -1,7 +1,8 @@
-package com.price_tracker.webscraper.vendor_templates;
+package com.price_tracker.webscraper.vendor_templates.impl;
 
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
+import com.price_tracker.webscraper.vendor_templates.GenericVendorScraper;
 import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

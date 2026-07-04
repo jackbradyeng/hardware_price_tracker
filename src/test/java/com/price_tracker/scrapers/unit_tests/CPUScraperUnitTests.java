@@ -2,8 +2,8 @@ package com.price_tracker.scrapers.unit_tests;
 
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.vendor_templates.UmartProductScraper;
-import com.price_tracker.webscraper.vendor_templates.ScorptecProductScraper;
+import com.price_tracker.webscraper.vendor_templates.impl.UmartProductScraper;
+import com.price_tracker.webscraper.vendor_templates.impl.ScorptecProductScraper;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
