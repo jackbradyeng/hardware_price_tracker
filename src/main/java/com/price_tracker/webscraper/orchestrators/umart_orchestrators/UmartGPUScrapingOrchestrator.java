@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import static com.price_tracker.constants.other_constants.ScrapingConstants.GPU_SCRAPING_TIME;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.UMART_GPU_SCRAPING_TIME;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.SLEEPING_CONSTANT;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
@@ -27,7 +27,7 @@ public class UmartGPUScrapingOrchestrator {
     private final VendorGPUScrapingService vendorGPUScrapingService;
 
     /** Core scraping service. Runs automatically each day as per the CRON notation below. */
-    @Scheduled(cron = GPU_SCRAPING_TIME)
+    @Scheduled(cron = UMART_GPU_SCRAPING_TIME)
     public void runDailyScrape() {
         runUmartGPUScrape();
     }

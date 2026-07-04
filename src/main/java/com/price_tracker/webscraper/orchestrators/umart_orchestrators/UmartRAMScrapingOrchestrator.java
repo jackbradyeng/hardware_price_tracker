@@ -27,7 +27,7 @@ public class UmartRAMScrapingOrchestrator {
     private final VendorRAMScrapingService vendorRAMScrapingService;
 
     /** Core scraping service. Runs automatically each day as per the CRON notation below. */
-    @Scheduled(cron = RAM_SCRAPING_TIME)
+    @Scheduled(cron = UMART_RAM_SCRAPING_TIME)
     public void runDailyScrape() {
         runUmartRAMScrape();
     }

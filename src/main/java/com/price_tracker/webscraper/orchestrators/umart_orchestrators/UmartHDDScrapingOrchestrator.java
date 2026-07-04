@@ -25,7 +25,7 @@ public class UmartHDDScrapingOrchestrator {
     private final UmartProductRepository umartProductRepository;
     private final VendorHDDScrapingService vendorHDDScrapingService;
 
-    @Scheduled(cron = HDD_SCRAPING_TIME)
+    @Scheduled(cron = UMART_HDD_SCRAPING_TIME)
     public void runDailyScrape() {
         runUmartHDDScrape();
     }

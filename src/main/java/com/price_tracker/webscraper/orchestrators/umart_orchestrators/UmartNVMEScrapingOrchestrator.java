@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import static com.price_tracker.constants.other_constants.ScrapingConstants.NVME_SCRAPING_TIME;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.UMART_NVME_SCRAPING_TIME;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.SLEEPING_CONSTANT;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
@@ -26,7 +26,7 @@ public class UmartNVMEScrapingOrchestrator {
     private final UmartProductRepository umartProductRepository;
     private final VendorNVMEScrapingService vendorNVMEScrapingService;
 
-    @Scheduled(cron = NVME_SCRAPING_TIME)
+    @Scheduled(cron = UMART_NVME_SCRAPING_TIME)
     public void runDailyScrape() {
         runUmartNVMEScrape();
     }
