@@ -2,7 +2,7 @@ package com.price_tracker.scrapers.unit_tests;
 
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.product_services.impl.VendorGPUScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorProductScrapingService;
 import com.price_tracker.webscraper.vendor_templates.UmartProductScraper;
 import com.price_tracker.webscraper.vendor_templates.ScorptecProductScraper;
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,8 @@ public class GPUScraperUnitTests {
     private final PricePointObserver pricePointObserver = new PricePointObserver();
     private final UmartProductScraper umartProductScraper = new UmartProductScraper(pricePointObserver);
     private final ScorptecProductScraper scorptecProductScraper = new ScorptecProductScraper(pricePointObserver);
-    private final VendorGPUScrapingService umartScraper = new VendorGPUScrapingService(umartProductScraper);
-    private final VendorGPUScrapingService scorptecScraper = new VendorGPUScrapingService(scorptecProductScraper);
+    private final VendorProductScrapingService umartScraper = new VendorProductScrapingService(umartProductScraper);
+    private final VendorProductScrapingService scorptecScraper = new VendorProductScrapingService(scorptecProductScraper);
 
     @Test
     public void testThatUmartGPUScraperReturnsExpectedModelNumber() {
