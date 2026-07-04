@@ -35,12 +35,10 @@ public class ScorptecProductScraper implements GenericVendorScraper {
                     .referrer("https://www.scorptec.com.au/")
                     .timeout(15000)
                     .get();
+
+            // select raw model number & price
             String rawModelNumber = document.select(modelNumberLocation).text();
             String rawPrice = document.select(priceLocation).text();
-
-            // refine scraped data
-            BigDecimal refinedPrice = new BigDecimal(rawPrice.replace(",", ""))
-                    .setScale(2, RoundingMode.HALF_UP);
 
             // fail-fast if the document selection returns nothing
             if(rawModelNumber.isEmpty() || rawPrice.isEmpty()) {
@@ -48,6 +46,10 @@ public class ScorptecProductScraper implements GenericVendorScraper {
                 pricePointObserver.logModelNumberAndPrice(SCORPTEC, rawModelNumber, rawPrice, url);
                 return Optional.empty();
             }
+
+            // refine model number & price
+            BigDecimal refinedPrice = new BigDecimal(rawPrice.replace(",", ""))
+                    .setScale(2, RoundingMode.HALF_UP);
 
             // log and return scraped data
             pricePointObserver.logModelNumberAndPrice(SCORPTEC, rawModelNumber, refinedPrice.toString(), url);
