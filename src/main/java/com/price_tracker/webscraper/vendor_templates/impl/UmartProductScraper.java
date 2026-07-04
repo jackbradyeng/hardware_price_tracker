@@ -28,7 +28,15 @@ public class UmartProductScraper implements GenericVendorScraper {
     public Optional<ScrapedDataDTO> scrapeProductData(String url, String modelNumberLocation, String priceLocation) {
         try {
             // connect to the url and extract raw HTML
-            Document document = Jsoup.connect(url).get();
+            Document document = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+                    .header("Accept-Language", "en-AU,en;q=0.9")
+                    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+                    .referrer("https://www.umart.com.au/")
+                    .timeout(15000)
+                    .get();
+
+            // select raw model number & price
             String rawModelNumber = document.select(UMART_CSS_MODEL_LOCATION).text();
             String rawPrice = document.select(UMART_CSS_PRICE_LOCATION).text();
 
