@@ -2,7 +2,6 @@ package com.price_tracker.scrapers.unit_tests;
 
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.product_services.VendorProductScrapingService;
 import com.price_tracker.webscraper.vendor_templates.UmartProductScraper;
 import com.price_tracker.webscraper.vendor_templates.ScorptecProductScraper;
 import org.junit.jupiter.api.Test;
@@ -18,21 +17,17 @@ public class GPUScraperUnitTests {
     private final PricePointObserver pricePointObserver = new PricePointObserver();
     private final UmartProductScraper umartProductScraper = new UmartProductScraper(pricePointObserver);
     private final ScorptecProductScraper scorptecProductScraper = new ScorptecProductScraper(pricePointObserver);
-    private final VendorProductScrapingService umartScraper = new VendorProductScrapingService(umartProductScraper);
-    private final VendorProductScrapingService scorptecScraper = new VendorProductScrapingService(scorptecProductScraper);
 
     @Test
     public void testThatUmartGPUScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = umartScraper
-                .getGenericVendorScraper()
+        Optional<ScrapedDataDTO> scrapedDataDTO = umartProductScraper
                 .scrapeProductData(UMART_ASUS_5070TI, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_GPU_MODEL_NUMBER);
     }
 
     @Test
     public void testThatScorptecGPUScraperReturnsExpectedModelNumber() {
-        Optional<ScrapedDataDTO> scrapedDataDTO = scorptecScraper
-                .getGenericVendorScraper()
+        Optional<ScrapedDataDTO> scrapedDataDTO = scorptecProductScraper
                 .scrapeProductData(SCORPTEC_ASUS_5070TI, SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_GPU_MODEL_NUMBER);
     }

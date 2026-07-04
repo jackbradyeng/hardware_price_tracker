@@ -8,8 +8,10 @@ import com.price_tracker.repositories.price_point_repos.jdbc_templates.HDDPriceP
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.orchestrators.GenericProductScrapingOrchestrator;
 import com.price_tracker.webscraper.product_services.VendorProductScrapingService;
+import com.price_tracker.webscraper.vendor_templates.GenericVendorScraper;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.Duration;
@@ -29,16 +31,19 @@ public class UmartHDDScrapingOrchestrator implements GenericProductScrapingOrche
     private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
     private final VendorProductScrapingService vendorProductScrapingService;
+    private final GenericVendorScraper umartProductScraper;
     private final GenericMapper<HDDPricePoint, GenericPricePointDTO> pricePointMapper;
 
     @Autowired
     public UmartHDDScrapingOrchestrator(HDDPricePointJDBCTemplate hddPricePointJDBCTemplate,
                                         UmartProductRepository umartProductRepository,
                                         VendorProductScrapingService vendorProductScrapingService,
+                                        @Qualifier("umartProductScraper") GenericVendorScraper umartProductScraper,
                                         MapperFactory mapperFactory) {
         this.hddPricePointJDBCTemplate = hddPricePointJDBCTemplate;
         this.umartProductRepository = umartProductRepository;
         this.vendorProductScrapingService = vendorProductScrapingService;
+        this.umartProductScraper = umartProductScraper;
         this.pricePointMapper = mapperFactory.create(HDDPricePoint.class, GenericPricePointDTO.class);
     }
 
@@ -52,8 +57,8 @@ public class UmartHDDScrapingOrchestrator implements GenericProductScrapingOrche
 
         List<HDDPricePoint> pricePoints = umartProductRepository.findUrlsForActiveHDDs()
                 .stream()
-                .map(url -> processPricePoint(vendorProductScrapingService, url, UMART_CSS_MODEL_LOCATION,
-                        UMART_CSS_PRICE_LOCATION, UMART, AUD))
+                .map(url -> processPricePoint(umartProductScraper, vendorProductScrapingService, url,
+                        UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION, UMART, AUD))
                 .flatMap(Optional::stream)
                 .map(pricePointMapper::mapFrom)
                 .toList();
