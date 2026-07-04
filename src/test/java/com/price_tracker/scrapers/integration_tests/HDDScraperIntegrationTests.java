@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.HDDPricePointService;
 import com.price_tracker.services.product_services.HDDService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.hdd_data.HDDTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.VendorHDDScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorProductScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +31,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import static com.price_tracker.constants.other_constants.CurrencyConstants.AUD;
+import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -42,7 +44,7 @@ public class HDDScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final HDDTestingUtility hddTestingUtility;
-    private final VendorHDDScrapingService scraper;
+    private final VendorProductScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
     private final HDDService hddService;
@@ -52,7 +54,7 @@ public class HDDScraperIntegrationTests {
     @Autowired
     public HDDScraperIntegrationTests(MockMvc mockMVC,
                                       HDDTestingUtility hddTestingUtility,
-                                      VendorHDDScrapingService scraper,
+                                      VendorProductScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       HDDPricePointJDBCTemplate hddPricePointJDBCTemplate,
@@ -71,7 +73,8 @@ public class HDDScraperIntegrationTests {
     @Test
     public void testThatHDDPricePointInsertionWithJDBCTemplateReturnsHttpStatus200Ok() throws Exception {
         List<HDDPricePoint> returnList = Stream.generate(() ->
-                        scraper.createHDDPricePoint(hddTestingUtility.createSampleHDDPricePointData()))
+                        hddPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                hddTestingUtility.createSampleHDDPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -88,7 +91,8 @@ public class HDDScraperIntegrationTests {
     public void testThatHDDPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<HDDPricePoint> returnList = Stream.generate(() ->
-                        scraper.createHDDPricePoint(hddTestingUtility.createSampleHDDPricePointData()))
+                        hddPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                hddTestingUtility.createSampleHDDPricePointData(), UMART, AUD)))
                 .limit(insertionCount)
                 .toList();
 
@@ -129,7 +133,8 @@ public class HDDScraperIntegrationTests {
         HDDDTO savedHDD = hddService.save(hddTestingUtility.createTestHDD());
 
         List<HDDPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createHDDPricePoint(hddTestingUtility.createSampleHDDPricePointData()))
+                        hddPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                hddTestingUtility.createSampleHDDPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -159,7 +164,8 @@ public class HDDScraperIntegrationTests {
         HDDDTO savedHDD = hddService.save(hddTestingUtility.createTestHDD());
 
         List<HDDPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createHDDPricePoint(hddTestingUtility.createSampleHDDPricePointData()))
+                        hddPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                hddTestingUtility.createSampleHDDPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList()
                 .reversed();
@@ -185,7 +191,8 @@ public class HDDScraperIntegrationTests {
         HDDDTO savedHDD = hddService.save(hddTestingUtility.createTestHDD());
 
         List<HDDPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createHDDPricePoint(hddTestingUtility.createSampleHDDPricePointData()))
+                        hddPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                hddTestingUtility.createSampleHDDPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
