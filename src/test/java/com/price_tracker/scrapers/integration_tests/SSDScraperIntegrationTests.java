@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.SSDPricePointService;
 import com.price_tracker.services.product_services.SSDService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.ssd_data.SSDTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.VendorSSDScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorProductScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +31,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import static com.price_tracker.constants.other_constants.CurrencyConstants.AUD;
+import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -42,7 +44,7 @@ public class SSDScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final SSDTestingUtility ssdTestingUtility;
-    private final VendorSSDScrapingService scraper;
+    private final VendorProductScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate;
     private final SSDService ssdService;
@@ -52,7 +54,7 @@ public class SSDScraperIntegrationTests {
     @Autowired
     public SSDScraperIntegrationTests(MockMvc mockMVC,
                                       SSDTestingUtility ssdTestingUtility,
-                                      VendorSSDScrapingService scraper,
+                                      VendorProductScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate,
@@ -71,7 +73,8 @@ public class SSDScraperIntegrationTests {
     @Test
     public void testThatSSDPricePointInsertionWithJDBCTemplateReturnsHttpStatus200Ok() throws Exception {
         List<SSDPricePoint> returnList = Stream.generate(() ->
-                        scraper.createSSDPricePoint(ssdTestingUtility.createSampleSSDPricePointData()))
+                        ssdPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                ssdTestingUtility.createSampleSSDPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -88,7 +91,8 @@ public class SSDScraperIntegrationTests {
     public void testThatSSDPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<SSDPricePoint> returnList = Stream.generate(() ->
-                        scraper.createSSDPricePoint(ssdTestingUtility.createSampleSSDPricePointData()))
+                        ssdPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                ssdTestingUtility.createSampleSSDPricePointData(), UMART, AUD)))
                 .limit(insertionCount)
                 .toList();
 
@@ -129,7 +133,8 @@ public class SSDScraperIntegrationTests {
         SSDDTO savedSSD = ssdService.save(ssdTestingUtility.createTestSSD());
 
         List<SSDPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createSSDPricePoint(ssdTestingUtility.createSampleSSDPricePointData()))
+                        ssdPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                ssdTestingUtility.createSampleSSDPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -159,7 +164,8 @@ public class SSDScraperIntegrationTests {
         SSDDTO savedSSD = ssdService.save(ssdTestingUtility.createTestSSD());
 
         List<SSDPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createSSDPricePoint(ssdTestingUtility.createSampleSSDPricePointData()))
+                        ssdPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                ssdTestingUtility.createSampleSSDPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList()
                 .reversed();
@@ -185,7 +191,8 @@ public class SSDScraperIntegrationTests {
         SSDDTO savedSSD = ssdService.save(ssdTestingUtility.createTestSSD());
 
         List<SSDPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createSSDPricePoint(ssdTestingUtility.createSampleSSDPricePointData()))
+                        ssdPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                ssdTestingUtility.createSampleSSDPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
