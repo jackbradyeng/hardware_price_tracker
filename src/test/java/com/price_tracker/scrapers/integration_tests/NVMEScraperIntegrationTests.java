@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.NVMEPricePointService;
 import com.price_tracker.services.product_services.NVMEService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.nvme_data.NVMETestingUtility;
-import com.price_tracker.webscraper.product_services.impl.VendorNVMEScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorProductScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +31,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import static com.price_tracker.constants.other_constants.CurrencyConstants.AUD;
+import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -42,7 +44,7 @@ public class NVMEScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final NVMETestingUtility nvmeTestingUtility;
-    private final VendorNVMEScrapingService scraper;
+    private final VendorProductScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate;
     private final NVMEService nvmeService;
@@ -52,7 +54,7 @@ public class NVMEScraperIntegrationTests {
     @Autowired
     public NVMEScraperIntegrationTests(MockMvc mockMVC,
                                        NVMETestingUtility nvmeTestingUtility,
-                                       VendorNVMEScrapingService scraper,
+                                       VendorProductScrapingService scraper,
                                        ObjectMapper objectMapper,
                                        MapperFactory mapperFactory,
                                        NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate,
@@ -71,7 +73,8 @@ public class NVMEScraperIntegrationTests {
     @Test
     public void testThatNVMEPricePointInsertionWithJDBCTemplateReturnsHttpStatus200Ok() throws Exception {
         List<NVMEPricePoint> returnList = Stream.generate(() ->
-                        scraper.createNVMEPricePoint(nvmeTestingUtility.createSampleNVMEPricePointData()))
+                        nvmePricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                nvmeTestingUtility.createSampleNVMEPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -88,7 +91,8 @@ public class NVMEScraperIntegrationTests {
     public void testThatNVMEPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<NVMEPricePoint> returnList = Stream.generate(() ->
-                        scraper.createNVMEPricePoint(nvmeTestingUtility.createSampleNVMEPricePointData()))
+                        nvmePricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                nvmeTestingUtility.createSampleNVMEPricePointData(), UMART, AUD)))
                 .limit(insertionCount)
                 .toList();
 
@@ -129,7 +133,8 @@ public class NVMEScraperIntegrationTests {
         NVMEDTO savedNVME = nvmeService.save(nvmeTestingUtility.createTestNVME());
 
         List<NVMEPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createNVMEPricePoint(nvmeTestingUtility.createSampleNVMEPricePointData()))
+                        nvmePricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                nvmeTestingUtility.createSampleNVMEPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -159,7 +164,8 @@ public class NVMEScraperIntegrationTests {
         NVMEDTO savedNVME = nvmeService.save(nvmeTestingUtility.createTestNVME());
 
         List<NVMEPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createNVMEPricePoint(nvmeTestingUtility.createSampleNVMEPricePointData()))
+                        nvmePricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                nvmeTestingUtility.createSampleNVMEPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList()
                 .reversed();
@@ -185,7 +191,8 @@ public class NVMEScraperIntegrationTests {
         NVMEDTO savedNVME = nvmeService.save(nvmeTestingUtility.createTestNVME());
 
         List<NVMEPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createNVMEPricePoint(nvmeTestingUtility.createSampleNVMEPricePointData()))
+                        nvmePricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                nvmeTestingUtility.createSampleNVMEPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
