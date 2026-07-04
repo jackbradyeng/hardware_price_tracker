@@ -2,7 +2,7 @@ package com.price_tracker.scrapers.unit_tests;
 
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.product_services.impl.VendorGPUWorkstationScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorProductScrapingService;
 import com.price_tracker.webscraper.vendor_templates.UmartProductScraper;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ import static com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingDat
 public class GPUWorkstationScraperUnitTests {
 
     private final UmartProductScraper umartProductScraper = new UmartProductScraper(new PricePointObserver());
-    private final VendorGPUWorkstationScrapingService vendorScraper = new VendorGPUWorkstationScrapingService(umartProductScraper);
+    private final VendorProductScrapingService vendorScraper = new VendorProductScrapingService(umartProductScraper);
 
     @Test
     public void testThatUmartWSGPUScraperReturnsExpectedModelNumber() {
