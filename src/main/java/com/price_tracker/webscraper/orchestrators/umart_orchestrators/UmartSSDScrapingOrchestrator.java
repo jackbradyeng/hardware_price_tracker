@@ -1,4 +1,4 @@
-package com.price_tracker.webscraper.orchestrators;
+package com.price_tracker.webscraper.orchestrators.umart_orchestrators;
 
 import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.SSDPricePointJDBCTemplate;
@@ -17,10 +17,10 @@ import static com.price_tracker.constants.other_constants.ScrapingConstants.SLEE
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 
+@Log
 @Service
 @RequiredArgsConstructor
-@Log
-public class SSDScrapingOrchestrator {
+public class UmartSSDScrapingOrchestrator {
 
     private final SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;

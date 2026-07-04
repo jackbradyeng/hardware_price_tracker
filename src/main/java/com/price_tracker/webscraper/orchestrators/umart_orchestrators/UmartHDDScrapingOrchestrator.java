@@ -1,11 +1,10 @@
-package com.price_tracker.webscraper.orchestrators;
+package com.price_tracker.webscraper.orchestrators.umart_orchestrators;
 
-import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.RAMPricePointJDBCTemplate;
+import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.HDDPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.webscraper.product_services.impl.VendorRAMScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorHDDScrapingService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,45 +16,43 @@ import static com.price_tracker.constants.other_constants.ScrapingConstants.*;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 
+@Log
 @Service
 @RequiredArgsConstructor
-@Log
-public class RAMScrapingOrchestrator {
+public class UmartHDDScrapingOrchestrator {
 
-    private final RAMPricePointJDBCTemplate ramPricePointJDBCTemplate;
+    private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
-    private final VendorRAMScrapingService vendorRAMScrapingService;
+    private final VendorHDDScrapingService vendorHDDScrapingService;
 
-    /** Core scraping service. Runs automatically each day as per the CRON notation below. */
-    @Scheduled(cron = RAM_SCRAPING_TIME)
+    @Scheduled(cron = HDD_SCRAPING_TIME)
     public void runDailyScrape() {
-        runUmartRAMScrape();
+        runUmartHDDScrape();
     }
 
-    @SneakyThrows
-    private void runUmartRAMScrape() {
+    private void runUmartHDDScrape() {
         Instant start = Instant.now();
 
-        List<RAMPricePoint> pricePoints = umartProductRepository.findUrlsForActiveRAM()
+        List<HDDPricePoint> pricePoints = umartProductRepository.findUrlsForActiveHDDs()
                 .stream()
-                .map(this::processRAM)
+                .map(this::processHDD)
                 .flatMap(Optional::stream)
                 .toList();
 
-        ramPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+        hddPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
-        log.info("RAM scraping service took %d seconds to execute.".formatted(timeElapsed.toSeconds()));
+        log.info("HDD scraping service took %d seconds to execute.".formatted(timeElapsed.toSeconds()));
     }
 
-    private Optional<RAMPricePoint> processRAM(String url) {
+    private Optional<HDDPricePoint> processHDD(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return vendorRAMScrapingService
+            return vendorHDDScrapingService
                     .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
-                    .map(vendorRAMScrapingService::createRAMPricePoint);
+                    .map(vendorHDDScrapingService::createHDDPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.warning("Scraping interrupted for URL: " + url);

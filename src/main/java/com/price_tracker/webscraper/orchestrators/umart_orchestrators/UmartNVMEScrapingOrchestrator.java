@@ -1,9 +1,9 @@
-package com.price_tracker.webscraper.orchestrators;
+package com.price_tracker.webscraper.orchestrators.umart_orchestrators;
 
-import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.HDDPricePointJDBCTemplate;
+import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.NVMEPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.webscraper.product_services.impl.VendorHDDScrapingService;
+import com.price_tracker.webscraper.product_services.impl.VendorNVMEScrapingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,47 +12,48 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import static com.price_tracker.constants.other_constants.ScrapingConstants.*;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.NVME_SCRAPING_TIME;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.SLEEPING_CONSTANT;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 
+@Log
 @Service
 @RequiredArgsConstructor
-@Log
-public class HDDScrapingOrchestrator {
+public class UmartNVMEScrapingOrchestrator {
 
-    private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
+    private final NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
-    private final VendorHDDScrapingService vendorHDDScrapingService;
+    private final VendorNVMEScrapingService vendorNVMEScrapingService;
 
-    @Scheduled(cron = HDD_SCRAPING_TIME)
+    @Scheduled(cron = NVME_SCRAPING_TIME)
     public void runDailyScrape() {
-        runUmartHDDScrape();
+        runUmartNVMEScrape();
     }
 
-    private void runUmartHDDScrape() {
+    private void runUmartNVMEScrape() {
         Instant start = Instant.now();
 
-        List<HDDPricePoint> pricePoints = umartProductRepository.findUrlsForActiveHDDs()
+        List<NVMEPricePoint> pricePoints = umartProductRepository.findUrlsForActiveNVMEs()
                 .stream()
-                .map(this::processHDD)
+                .map(this::processNVME)
                 .flatMap(Optional::stream)
                 .toList();
 
-        hddPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+        nvmePricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
-        log.info("HDD scraping service took %d seconds to execute.".formatted(timeElapsed.toSeconds()));
+        log.info("NVME scraping service took %d seconds to execute.".formatted(timeElapsed.toSeconds()));
     }
 
-    private Optional<HDDPricePoint> processHDD(String url) {
+    private Optional<NVMEPricePoint> processNVME(String url) {
         try {
             Thread.sleep(SLEEPING_CONSTANT);
-            return vendorHDDScrapingService
+            return vendorNVMEScrapingService
                     .getGenericVendorScraper()
                     .scrapeProductData(url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION)
-                    .map(vendorHDDScrapingService::createHDDPricePoint);
+                    .map(vendorNVMEScrapingService::createNVMEPricePoint);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.warning("Scraping interrupted for URL: " + url);
