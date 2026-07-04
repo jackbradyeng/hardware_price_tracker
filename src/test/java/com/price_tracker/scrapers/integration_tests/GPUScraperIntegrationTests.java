@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.GPUPricePointService;
 import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.VendorProductScrapingService;
+import com.price_tracker.webscraper.product_services.VendorProductScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

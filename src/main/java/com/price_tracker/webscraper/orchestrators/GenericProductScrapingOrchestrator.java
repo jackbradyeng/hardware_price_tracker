@@ -2,7 +2,7 @@ package com.price_tracker.webscraper.orchestrators;
 
 import java.util.Optional;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
-import com.price_tracker.webscraper.product_services.impl.VendorProductScrapingService;
+import com.price_tracker.webscraper.product_services.VendorProductScrapingService;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.SLEEPING_CONSTANT;
 
 public interface GenericProductScrapingOrchestrator {

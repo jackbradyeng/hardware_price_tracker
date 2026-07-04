@@ -2,7 +2,7 @@ package com.price_tracker.scrapers.unit_tests;
 
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
-import com.price_tracker.webscraper.product_services.impl.VendorProductScrapingService;
+import com.price_tracker.webscraper.product_services.VendorProductScrapingService;
 import com.price_tracker.webscraper.vendor_templates.UmartProductScraper;
 import com.price_tracker.webscraper.vendor_templates.ScorptecProductScraper;
 import org.junit.jupiter.api.Test;

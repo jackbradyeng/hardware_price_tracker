@@ -1,4 +1,4 @@
-package com.price_tracker.webscraper.product_services.impl;
+package com.price_tracker.webscraper.product_services;
 
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;

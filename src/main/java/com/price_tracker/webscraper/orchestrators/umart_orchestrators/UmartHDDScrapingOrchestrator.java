@@ -7,7 +7,7 @@ import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.HDDPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.orchestrators.GenericProductScrapingOrchestrator;
-import com.price_tracker.webscraper.product_services.impl.VendorProductScrapingService;
+import com.price_tracker.webscraper.product_services.VendorProductScrapingService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
