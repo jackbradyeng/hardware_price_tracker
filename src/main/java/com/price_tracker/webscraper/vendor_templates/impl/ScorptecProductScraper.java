@@ -36,6 +36,17 @@ public class ScorptecProductScraper implements GenericVendorScraper {
                     .timeout(15000)
                     .get();
 
+            return parseProductData(document, url, modelNumberLocation, priceLocation);
+
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
+            return Optional.empty();
+        }
+    }
+
+    /** Parses an already-fetched Document, without performing any network I/O. */
+    public Optional<ScrapedDataDTO> parseProductData(Document document, String url, String modelNumberLocation, String priceLocation) {
+        try {
             // select raw model number & price
             String rawModelNumber = document.select(modelNumberLocation).text();
             String rawPrice = document.select(priceLocation).text();
@@ -58,7 +69,7 @@ public class ScorptecProductScraper implements GenericVendorScraper {
                     .price(refinedPrice)
                     .build());
 
-        } catch (IOException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
             return Optional.empty();
         }

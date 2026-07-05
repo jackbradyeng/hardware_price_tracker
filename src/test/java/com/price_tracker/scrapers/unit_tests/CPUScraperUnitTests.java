@@ -1,9 +1,11 @@
 package com.price_tracker.scrapers.unit_tests;
 
+import com.price_tracker.testing_data.fixture_capture.DocumentLoader;
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.vendor_templates.impl.UmartProductScraper;
 import com.price_tracker.webscraper.vendor_templates.impl.ScorptecProductScraper;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -20,16 +22,18 @@ public class CPUScraperUnitTests {
 
     @Test
     public void testThatUmartCPUScrapingServiceReturnsExpectedModelNumber() {
+        Document document = DocumentLoader.load("umart/ryzen_9_9600x.html");
         Optional<ScrapedDataDTO> scrapedDataDTO = umartProductScraper
-                .scrapeProductData(UMART_RYZEN_9_9600X,UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
+                .parseProductData(document, UMART_RYZEN_9_9600X, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
 
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_CPU_MODEL_NUMBER);
     }
 
     @Test
     public void testThatScorptecCPUScrapingServiceReturnsExpectedModelNumber() {
+        Document document = DocumentLoader.load("scorptec/ryzen_5_9600x.html");
         Optional<ScrapedDataDTO> scrapedDataDTO = scorptecProductScraper
-                .scrapeProductData(SCORPTEC_RYZEN_5_9600X, SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION);
+                .parseProductData(document, SCORPTEC_RYZEN_5_9600X, SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION);
 
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_CPU_MODEL_NUMBER);
     }

@@ -1,8 +1,10 @@
 package com.price_tracker.scrapers.unit_tests;
 
+import com.price_tracker.testing_data.fixture_capture.DocumentLoader;
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.vendor_templates.impl.UmartProductScraper;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -18,8 +20,9 @@ public class SSDScraperUnitTests {
 
     @Test
     public void testThatUmartSSDScraperReturnsExpectedModelNumber() {
+        Document document = DocumentLoader.load("umart/crucial_bx500_1tb.html");
         Optional<ScrapedDataDTO> scrapedDataDTO = umartProductScraper
-                .scrapeProductData(UMART_CRUCIAL_BX500_1TB, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
+                .parseProductData(document, UMART_CRUCIAL_BX500_1TB, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_SSD_MODEL_NUMBER);
     }
 

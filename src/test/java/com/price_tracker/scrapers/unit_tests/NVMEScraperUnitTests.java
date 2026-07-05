@@ -1,8 +1,10 @@
 package com.price_tracker.scrapers.unit_tests;
 
+import com.price_tracker.testing_data.fixture_capture.DocumentLoader;
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.vendor_templates.impl.UmartProductScraper;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -17,8 +19,9 @@ public class NVMEScraperUnitTests {
 
     @Test
     public void testThatUmartNVMEScraperReturnsExpectedModelNumber() {
+        Document document = DocumentLoader.load("umart/crucial_p510_1tb.html");
         Optional<ScrapedDataDTO> scrapedDataDTO = umartProductScraper
-                .scrapeProductData(UMART_CRUCIAL_P510_1TB, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
+                .parseProductData(document, UMART_CRUCIAL_P510_1TB, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_NVME_MODEL_NUMBER);
     }
 

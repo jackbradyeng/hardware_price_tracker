@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.logging.Level;
-import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
-import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @Log
@@ -36,9 +34,20 @@ public class UmartProductScraper implements GenericVendorScraper {
                     .timeout(15000)
                     .get();
 
+            return parseProductData(document, url, modelNumberLocation, priceLocation);
+
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
+            return Optional.empty();
+        }
+    }
+
+    /** Parses an already-fetched Document, without performing any network I/O. */
+    public Optional<ScrapedDataDTO> parseProductData(Document document, String url, String modelNumberLocation, String priceLocation) {
+        try {
             // select raw model number & price
-            String rawModelNumber = document.select(UMART_CSS_MODEL_LOCATION).text();
-            String rawPrice = document.select(UMART_CSS_PRICE_LOCATION).text();
+            String rawModelNumber = document.select(modelNumberLocation).text();
+            String rawPrice = document.select(priceLocation).text();
 
             // fail-fast if the document selection returns nothing
             if(rawModelNumber.isEmpty() || rawPrice.isEmpty()) {
@@ -58,7 +67,7 @@ public class UmartProductScraper implements GenericVendorScraper {
                     .price(price)
                     .build());
 
-        } catch (IOException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
             return Optional.empty();
         }

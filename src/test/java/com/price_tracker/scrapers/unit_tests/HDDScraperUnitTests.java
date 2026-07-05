@@ -1,8 +1,10 @@
 package com.price_tracker.scrapers.unit_tests;
 
+import com.price_tracker.testing_data.fixture_capture.DocumentLoader;
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.vendor_templates.impl.UmartProductScraper;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -17,8 +19,9 @@ public class HDDScraperUnitTests {
 
     @Test
     public void testThatUmartHDDScraperReturnsExpectedModelNumber() {
+        Document document = DocumentLoader.load("umart/seagate_st2000dm005.html");
         Optional<ScrapedDataDTO> scrapedDataDTO = umartProductScraper
-                .scrapeProductData(UMART_SEAGATE_ST2000DM005, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
+                .parseProductData(document, UMART_SEAGATE_ST2000DM005, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_HDD_MODEL_NUMBER);
     }
 

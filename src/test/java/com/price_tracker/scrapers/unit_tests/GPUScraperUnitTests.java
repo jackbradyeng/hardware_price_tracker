@@ -1,9 +1,11 @@
 package com.price_tracker.scrapers.unit_tests;
 
+import com.price_tracker.testing_data.fixture_capture.DocumentLoader;
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
 import com.price_tracker.webscraper.vendor_templates.impl.UmartProductScraper;
 import com.price_tracker.webscraper.vendor_templates.impl.ScorptecProductScraper;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -20,15 +22,17 @@ public class GPUScraperUnitTests {
 
     @Test
     public void testThatUmartGPUScraperReturnsExpectedModelNumber() {
+        Document document = DocumentLoader.load("umart/asus_5070ti.html");
         Optional<ScrapedDataDTO> scrapedDataDTO = umartProductScraper
-                .scrapeProductData(UMART_ASUS_5070TI, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
+                .parseProductData(document, UMART_ASUS_5070TI, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_GPU_MODEL_NUMBER);
     }
 
     @Test
     public void testThatScorptecGPUScraperReturnsExpectedModelNumber() {
+        Document document = DocumentLoader.load("scorptec/asus_5070ti.html");
         Optional<ScrapedDataDTO> scrapedDataDTO = scorptecProductScraper
-                .scrapeProductData(SCORPTEC_ASUS_5070TI, SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION);
+                .parseProductData(document, SCORPTEC_ASUS_5070TI, SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION);
         assert scrapedDataDTO.isPresent() && scrapedDataDTO.get().modelNumber().equals(TESTING_GPU_MODEL_NUMBER);
     }
 
