@@ -5,6 +5,7 @@ secrets.env
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+**/src/test/resources/scraper_fixtures/
 
 ### STS ###
 .apt_generated
