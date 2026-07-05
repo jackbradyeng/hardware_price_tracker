@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.testing_data.vendor_data.UmartTestDataUtility;
-import com.price_tracker.domain.dto.vendor_dtos.UmartProductDTO;
+import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.vendor_services.UmartProductService;
@@ -20,9 +20,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
 import java.util.List;
-import static com.price_tracker.testing_data.vendor_data.UmartWebDomainNames.UMART_ASUS_5070TI;
+import static com.price_tracker.testing_data.vendor_data.VendorWebDomainNames.UMART_ASUS_5070TI;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.PRODUCT_TYPE_GPU;
 import static com.price_tracker.testing_data.gpu_data.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
+import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -83,8 +84,8 @@ public class UmartProductControllerIntegrationTests {
 
     @Test
     public void testThatCreateListOfUmartProductsReturns201Created() throws Exception {
-        List<UmartProductDTO> testUmartProductDTOs = tdl.createTestUmartProducts();
-        String jsonString = objectMapper.writeValueAsString(testUmartProductDTOs);
+        List<VendorProductDTO> testVendorProductDTOS = tdl.createTestUmartProducts();
+        String jsonString = objectMapper.writeValueAsString(testVendorProductDTOS);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/umartproducts/saveall")
@@ -130,6 +131,70 @@ public class UmartProductControllerIntegrationTests {
     }
 
     // update tests
+    @Test
+    public void testThatFullUpdateUmartProductReturnsHttpStatus200ok() throws Exception {
+        UmartProductEntity testProductEntity = gpuTestingUtility.createTestUmartGPU();
+        UmartProductEntity savedProduct = umartProductService.save(testProductEntity);
+
+        VendorProductDTO updatedProduct = VendorProductDTO.builder()
+                .vendor(UMART)
+                .productType(PRODUCT_TYPE_GPU)
+                .modelNumber(TESTING_GPU_MODEL_NUMBER)
+                .url("Updated product url")
+                .build();
+        String updatedProductString = objectMapper.writeValueAsString(updatedProduct);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/umartproducts/" + savedProduct.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedProductString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateReturnsUpdatedUmartProduct() throws Exception {
+        UmartProductEntity testProductEntity = gpuTestingUtility.createTestUmartGPU();
+        UmartProductEntity savedProduct = umartProductService.save(testProductEntity);
+
+        VendorProductDTO updatedProduct = VendorProductDTO.builder()
+                .vendor(UMART)
+                .productType(PRODUCT_TYPE_GPU)
+                .modelNumber("Updated model number")
+                .url("Updated product url")
+                .build();
+        String updatedProductString = objectMapper.writeValueAsString(updatedProduct);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/umartproducts/" + savedProduct.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedProductString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.modelNumber").value("Updated model number")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.url").value("Updated product url")
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateUmartProductReturnsHttpStatus404NotFoundForNonExistingProduct() throws Exception {
+        VendorProductDTO updatedProduct = VendorProductDTO.builder()
+                .vendor(UMART)
+                .productType(PRODUCT_TYPE_GPU)
+                .modelNumber(TESTING_GPU_MODEL_NUMBER)
+                .url(UMART_ASUS_5070TI)
+                .build();
+        String updatedProductString = objectMapper.writeValueAsString(updatedProduct);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/umartproducts/" + Long.MAX_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedProductString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
 
     // delete tests
     @Test

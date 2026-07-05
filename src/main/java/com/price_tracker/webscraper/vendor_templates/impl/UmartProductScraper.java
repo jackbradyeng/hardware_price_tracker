@@ -1,7 +1,8 @@
-package com.price_tracker.webscraper.vendor_templates;
+package com.price_tracker.webscraper.vendor_templates.impl;
 
 import com.price_tracker.webscraper.PricePointObserver;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
+import com.price_tracker.webscraper.vendor_templates.GenericVendorScraper;
 import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,27 +12,42 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.logging.Level;
-import static com.price_tracker.constants.vendor_constants.UmartCSSLocations.UMART_CSS_MODEL_LOCATION;
-import static com.price_tracker.constants.vendor_constants.UmartCSSLocations.UMART_CSS_PRICE_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 
 @Log
 @Service
-public class GenericUmartScraper {
+public class UmartProductScraper implements GenericVendorScraper {
 
     private final PricePointObserver pricePointObserver;
 
     @Autowired
-    public GenericUmartScraper(PricePointObserver pricePointObserver) {
-        this.pricePointObserver = pricePointObserver;
-    }
+    public UmartProductScraper(PricePointObserver pricePointObserver) { this.pricePointObserver = pricePointObserver; }
 
-    public Optional<ScrapedDataDTO> scrapeProductData(String url) {
+    public Optional<ScrapedDataDTO> scrapeProductData(String url, String modelNumberLocation, String priceLocation) {
         try {
             // connect to the url and extract raw HTML
-            Document document = Jsoup.connect(url).get();
-            String rawModelNumber = document.select(UMART_CSS_MODEL_LOCATION).text();
-            String rawPrice = document.select(UMART_CSS_PRICE_LOCATION).text();
+            Document document = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+                    .header("Accept-Language", "en-AU,en;q=0.9")
+                    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+                    .referrer("https://www.umart.com.au/")
+                    .timeout(15000)
+                    .get();
+
+            return parseProductData(document, url, modelNumberLocation, priceLocation);
+
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
+            return Optional.empty();
+        }
+    }
+
+    /** Parses an already-fetched Document, without performing any network I/O. */
+    public Optional<ScrapedDataDTO> parseProductData(Document document, String url, String modelNumberLocation, String priceLocation) {
+        try {
+            // select raw model number & price
+            String rawModelNumber = document.select(modelNumberLocation).text();
+            String rawPrice = document.select(priceLocation).text();
 
             // fail-fast if the document selection returns nothing
             if(rawModelNumber.isEmpty() || rawPrice.isEmpty()) {
@@ -50,7 +66,8 @@ public class GenericUmartScraper {
                     .modelNumber(modelNumber)
                     .price(price)
                     .build());
-        } catch (IOException | NumberFormatException e) {
+
+        } catch (NumberFormatException e) {
             log.log(Level.SEVERE, "WARNING: Failed to scrape " + url, e);
             return Optional.empty();
         }

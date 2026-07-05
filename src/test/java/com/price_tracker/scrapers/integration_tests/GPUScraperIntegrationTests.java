@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.GPUPricePointService;
 import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.UmartGPUScrapingService;
+import com.price_tracker.webscraper.product_services.GenericScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +31,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import static com.price_tracker.constants.other_constants.CurrencyConstants.AUD;
+import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -42,7 +44,7 @@ public class GPUScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final GPUTestingUtility gpuTestingUtility;
-    private final UmartGPUScrapingService scraper;
+    private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate;
     private final GPUService gpuService;
@@ -52,7 +54,7 @@ public class GPUScraperIntegrationTests {
     @Autowired
     public GPUScraperIntegrationTests(MockMvc mockMVC,
                                       GPUTestingUtility gpuTestingUtility,
-                                      UmartGPUScrapingService scraper,
+                                      GenericScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate,
@@ -71,7 +73,8 @@ public class GPUScraperIntegrationTests {
     @Test
     public void testThatGPUPricePointInsertionWithJDBCTemplateReturnsHttpStatus200Ok() throws Exception {
         List<GPUPricePoint> returnList = Stream.generate(() ->
-                        scraper.createGPUPricePoint(gpuTestingUtility.createSampleGPUPricePointData()))
+                        gpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                gpuTestingUtility.createSampleGPUPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -88,7 +91,8 @@ public class GPUScraperIntegrationTests {
     public void testThatGPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<GPUPricePoint> returnList = Stream.generate(() ->
-                        scraper.createGPUPricePoint(gpuTestingUtility.createSampleGPUPricePointData()))
+                        gpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                gpuTestingUtility.createSampleGPUPricePointData(), UMART, AUD)))
                 .limit(insertionCount)
                 .toList();
 
@@ -133,7 +137,8 @@ public class GPUScraperIntegrationTests {
         GPUDTO savedGPU = gpuService.save(gpuTestingUtility.createTestGPU());
 
         List<GPUPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createGPUPricePoint(gpuTestingUtility.createSampleGPUPricePointData()))
+                        gpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                gpuTestingUtility.createSampleGPUPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -165,7 +170,8 @@ public class GPUScraperIntegrationTests {
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<GPUPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createGPUPricePoint(gpuTestingUtility.createSampleGPUPricePointData()))
+                        gpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                gpuTestingUtility.createSampleGPUPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -195,7 +201,8 @@ public class GPUScraperIntegrationTests {
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<GPUPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createGPUPricePoint(gpuTestingUtility.createSampleGPUPricePointData()))
+                        gpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                gpuTestingUtility.createSampleGPUPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 

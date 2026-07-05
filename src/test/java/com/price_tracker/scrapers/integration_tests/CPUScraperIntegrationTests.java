@@ -11,7 +11,7 @@ import com.price_tracker.services.price_point_services.CPUPricePointService;
 import com.price_tracker.services.product_services.CPUService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
-import com.price_tracker.webscraper.product_services.impl.UmartCPUScrapingService;
+import com.price_tracker.webscraper.product_services.GenericScrapingService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +31,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import static com.price_tracker.constants.other_constants.CurrencyConstants.AUD;
+import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -42,7 +44,7 @@ public class CPUScraperIntegrationTests {
 
     private final MockMvc mockMVC;
     private final CPUTestingUtility cpuTestingUtility;
-    private final UmartCPUScrapingService scraper;
+    private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate;
     private final CPUService cpuService;
@@ -52,7 +54,7 @@ public class CPUScraperIntegrationTests {
     @Autowired
     public CPUScraperIntegrationTests(MockMvc mockMVC,
                                       CPUTestingUtility cpuTestingUtility,
-                                      UmartCPUScrapingService scraper,
+                                      GenericScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate,
@@ -71,7 +73,8 @@ public class CPUScraperIntegrationTests {
     @Test
     public void testThatCPUPricePointInsertionWithJDBCTemplateReturnsOK() throws Exception {
         List<CPUPricePoint> returnList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
+                        cpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                cpuTestingUtility.createSampleCPUPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -88,7 +91,8 @@ public class CPUScraperIntegrationTests {
     public void testThatCPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
             throws Exception {
         List<CPUPricePoint> returnList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
+                        cpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                cpuTestingUtility.createSampleCPUPricePointData(), UMART, AUD)))
                 .limit(insertionCount)
                 .toList();
 
@@ -133,7 +137,8 @@ public class CPUScraperIntegrationTests {
         CPUDTO savedCPU = cpuService.save(cpuTestingUtility.createTestCPU());
 
         List<CPUPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
+                        cpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                cpuTestingUtility.createSampleCPUPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 
@@ -165,7 +170,8 @@ public class CPUScraperIntegrationTests {
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<CPUPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
+                        cpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                cpuTestingUtility.createSampleCPUPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList()
                 .reversed();
@@ -195,7 +201,8 @@ public class CPUScraperIntegrationTests {
 
         // next we generate and save a collection of price points with the same model number to the DB
         List<CPUPricePoint> sampleList = Stream.generate(() ->
-                        scraper.createCPUPricePoint(cpuTestingUtility.createSampleCPUPricePointData()))
+                        cpuPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                cpuTestingUtility.createSampleCPUPricePointData(), UMART, AUD)))
                 .limit(10)
                 .toList();
 

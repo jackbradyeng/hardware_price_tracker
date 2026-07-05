@@ -1,6 +1,6 @@
 package com.price_tracker.testing_data.vendor_data;
 
-public class UmartWebDomainNames {
+public class VendorWebDomainNames {
 
     // UMART PRODUCT DOMAINS
     public static final String UMART_RYZEN_9_9600X =
@@ -17,4 +17,10 @@ public class UmartWebDomainNames {
             "https://www.umart.com.au/product/crucial-bx500-1tb-2-5in-3d-nand-sata-ssd-ct1000bx500ssd1-53577";
     public static final String UMART_CRUCIAL_P510_1TB =
             "https://www.umart.com.au/product/crucial-p510-1tb-pcie-gen5-m-2-2280-nvme-ssd-ct1000p510ssd8-84983";
+
+    // SCORPTEC PRODUCT DOMAINS
+    public static final String SCORPTEC_RYZEN_5_9600X =
+            "https://www.scorptec.com.au/product/cpu/amd-socket-am5/111723-100-100001405wof";
+    public static final String SCORPTEC_ASUS_5070TI =
+            "https://www.scorptec.com.au/product/graphics-cards/nvidia/116175-prime-rtx5070ti-o16g";
 }
