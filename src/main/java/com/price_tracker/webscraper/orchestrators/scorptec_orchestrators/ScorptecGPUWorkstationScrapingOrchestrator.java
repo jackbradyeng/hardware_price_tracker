@@ -6,7 +6,7 @@ import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUWorkstationPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.ScorptecProductRepository;
-import com.price_tracker.webscraper.orchestrators.GenericProductScrapingOrchestrator;
+import com.price_tracker.webscraper.orchestrators.GenericScrapingOrchestrator;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
 import com.price_tracker.webscraper.vendor_templates.GenericVendorScraper;
 import lombok.extern.java.Log;
@@ -26,7 +26,7 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.SCORPTEC;
 
 @Log
 @Service
-public class ScorptecGPUWorkstationScrapingOrchestrator implements GenericProductScrapingOrchestrator {
+public class ScorptecGPUWorkstationScrapingOrchestrator implements GenericScrapingOrchestrator {
 
     private final GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate;
     private final ScorptecProductRepository scorptecProductRepository;

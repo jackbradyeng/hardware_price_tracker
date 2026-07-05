@@ -5,7 +5,12 @@ import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
 import com.price_tracker.webscraper.vendor_templates.GenericVendorScraper;
 
-public interface GenericProductScrapingOrchestrator {
+/**
+ * A high level abstraction for generating GenericPricePointDTOs irrespective of vendor or product type. Takes in a
+ * GenericVendorScraper and GenericScrapingService as parameters, along with the associated fields needed to generate a
+ * ScrapedDataDTO and THEN a GenericPricePointDTO.
+ */
+public interface GenericScrapingOrchestrator {
 
     default Optional<GenericPricePointDTO> processPricePoint(GenericVendorScraper genericVendorScraper,
                                                              GenericScrapingService genericScrapingService,
