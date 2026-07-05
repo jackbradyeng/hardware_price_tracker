@@ -17,8 +17,11 @@ public final class ScrapingConstants {
     public static final String UMART_NVME_SCRAPING_TIME = "0 30 22 * * ?";
 
     // SCORPTEC CRON TIMESTAMPS
-    public static final String SCORPTEC_GPU_SCRAPING_TIME = "0 00 21 * * ?";
-    public static final String SCORPTEC_RAM_SCRAPING_TIME = "0 10 21 * * ?";
-    public static final String SCORPTEC_CPU_SCRAPING_TIME = "0 20 21 * * ?";
-    public static final String SCORPTEC_GPU_WORKSTATION_SCRAPING_TIME = "0 30 21 * * ?";
+    public static final String SCORPTEC_GPU_SCRAPING_TIME = "0 00 20 * * ?";
+    public static final String SCORPTEC_RAM_SCRAPING_TIME = "0 10 20 * * ?";
+    public static final String SCORPTEC_CPU_SCRAPING_TIME = "0 20 20 * * ?";
+    public static final String SCORPTEC_GPU_WORKSTATION_SCRAPING_TIME = "0 30 20 * * ?";
+    public static final String SCORPTEC_HDD_SCRAPING_TIME = "0 40 20 * * ?";
+    public static final String SCORPTEC_SSD_SCRAPING_TIME = "0 50 20 * * ?";
+    public static final String SCORPTEC_NVME_SCRAPING_TIME = "0 00 21 * * ?";
 }
