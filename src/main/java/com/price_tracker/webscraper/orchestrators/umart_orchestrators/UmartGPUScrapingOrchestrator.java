@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import static com.price_tracker.constants.other_constants.CurrencyConstants.AUD;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.UMART_GPU_SCRAPING_TIME;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.UMART_SLEEPING_CONSTANT;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_MODEL_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.UMART_CSS_PRICE_LOCATION;
 import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
@@ -57,8 +58,8 @@ public class UmartGPUScrapingOrchestrator implements GenericProductScrapingOrche
 
         List<GPUPricePoint> pricePoints = umartProductRepository.findUrlsForActiveGPUs()
                 .stream()
-                .map(url -> processPricePoint(umartProductScraper, vendorProductScrapingService, url,
-                        UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION, UMART, AUD))
+                .map(url -> processPricePoint(umartProductScraper, vendorProductScrapingService, UMART_SLEEPING_CONSTANT,
+                        url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION, UMART, AUD))
                 .flatMap(Optional::stream)
                 .map(pricePointMapper::mapFrom)
                 .toList();

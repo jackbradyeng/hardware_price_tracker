@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import static com.price_tracker.constants.other_constants.CurrencyConstants.AUD;
 import static com.price_tracker.constants.other_constants.ScrapingConstants.SCORPTEC_NVME_SCRAPING_TIME;
+import static com.price_tracker.constants.other_constants.ScrapingConstants.SCORPTEC_SLEEPING_CONSTANT;
 import static com.price_tracker.constants.vendor_constants.VendorCSSLocations.*;
 import static com.price_tracker.constants.vendor_constants.VendorNames.SCORPTEC;
 
@@ -54,8 +55,8 @@ public class ScorptecNVMEScrapingOrchestrator implements GenericProductScrapingO
 
         List<NVMEPricePoint> pricePoints = scorptecProductRepository.findUrlsForActiveNVMEs()
                 .stream()
-                .map(url -> processPricePoint(scorptecProductScraper, vendorProductScrapingService, url,
-                        SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION, SCORPTEC, AUD))
+                .map(url -> processPricePoint(scorptecProductScraper, vendorProductScrapingService, SCORPTEC_SLEEPING_CONSTANT,
+                        url, SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION, SCORPTEC, AUD))
                 .flatMap(Optional::stream)
                 .map(pricePointMapper::mapFrom)
                 .toList();
