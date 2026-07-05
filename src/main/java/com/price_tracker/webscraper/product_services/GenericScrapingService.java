@@ -6,8 +6,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * A generic service for generating GenericPricePointDTOs, with the ScrapedDataDTO, vendor, and currency fields passed
+ * in as parameters.
+ */
 @Service
-public class VendorProductScrapingService {
+public class GenericScrapingService {
 
     public GenericPricePointDTO createGenericPricePoint(ScrapedDataDTO scrapedData, String vendor, String currency) {
 

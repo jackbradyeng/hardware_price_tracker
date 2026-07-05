@@ -7,7 +7,7 @@ import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.SSDPricePointJDBCTemplate;
 import com.price_tracker.repositories.vendor_repos.ScorptecProductRepository;
 import com.price_tracker.webscraper.orchestrators.GenericProductScrapingOrchestrator;
-import com.price_tracker.webscraper.product_services.VendorProductScrapingService;
+import com.price_tracker.webscraper.product_services.GenericScrapingService;
 import com.price_tracker.webscraper.vendor_templates.GenericVendorScraper;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +30,19 @@ public class ScorptecSSDScrapingOrchestrator implements GenericProductScrapingOr
 
     private final SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate;
     private final ScorptecProductRepository scorptecProductRepository;
-    private final VendorProductScrapingService vendorProductScrapingService;
+    private final GenericScrapingService genericScrapingService;
     private final GenericVendorScraper scorptecProductScraper;
     private final GenericMapper<SSDPricePoint, GenericPricePointDTO> pricePointMapper;
 
     @Autowired
     public ScorptecSSDScrapingOrchestrator(SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate,
                                            ScorptecProductRepository scorptecProductRepository,
-                                           VendorProductScrapingService vendorProductScrapingService,
+                                           GenericScrapingService genericScrapingService,
                                            @Qualifier("scorptecProductScraper") GenericVendorScraper scorptecProductScraper,
                                            MapperFactory mapperFactory) {
         this.ssdPricePointJDBCTemplate = ssdPricePointJDBCTemplate;
         this.scorptecProductRepository = scorptecProductRepository;
-        this.vendorProductScrapingService = vendorProductScrapingService;
+        this.genericScrapingService = genericScrapingService;
         this.scorptecProductScraper = scorptecProductScraper;
         this.pricePointMapper = mapperFactory.create(SSDPricePoint.class, GenericPricePointDTO.class);
     }
@@ -55,7 +55,7 @@ public class ScorptecSSDScrapingOrchestrator implements GenericProductScrapingOr
 
         List<SSDPricePoint> pricePoints = scorptecProductRepository.findUrlsForActiveSSDs()
                 .stream()
-                .map(url -> processPricePoint(scorptecProductScraper, vendorProductScrapingService, SCORPTEC_SLEEPING_CONSTANT,
+                .map(url -> processPricePoint(scorptecProductScraper, genericScrapingService, SCORPTEC_SLEEPING_CONSTANT,
                         url, SCORPTEC_CSS_MODEL_LOCATION, SCORPTEC_CSS_PRICE_LOCATION, SCORPTEC, AUD))
                 .flatMap(Optional::stream)
                 .map(pricePointMapper::mapFrom)
