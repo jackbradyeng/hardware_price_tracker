@@ -88,7 +88,7 @@ public interface GenericDataAndPricePointProjection<E, P> {
 }
 ```
 
-Price point inserts, on the other hand, use a single **generic JDBC template** class, parameterised by entity type, for performance. Pricing data arrives in bulk daily, so the template pre-allocates a batch of sequence IDs in one round-trip before inserting. This implementation was conceived as a solution to the Hibernate N+1 problem:
+Price point inserts, on the other hand, use a single generic JDBC template class, parameterised by entity type. Pricing data arrives in bulk daily, and delegating inserts to the ORM meant one sequence round-trip per row and no JDBC statement batching. The template instead pre-allocates a batch of sequence IDs in a single query, then batch-inserts:
 
 ```java
 public class GenericPricePointJdbcTemplate<T extends GenericPricePoint> {
