@@ -33,4 +33,7 @@ public final class DatabaseConstants {
     public static final String HDD_PRICE_SEQUENCE = "hdd_price_sequence";
     public static final String SSD_PRICE_SEQUENCE = "ssd_price_sequence";
     public static final String NVME_PRICE_SEQUENCE = "nvme_price_sequence";
+
+    // JDBC BATCH SIZE FOR AUTOMATED PRICE POINT INSERTIONS
+    public static final Integer DEFAULT_JDBC_BATCH_SIZE = 50;
 }

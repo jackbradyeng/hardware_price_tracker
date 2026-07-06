@@ -1,7 +1,7 @@
 package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointDTO;
-import com.price_tracker.domain.dto.hybrid_interfaces.GPUWorkstationDataAndPricePointProjection;
+import com.price_tracker.domain.dto.hybrid_interfaces.GenericDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
@@ -43,8 +43,8 @@ public class GPUWorkstationPricePointServiceImpl implements GPUWorkstationPriceP
     @Override
     public Optional<GPUWorkstationDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable) {
 
-        Page<GPUWorkstationDataAndPricePointProjection> resultList = gpuWorkstationPricePointRepository
-                .getPricePointsByModelNumber(modelNumber, pageable);
+        Page<GenericDataAndPricePointProjection<GPUWorkstationEntity, GPUWorkstationPricePoint>> resultList =
+                gpuWorkstationPricePointRepository.getPricePointsByModelNumber(modelNumber, pageable);
 
         // if list is empty return a 404
         if (resultList.isEmpty()) {
@@ -52,12 +52,13 @@ public class GPUWorkstationPricePointServiceImpl implements GPUWorkstationPriceP
         }
 
         // convert GPUWorkstation to a DTO so we can expose it in our API
-        GPUWorkstationEntity gpuWorkstation = resultList.stream().toList().getFirst().getGPUWorkstationEntity();
+        GPUWorkstationEntity gpuWorkstation = resultList.stream().toList().getFirst().getEntity();
         GPUWorkstationDTO gpuWorkstationDTO = gpuWorkstationMapper.mapTo(gpuWorkstation);
 
         // convert GPUWorkstation price points to a list of DTOs
         List<GenericPricePointDTO> gpuWorkstationPricePointDTOS = resultList.stream()
-                .map(result -> gpuPricePointMapper.mapTo(result.getGPUWorkstationPricePoint()))
+                .map(result ->
+                        gpuPricePointMapper.mapTo(result.getPricePoint()))
                 .toList();
 
         GPUWorkstationDataAndPricePointDTO gpuWorkstationDataAndPricePointDTO = GPUWorkstationDataAndPricePointDTO.builder()

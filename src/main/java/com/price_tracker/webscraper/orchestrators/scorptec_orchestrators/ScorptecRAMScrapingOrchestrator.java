@@ -4,7 +4,7 @@ import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.RAMPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.repositories.vendor_repos.ScorptecProductRepository;
 import com.price_tracker.webscraper.orchestrators.GenericScrapingOrchestrator;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -28,19 +28,19 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.SCORPTEC;
 @Service
 public class ScorptecRAMScrapingOrchestrator implements GenericScrapingOrchestrator {
 
-    private final RAMPricePointJDBCTemplate ramPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<RAMPricePoint> ramGenericPricePointJDBCTemplate;
     private final ScorptecProductRepository scorptecProductRepository;
     private final GenericScrapingService genericScrapingService;
     private final GenericVendorScraper scorptecProductScraper;
     private final GenericMapper<RAMPricePoint, GenericPricePointDTO> pricePointMapper;
 
     @Autowired
-    public ScorptecRAMScrapingOrchestrator(RAMPricePointJDBCTemplate ramPricePointJDBCTemplate,
+    public ScorptecRAMScrapingOrchestrator(GenericPricePointJdbcTemplate<RAMPricePoint> ramGenericPricePointJDBCTemplate,
                                            ScorptecProductRepository scorptecProductRepository,
                                            GenericScrapingService genericScrapingService,
                                            @Qualifier("scorptecProductScraper") GenericVendorScraper scorptecProductScraper,
                                            MapperFactory mapperFactory) {
-        this.ramPricePointJDBCTemplate = ramPricePointJDBCTemplate;
+        this.ramGenericPricePointJDBCTemplate = ramGenericPricePointJDBCTemplate;
         this.scorptecProductRepository = scorptecProductRepository;
         this.genericScrapingService = genericScrapingService;
         this.scorptecProductScraper = scorptecProductScraper;
@@ -61,7 +61,7 @@ public class ScorptecRAMScrapingOrchestrator implements GenericScrapingOrchestra
                 .map(pricePointMapper::mapFrom)
                 .toList();
 
-        ramPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+        ramGenericPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);

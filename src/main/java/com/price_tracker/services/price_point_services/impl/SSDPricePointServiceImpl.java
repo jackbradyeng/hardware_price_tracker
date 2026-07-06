@@ -1,7 +1,7 @@
 package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.SSDDataAndPricePointDTO;
-import com.price_tracker.domain.dto.hybrid_interfaces.SSDDataAndPricePointProjection;
+import com.price_tracker.domain.dto.hybrid_interfaces.GenericDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.SSDDTO;
 import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
@@ -43,18 +43,19 @@ public class SSDPricePointServiceImpl implements SSDPricePointService {
     @Override
     public Optional<SSDDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable) {
 
-        Page<SSDDataAndPricePointProjection> resultList = ssdPricePointRepository
+        Page<GenericDataAndPricePointProjection<SSDEntity, SSDPricePoint>> resultList = ssdPricePointRepository
                 .getPricePointsByModelNumber(modelNumber, pageable);
 
         if (resultList.isEmpty()) {
             return Optional.empty();
         }
 
-        SSDEntity ssd = resultList.stream().toList().getFirst().getSSDEntity();
+        SSDEntity ssd = resultList.stream().toList().getFirst().getEntity();
         SSDDTO ssdDTO = ssdMapper.mapTo(ssd);
 
         List<GenericPricePointDTO> ssdPricePointDTOS = resultList.stream()
-                .map(result -> ssdPricePointMapper.mapTo(result.getSSDPricePoint()))
+                .map(result ->
+                        ssdPricePointMapper.mapTo(result.getPricePoint()))
                 .toList();
 
         SSDDataAndPricePointDTO ssdDataAndPricePointDTO = SSDDataAndPricePointDTO.builder()

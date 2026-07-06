@@ -6,7 +6,7 @@ import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.services.price_point_services.GPUPricePointService;
 import com.price_tracker.services.product_services.GPUService;
 import com.price_tracker.testing_data.RestPage;
@@ -46,7 +46,7 @@ public class GPUScraperIntegrationTests {
     private final GPUTestingUtility gpuTestingUtility;
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
-    private final GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<GPUPricePoint> gpuGenericPricePointJDBCTemplate;
     private final GPUService gpuService;
     private final GenericMapper<GPUPricePoint, GenericPricePointDTO> gpuPricePointMapper;
     private final GPUPricePointService gpuPricePointService;
@@ -57,14 +57,14 @@ public class GPUScraperIntegrationTests {
                                       GenericScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
-                                      GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate,
+                                      GenericPricePointJdbcTemplate<GPUPricePoint> gpuGenericPricePointJDBCTemplate,
                                       GPUService gpuService,
                                       GPUPricePointService gpuPricePointService) {
         this.mockMVC = mockMVC;
         this.gpuTestingUtility = gpuTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
-        this.gpuPricePointJDBCTemplate = gpuPricePointJDBCTemplate;
+        this.gpuGenericPricePointJDBCTemplate = gpuGenericPricePointJDBCTemplate;
         this.gpuService = gpuService;
         this.gpuPricePointMapper = mapperFactory.create(GPUPricePoint.class, GenericPricePointDTO.class);
         this.gpuPricePointService = gpuPricePointService;
@@ -78,7 +78,7 @@ public class GPUScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        gpuPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/gpu_pricepoints")
@@ -96,7 +96,7 @@ public class GPUScraperIntegrationTests {
                 .limit(insertionCount)
                 .toList();
 
-        gpuPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
                         MockMvcRequestBuilders.get("/api/gpu_pricepoints")
@@ -142,7 +142,7 @@ public class GPUScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        gpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/gpu_pricepoints/" + savedGPU.getModelNumber())
@@ -175,7 +175,7 @@ public class GPUScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        gpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // convert price points to DTO for comparison's sake
         List<GenericPricePointDTO> pricePointDTOS =  sampleList.stream()
@@ -206,7 +206,7 @@ public class GPUScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        gpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // next we query by the GPU's model number - this should return a collection of composite DTOs
         Optional<GPUDataAndPricePointDTO> returnList = gpuPricePointService

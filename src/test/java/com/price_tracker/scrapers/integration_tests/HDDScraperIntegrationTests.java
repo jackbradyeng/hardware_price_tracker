@@ -6,7 +6,7 @@ import com.price_tracker.domain.dto.product_dtos.HDDDTO;
 import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.HDDPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.services.price_point_services.HDDPricePointService;
 import com.price_tracker.services.product_services.HDDService;
 import com.price_tracker.testing_data.RestPage;
@@ -46,7 +46,7 @@ public class HDDScraperIntegrationTests {
     private final HDDTestingUtility hddTestingUtility;
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
-    private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<HDDPricePoint> hddGenericPricePointJDBCTemplate;
     private final HDDService hddService;
     private final GenericMapper<HDDPricePoint, GenericPricePointDTO> hddPricePointMapper;
     private final HDDPricePointService hddPricePointService;
@@ -57,14 +57,14 @@ public class HDDScraperIntegrationTests {
                                       GenericScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
-                                      HDDPricePointJDBCTemplate hddPricePointJDBCTemplate,
+                                      GenericPricePointJdbcTemplate<HDDPricePoint> hddGenericPricePointJDBCTemplate,
                                       HDDService hddService,
                                       HDDPricePointService hddPricePointService) {
         this.mockMVC = mockMVC;
         this.hddTestingUtility = hddTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
-        this.hddPricePointJDBCTemplate = hddPricePointJDBCTemplate;
+        this.hddGenericPricePointJDBCTemplate = hddGenericPricePointJDBCTemplate;
         this.hddService = hddService;
         this.hddPricePointMapper = mapperFactory.create(HDDPricePoint.class, GenericPricePointDTO.class);
         this.hddPricePointService = hddPricePointService;
@@ -78,7 +78,7 @@ public class HDDScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        hddPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        hddGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/hdd_pricepoints")
@@ -96,7 +96,7 @@ public class HDDScraperIntegrationTests {
                 .limit(insertionCount)
                 .toList();
 
-        hddPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        hddGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
                         MockMvcRequestBuilders.get("/api/hdd_pricepoints")
@@ -138,7 +138,7 @@ public class HDDScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        hddPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        hddGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/hdd_pricepoints/" + savedHDD.getModelNumber())
@@ -170,7 +170,7 @@ public class HDDScraperIntegrationTests {
                 .toList()
                 .reversed();
 
-        hddPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        hddGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
                 .map(hddPricePointMapper::mapTo)
@@ -196,7 +196,7 @@ public class HDDScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        hddPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        hddGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         Optional<HDDDataAndPricePointDTO> returnList = hddPricePointService
                 .findByModelNumber(savedHDD.getModelNumber(), Pageable.unpaged());

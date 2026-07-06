@@ -1,7 +1,7 @@
 package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.HDDDataAndPricePointDTO;
-import com.price_tracker.domain.dto.hybrid_interfaces.HDDDataAndPricePointProjection;
+import com.price_tracker.domain.dto.hybrid_interfaces.GenericDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.HDDDTO;
 import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
@@ -43,18 +43,19 @@ public class HDDPricePointServiceImpl implements HDDPricePointService {
     @Override
     public Optional<HDDDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable) {
 
-        Page<HDDDataAndPricePointProjection> resultList = hddPricePointRepository
+        Page<GenericDataAndPricePointProjection<HDDEntity, HDDPricePoint>> resultList = hddPricePointRepository
                 .getPricePointsByModelNumber(modelNumber, pageable);
 
         if (resultList.isEmpty()) {
             return Optional.empty();
         }
 
-        HDDEntity hdd = resultList.stream().toList().getFirst().getHDDEntity();
+        HDDEntity hdd = resultList.stream().toList().getFirst().getEntity();
         HDDDTO hddDTO = hddMapper.mapTo(hdd);
 
         List<GenericPricePointDTO> hddPricePointDTOS = resultList.stream()
-                .map(result -> hddPricePointMapper.mapTo(result.getHDDPricePoint()))
+                .map(result ->
+                        hddPricePointMapper.mapTo(result.getPricePoint()))
                 .toList();
 
         HDDDataAndPricePointDTO hddDataAndPricePointDTO = HDDDataAndPricePointDTO.builder()

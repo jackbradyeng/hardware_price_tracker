@@ -6,7 +6,7 @@ import com.price_tracker.domain.dto.product_dtos.SSDDTO;
 import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.SSDPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.services.price_point_services.SSDPricePointService;
 import com.price_tracker.services.product_services.SSDService;
 import com.price_tracker.testing_data.RestPage;
@@ -46,7 +46,7 @@ public class SSDScraperIntegrationTests {
     private final SSDTestingUtility ssdTestingUtility;
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
-    private final SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<SSDPricePoint> ssdGenericPricePointJDBCTemplate;
     private final SSDService ssdService;
     private final GenericMapper<SSDPricePoint, GenericPricePointDTO> ssdPricePointMapper;
     private final SSDPricePointService ssdPricePointService;
@@ -57,14 +57,14 @@ public class SSDScraperIntegrationTests {
                                       GenericScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
-                                      SSDPricePointJDBCTemplate ssdPricePointJDBCTemplate,
+                                      GenericPricePointJdbcTemplate<SSDPricePoint> ssdGenericPricePointJDBCTemplate,
                                       SSDService ssdService,
                                       SSDPricePointService ssdPricePointService) {
         this.mockMVC = mockMVC;
         this.ssdTestingUtility = ssdTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
-        this.ssdPricePointJDBCTemplate = ssdPricePointJDBCTemplate;
+        this.ssdGenericPricePointJDBCTemplate = ssdGenericPricePointJDBCTemplate;
         this.ssdService = ssdService;
         this.ssdPricePointMapper = mapperFactory.create(SSDPricePoint.class, GenericPricePointDTO.class);
         this.ssdPricePointService = ssdPricePointService;
@@ -78,7 +78,7 @@ public class SSDScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        ssdPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        ssdGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/ssd_pricepoints")
@@ -96,7 +96,7 @@ public class SSDScraperIntegrationTests {
                 .limit(insertionCount)
                 .toList();
 
-        ssdPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        ssdGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
                         MockMvcRequestBuilders.get("/api/ssd_pricepoints")
@@ -138,7 +138,7 @@ public class SSDScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        ssdPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        ssdGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/ssd_pricepoints/" + savedSSD.getModelNumber())
@@ -170,7 +170,7 @@ public class SSDScraperIntegrationTests {
                 .toList()
                 .reversed();
 
-        ssdPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        ssdGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
                 .map(ssdPricePointMapper::mapTo)
@@ -196,7 +196,7 @@ public class SSDScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        ssdPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        ssdGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         Optional<SSDDataAndPricePointDTO> returnList = ssdPricePointService
                 .findByModelNumber(savedSSD.getModelNumber(), Pageable.unpaged());

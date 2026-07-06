@@ -1,7 +1,7 @@
 package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.RAMDataAndPricePointDTO;
-import com.price_tracker.domain.dto.hybrid_interfaces.RAMDataAndPricePointProjection;
+import com.price_tracker.domain.dto.hybrid_interfaces.GenericDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
@@ -43,7 +43,7 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
     @Override
     public Optional<RAMDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable) {
 
-        Page<RAMDataAndPricePointProjection> resultList = ramPricePointRepository
+        Page<GenericDataAndPricePointProjection<RAMEntity, RAMPricePoint>> resultList = ramPricePointRepository
                 .getPricePointsByModelNumber(modelNumber, pageable);
 
         // if list is empty return a 404
@@ -52,12 +52,13 @@ public class RAMPricePointServiceImpl implements RAMPricePointService {
         }
 
         // convert RAM to a DTO so we can expose it in our API
-        RAMEntity ram = resultList.stream().toList().getFirst().getRAMEntity();
+        RAMEntity ram = resultList.stream().toList().getFirst().getEntity();
         RAMDTO ramDTO = ramMapper.mapTo(ram);
 
         // convert RAM price points to a list of DTOs
         List<GenericPricePointDTO> ramPricePointDTOS = resultList.stream()
-                .map(result -> ramPricePointMapper.mapTo(result.getRAMPricePoint()))
+                .map(result ->
+                        ramPricePointMapper.mapTo(result.getPricePoint()))
                 .toList();
 
         // construct the return object for our API

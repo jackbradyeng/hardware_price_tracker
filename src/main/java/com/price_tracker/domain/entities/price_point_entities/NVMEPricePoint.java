@@ -1,21 +1,21 @@
 package com.price_tracker.domain.entities.price_point_entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import lombok.Setter;
+import lombok.ToString;
 import static com.price_tracker.constants.other_constants.DatabaseConstants.*;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
-@Builder
 @Entity
 @Table(name = NVME_PRICE_HISTORY)
-public class NVMEPricePoint {
+public class NVMEPricePoint extends GenericPricePoint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = NVME_PRICE_SEQUENCE)
@@ -25,9 +25,4 @@ public class NVMEPricePoint {
             allocationSize = 1
     )
     private Long id;
-    private String modelNumber;
-    private String vendor;
-    private String currency;
-    private BigDecimal price;
-    private LocalDateTime scrapedAt;
 }
