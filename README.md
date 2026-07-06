@@ -1,16 +1,16 @@
-# Hardware Price Tracker
+# Hardware Price Tracker (Backend)
 
-A Spring Boot REST API that tracks computer hardware prices over time by scraping vendor websites on a daily schedule. Built for flexibility across hardware categories and vendor sources.
+A Spring Boot application which tracks computer hardware prices over time by scraping popular vendor websites on a daily schedule. Built for flexibility across hardware categories and vendor sources.
 
 ---
 
 ## Overview
 
-This application maintains a catalogue of computer hardware products (CPUs, GPUs, RAM, GPU Workstations, HDDs, SSDs, NVMEs, etc.) and records their price points from vendors daily. Price history is stored as time-series data, enabling price trend analysis over time.
+This application maintains a catalogue of computer hardware products (CPUs, GPUs, RAM, GPU Workstations, HDDs, SSDs, NVMEs, etc.) and records their price points from vendors daily. Pricing history is stored as time-series data, enabling price trend analysis over time.
 
 **Key capabilities:**
 - Full CRUD API for hardware product management across various product types
-- Daily scheduled web scraping of vendor product pages
+- Daily scheduled web scraping across multiple vendors & product categories using a CRON schedule
 - Price point history stored per product and vendor
 - Staggered scraping schedules to distribute load and avoid rate limiting
 
@@ -18,47 +18,56 @@ This application maintains a catalogue of computer hardware products (CPUs, GPUs
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| Framework | Spring Boot 4.0.2 (Java 21) |
-| Database | PostgreSQL |
+| Layer | Technology                                                       |
+|-------|------------------------------------------------------------------|
+| Framework | Spring Boot 4.0.2 (Java 21)                                      |
+| Database | PostgreSQL                                                       |
 | ORM | Spring Data JPA (standard queries), JDBC Template (bulk inserts) |
-| Web Scraping | JSoup 1.15.3 |
-| Mapping | ModelMapper 3.0.0 |
-| Build | Maven |
-| Testing | JUnit 5, Spring Boot Test (integration) |
-| Dev Infrastructure | Docker / docker-compose |
+| Web Scraping | JSoup 1.15.3                                                     |
+| Mapping | ModelMapper 3.0.0                                                |
+| Env Config | Java Dotenv                                                      |
+| Build | Maven                                                            |
+| Testing | JUnit 5, Spring Boot Test (integration), Mockito, AssertJ        |
+| Dev Infrastructure | Docker / docker-compose                                          |
 
 ---
 
 ## Architecture
 
-The application follows a layered architecture with seven hardware product domains (CPU, GPU, RAM, GPUWorkstation, HDD, SSD, NVME), each with identical structure:
+The application follows a layered architecture with seven hardware product domains (CPU, GPU, RAM, GPUWorkstation, HDD, SSD, NVME), each with identical structure, scraped across two vendors (Umart, Scorptec):
 
 ```
-Controller → Service (interface + implementation) → Repository (JPA + JDBC) → PostgreSQL
+Controller → Service (interface + implementation) → Repository (JPA + generic JDBC) → PostgreSQL
 ```
 
 ```
 src/main/java/com/price_tracker/
 ├── controllers/
-│   ├── product_controllers/        # REST endpoints per product type
+│   ├── product_controllers/        # REST API endpoints per product type
 │   ├── price_point_controllers/    # Price history endpoints
-│   └── vendor_controllers/         # Vendor product mapping endpoints
-├── services/                       # @Transactional business logic
+│   └── vendor_controllers/         # Vendor & vendor-product mapping endpoints
+├── services/
 ├── repositories/
-│   ├── product_repos/              # JPA repositories
+│   ├── product_repos/              # JPA repositories, one per product type
+│   ├── vendor_repos/               # JPA repositories for vendors & vendor products
 │   └── price_point_repos/
-│       └── jdbc_templates/         # Optimised batch insert templates
+│       └── jdbc_templates/         # Generic batch insert template (shared across all domains)
 ├── domain/
-│   ├── entities/                   # JPA entities (products + price points)
+│   ├── entities/
+│   │   ├── product_entities/       # JPA entities per product
+│   │   ├── price_point_entities/   # GenericPricePoint (mapped superclass) + per-domain subclasses
+│   │   └── vendor_entities/        # Vendor & vendor-product entities
 │   ├── dto/                        # Request/response DTOs
-│   │   └── hybrid_interfaces/      # JPA projection interfaces
+│   │   └── hybrid_interfaces/      # Generic JPA projection interface
 │   └── ...
 ├── webscraper/
-│   ├── orchestrators/              # Scheduled scraping jobs
-│   ├── product_services/           # Scraper interfaces + implementations
-│   └── vendor_templates/           # Abstract base class (GenericUmartScraper)
+│   ├── orchestrators/              # Scheduled scraping jobs, split by vendor
+│   │   ├── umart_orchestrators/
+│   │   └── scorptec_orchestrators/
+│   ├── product_services/           # Generic service that builds price point DTOs
+│   └── vendor_templates/
+│       ├── GenericVendorScraper.java   # Shared scraper contract
+│       └── impl/                       # One implementation per vendor
 ├── mappers/                        # Generic Mapper<A,B> interface + impls
 ├── config/                         # Spring bean configuration
 └── constants/                      # CSS selectors, table names, cron schedules, URLs
@@ -68,44 +77,56 @@ src/main/java/com/price_tracker/
 
 ## Design Decisions
 
-### Hybrid Repository Pattern (JPA + JDBC)
+### Hybrid Repository Pattern (JPA + Generic JDBC)
 
-Product entities use **JPA** for standard CRUD and custom HQL queries, including projection interfaces for joins. This is useful for communicating data to the frontend efficiently, where it is transformed into time-series charts:
-
-```java
-@Query(value = "select p as GPUPricePoint, e as GPUEntity from GPUPricePoint p " +
-        "left join GPUEntity e on p.modelNumber = e.modelNumber " +
-        "where p.modelNumber = :modelNumber " +
-        "order by p.scrapedAt desc",
-        countQuery = "select count(p) from GPUPricePoint p where p.modelNumber = :modelNumber")
-Page<GPUDataAndPricePointProjection> getPricePointsByModelNumber(@Param("modelNumber") String modelNumber, Pageable pageable);
-```
-
-Price point inserts on the other hand use **JDBC Template** for performance. Pricing data arrives in bulk daily, so the JDBC template pre-allocates a batch of sequence IDs in a single round-trip before inserting. This implementation was conceived as a solution to the HIbernate N+1 problem:
+Product entities use **JPA** for standard CRUD and custom HQL queries, including a generic projection interface for joins between a product and its price history. This is useful for communicating data to the frontend efficiently, where it is transformed into time-series charts:
 
 ```java
-// Pre-allocate IDs in one query
-String idQuery = "SELECT nextval('gpu_price_sequence') FROM generate_series(1, ?)";
-List<Long> ids = jdbcTemplate.queryForList(idQuery, Long.class, pricePoints.size());
-
-// Batch insert at size 50
-jdbcTemplate.batchUpdate(sql, pricePoints, 50, (ps, point) -> { ... });
+public interface GenericDataAndPricePointProjection<E, P> {
+    E getEntity();
+    P getPricePoint();
+}
 ```
 
-### Template Method Pattern for Scrapers
+Price point inserts, on the other hand, use a single **generic JDBC template** class, parameterised by entity type, for performance. Pricing data arrives in bulk daily, so the template pre-allocates a batch of sequence IDs in one round-trip before inserting. This implementation was conceived as a solution to the Hibernate N+1 problem:
 
-Each vendor has its own Generic Scraping class. For instance, `GenericUmartScraper` is the base class used for scraping prices from the popular Australian hardware vendor Umart Online. It handles JSoup connections, DOM parsing, model number extraction, and price normalisation. Concrete implementations (e.g. `UmartGPUScrapingService`) extend it to provide product-specific price point construction — reusing all the parsing logic without duplicating it.
+```java
+public class GenericPricePointJdbcTemplate<T extends GenericPricePoint> {
+
+    @Transactional
+    public void batchInsertPricePoints(List<T> pricePoints) {
+        // Pre-allocate IDs in one query
+        String idQuery = "SELECT NEXTVAL('" + sequenceName + "') FROM GENERATE_SERIES(1, ?)";
+        List<Long> ids = jdbcTemplate.queryForList(idQuery, Long.class, pricePoints.size());
+        // ...assign IDs, then batch insert at DEFAULT_JDBC_BATCH_SIZE
+    }
+}
+```
+
+A single Spring configuration class wires up one bean per product domain (e.g. a `GPUPricePoint` template), each pointed at its own sequence and table name from a centralised constants file — replacing what was previously seven hand-written, near-identical template classes.
+
+### Price Point Entity Inheritance
+
+Price point entities share a common `GenericPricePoint` `@MappedSuperclass` holding `modelNumber`, `vendor`, `currency`, `price`, and `scrapedAt`. Each domain (`GPUPricePoint`, `CPUPricePoint`, etc.) extends it and declares only its own `@Id`/`@SequenceGenerator`, since Spring Data JPA doesn't allow a mapped superclass to define those directly.
+
+### Generic Scraper Contract
+
+Rather than one scraper class per vendor *per product*, there is a single scraper implementation per vendor. Each implementation handles JSoup connections, DOM parsing, model number/price refinement, and delegates the CSS selectors for a given product to the caller — so the same scraper instance is reused across all seven product domains for that vendor.
 
 ### Orchestrator Pattern for Scheduled Jobs
 
-Each product category has a dedicated orchestrator (`GPUScrapingOrchestrator`, etc.) annotated with `@Scheduled`. Orchestrators fetch the list of active product URLs from the DB, stream them through the scraper, filter out any failures, and persist results in a single batch:
+Each vendor/product combination has a dedicated orchestrator annotated with `@Scheduled`, grouped into per-vendor packages. All orchestrators implement a shared `GenericScrapingOrchestrator` interface, which provides a default method for scraping + sleeping + mapping a single product URL into a price point DTO:
 
 ```java
 List<GPUPricePoint> pricePoints = umartProductRepository.findUrlsForActiveGPUs()
     .stream()
-    .map(this::processGPU)
-    .flatMap(Optional::stream)   // silently drops individual URL failures
+    .map(url -> processPricePoint(umartProductScraper, genericScrapingService, UMART_SLEEPING_CONSTANT,
+            url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION, UMART, AUD))
+    .flatMap(Optional::stream)
+    .map(pricePointMapper::mapFrom)
     .toList();
+
+gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 ```
 
 ### Generic Mapper
@@ -118,11 +139,9 @@ public CPUServiceImpl(CPURepository cpuRepository, MapperFactory mapperFactory) 
 }
 ```
 
-This replaced the previous approach of one bespoke mapper class per product and price point type.
-
 ### Centralised Constants
 
-All magic values are defined in a `/constants/` package rather than scattered through the codebase. This includes CSS selectors, vendor URLs, database table and sequence names, and CRON expressions. Adapting to a vendor site change means updating one file.
+All magic values are defined in a `/constants/` package rather than scattered through the codebase. This includes CSS selectors, vendor URLs, database table/sequence names, JDBC batch size, and CRON expressions. Adapting to a vendor site change means updating one file.
 
 ---
 
@@ -140,9 +159,9 @@ Each hardware category exposes the same RESTful interface. Using GPU as an examp
 | `PATCH` | `/api/gpus/{id}` | Partial update |
 | `DELETE` | `/api/gpus/{id}` | Delete GPU |
 
-Identical endpoints exist for `/api/cpus`, `/api/rams`, `/api/gpu-workstations`, `/api/hdds`, `/api/ssds`, and `/api/nvmes`.
+Identical endpoints exist for `/api/cpus`, `/api/rams`, `/api/workstation_gpus`, `/api/hdds`, `/api/ssds`, and `/api/nvmes`.
 
-Price point history endpoints follow the same pattern under `/api/gpu-price-points`, etc.
+Price point history endpoints follow the same pattern under `/api/gpu_pricepoints`, etc.
 
 ### Price Point Endpoints (Paginated)
 
@@ -159,11 +178,15 @@ Both endpoints accept standard Spring `Pageable` query parameters with a default
 |-----------|-------------|---------|
 | `page` | Zero-based page index | `?page=0` |
 | `size` | Number of results per page (default: 30) | `?size=50` |
-| `sort` | Sort field and direction | `?sort=dateRecorded,desc` |
+| `sort` | Sort field and direction | `?sort=scrapedAt,desc` |
 
 Responses are wrapped in a Spring `Page<T>` envelope with `content`, `totalElements`, `totalPages`, `number`, and `size` fields.
 
-Identical paginated endpoints exist for `/api/cpu_pricepoints`, `/api/ram_pricepoints`, `/api/gpu_workstation_pricepoints`, `/api/hdd_pricepoints`, `/api/ssd_pricepoints`, and `/api/nvme_pricepoints`.
+Identical paginated endpoints exist for `/api/cpu_pricepoints`, `/api/ram_pricepoints`, `/api/workstation_gpu_pricepoints`, `/api/hdd_pricepoints`, `/api/ssd_pricepoints`, and `/api/nvme_pricepoints`.
+
+### Vendor Endpoints
+
+`/api/vendors` exposes CRUD for the vendors table. Each vendor also has its own product-mapping endpoint, linking a product's model number to the scraped URL used to track it (e.g. `/api/umartproducts`, `/api/scorptecproducts`), each supporting the same create/batch-create/list/get/update/delete operations as the product endpoints above.
 
 ---
 
@@ -175,19 +198,21 @@ CORS is configured for `localhost:3000`. This enables communication with the fro
 
 ## Testing
 
-All tests are integration tests — there are no unit tests with mocked dependencies. Every test spins up the full Spring context against a real PostgreSQL instance and exercises the actual beans end-to-end.
-
-Tests are organised into three layers, mirroring the application's layered architecture:
+Tests are organised into three layers, mirroring the application's layered architecture, plus a dedicated scraper test split:
 
 **Repository tests** (`repositories/`) — exercises JPA repositories directly, verifying that entities can be persisted and retrieved correctly from the database.
 
 **Controller tests** (`controllers/`) — tests REST endpoints via `MockMvc`, covering the full request/response cycle (status codes, response body shape, CRUD operations, and 404 handling for missing resources).
 
-**Scraper tests** (`scrapers/`) — the most comprehensive layer. These tests hit live vendor URLs to verify that the scraper extracts the expected model number, then persist price points via the JDBC batch template and assert on the returned data through the price point API. Batch insertion correctness is verified across both small (10 items) and large (110 items, spanning multiple round-trips) insertion counts.
+**Scraper unit tests** (`scrapers/unit_tests/`) — run offline against static HTML fixtures checked into test resources, verifying that each vendor scraper extracts the expected model number and correctly refines prices/model numbers, without hitting a live site or a database.
 
-**Test data** is centralised in per-domain utility classes (`testing_data/`), e.g. `GPUTestingUtility` and `GPUTestingData`, which provide shared fixture creation methods used across all three test layers.
+**Scraper integration tests** (`scrapers/integration_tests/`) — spin up the full Spring context against a real PostgreSQL instance, persist price points via the generic JDBC batch template, and assert on the returned data through the price point API. Batch insertion correctness is verified across both small (10 items) and large (110 items, spanning multiple round-trips) insertion counts.
 
-**NOTE:** Tests use `@DirtiesContext` to rebuild the schema between test methods, and `@ActiveProfiles("test")` to switch to a `create-drop` database. This ensures full isolation without manual teardown.
+Static HTML fixtures are captured on demand by a manually-run capture tool that hits live vendor URLs, and loaded in unit tests from disk. Fixtures are re-captured whenever a vendor changes their page markup.
+
+**Test data** is centralised in per-domain utility classes (`testing_data/`), e.g. `GPUTestingUtility` and `GPUTestingData`, plus per-vendor utilities, which provide shared fixture creation methods used across all test layers.
+
+**NOTE:** Tests use `@ActiveProfiles("test")` to switch to a `create-drop` database, and controller/repository tests run within a `@Transactional` context that rolls back after each test. This ensures full isolation without manual teardown.
 
 ---
 
