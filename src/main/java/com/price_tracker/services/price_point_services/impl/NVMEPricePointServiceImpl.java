@@ -1,7 +1,7 @@
 package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.NVMEDataAndPricePointDTO;
-import com.price_tracker.domain.dto.hybrid_interfaces.NVMEDataAndPricePointProjection;
+import com.price_tracker.domain.dto.hybrid_interfaces.GenericDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.NVMEDTO;
 import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
@@ -43,18 +43,19 @@ public class NVMEPricePointServiceImpl implements NVMEPricePointService {
     @Override
     public Optional<NVMEDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable) {
 
-        Page<NVMEDataAndPricePointProjection> resultList = nvmePricePointRepository
+        Page<GenericDataAndPricePointProjection<NVMEEntity, NVMEPricePoint>> resultList = nvmePricePointRepository
                 .getPricePointsByModelNumber(modelNumber, pageable);
 
         if (resultList.isEmpty()) {
             return Optional.empty();
         }
 
-        NVMEEntity nvme = resultList.stream().toList().getFirst().getNVMEEntity();
+        NVMEEntity nvme = resultList.stream().toList().getFirst().getEntity();
         NVMEDTO nvmeDTO = nvmeMapper.mapTo(nvme);
 
         List<GenericPricePointDTO> nvmePricePointDTOS = resultList.stream()
-                .map(result -> nvmePricePointMapper.mapTo(result.getNVMEPricePoint()))
+                .map(result ->
+                        nvmePricePointMapper.mapTo(result.getPricePoint()))
                 .toList();
 
         NVMEDataAndPricePointDTO nvmeDataAndPricePointDTO = NVMEDataAndPricePointDTO.builder()
