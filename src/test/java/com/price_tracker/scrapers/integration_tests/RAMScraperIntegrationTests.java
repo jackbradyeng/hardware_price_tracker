@@ -6,7 +6,7 @@ import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.RAMPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.services.price_point_services.RAMPricePointService;
 import com.price_tracker.services.product_services.RAMService;
 import com.price_tracker.testing_data.RestPage;
@@ -46,7 +46,7 @@ public class RAMScraperIntegrationTests {
     private final RAMTestingUtility ramTestingUtility;
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
-    private final RAMPricePointJDBCTemplate ramPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<RAMPricePoint> ramGenericPricePointJDBCTemplate;
     private final RAMService ramService;
     private final GenericMapper<RAMPricePoint, GenericPricePointDTO> ramPricePointMapper;
     private final RAMPricePointService ramPricePointService;
@@ -57,14 +57,14 @@ public class RAMScraperIntegrationTests {
                                       GenericScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
-                                      RAMPricePointJDBCTemplate ramPricePointJDBCTemplate,
+                                      GenericPricePointJdbcTemplate<RAMPricePoint> ramGenericPricePointJDBCTemplate,
                                       RAMService ramService,
                                       RAMPricePointService ramPricePointService) {
         this.mockMVC = mockMVC;
         this.ramTestingUtility = ramTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
-        this.ramPricePointJDBCTemplate = ramPricePointJDBCTemplate;
+        this.ramGenericPricePointJDBCTemplate = ramGenericPricePointJDBCTemplate;
         this.ramService = ramService;
         this.ramPricePointMapper = mapperFactory.create(RAMPricePoint.class, GenericPricePointDTO.class);
         this.ramPricePointService = ramPricePointService;
@@ -78,7 +78,7 @@ public class RAMScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        ramPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        ramGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/ram_pricepoints")
@@ -96,7 +96,7 @@ public class RAMScraperIntegrationTests {
                 .limit(insertionCount)
                 .toList();
 
-        ramPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        ramGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
                         MockMvcRequestBuilders.get("/api/ram_pricepoints")
@@ -142,7 +142,7 @@ public class RAMScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        ramPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        ramGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/ram_pricepoints/" + savedRAM.getModelNumber())
@@ -176,7 +176,7 @@ public class RAMScraperIntegrationTests {
                 .toList()
                 .reversed();
 
-        ramPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        ramGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // convert price points to DTO for comparison's sake
         List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
@@ -206,7 +206,7 @@ public class RAMScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        ramPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        ramGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // next we query by the RAM's model number - this should return a collection of composite DTOs
         Optional<RAMDataAndPricePointDTO> returnList = ramPricePointService
