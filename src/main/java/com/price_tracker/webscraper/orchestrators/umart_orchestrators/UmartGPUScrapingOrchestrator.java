@@ -4,7 +4,7 @@ import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.orchestrators.GenericScrapingOrchestrator;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -29,19 +29,19 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 @Service
 public class UmartGPUScrapingOrchestrator implements GenericScrapingOrchestrator {
 
-    private final GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<GPUPricePoint> gpuGenericPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
     private final GenericScrapingService genericScrapingService;
     private final GenericVendorScraper umartProductScraper;
     private final GenericMapper<GPUPricePoint, GenericPricePointDTO> pricePointMapper;
 
     @Autowired
-    public UmartGPUScrapingOrchestrator(GPUPricePointJDBCTemplate gpuPricePointJDBCTemplate,
+    public UmartGPUScrapingOrchestrator(GenericPricePointJdbcTemplate<GPUPricePoint> gpuGenericPricePointJDBCTemplate,
                                         UmartProductRepository umartProductRepository,
                                         GenericScrapingService genericScrapingService,
                                         @Qualifier("umartProductScraper") GenericVendorScraper umartProductScraper,
                                         MapperFactory mapperFactory) {
-        this.gpuPricePointJDBCTemplate = gpuPricePointJDBCTemplate;
+        this.gpuGenericPricePointJDBCTemplate = gpuGenericPricePointJDBCTemplate;
         this.umartProductRepository = umartProductRepository;
         this.genericScrapingService = genericScrapingService;
         this.umartProductScraper = umartProductScraper;
@@ -64,7 +64,7 @@ public class UmartGPUScrapingOrchestrator implements GenericScrapingOrchestrator
                 .map(pricePointMapper::mapFrom)
                 .toList();
 
-        gpuPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+        gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
