@@ -4,7 +4,7 @@ import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.CPUPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.repositories.vendor_repos.ScorptecProductRepository;
 import com.price_tracker.webscraper.orchestrators.GenericScrapingOrchestrator;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -28,19 +28,19 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.SCORPTEC;
 @Service
 public class ScorptecCPUScrapingOrchestrator implements GenericScrapingOrchestrator {
 
-    private final CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<CPUPricePoint> cpuGenericPricePointJDBCTemplate;
     private final ScorptecProductRepository scorptecProductRepository;
     private final GenericScrapingService genericScrapingService;
     private final GenericVendorScraper scorptecProductScraper;
     private final GenericMapper<CPUPricePoint, GenericPricePointDTO> pricePointMapper;
 
     @Autowired
-    public ScorptecCPUScrapingOrchestrator(CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate,
+    public ScorptecCPUScrapingOrchestrator(GenericPricePointJdbcTemplate<CPUPricePoint> cpuGenericPricePointJDBCTemplate,
                                            ScorptecProductRepository scorptecProductRepository,
                                            GenericScrapingService genericScrapingService,
                                            @Qualifier("scorptecProductScraper") GenericVendorScraper scorptecProductScraper,
                                            MapperFactory mapperFactory) {
-        this.cpuPricePointJDBCTemplate = cpuPricePointJDBCTemplate;
+        this.cpuGenericPricePointJDBCTemplate = cpuGenericPricePointJDBCTemplate;
         this.scorptecProductRepository = scorptecProductRepository;
         this.genericScrapingService = genericScrapingService;
         this.scorptecProductScraper = scorptecProductScraper;
@@ -61,7 +61,7 @@ public class ScorptecCPUScrapingOrchestrator implements GenericScrapingOrchestra
                 .map(pricePointMapper::mapFrom)
                 .toList();
 
-        cpuPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+        cpuGenericPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);

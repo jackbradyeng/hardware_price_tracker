@@ -6,7 +6,7 @@ import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.CPUPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.services.price_point_services.CPUPricePointService;
 import com.price_tracker.services.product_services.CPUService;
 import com.price_tracker.testing_data.RestPage;
@@ -46,7 +46,7 @@ public class CPUScraperIntegrationTests {
     private final CPUTestingUtility cpuTestingUtility;
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
-    private final CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<CPUPricePoint> cpuGenericPricePointJDBCTemplate;
     private final CPUService cpuService;
     private final GenericMapper<CPUPricePoint, GenericPricePointDTO> cpuPricePointMapper;
     private final CPUPricePointService cpuPricePointService;
@@ -57,14 +57,14 @@ public class CPUScraperIntegrationTests {
                                       GenericScrapingService scraper,
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
-                                      CPUPricePointJDBCTemplate cpuPricePointJDBCTemplate,
+                                      GenericPricePointJdbcTemplate<CPUPricePoint> cpuGenericPricePointJDBCTemplate,
                                       CPUService cpuService,
                                       CPUPricePointService cpuPricePointService) {
         this.mockMVC = mockMVC;
         this.cpuTestingUtility = cpuTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
-        this.cpuPricePointJDBCTemplate = cpuPricePointJDBCTemplate;
+        this.cpuGenericPricePointJDBCTemplate = cpuGenericPricePointJDBCTemplate;
         this.cpuService = cpuService;
         this.cpuPricePointMapper = mapperFactory.create(CPUPricePoint.class, GenericPricePointDTO.class);
         this.cpuPricePointService = cpuPricePointService;
@@ -78,7 +78,7 @@ public class CPUScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        cpuPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        cpuGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/cpu_pricepoints")
@@ -96,7 +96,7 @@ public class CPUScraperIntegrationTests {
                 .limit(insertionCount)
                 .toList();
 
-        cpuPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        cpuGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
                         MockMvcRequestBuilders.get("/api/cpu_pricepoints")
@@ -142,7 +142,7 @@ public class CPUScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        cpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        cpuGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/cpu_pricepoints/" + savedCPU.getModelNumber())
@@ -176,7 +176,7 @@ public class CPUScraperIntegrationTests {
                 .toList()
                 .reversed();
 
-        cpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        cpuGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // convert price points to DTO for comparison's sake
         List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
@@ -206,7 +206,7 @@ public class CPUScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        cpuPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        cpuGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         // next we query by the CPU's model number - this should return a collection of composite DTOs
         Optional<CPUDataAndPricePointDTO> returnList = cpuPricePointService
