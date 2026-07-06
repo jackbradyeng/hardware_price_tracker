@@ -1,7 +1,7 @@
 package com.price_tracker.services.price_point_services.impl;
 
 import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
-import com.price_tracker.domain.dto.hybrid_interfaces.CPUDataAndPricePointProjection;
+import com.price_tracker.domain.dto.hybrid_interfaces.GenericDataAndPricePointProjection;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
@@ -43,7 +43,7 @@ public class CPUPricePointServiceImpl implements CPUPricePointService {
     @Override
     public Optional<CPUDataAndPricePointDTO> findByModelNumber(String modelNumber, Pageable pageable) {
 
-        Page<CPUDataAndPricePointProjection> resultList = cpuPricePointRepository
+        Page<GenericDataAndPricePointProjection<CPUEntity, CPUPricePoint>> resultList = cpuPricePointRepository
                 .getPricePointsByModelNumber(modelNumber, pageable);
 
         // throw a 404 if not found
@@ -52,12 +52,12 @@ public class CPUPricePointServiceImpl implements CPUPricePointService {
         }
 
         // convert CPU to a DTO so we can expose it in our API
-        CPUEntity cpu = resultList.stream().toList().getFirst().getCPUEntity();
+        CPUEntity cpu = resultList.stream().toList().getFirst().getEntity();
         CPUDTO cpuDTO = cpuMapper.mapTo(cpu);
 
         // convert CPU price points to a list of DTOs
         List<GenericPricePointDTO> cpuPricePointDTOS = resultList.stream()
-                .map(result -> cpuPricePointMapper.mapTo(result.getCPUPricePoint()))
+                .map(result -> cpuPricePointMapper.mapTo(result.getPricePoint()))
                 .toList();
 
         CPUDataAndPricePointDTO cpuDataAndPricePointDTO = CPUDataAndPricePointDTO.builder()
