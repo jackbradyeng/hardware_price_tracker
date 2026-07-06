@@ -4,7 +4,7 @@ import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.HDDPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.orchestrators.GenericScrapingOrchestrator;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -29,19 +29,19 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 @Service
 public class UmartHDDScrapingOrchestrator implements GenericScrapingOrchestrator {
 
-    private final HDDPricePointJDBCTemplate hddPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<HDDPricePoint> hddGenericPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
     private final GenericScrapingService genericScrapingService;
     private final GenericVendorScraper umartProductScraper;
     private final GenericMapper<HDDPricePoint, GenericPricePointDTO> pricePointMapper;
 
     @Autowired
-    public UmartHDDScrapingOrchestrator(HDDPricePointJDBCTemplate hddPricePointJDBCTemplate,
+    public UmartHDDScrapingOrchestrator(GenericPricePointJdbcTemplate<HDDPricePoint> hddGenericPricePointJDBCTemplate,
                                         UmartProductRepository umartProductRepository,
                                         GenericScrapingService genericScrapingService,
                                         @Qualifier("umartProductScraper") GenericVendorScraper umartProductScraper,
                                         MapperFactory mapperFactory) {
-        this.hddPricePointJDBCTemplate = hddPricePointJDBCTemplate;
+        this.hddGenericPricePointJDBCTemplate = hddGenericPricePointJDBCTemplate;
         this.umartProductRepository = umartProductRepository;
         this.genericScrapingService = genericScrapingService;
         this.umartProductScraper = umartProductScraper;
@@ -64,7 +64,7 @@ public class UmartHDDScrapingOrchestrator implements GenericScrapingOrchestrator
                 .map(pricePointMapper::mapFrom)
                 .toList();
 
-        hddPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+        hddGenericPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
