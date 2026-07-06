@@ -1,5 +1,6 @@
 package com.price_tracker.repositories.price_point_repos.jdbc_templates;
 
+import static com.price_tracker.constants.other_constants.DatabaseConstants.DEFAULT_JDBC_BATCH_SIZE;
 import com.price_tracker.domain.entities.price_point_entities.GenericPricePoint;
 import jakarta.transaction.Transactional;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,12 +37,10 @@ public class GenericPricePointJdbcTemplate<T extends GenericPricePoint> {
         String sql = "INSERT INTO " + tableName + " (id, model_number, vendor, currency, price, scraped_at) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
-        int batchSize = 50;
-
         jdbcTemplate.batchUpdate(
                 sql,
                 pricePoints,
-                batchSize,
+                DEFAULT_JDBC_BATCH_SIZE,
                 (ps, pricePoint) -> {
                     ps.setLong(1, pricePoint.getId());
                     ps.setString(2, pricePoint.getModelNumber());
