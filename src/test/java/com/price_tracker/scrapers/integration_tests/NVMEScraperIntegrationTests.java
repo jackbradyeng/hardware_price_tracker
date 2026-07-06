@@ -6,7 +6,7 @@ import com.price_tracker.domain.dto.product_dtos.NVMEDTO;
 import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.NVMEPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.services.price_point_services.NVMEPricePointService;
 import com.price_tracker.services.product_services.NVMEService;
 import com.price_tracker.testing_data.RestPage;
@@ -46,7 +46,7 @@ public class NVMEScraperIntegrationTests {
     private final NVMETestingUtility nvmeTestingUtility;
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
-    private final NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<NVMEPricePoint> nvmeGenericPricePointJDBCTemplate;
     private final NVMEService nvmeService;
     private final GenericMapper<NVMEPricePoint, GenericPricePointDTO> nvmePricePointMapper;
     private final NVMEPricePointService nvmePricePointService;
@@ -57,14 +57,14 @@ public class NVMEScraperIntegrationTests {
                                        GenericScrapingService scraper,
                                        ObjectMapper objectMapper,
                                        MapperFactory mapperFactory,
-                                       NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate,
+                                       GenericPricePointJdbcTemplate<NVMEPricePoint> nvmeGenericPricePointJDBCTemplate,
                                        NVMEService nvmeService,
                                        NVMEPricePointService nvmePricePointService) {
         this.mockMVC = mockMVC;
         this.nvmeTestingUtility = nvmeTestingUtility;
         this.scraper = scraper;
         this.objectMapper = objectMapper;
-        this.nvmePricePointJDBCTemplate = nvmePricePointJDBCTemplate;
+        this.nvmeGenericPricePointJDBCTemplate = nvmeGenericPricePointJDBCTemplate;
         this.nvmeService = nvmeService;
         this.nvmePricePointMapper = mapperFactory.create(NVMEPricePoint.class, GenericPricePointDTO.class);
         this.nvmePricePointService = nvmePricePointService;
@@ -78,7 +78,7 @@ public class NVMEScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        nvmePricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        nvmeGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/nvme_pricepoints")
@@ -96,7 +96,7 @@ public class NVMEScraperIntegrationTests {
                 .limit(insertionCount)
                 .toList();
 
-        nvmePricePointJDBCTemplate.batchInsertPricePoints(returnList);
+        nvmeGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
                         MockMvcRequestBuilders.get("/api/nvme_pricepoints")
@@ -138,7 +138,7 @@ public class NVMEScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        nvmePricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        nvmeGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/api/nvme_pricepoints/" + savedNVME.getModelNumber())
@@ -170,7 +170,7 @@ public class NVMEScraperIntegrationTests {
                 .toList()
                 .reversed();
 
-        nvmePricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        nvmeGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
                 .map(nvmePricePointMapper::mapTo)
@@ -196,7 +196,7 @@ public class NVMEScraperIntegrationTests {
                 .limit(10)
                 .toList();
 
-        nvmePricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+        nvmeGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         Optional<NVMEDataAndPricePointDTO> returnList = nvmePricePointService
                 .findByModelNumber(savedNVME.getModelNumber(), Pageable.unpaged());

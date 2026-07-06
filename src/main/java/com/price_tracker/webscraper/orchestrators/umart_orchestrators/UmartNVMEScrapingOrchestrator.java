@@ -4,7 +4,7 @@ import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.NVMEPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.webscraper.orchestrators.GenericScrapingOrchestrator;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -29,19 +29,19 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.UMART;
 @Service
 public class UmartNVMEScrapingOrchestrator implements GenericScrapingOrchestrator {
 
-    private final NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<NVMEPricePoint> nvmeGenericPricePointJDBCTemplate;
     private final UmartProductRepository umartProductRepository;
     private final GenericScrapingService genericScrapingService;
     private final GenericVendorScraper umartProductScraper;
     private final GenericMapper<NVMEPricePoint, GenericPricePointDTO> pricePointMapper;
 
     @Autowired
-    public UmartNVMEScrapingOrchestrator(NVMEPricePointJDBCTemplate nvmePricePointJDBCTemplate,
+    public UmartNVMEScrapingOrchestrator(GenericPricePointJdbcTemplate<NVMEPricePoint> nvmeGenericPricePointJDBCTemplate,
                                          UmartProductRepository umartProductRepository,
                                          GenericScrapingService genericScrapingService,
                                          @Qualifier("umartProductScraper") GenericVendorScraper umartProductScraper,
                                          MapperFactory mapperFactory) {
-        this.nvmePricePointJDBCTemplate = nvmePricePointJDBCTemplate;
+        this.nvmeGenericPricePointJDBCTemplate = nvmeGenericPricePointJDBCTemplate;
         this.umartProductRepository = umartProductRepository;
         this.genericScrapingService = genericScrapingService;
         this.umartProductScraper = umartProductScraper;
@@ -64,7 +64,7 @@ public class UmartNVMEScrapingOrchestrator implements GenericScrapingOrchestrato
                 .map(pricePointMapper::mapFrom)
                 .toList();
 
-        nvmePricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+        nvmeGenericPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
