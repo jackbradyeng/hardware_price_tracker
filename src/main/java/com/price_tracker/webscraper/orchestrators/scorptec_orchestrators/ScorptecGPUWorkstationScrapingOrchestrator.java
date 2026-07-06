@@ -4,7 +4,7 @@ import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.domain.entities.price_point_entities.GPUWorkstationPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-import com.price_tracker.repositories.price_point_repos.jdbc_templates.GPUWorkstationPricePointJDBCTemplate;
+import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
 import com.price_tracker.repositories.vendor_repos.ScorptecProductRepository;
 import com.price_tracker.webscraper.orchestrators.GenericScrapingOrchestrator;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -28,19 +28,19 @@ import static com.price_tracker.constants.vendor_constants.VendorNames.SCORPTEC;
 @Service
 public class ScorptecGPUWorkstationScrapingOrchestrator implements GenericScrapingOrchestrator {
 
-    private final GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate;
+    private final GenericPricePointJdbcTemplate<GPUWorkstationPricePoint> gpuWorkstationGenericPricePointJDBCTemplate;
     private final ScorptecProductRepository scorptecProductRepository;
     private final GenericScrapingService genericScrapingService;
     private final GenericVendorScraper scorptecProductScraper;
     private final GenericMapper<GPUWorkstationPricePoint, GenericPricePointDTO> pricePointMapper;
 
     @Autowired
-    public ScorptecGPUWorkstationScrapingOrchestrator(GPUWorkstationPricePointJDBCTemplate gpuWorkstationPricePointJDBCTemplate,
+    public ScorptecGPUWorkstationScrapingOrchestrator(GenericPricePointJdbcTemplate<GPUWorkstationPricePoint> gpuWorkstationGenericPricePointJDBCTemplate,
                                                       ScorptecProductRepository scorptecProductRepository,
                                                       GenericScrapingService genericScrapingService,
                                                       @Qualifier("scorptecProductScraper") GenericVendorScraper scorptecProductScraper,
                                                       MapperFactory mapperFactory) {
-        this.gpuWorkstationPricePointJDBCTemplate = gpuWorkstationPricePointJDBCTemplate;
+        this.gpuWorkstationGenericPricePointJDBCTemplate = gpuWorkstationGenericPricePointJDBCTemplate;
         this.scorptecProductRepository = scorptecProductRepository;
         this.genericScrapingService = genericScrapingService;
         this.scorptecProductScraper = scorptecProductScraper;
@@ -61,7 +61,7 @@ public class ScorptecGPUWorkstationScrapingOrchestrator implements GenericScrapi
                 .map(pricePointMapper::mapFrom)
                 .toList();
 
-        gpuWorkstationPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
+        gpuWorkstationGenericPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
 
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
