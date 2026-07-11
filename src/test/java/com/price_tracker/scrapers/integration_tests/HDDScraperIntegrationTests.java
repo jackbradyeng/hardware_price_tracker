@@ -7,8 +7,8 @@ import com.price_tracker.domain.entities.price_point_entities.HDDPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
-import com.price_tracker.services.price_point_services.HDDPricePointService;
-import com.price_tracker.services.product_services.HDDService;
+import com.price_tracker.services.price_point_services.GenericPricePointService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.hdd_data.HDDTestingUtility;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -47,9 +47,9 @@ public class HDDScraperIntegrationTests {
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GenericPricePointJdbcTemplate<HDDPricePoint> hddGenericPricePointJDBCTemplate;
-    private final HDDService hddService;
+    private final GenericProductService<HDDDTO> hddService;
     private final GenericMapper<HDDPricePoint, GenericPricePointDTO> hddPricePointMapper;
-    private final HDDPricePointService hddPricePointService;
+    private final GenericPricePointService<HDDDataAndPricePointDTO> hddPricePointService;
 
     @Autowired
     public HDDScraperIntegrationTests(MockMvc mockMVC,
@@ -58,8 +58,8 @@ public class HDDScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       GenericPricePointJdbcTemplate<HDDPricePoint> hddGenericPricePointJDBCTemplate,
-                                      HDDService hddService,
-                                      HDDPricePointService hddPricePointService) {
+                                      GenericProductService<HDDDTO> hddService,
+                                      GenericPricePointService<HDDDataAndPricePointDTO> hddPricePointService) {
         this.mockMVC = mockMVC;
         this.hddTestingUtility = hddTestingUtility;
         this.scraper = scraper;

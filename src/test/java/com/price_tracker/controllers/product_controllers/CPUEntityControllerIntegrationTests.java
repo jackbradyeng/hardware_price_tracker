@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
-import com.price_tracker.services.product_services.CPUService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,12 +26,12 @@ public class CPUEntityControllerIntegrationTests {
     private final MockMvc mockMVC;
     private final ObjectMapper objectMapper;
     private final CPUTestingUtility cpuTestingUtility;
-    private final CPUService cpuService;
+    private final GenericProductService<CPUDTO> cpuService;
 
     @Autowired
     public CPUEntityControllerIntegrationTests(MockMvc mockMVC,
                                                CPUTestingUtility cpuTestingUtility,
-                                               CPUService cpuService) {
+                                               GenericProductService<CPUDTO> cpuService) {
         this.mockMVC = mockMVC;
         this.objectMapper = new ObjectMapper();
         this.cpuTestingUtility = cpuTestingUtility;

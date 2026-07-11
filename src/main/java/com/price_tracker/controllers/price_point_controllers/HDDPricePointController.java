@@ -2,7 +2,7 @@ package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.HDDDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
-import com.price_tracker.services.price_point_services.HDDPricePointService;
+import com.price_tracker.services.price_point_services.GenericPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @Log
 public class HDDPricePointController {
 
-    private final HDDPricePointService hddPricePointService;
+    private final GenericPricePointService<HDDDataAndPricePointDTO> hddPricePointService;
 
     @GetMapping(path = "/api/hdd_pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listHDDPricePoints(

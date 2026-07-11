@@ -7,8 +7,8 @@ import com.price_tracker.domain.entities.price_point_entities.GPUPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
-import com.price_tracker.services.price_point_services.GPUPricePointService;
-import com.price_tracker.services.product_services.GPUService;
+import com.price_tracker.services.price_point_services.GenericPricePointService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -47,9 +47,9 @@ public class GPUScraperIntegrationTests {
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GenericPricePointJdbcTemplate<GPUPricePoint> gpuGenericPricePointJDBCTemplate;
-    private final GPUService gpuService;
+    private final GenericProductService<GPUDTO> gpuService;
     private final GenericMapper<GPUPricePoint, GenericPricePointDTO> gpuPricePointMapper;
-    private final GPUPricePointService gpuPricePointService;
+    private final GenericPricePointService<GPUDataAndPricePointDTO> gpuPricePointService;
 
     @Autowired
     public GPUScraperIntegrationTests(MockMvc mockMVC,
@@ -58,8 +58,8 @@ public class GPUScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       GenericPricePointJdbcTemplate<GPUPricePoint> gpuGenericPricePointJDBCTemplate,
-                                      GPUService gpuService,
-                                      GPUPricePointService gpuPricePointService) {
+                                      GenericProductService<GPUDTO> gpuService,
+                                      GenericPricePointService<GPUDataAndPricePointDTO> gpuPricePointService) {
         this.mockMVC = mockMVC;
         this.gpuTestingUtility = gpuTestingUtility;
         this.scraper = scraper;

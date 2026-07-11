@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.HDDDTO;
-import com.price_tracker.services.product_services.HDDService;
+import com.price_tracker.services.product_services.GenericProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Log
 public class HDDController {
 
-    private final HDDService hddService;
+    private final GenericProductService<HDDDTO> hddService;
 
     @PostMapping(path = "/api/hdds")
     public ResponseEntity<HDDDTO> createHDD(@RequestBody final HDDDTO hddDTO) {

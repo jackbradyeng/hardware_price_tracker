@@ -2,7 +2,7 @@ package com.price_tracker.controllers.price_point_controllers;
 
 import com.price_tracker.domain.dto.hybrid_dtos.NVMEDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
-import com.price_tracker.services.price_point_services.NVMEPricePointService;
+import com.price_tracker.services.price_point_services.GenericPricePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @Log
 public class NVMEPricePointController {
 
-    private final NVMEPricePointService nvmePricePointService;
+    private final GenericPricePointService<NVMEDataAndPricePointDTO> nvmePricePointService;
 
     @GetMapping(path = "/api/nvme_pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listNVMEPricePoints(

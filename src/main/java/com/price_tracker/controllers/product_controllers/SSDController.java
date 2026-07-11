@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.SSDDTO;
-import com.price_tracker.services.product_services.SSDService;
+import com.price_tracker.services.product_services.GenericProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Log
 public class SSDController {
 
-    private final SSDService ssdService;
+    private final GenericProductService<SSDDTO> ssdService;
 
     @PostMapping(path = "/api/ssds")
     public ResponseEntity<SSDDTO> createSSD(@RequestBody final SSDDTO ssdDTO) {

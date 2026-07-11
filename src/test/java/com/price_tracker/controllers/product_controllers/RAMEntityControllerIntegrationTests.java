@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
-import com.price_tracker.services.product_services.RAMService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import static com.price_tracker.testing_data.ram_data.RAMTestingData.TESTING_RAM_MODEL_NUMBER;
 import org.junit.jupiter.api.Test;
@@ -27,13 +27,13 @@ public class RAMEntityControllerIntegrationTests {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final RAMTestingUtility ramTestingUtility;
-    private final RAMService ramService;
+    private final GenericProductService<RAMDTO> ramService;
 
     @Autowired
     public RAMEntityControllerIntegrationTests(MockMvc mockMvc,
                                                ObjectMapper objectMapper,
                                                RAMTestingUtility ramTestingUtility,
-                                               RAMService ramService) {
+                                               GenericProductService<RAMDTO> ramService) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
         this.ramTestingUtility = ramTestingUtility;
