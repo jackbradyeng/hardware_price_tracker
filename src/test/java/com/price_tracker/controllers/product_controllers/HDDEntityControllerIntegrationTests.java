@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.HDDDTO;
-import com.price_tracker.services.product_services.HDDService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.hdd_data.HDDTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,12 +27,12 @@ public class HDDEntityControllerIntegrationTests {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final HDDTestingUtility hddTestingUtility;
-    private final HDDService hddService;
+    private final GenericProductService<HDDDTO> hddService;
 
     @Autowired
     public HDDEntityControllerIntegrationTests(MockMvc mockMvc,
                                                HDDTestingUtility hddTestingUtility,
-                                               HDDService hddService) {
+                                               GenericProductService<HDDDTO> hddService) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
         this.hddTestingUtility = hddTestingUtility;

@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
-import com.price_tracker.services.product_services.CPUService;
+import com.price_tracker.services.product_services.GenericProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Log
 public class CPUController {
 
-    private final CPUService cpuService;
+    private final GenericProductService<CPUDTO> cpuService;
 
     @PostMapping(path = "/api/cpus")
     public ResponseEntity<CPUDTO> createCPU(@RequestBody final CPUDTO cpuDTO) {

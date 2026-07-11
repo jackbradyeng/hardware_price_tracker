@@ -7,8 +7,8 @@ import com.price_tracker.domain.entities.price_point_entities.RAMPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
-import com.price_tracker.services.price_point_services.RAMPricePointService;
-import com.price_tracker.services.product_services.RAMService;
+import com.price_tracker.services.price_point_services.GenericPricePointService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -47,9 +47,9 @@ public class RAMScraperIntegrationTests {
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GenericPricePointJdbcTemplate<RAMPricePoint> ramGenericPricePointJDBCTemplate;
-    private final RAMService ramService;
+    private final GenericProductService<RAMDTO> ramService;
     private final GenericMapper<RAMPricePoint, GenericPricePointDTO> ramPricePointMapper;
-    private final RAMPricePointService ramPricePointService;
+    private final GenericPricePointService<RAMDataAndPricePointDTO> ramPricePointService;
 
     @Autowired
     public RAMScraperIntegrationTests(MockMvc mockMVC,
@@ -58,8 +58,8 @@ public class RAMScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       GenericPricePointJdbcTemplate<RAMPricePoint> ramGenericPricePointJDBCTemplate,
-                                      RAMService ramService,
-                                      RAMPricePointService ramPricePointService) {
+                                      GenericProductService<RAMDTO> ramService,
+                                      GenericPricePointService<RAMDataAndPricePointDTO> ramPricePointService) {
         this.mockMVC = mockMVC;
         this.ramTestingUtility = ramTestingUtility;
         this.scraper = scraper;

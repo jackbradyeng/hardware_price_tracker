@@ -4,8 +4,7 @@ import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.services.product_services.GPUService;
-import com.price_tracker.services.product_services.RAMService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.services.vendor_services.UmartProductService;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
@@ -25,16 +24,16 @@ public class UmartProductRepoIntegrationTests {
 
     private final UmartProductRepository umartProductRepository;
     private final UmartProductService umartProductService;
-    private final GPUService gpuService;
-    private final RAMService ramService;
+    private final GenericProductService<GPUDTO> gpuService;
+    private final GenericProductService<RAMDTO> ramService;
     private final GPUTestingUtility gpuTestingUtility;
     private final RAMTestingUtility ramTestingUtility;
 
     @Autowired
     public UmartProductRepoIntegrationTests(UmartProductRepository umartProductRepository,
                                             UmartProductService umartProductService,
-                                            GPUService gpuService,
-                                            RAMService ramService,
+                                            GenericProductService<GPUDTO> gpuService,
+                                            GenericProductService<RAMDTO> ramService,
                                             GPUTestingUtility gpuTestingUtility,
                                             RAMTestingUtility ramTestingUtility) {
         this.umartProductRepository = umartProductRepository;

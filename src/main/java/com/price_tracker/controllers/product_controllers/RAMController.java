@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
-import com.price_tracker.services.product_services.RAMService;
+import com.price_tracker.services.product_services.GenericProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Log
 public class RAMController {
 
-    private final RAMService ramService;
+    private final GenericProductService<RAMDTO> ramService;
 
     @PostMapping(path = "/api/ram")
     public ResponseEntity<RAMDTO> createRAM(@RequestBody final RAMDTO ramDTO) {

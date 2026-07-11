@@ -7,8 +7,8 @@ import com.price_tracker.domain.entities.price_point_entities.CPUPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
-import com.price_tracker.services.price_point_services.CPUPricePointService;
-import com.price_tracker.services.product_services.CPUService;
+import com.price_tracker.services.price_point_services.GenericPricePointService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -47,9 +47,9 @@ public class CPUScraperIntegrationTests {
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GenericPricePointJdbcTemplate<CPUPricePoint> cpuGenericPricePointJDBCTemplate;
-    private final CPUService cpuService;
+    private final GenericProductService<CPUDTO> cpuService;
     private final GenericMapper<CPUPricePoint, GenericPricePointDTO> cpuPricePointMapper;
-    private final CPUPricePointService cpuPricePointService;
+    private final GenericPricePointService<CPUDataAndPricePointDTO> cpuPricePointService;
 
     @Autowired
     public CPUScraperIntegrationTests(MockMvc mockMVC,
@@ -58,8 +58,8 @@ public class CPUScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       GenericPricePointJdbcTemplate<CPUPricePoint> cpuGenericPricePointJDBCTemplate,
-                                      CPUService cpuService,
-                                      CPUPricePointService cpuPricePointService) {
+                                      GenericProductService<CPUDTO> cpuService,
+                                      GenericPricePointService<CPUDataAndPricePointDTO> cpuPricePointService) {
         this.mockMVC = mockMVC;
         this.cpuTestingUtility = cpuTestingUtility;
         this.scraper = scraper;

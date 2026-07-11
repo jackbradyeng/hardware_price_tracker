@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
-import com.price_tracker.services.product_services.GPUService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,12 +27,12 @@ public class GPUEntityControllerIntegrationTests {
     private final MockMvc mockMVC;
     private final ObjectMapper objectMapper;
     private final GPUTestingUtility gpuTestingUtility;
-    private final GPUService gpuService;
+    private final GenericProductService<GPUDTO> gpuService;
 
     @Autowired
     public GPUEntityControllerIntegrationTests(MockMvc mockMVC,
                                                GPUTestingUtility gpuTestingUtility,
-                                               GPUService gpuService) {
+                                               GenericProductService<GPUDTO> gpuService) {
         this.mockMVC = mockMVC;
         this.objectMapper = new ObjectMapper();
         this.gpuTestingUtility = gpuTestingUtility;

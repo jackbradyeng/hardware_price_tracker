@@ -7,8 +7,8 @@ import com.price_tracker.domain.entities.price_point_entities.NVMEPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
-import com.price_tracker.services.price_point_services.NVMEPricePointService;
-import com.price_tracker.services.product_services.NVMEService;
+import com.price_tracker.services.price_point_services.GenericPricePointService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.nvme_data.NVMETestingUtility;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -47,9 +47,9 @@ public class NVMEScraperIntegrationTests {
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GenericPricePointJdbcTemplate<NVMEPricePoint> nvmeGenericPricePointJDBCTemplate;
-    private final NVMEService nvmeService;
+    private final GenericProductService<NVMEDTO> nvmeService;
     private final GenericMapper<NVMEPricePoint, GenericPricePointDTO> nvmePricePointMapper;
-    private final NVMEPricePointService nvmePricePointService;
+    private final GenericPricePointService<NVMEDataAndPricePointDTO> nvmePricePointService;
 
     @Autowired
     public NVMEScraperIntegrationTests(MockMvc mockMVC,
@@ -58,8 +58,8 @@ public class NVMEScraperIntegrationTests {
                                        ObjectMapper objectMapper,
                                        MapperFactory mapperFactory,
                                        GenericPricePointJdbcTemplate<NVMEPricePoint> nvmeGenericPricePointJDBCTemplate,
-                                       NVMEService nvmeService,
-                                       NVMEPricePointService nvmePricePointService) {
+                                       GenericProductService<NVMEDTO> nvmeService,
+                                       GenericPricePointService<NVMEDataAndPricePointDTO> nvmePricePointService) {
         this.mockMVC = mockMVC;
         this.nvmeTestingUtility = nvmeTestingUtility;
         this.scraper = scraper;

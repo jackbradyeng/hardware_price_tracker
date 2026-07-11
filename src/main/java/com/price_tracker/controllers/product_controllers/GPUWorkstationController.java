@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
-import com.price_tracker.services.product_services.GPUWorkstationService;
+import com.price_tracker.services.product_services.GenericProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Log
 public class GPUWorkstationController {
 
-    private final GPUWorkstationService gpuWorkstationService;
+    private final GenericProductService<GPUWorkstationDTO> gpuWorkstationService;
 
     @PostMapping(path = "/api/workstation_gpus")
     public ResponseEntity<GPUWorkstationDTO> createWorkstationGPU(

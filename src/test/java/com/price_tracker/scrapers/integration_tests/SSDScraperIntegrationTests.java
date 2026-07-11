@@ -7,8 +7,8 @@ import com.price_tracker.domain.entities.price_point_entities.SSDPricePoint;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.price_point_repos.jdbc_templates.GenericPricePointJdbcTemplate;
-import com.price_tracker.services.price_point_services.SSDPricePointService;
-import com.price_tracker.services.product_services.SSDService;
+import com.price_tracker.services.price_point_services.GenericPricePointService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.RestPage;
 import com.price_tracker.testing_data.ssd_data.SSDTestingUtility;
 import com.price_tracker.webscraper.product_services.GenericScrapingService;
@@ -47,9 +47,9 @@ public class SSDScraperIntegrationTests {
     private final GenericScrapingService scraper;
     private final ObjectMapper objectMapper;
     private final GenericPricePointJdbcTemplate<SSDPricePoint> ssdGenericPricePointJDBCTemplate;
-    private final SSDService ssdService;
+    private final GenericProductService<SSDDTO> ssdService;
     private final GenericMapper<SSDPricePoint, GenericPricePointDTO> ssdPricePointMapper;
-    private final SSDPricePointService ssdPricePointService;
+    private final GenericPricePointService<SSDDataAndPricePointDTO> ssdPricePointService;
 
     @Autowired
     public SSDScraperIntegrationTests(MockMvc mockMVC,
@@ -58,8 +58,8 @@ public class SSDScraperIntegrationTests {
                                       ObjectMapper objectMapper,
                                       MapperFactory mapperFactory,
                                       GenericPricePointJdbcTemplate<SSDPricePoint> ssdGenericPricePointJDBCTemplate,
-                                      SSDService ssdService,
-                                      SSDPricePointService ssdPricePointService) {
+                                      GenericProductService<SSDDTO> ssdService,
+                                      GenericPricePointService<SSDDataAndPricePointDTO> ssdPricePointService) {
         this.mockMVC = mockMVC;
         this.ssdTestingUtility = ssdTestingUtility;
         this.scraper = scraper;

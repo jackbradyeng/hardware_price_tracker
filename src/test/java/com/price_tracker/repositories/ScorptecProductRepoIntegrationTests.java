@@ -4,8 +4,7 @@ import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.entities.vendor_entities.ScorptecProductEntity;
 import com.price_tracker.repositories.vendor_repos.ScorptecProductRepository;
-import com.price_tracker.services.product_services.CPUService;
-import com.price_tracker.services.product_services.GPUService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.services.vendor_services.ScorptecProductService;
 import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
@@ -25,16 +24,16 @@ public class ScorptecProductRepoIntegrationTests {
 
     private final ScorptecProductRepository scorptecProductRepository;
     private final ScorptecProductService scorptecProductService;
-    private final GPUService gpuService;
-    private final CPUService cpuService;
+    private final GenericProductService<GPUDTO> gpuService;
+    private final GenericProductService<CPUDTO> cpuService;
     private final GPUTestingUtility gpuTestingUtility;
     private final CPUTestingUtility cpuTestingUtility;
 
     @Autowired
     public ScorptecProductRepoIntegrationTests(ScorptecProductRepository scorptecProductRepository,
                                                ScorptecProductService scorptecProductService,
-                                               GPUService gpuService,
-                                               CPUService cpuService,
+                                               GenericProductService<GPUDTO> gpuService,
+                                               GenericProductService<CPUDTO> cpuService,
                                                GPUTestingUtility gpuTestingUtility,
                                                CPUTestingUtility cpuTestingUtility) {
         this.scorptecProductRepository = scorptecProductRepository;

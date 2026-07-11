@@ -1,7 +1,7 @@
 package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.NVMEDTO;
-import com.price_tracker.services.product_services.NVMEService;
+import com.price_tracker.services.product_services.GenericProductService;
 import com.price_tracker.testing_data.nvme_data.NVMETestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,12 +27,12 @@ public class NVMEEntityControllerIntegrationTests {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final NVMETestingUtility nvmeTestingUtility;
-    private final NVMEService nvmeService;
+    private final GenericProductService<NVMEDTO> nvmeService;
 
     @Autowired
     public NVMEEntityControllerIntegrationTests(MockMvc mockMvc,
                                                 NVMETestingUtility nvmeTestingUtility,
-                                                NVMEService nvmeService) {
+                                                GenericProductService<NVMEDTO> nvmeService) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
         this.nvmeTestingUtility = nvmeTestingUtility;
