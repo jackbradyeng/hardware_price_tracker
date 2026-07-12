@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     }
 
     /** Handles mismatched type exceptions thrown by a bad request (i.e. String baseClock instead of Double baseClock on
-     * a CPU POST request. */
+     * a CPU POST request). */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, Object>> handleMalformedRequest(HttpMessageNotReadableException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
