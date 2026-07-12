@@ -3,6 +3,7 @@ package com.price_tracker.controllers.price_point_controllers;
 import com.price_tracker.domain.dto.hybrid_dtos.CPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.services.price_point_services.GenericPricePointService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class CPUPricePointController {
 
     @GetMapping(path = "/api/cpu_pricepoints/{modelNumber}")
     public ResponseEntity<CPUDataAndPricePointDTO> findCPUPricePointsByModelNumber(
-            @PathVariable String modelNumber,
+            @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {
 
         Optional<CPUDataAndPricePointDTO> cpuPricePointDTOS = cpuPricePointService
