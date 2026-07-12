@@ -4,7 +4,6 @@ import com.price_tracker.domain.dto.hybrid_dtos.GPUWorkstationDataAndPricePointD
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.services.price_point_services.GenericPricePointService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,7 +16,6 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@Log
 public class GPUWorkstationPricePointController {
 
     private final GenericPricePointService<GPUWorkstationDataAndPricePointDTO> gpuWorkstationPricePointService;
