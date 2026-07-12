@@ -2,6 +2,8 @@ package com.price_tracker.controllers.product_controllers;
 
 import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.services.product_services.GenericProductService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,7 @@ public class GPUWorkstationController {
 
     @PostMapping(path = "/api/workstation_gpus")
     public ResponseEntity<GPUWorkstationDTO> createWorkstationGPU(
-            @RequestBody final GPUWorkstationDTO gpuWorkstationDTO) {
+            @Valid @RequestBody final GPUWorkstationDTO gpuWorkstationDTO) {
 
         log.info("Got GPU: " + gpuWorkstationDTO.toString());
         GPUWorkstationDTO savedGPUWorkstation = gpuWorkstationService.save(gpuWorkstationDTO);
@@ -28,7 +30,7 @@ public class GPUWorkstationController {
 
     @PostMapping(path = "/api/workstation_gpus/saveall")
     public ResponseEntity<List<GPUWorkstationDTO>> createWorkstationGPU(
-            @RequestBody final List<GPUWorkstationDTO> gpuWorkstationDTOS) {
+            @Valid @RequestBody final List<GPUWorkstationDTO> gpuWorkstationDTOS) {
 
         log.info("Processing batch of " + gpuWorkstationDTOS.size() + " GPU WS records.");
         List<GPUWorkstationDTO> savedEntities = gpuWorkstationService.saveAll(gpuWorkstationDTOS);
@@ -41,7 +43,7 @@ public class GPUWorkstationController {
     }
 
     @GetMapping(path = "/api/workstation_gpus/{id}")
-    public ResponseEntity<GPUWorkstationDTO> getWorkstationGPU(@PathVariable String id) {
+    public ResponseEntity<GPUWorkstationDTO> getWorkstationGPU(@NotBlank @PathVariable String id) {
 
         Optional<GPUWorkstationDTO> foundGPU = gpuWorkstationService.findOne(id);
 
@@ -52,8 +54,8 @@ public class GPUWorkstationController {
 
     @PutMapping(path = "/api/workstation_gpus/{id}")
     public ResponseEntity<GPUWorkstationDTO> fullUpdate(
-            @PathVariable String id,
-            @RequestBody GPUWorkstationDTO gpuWorkstationDTO) {
+            @NotBlank @PathVariable String id,
+            @Valid @RequestBody GPUWorkstationDTO gpuWorkstationDTO) {
 
         return gpuWorkstationService.fullUpdate(id, gpuWorkstationDTO)
                 .map(gpu ->
@@ -63,8 +65,8 @@ public class GPUWorkstationController {
 
     @PatchMapping(path = "/api/workstation_gpus/{id}")
     public ResponseEntity<GPUWorkstationDTO> partialUpdate(
-            @PathVariable String id,
-            @RequestBody GPUWorkstationDTO gpuWorkstationDTO) {
+            @NotBlank @PathVariable String id,
+            @Valid @RequestBody GPUWorkstationDTO gpuWorkstationDTO) {
 
         return gpuWorkstationService.partialUpdate(id, gpuWorkstationDTO)
                 .map(gpu ->
@@ -73,7 +75,7 @@ public class GPUWorkstationController {
     }
 
     @DeleteMapping(path = "/api/workstation_gpus/{id}")
-    public ResponseEntity<GPUWorkstationDTO> deleteWorkstationGPU(@PathVariable String id) {
+    public ResponseEntity<GPUWorkstationDTO> deleteWorkstationGPU(@NotBlank @PathVariable String id) {
         gpuWorkstationService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
