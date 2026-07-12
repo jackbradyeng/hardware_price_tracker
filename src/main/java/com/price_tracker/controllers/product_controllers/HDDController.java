@@ -34,8 +34,8 @@ public class HDDController {
     }
 
     @GetMapping(path = "/api/hdds")
-    public List<HDDDTO> listHDDs() {
-        return hddService.findAll();
+    public ResponseEntity<List<HDDDTO>> listHDDs() {
+        return new ResponseEntity<>(hddService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/hdds/{id}")

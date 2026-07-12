@@ -34,8 +34,8 @@ public class SSDController {
     }
 
     @GetMapping(path = "/api/ssds")
-    public List<SSDDTO> listSSDs() {
-        return ssdService.findAll();
+    public ResponseEntity<List<SSDDTO>> listSSDs() {
+        return new ResponseEntity<>(ssdService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/ssds/{id}")

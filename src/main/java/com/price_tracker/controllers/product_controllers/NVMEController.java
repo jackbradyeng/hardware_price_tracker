@@ -34,8 +34,8 @@ public class NVMEController {
     }
 
     @GetMapping(path = "/api/nvmes")
-    public List<NVMEDTO> listNVMEs() {
-        return nvmeService.findAll();
+    public ResponseEntity<List<NVMEDTO>> listNVMEs() {
+        return new ResponseEntity<>(nvmeService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/nvmes/{id}")

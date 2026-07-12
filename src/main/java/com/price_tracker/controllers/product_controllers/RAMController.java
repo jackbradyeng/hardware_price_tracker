@@ -34,8 +34,8 @@ public class RAMController {
     }
 
     @GetMapping(path = "/api/ram")
-    public List<RAMDTO> listRAM() {
-        return ramService.findAll();
+    public ResponseEntity<List<RAMDTO>> listRAM() {
+        return new ResponseEntity<>(ramService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/ram/{id}")
