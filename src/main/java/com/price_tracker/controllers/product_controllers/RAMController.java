@@ -19,7 +19,7 @@ public class RAMController {
 
     @PostMapping(path = "/api/ram")
     public ResponseEntity<RAMDTO> createRAM(@RequestBody final RAMDTO ramDTO) {
-        log.info("Got RAM: {}" + ramDTO.toString());
+        log.info("Got RAM: " + ramDTO.toString());
         RAMDTO savedRAM = ramService.save(ramDTO);
         return new ResponseEntity<>(savedRAM, HttpStatus.CREATED);
     }

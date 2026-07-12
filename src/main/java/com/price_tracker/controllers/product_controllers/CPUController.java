@@ -19,7 +19,7 @@ public class CPUController {
 
     @PostMapping(path = "/api/cpus")
     public ResponseEntity<CPUDTO> createCPU(@RequestBody final CPUDTO cpuDTO) {
-        log.info("Got CPU: {}" + cpuDTO.toString());
+        log.info("Got CPU: " + cpuDTO.toString());
         CPUDTO savedCPU = cpuService.save(cpuDTO);
         return new ResponseEntity<>(savedCPU, HttpStatus.CREATED);
     }

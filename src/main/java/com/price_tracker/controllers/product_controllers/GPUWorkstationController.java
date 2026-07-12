@@ -21,7 +21,7 @@ public class GPUWorkstationController {
     public ResponseEntity<GPUWorkstationDTO> createWorkstationGPU(
             @RequestBody final GPUWorkstationDTO gpuWorkstationDTO) {
 
-        log.info("Got GPU: {}" + gpuWorkstationDTO.toString());
+        log.info("Got GPU: " + gpuWorkstationDTO.toString());
         GPUWorkstationDTO savedGPUWorkstation = gpuWorkstationService.save(gpuWorkstationDTO);
         return new ResponseEntity<>(savedGPUWorkstation, HttpStatus.CREATED);
     }

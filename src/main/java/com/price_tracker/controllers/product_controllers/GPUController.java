@@ -19,7 +19,7 @@ public class GPUController {
 
     @PostMapping(path = "/api/gpus")
     public ResponseEntity<GPUDTO> createGPU(@RequestBody final GPUDTO gpuDTO) {
-        log.info("Got GPU: {}" + gpuDTO.toString());
+        log.info("Got GPU: " + gpuDTO);
         GPUDTO savedGPU = gpuService.save(gpuDTO);
         return new ResponseEntity<>(savedGPU, HttpStatus.CREATED);
     }

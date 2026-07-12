@@ -19,7 +19,7 @@ public class HDDController {
 
     @PostMapping(path = "/api/hdds")
     public ResponseEntity<HDDDTO> createHDD(@RequestBody final HDDDTO hddDTO) {
-        log.info("Got HDD: {}" + hddDTO.toString());
+        log.info("Got HDD: " + hddDTO.toString());
         HDDDTO savedHDD = hddService.save(hddDTO);
         return new ResponseEntity<>(savedHDD, HttpStatus.CREATED);
     }

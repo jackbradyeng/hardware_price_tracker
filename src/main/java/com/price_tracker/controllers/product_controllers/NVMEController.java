@@ -19,7 +19,7 @@ public class NVMEController {
 
     @PostMapping(path = "/api/nvmes")
     public ResponseEntity<NVMEDTO> createNVME(@RequestBody final NVMEDTO nvmeDTO) {
-        log.info("Got NVME: {}" + nvmeDTO.toString());
+        log.info("Got NVME: " + nvmeDTO.toString());
         NVMEDTO savedNVME = nvmeService.save(nvmeDTO);
         return new ResponseEntity<>(savedNVME, HttpStatus.CREATED);
     }

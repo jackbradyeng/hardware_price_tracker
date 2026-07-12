@@ -19,7 +19,7 @@ public class SSDController {
 
     @PostMapping(path = "/api/ssds")
     public ResponseEntity<SSDDTO> createSSD(@RequestBody final SSDDTO ssdDTO) {
-        log.info("Got SSD: {}" + ssdDTO.toString());
+        log.info("Got SSD: " + ssdDTO.toString());
         SSDDTO savedSSD = ssdService.save(ssdDTO);
         return new ResponseEntity<>(savedSSD, HttpStatus.CREATED);
     }
