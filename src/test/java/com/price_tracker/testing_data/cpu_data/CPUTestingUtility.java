@@ -1,8 +1,8 @@
 package com.price_tracker.testing_data.cpu_data;
 
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
+import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
 import com.price_tracker.domain.entities.product_entities.CPUEntity;
-import com.price_tracker.domain.entities.vendor_entities.ScorptecProductEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
@@ -47,8 +47,8 @@ public class CPUTestingUtility {
     }
 
     /// SAMPLE PRODUCTS
-    public ScorptecProductEntity createTestScorptecCPU() {
-        return ScorptecProductEntity.builder()
+    public VendorProductDTO createTestScorptecCPU() {
+        return VendorProductDTO.builder()
                 .productType(PRODUCT_TYPE_CPU)
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)

@@ -1,8 +1,8 @@
 package com.price_tracker.testing_data.gpu_data;
 
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
+import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
-import com.price_tracker.domain.entities.vendor_entities.ScorptecProductEntity;
 import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
@@ -68,8 +68,8 @@ public class GPUTestingUtility {
                 .build();
     }
 
-    public ScorptecProductEntity createTestScorptecGPU() {
-        return ScorptecProductEntity.builder()
+    public VendorProductDTO createTestScorptecGPU() {
+        return VendorProductDTO.builder()
                 .productType(PRODUCT_TYPE_GPU)
                 .modelNumber(TESTING_GPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)

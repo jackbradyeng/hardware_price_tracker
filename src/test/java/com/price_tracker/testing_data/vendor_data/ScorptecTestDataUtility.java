@@ -32,12 +32,8 @@ public class ScorptecTestDataUtility {
 
     public List<VendorProductDTO> createTestScorptecProducts() {
         ArrayList<VendorProductDTO> vendorProductDTOS = new ArrayList<>();
-        vendorProductDTOS.add(
-                scorptecProductMapper.mapTo(cpuTestingUtility.createTestScorptecCPU())
-        );
-        vendorProductDTOS.add(
-                scorptecProductMapper.mapTo(gpuTestingUtility.createTestScorptecGPU())
-        );
+        vendorProductDTOS.add(cpuTestingUtility.createTestScorptecCPU());
+        vendorProductDTOS.add(gpuTestingUtility.createTestScorptecGPU());
         return vendorProductDTOS;
     }
 }
