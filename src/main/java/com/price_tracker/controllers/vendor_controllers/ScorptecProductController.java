@@ -34,8 +34,8 @@ public class ScorptecProductController {
     }
 
     @GetMapping(path = "/api/scorptecproducts")
-    public List<VendorProductDTO> listScorptecProducts() {
-        return scorptecProductService.findAll();
+    public ResponseEntity<List<VendorProductDTO>> listScorptecProducts() {
+        return new ResponseEntity<>(scorptecProductService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/scorptecproducts/{id}")
