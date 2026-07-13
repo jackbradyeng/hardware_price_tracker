@@ -39,7 +39,15 @@ public class ScorptecProductServiceImpl implements GenericVendorService<VendorPr
 
     @Override
     public List<VendorProductDTO> saveAll(List<VendorProductDTO> dtos) {
-        return List.of();
+        List<ScorptecProductEntity> entities = dtos.stream()
+                .map(mapper::mapFrom)
+                .toList();
+
+        List<ScorptecProductEntity> savedEntities = scorptecProductRepository.saveAll(entities);
+
+        return savedEntities.stream()
+                .map(mapper::mapTo)
+                .toList();
     }
 
     @Override

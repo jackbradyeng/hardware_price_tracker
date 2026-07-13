@@ -9,7 +9,6 @@ import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,13 +28,9 @@ public class ScorptecProductController {
 
     @PostMapping(path = "/api/scorptecproducts/saveall")
     public ResponseEntity<List<VendorProductDTO>> createProducts(@Valid @RequestBody final List<VendorProductDTO> vendorProductDTOS) {
-        ArrayList<VendorProductDTO> responseList = new ArrayList<>();
-        for (VendorProductDTO vendorProductDTO : vendorProductDTOS) {
-            log.info("Got Scorptec Product: " + vendorProductDTO.toString());
-            VendorProductDTO savedScorptecProduct = scorptecProductService.save(vendorProductDTO);
-            responseList.add(savedScorptecProduct);
-        }
-        return new ResponseEntity<>(responseList, HttpStatus.CREATED);
+        log.info("Processing batch of " + vendorProductDTOS.size() + " Scorptec product records");
+        List<VendorProductDTO> savedEntities = scorptecProductService.saveAll(vendorProductDTOS);
+        return new ResponseEntity<>(savedEntities, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/api/scorptecproducts")
