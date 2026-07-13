@@ -53,6 +53,14 @@ public class ScorptecProductController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PatchMapping(path = "/api/scorptecproducts/{id}")
+    public ResponseEntity<VendorProductDTO> partialUpdate(@NotBlank @PathVariable String id,
+                                                          @Valid @RequestBody VendorProductDTO vendorProductDTO) {
+        return scorptecProductService.partialUpdate(id, vendorProductDTO)
+                .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @DeleteMapping(path = "/api/scorptecproducts/{id}")
     public ResponseEntity<VendorProductDTO> deleteProduct(@NotBlank @PathVariable String id) {
         scorptecProductService.delete(id);
