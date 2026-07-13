@@ -19,7 +19,7 @@ public class VendorDTO {
     private String vendor;
     @NotBlank
     private String primaryLocation;
-    @NotBlank @Size(max = 10)
+    @NotBlank @Size(min = 1, max = 10)
     private String primaryCurrency;
     @JsonProperty("homeURL")
     @NotBlank
