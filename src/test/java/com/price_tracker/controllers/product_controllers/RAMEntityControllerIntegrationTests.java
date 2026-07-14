@@ -124,6 +124,16 @@ public class RAMEntityControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatGetRAMByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/ram/{id}", " ")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatRAMReadAllReturnsHttpStatus200ok() throws Exception {

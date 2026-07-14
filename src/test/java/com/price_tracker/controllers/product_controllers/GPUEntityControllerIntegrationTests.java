@@ -123,6 +123,16 @@ public class GPUEntityControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatGetGPUByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/gpus/{id}", " ")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatGPUReadAllReturnsHttpStatus200ok() throws Exception {

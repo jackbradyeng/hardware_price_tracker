@@ -132,6 +132,16 @@ public class UmartProductControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatGetUmartProductByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/umartproducts/{id}", " ")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
     // UPDATE TESTS
     @Test
     public void testThatFullUpdateUmartProductReturnsHttpStatus200ok() throws Exception {
