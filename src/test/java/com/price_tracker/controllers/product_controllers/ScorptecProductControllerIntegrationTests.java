@@ -51,7 +51,7 @@ public class ScorptecProductControllerIntegrationTests {
         this.tdl = tdl;
     }
 
-    // create tests
+    // CREATE TESTS
     @Test
     public void testThatCreateScorptecProductReturnsHttpStatus201Created() throws Exception {
         VendorProductDTO testProductEntity = gpuTestingUtility.createTestScorptecGPU();
@@ -98,7 +98,7 @@ public class ScorptecProductControllerIntegrationTests {
         );
     }
 
-    // read tests
+    // READ TESTS
     @Test
     public void testThatScorptecProductReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -132,7 +132,7 @@ public class ScorptecProductControllerIntegrationTests {
         );
     }
 
-    // update tests
+    // UPDATE TESTS
     @Test
     public void testThatFullUpdateScorptecProductReturnsHttpStatus200ok() throws Exception {
         VendorProductDTO testProductEntity = gpuTestingUtility.createTestScorptecGPU();
@@ -198,7 +198,7 @@ public class ScorptecProductControllerIntegrationTests {
         );
     }
 
-    // delete tests
+    // DELETE TESTS
     @Test
     public void testThatDeleteScorptecProductReturnsHttpStatus204FromNonExistingProduct() throws Exception {
         mockMvc.perform(

@@ -39,7 +39,7 @@ public class GPUEntityControllerIntegrationTests {
         this.gpuService = gpuService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateGPUReturnsHttpStatus201Created() throws Exception {
         GPUDTO testGPU = gpuTestingUtility.createTestGPU();
@@ -84,7 +84,7 @@ public class GPUEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// READ TESTS
     @Test
     public void testThatGPUReadAllReturnsHttpStatus200ok() throws Exception {
         mockMVC.perform(
@@ -118,7 +118,7 @@ public class GPUEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         GPUDTO testGPU = gpuTestingUtility.createTestGPU();
@@ -166,7 +166,7 @@ public class GPUEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingGPU() throws Exception {
         mockMVC.perform(

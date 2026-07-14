@@ -39,7 +39,7 @@ public class NVMEEntityControllerIntegrationTests {
         this.nvmeService = nvmeService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateNVMEReturnsHttpStatus201Created() throws Exception {
         NVMEDTO testNVME = nvmeTestingUtility.createTestNVME();
@@ -84,7 +84,7 @@ public class NVMEEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// READ TESTS
     @Test
     public void testThatNVMEReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -118,7 +118,7 @@ public class NVMEEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         NVMEDTO testNVME = nvmeTestingUtility.createTestNVME();
@@ -164,7 +164,7 @@ public class NVMEEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteNVMEReturnsHttpStatus204FromNonExistingNVME() throws Exception {
         mockMvc.perform(

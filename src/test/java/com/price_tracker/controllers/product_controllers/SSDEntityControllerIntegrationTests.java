@@ -39,7 +39,7 @@ public class SSDEntityControllerIntegrationTests {
         this.ssdService = ssdService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateSSDReturnsHttpStatus201Created() throws Exception {
         SSDDTO testSSD = ssdTestingUtility.createTestSSD();
@@ -84,7 +84,7 @@ public class SSDEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// READ TESTS
     @Test
     public void testThatSSDReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -118,7 +118,7 @@ public class SSDEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         SSDDTO testSSD = ssdTestingUtility.createTestSSD();
@@ -164,7 +164,7 @@ public class SSDEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteSSDReturnsHttpStatus204FromNonExistingSSD() throws Exception {
         mockMvc.perform(

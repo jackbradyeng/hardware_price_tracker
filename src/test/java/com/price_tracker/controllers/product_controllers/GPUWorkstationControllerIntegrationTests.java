@@ -42,7 +42,7 @@ public class GPUWorkstationControllerIntegrationTests {
         this.gpuWorkstationService = gpuWorkstationService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateWSGPUReturnsHttpStatus201Created() throws Exception {
         GPUWorkstationEntity testGPUEntity = workstationGPUTestingUtility.createTestWorkstationGPU();
@@ -73,7 +73,7 @@ public class GPUWorkstationControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// READ TESTS
     @Test
     public void testThatWSGPUReadAllReturnsHttpStatus200ok() throws Exception {
         mockMVC.perform(
@@ -107,7 +107,7 @@ public class GPUWorkstationControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         GPUWorkstationDTO testGPUDTO = workstationGPUTestingUtility.createTestWorkstationGPUDTO();
@@ -150,7 +150,7 @@ public class GPUWorkstationControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteWSGPUReturnsHttpStatus204FromNonExistingGPU() throws Exception {
         mockMVC.perform(

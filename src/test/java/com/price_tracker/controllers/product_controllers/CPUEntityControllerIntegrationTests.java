@@ -38,7 +38,7 @@ public class CPUEntityControllerIntegrationTests {
         this.cpuService = cpuService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateCPUReturnsHttpStatus201Created() throws Exception {
         CPUDTO testCPU = cpuTestingUtility.createTestCPU();
@@ -69,7 +69,7 @@ public class CPUEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// READ TESTS
     @Test
     public void testThatCPUReadAllReturnsHttpStatus200ok() throws Exception {
         mockMVC.perform(
@@ -103,7 +103,7 @@ public class CPUEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         CPUDTO testCPU = cpuTestingUtility.createTestCPU();
@@ -146,7 +146,7 @@ public class CPUEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteCPUReturnsHttpStatus204FromNonExistingCPU() throws Exception {
         mockMVC.perform(

@@ -51,7 +51,7 @@ public class UmartProductControllerIntegrationTests {
         this.tdl = tdl;
     }
 
-    // create tests
+    // CREATE TESTS
     @Test
     public void testThatCreateUmartProductReturnsHttpStatus201Created() throws Exception {
         VendorProductDTO testProductEntity = gpuTestingUtility.createTestUmartGPU();
@@ -98,7 +98,7 @@ public class UmartProductControllerIntegrationTests {
         );
     }
 
-    // read tests
+    // READ TESTS
     @Test
     public void testThatUmartProductReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -132,7 +132,7 @@ public class UmartProductControllerIntegrationTests {
         );
     }
 
-    // update tests
+    // UPDATE TESTS
     @Test
     public void testThatFullUpdateUmartProductReturnsHttpStatus200ok() throws Exception {
         VendorProductDTO testProductEntity = gpuTestingUtility.createTestUmartGPU();
@@ -198,7 +198,7 @@ public class UmartProductControllerIntegrationTests {
         );
     }
 
-    // delete tests
+    // DELETE TESTS
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingProduct() throws Exception {
         mockMvc.perform(

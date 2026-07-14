@@ -40,7 +40,7 @@ public class RAMEntityControllerIntegrationTests {
         this.ramService = ramService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateRAMReturnsHttpStatus201Created()  throws Exception {
         RAMDTO testRAM = ramTestingUtility.createTestRAM();
@@ -85,7 +85,7 @@ public class RAMEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// READ TESTS
     @Test
     public void testThatRAMReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -119,7 +119,7 @@ public class RAMEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         RAMDTO testRAM = ramTestingUtility.createTestRAM();
@@ -165,7 +165,7 @@ public class RAMEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteRAMReturnsHttpStatus204FromNonExistingRAM() throws Exception {
         mockMvc.perform(
