@@ -39,6 +39,7 @@ public class HDDTestingUtility {
                 .cache(TESTING_HDD_CACHE)
                 .storageInterface(TESTING_HDD_STORAGE_INTERFACE)
                 .formFactor(TESTING_HDD_FORM_FACTOR)
+                .isActive(true)
                 .build());
     }
 
@@ -55,6 +56,7 @@ public class HDDTestingUtility {
                 .cache(TESTING_HDD_CACHE)
                 .storageInterface(TESTING_HDD_STORAGE_INTERFACE)
                 .formFactor(TESTING_HDD_FORM_FACTOR)
+                .isActive(true)
                 .build());
     }
 

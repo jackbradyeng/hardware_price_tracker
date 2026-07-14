@@ -7,9 +7,7 @@ import com.price_tracker.domain.dto.product_dtos.GPUWorkstationDTO;
 import com.price_tracker.domain.entities.product_entities.GPUWorkstationEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
-
 import java.math.BigDecimal;
-
 import static com.price_tracker.testing_data.wsgpu_data.WorkstationGPUTestingData.*;
 
 @Component
@@ -34,6 +32,7 @@ public class WorkstationGPUTestingUtility {
                 .cudaCores(TESTING_WS_GPU_CUDA_CORES)
                 .tensorCores(TESTING_WS_GPU_TENSOR_CORES)
                 .raytracingCores(TESTING_WS_GPU_RT_CORES)
+                .maxPower(TESTING_WS_GPU_MAX_POWER)
                 .systemInterface(TESTING_WS_GPU_SYS_INTERFACE)
                 .isActive(true)
                 .build();
