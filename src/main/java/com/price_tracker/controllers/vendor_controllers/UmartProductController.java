@@ -51,6 +51,14 @@ public class UmartProductController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PatchMapping(path = "/api/umartproducts/{id}")
+    public ResponseEntity<VendorProductDTO> partialUpdateProduct(@PathVariable String id,
+                                                                 @RequestBody VendorProductDTO vendorProductDTO) {
+        return umartProductService.partialUpdate(id, vendorProductDTO)
+                .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @DeleteMapping(path = "/api/umartproducts/{id}")
     public ResponseEntity<VendorProductDTO> deleteProduct(@PathVariable String id) {
         umartProductService.delete(id);
