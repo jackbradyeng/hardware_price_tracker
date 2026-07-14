@@ -38,7 +38,7 @@ public class CPUEntityControllerIntegrationTests {
         this.cpuService = cpuService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateCPUReturnsHttpStatus201Created() throws Exception {
         CPUDTO testCPU = cpuTestingUtility.createTestCPU();
@@ -69,7 +69,46 @@ public class CPUEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateCPUWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        testCPU.setModelNumber("");
+        testCPU.setCores(null);
+        testCPU.setThermalDesignPower(-1);
+        String cpuString = objectMapper.writeValueAsString(testCPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/cpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(cpuString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateCPUWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        testCPU.setModelNumber("");
+        testCPU.setCores(null);
+        testCPU.setThermalDesignPower(-1);
+        String cpuString = objectMapper.writeValueAsString(testCPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/cpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(cpuString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.cores").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.thermalDesignPower").exists()
+        );
+    }
+
+    /// READ TESTS
     @Test
     public void testThatCPUReadAllReturnsHttpStatus200ok() throws Exception {
         mockMVC.perform(
@@ -103,7 +142,7 @@ public class CPUEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         CPUDTO testCPU = cpuTestingUtility.createTestCPU();
@@ -146,7 +185,7 @@ public class CPUEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteCPUReturnsHttpStatus204FromNonExistingCPU() throws Exception {
         mockMVC.perform(

@@ -1,14 +1,14 @@
 package com.price_tracker.controllers.product_controllers;
 
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.testing_data.vendor_data.ScorptecTestDataUtility;
 import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
-import com.price_tracker.domain.entities.vendor_entities.ScorptecProductEntity;
 import com.price_tracker.repositories.vendor_repos.ScorptecProductRepository;
-import com.price_tracker.services.vendor_services.ScorptecProductService;
 import com.price_tracker.services.vendor_services.impl.ScorptecProductServiceImpl;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -33,26 +33,28 @@ public class ScorptecProductControllerIntegrationTests {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private final ScorptecProductService scorptecProductService;
+    private final ScorptecProductServiceImpl scorptecProductService;
     private final GPUTestingUtility gpuTestingUtility;
     private final ScorptecTestDataUtility tdl;
 
     @Autowired
     public ScorptecProductControllerIntegrationTests(MockMvc mockMvc,
-                                                      ScorptecProductRepository scorptecProductRepository,
-                                                      GPUTestingUtility gpuTestingUtility,
-                                                      ScorptecTestDataUtility tdl) {
+                                                     ScorptecProductRepository scorptecProductRepository,
+                                                     ModelMapper modelMapper,
+                                                     MapperFactory mapperFactory,
+                                                     GPUTestingUtility gpuTestingUtility,
+                                                     ScorptecTestDataUtility tdl) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
-        this.scorptecProductService = new ScorptecProductServiceImpl(scorptecProductRepository);
+        this.scorptecProductService = new ScorptecProductServiceImpl(scorptecProductRepository, modelMapper, mapperFactory);
         this.gpuTestingUtility = gpuTestingUtility;
         this.tdl = tdl;
     }
 
-    // create tests
+    // CREATE TESTS
     @Test
     public void testThatCreateScorptecProductReturnsHttpStatus201Created() throws Exception {
-        ScorptecProductEntity testProductEntity = gpuTestingUtility.createTestScorptecGPU();
+        VendorProductDTO testProductEntity = gpuTestingUtility.createTestScorptecGPU();
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
@@ -66,7 +68,7 @@ public class ScorptecProductControllerIntegrationTests {
 
     @Test
     public void TestThatCreatedScorptecProductReturnsSavedScorptecProduct() throws Exception {
-        ScorptecProductEntity testProductEntity = gpuTestingUtility.createTestScorptecGPU();
+        VendorProductDTO testProductEntity = gpuTestingUtility.createTestScorptecGPU();
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
@@ -96,7 +98,7 @@ public class ScorptecProductControllerIntegrationTests {
         );
     }
 
-    // read tests
+    // READ TESTS
     @Test
     public void testThatScorptecProductReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -109,8 +111,8 @@ public class ScorptecProductControllerIntegrationTests {
 
     @Test
     public void testThatGetScorptecProductByIDReturnsHttpStatusOkWhenProductExists() throws Exception {
-        ScorptecProductEntity scorptecProductEntity = gpuTestingUtility.createTestScorptecGPU();
-        ScorptecProductEntity savedProduct = scorptecProductService.save(scorptecProductEntity);
+        VendorProductDTO scorptecProductEntity = gpuTestingUtility.createTestScorptecGPU();
+        VendorProductDTO savedProduct = scorptecProductService.save(scorptecProductEntity);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/scorptecproducts/" + savedProduct.getId())
@@ -130,11 +132,11 @@ public class ScorptecProductControllerIntegrationTests {
         );
     }
 
-    // update tests
+    // UPDATE TESTS
     @Test
     public void testThatFullUpdateScorptecProductReturnsHttpStatus200ok() throws Exception {
-        ScorptecProductEntity testProductEntity = gpuTestingUtility.createTestScorptecGPU();
-        ScorptecProductEntity savedProduct = scorptecProductService.save(testProductEntity);
+        VendorProductDTO testProductEntity = gpuTestingUtility.createTestScorptecGPU();
+        VendorProductDTO savedProduct = scorptecProductService.save(testProductEntity);
 
         VendorProductDTO updatedProduct = VendorProductDTO.builder()
                 .vendor(SCORPTEC)
@@ -155,8 +157,8 @@ public class ScorptecProductControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateReturnsUpdatedScorptecProduct() throws Exception {
-        ScorptecProductEntity testProductEntity = gpuTestingUtility.createTestScorptecGPU();
-        ScorptecProductEntity savedProduct = scorptecProductService.save(testProductEntity);
+        VendorProductDTO testProductEntity = gpuTestingUtility.createTestScorptecGPU();
+        VendorProductDTO savedProduct = scorptecProductService.save(testProductEntity);
 
         VendorProductDTO updatedProduct = VendorProductDTO.builder()
                 .vendor(SCORPTEC)
@@ -196,7 +198,7 @@ public class ScorptecProductControllerIntegrationTests {
         );
     }
 
-    // delete tests
+    // DELETE TESTS
     @Test
     public void testThatDeleteScorptecProductReturnsHttpStatus204FromNonExistingProduct() throws Exception {
         mockMvc.perform(
@@ -207,8 +209,8 @@ public class ScorptecProductControllerIntegrationTests {
 
     @Test
     public void testThatDeleteScorptecProductReturnsHttpStatus204ForExistingProduct() throws Exception {
-        ScorptecProductEntity scorptecProductEntity = gpuTestingUtility.createTestScorptecGPU();
-        ScorptecProductEntity savedProduct = scorptecProductService.save(scorptecProductEntity);
+        VendorProductDTO scorptecProductEntity = gpuTestingUtility.createTestScorptecGPU();
+        VendorProductDTO savedProduct = scorptecProductService.save(scorptecProductEntity);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/scorptecproducts/" + savedProduct.getId())

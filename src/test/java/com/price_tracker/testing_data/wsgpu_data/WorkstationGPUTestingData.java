@@ -13,6 +13,7 @@ public class WorkstationGPUTestingData {
     public static final Integer TESTING_WS_GPU_CUDA_CORES = 24064;
     public static final Integer TESTING_WS_GPU_TENSOR_CORES = 752;
     public static final Integer TESTING_WS_GPU_RT_CORES = 188;
+    public static final Integer TESTING_WS_GPU_MAX_POWER = 600;
     public static final String TESTING_WS_GPU_SYS_INTERFACE = "PCI Express 5.0 x16";
 
     // UMART WORKSTATION GPU PRODUCT TESTING CONSTANTS

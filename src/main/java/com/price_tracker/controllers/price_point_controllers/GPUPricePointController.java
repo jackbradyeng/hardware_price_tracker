@@ -3,8 +3,8 @@ package com.price_tracker.controllers.price_point_controllers;
 import com.price_tracker.domain.dto.hybrid_dtos.GPUDataAndPricePointDTO;
 import com.price_tracker.domain.dto.price_point_dtos.GenericPricePointDTO;
 import com.price_tracker.services.price_point_services.GenericPricePointService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@Log
 public class GPUPricePointController {
 
     private final GenericPricePointService<GPUDataAndPricePointDTO> gpuPricePointService;
@@ -30,7 +29,7 @@ public class GPUPricePointController {
 
     @GetMapping(path = "/api/gpu_pricepoints/{modelNumber}")
     public ResponseEntity<GPUDataAndPricePointDTO> findGPUPricePointsByModelNumber(
-            @PathVariable String modelNumber,
+            @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {
 
         Optional<GPUDataAndPricePointDTO> gpuPricePointDTOS = gpuPricePointService

@@ -39,7 +39,7 @@ public class SSDEntityControllerIntegrationTests {
         this.ssdService = ssdService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateSSDReturnsHttpStatus201Created() throws Exception {
         SSDDTO testSSD = ssdTestingUtility.createTestSSD();
@@ -84,7 +84,46 @@ public class SSDEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateSSDWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        SSDDTO testSSD = ssdTestingUtility.createTestSSD();
+        testSSD.setModelNumber("");
+        testSSD.setCapacity(null);
+        testSSD.setSequentialRead(-1);
+        String ssdString = objectMapper.writeValueAsString(testSSD);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/ssds")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ssdString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateSSDWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        SSDDTO testSSD = ssdTestingUtility.createTestSSD();
+        testSSD.setModelNumber("");
+        testSSD.setCapacity(null);
+        testSSD.setSequentialRead(-1);
+        String ssdString = objectMapper.writeValueAsString(testSSD);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/ssds")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ssdString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.capacity").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.sequentialRead").exists()
+        );
+    }
+
+    /// READ TESTS
     @Test
     public void testThatSSDReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -118,7 +157,7 @@ public class SSDEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         SSDDTO testSSD = ssdTestingUtility.createTestSSD();
@@ -164,7 +203,7 @@ public class SSDEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteSSDReturnsHttpStatus204FromNonExistingSSD() throws Exception {
         mockMvc.perform(

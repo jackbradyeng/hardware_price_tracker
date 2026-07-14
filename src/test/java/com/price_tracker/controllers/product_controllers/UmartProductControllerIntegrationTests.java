@@ -1,14 +1,14 @@
 package com.price_tracker.controllers.product_controllers;
 
+import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.testing_data.vendor_data.UmartTestDataUtility;
 import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
-import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
-import com.price_tracker.services.vendor_services.UmartProductService;
 import com.price_tracker.services.vendor_services.impl.UmartProductServiceImpl;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -33,26 +33,28 @@ public class UmartProductControllerIntegrationTests {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private final UmartProductService umartProductService;
+    private final UmartProductServiceImpl umartProductService;
     private final GPUTestingUtility gpuTestingUtility;
     private final UmartTestDataUtility tdl;
 
     @Autowired
     public UmartProductControllerIntegrationTests(MockMvc mockMvc,
                                                   UmartProductRepository umartProductRepository,
+                                                  ModelMapper modelMapper,
+                                                  MapperFactory mapperFactory,
                                                   GPUTestingUtility gpuTestingUtility,
                                                   UmartTestDataUtility tdl) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
-        this.umartProductService = new UmartProductServiceImpl(umartProductRepository);
+        this.umartProductService = new UmartProductServiceImpl(umartProductRepository, modelMapper, mapperFactory);
         this.gpuTestingUtility = gpuTestingUtility;
         this.tdl = tdl;
     }
 
-    // create tests
+    // CREATE TESTS
     @Test
     public void testThatCreateUmartProductReturnsHttpStatus201Created() throws Exception {
-        UmartProductEntity testProductEntity = gpuTestingUtility.createTestUmartGPU();
+        VendorProductDTO testProductEntity = gpuTestingUtility.createTestUmartGPU();
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
@@ -66,7 +68,7 @@ public class UmartProductControllerIntegrationTests {
 
     @Test
     public void TestThatCreatedUmartProductReturnsSavedUmartProduct() throws Exception {
-        UmartProductEntity testProductEntity = gpuTestingUtility.createTestUmartGPU();
+        VendorProductDTO testProductEntity = gpuTestingUtility.createTestUmartGPU();
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
@@ -96,7 +98,7 @@ public class UmartProductControllerIntegrationTests {
         );
     }
 
-    // read tests
+    // READ TESTS
     @Test
     public void testThatUmartProductReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -109,8 +111,8 @@ public class UmartProductControllerIntegrationTests {
 
     @Test
     public void testThatGetUmartProductByIDReturnsHttpStatusOkWhenProductExists() throws Exception {
-        UmartProductEntity umartProductEntity = gpuTestingUtility.createTestUmartGPU();
-        UmartProductEntity savedProduct = umartProductService.save(umartProductEntity);
+        VendorProductDTO umartProductEntity = gpuTestingUtility.createTestUmartGPU();
+        VendorProductDTO savedProduct = umartProductService.save(umartProductEntity);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/umartproducts/" + savedProduct.getId())
@@ -130,11 +132,11 @@ public class UmartProductControllerIntegrationTests {
         );
     }
 
-    // update tests
+    // UPDATE TESTS
     @Test
     public void testThatFullUpdateUmartProductReturnsHttpStatus200ok() throws Exception {
-        UmartProductEntity testProductEntity = gpuTestingUtility.createTestUmartGPU();
-        UmartProductEntity savedProduct = umartProductService.save(testProductEntity);
+        VendorProductDTO testProductEntity = gpuTestingUtility.createTestUmartGPU();
+        VendorProductDTO savedProduct = umartProductService.save(testProductEntity);
 
         VendorProductDTO updatedProduct = VendorProductDTO.builder()
                 .vendor(UMART)
@@ -155,8 +157,8 @@ public class UmartProductControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateReturnsUpdatedUmartProduct() throws Exception {
-        UmartProductEntity testProductEntity = gpuTestingUtility.createTestUmartGPU();
-        UmartProductEntity savedProduct = umartProductService.save(testProductEntity);
+        VendorProductDTO testProductEntity = gpuTestingUtility.createTestUmartGPU();
+        VendorProductDTO savedProduct = umartProductService.save(testProductEntity);
 
         VendorProductDTO updatedProduct = VendorProductDTO.builder()
                 .vendor(UMART)
@@ -196,7 +198,7 @@ public class UmartProductControllerIntegrationTests {
         );
     }
 
-    // delete tests
+    // DELETE TESTS
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingProduct() throws Exception {
         mockMvc.perform(
@@ -207,8 +209,8 @@ public class UmartProductControllerIntegrationTests {
 
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204ForExistingProduct() throws Exception {
-        UmartProductEntity umartProductEntity = gpuTestingUtility.createTestUmartGPU();
-        UmartProductEntity savedProduct = umartProductService.save(umartProductEntity);
+        VendorProductDTO umartProductEntity = gpuTestingUtility.createTestUmartGPU();
+        VendorProductDTO savedProduct = umartProductService.save(umartProductEntity);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/umartproducts/" + savedProduct.getId())

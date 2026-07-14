@@ -2,10 +2,10 @@ package com.price_tracker.repositories;
 
 import com.price_tracker.domain.dto.product_dtos.CPUDTO;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
-import com.price_tracker.domain.entities.vendor_entities.ScorptecProductEntity;
+import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
 import com.price_tracker.repositories.vendor_repos.ScorptecProductRepository;
 import com.price_tracker.services.product_services.GenericProductService;
-import com.price_tracker.services.vendor_services.ScorptecProductService;
+import com.price_tracker.services.vendor_services.impl.ScorptecProductServiceImpl;
 import com.price_tracker.testing_data.cpu_data.CPUTestingUtility;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ScorptecProductRepoIntegrationTests {
 
     private final ScorptecProductRepository scorptecProductRepository;
-    private final ScorptecProductService scorptecProductService;
+    private final ScorptecProductServiceImpl scorptecProductService;
     private final GenericProductService<GPUDTO> gpuService;
     private final GenericProductService<CPUDTO> cpuService;
     private final GPUTestingUtility gpuTestingUtility;
@@ -31,13 +31,13 @@ public class ScorptecProductRepoIntegrationTests {
 
     @Autowired
     public ScorptecProductRepoIntegrationTests(ScorptecProductRepository scorptecProductRepository,
-                                               ScorptecProductService scorptecProductService,
+                                               ScorptecProductServiceImpl ScorptecProductServiceImpl,
                                                GenericProductService<GPUDTO> gpuService,
                                                GenericProductService<CPUDTO> cpuService,
                                                GPUTestingUtility gpuTestingUtility,
                                                CPUTestingUtility cpuTestingUtility) {
         this.scorptecProductRepository = scorptecProductRepository;
-        this.scorptecProductService = scorptecProductService;
+        this.scorptecProductService = ScorptecProductServiceImpl;
         this.cpuService = cpuService;
         this.gpuService = gpuService;
         this.gpuTestingUtility = gpuTestingUtility;
@@ -47,7 +47,7 @@ public class ScorptecProductRepoIntegrationTests {
     @Test
     public void testThatActiveSavedGPUProductIsReturnedByGetURLs() {
         gpuService.save(gpuTestingUtility.createTestGPU());
-        ScorptecProductEntity savedScorptecGPU = scorptecProductService.save(gpuTestingUtility.createTestScorptecGPU());
+        VendorProductDTO savedScorptecGPU = scorptecProductService.save(gpuTestingUtility.createTestScorptecGPU());
         assert scorptecProductRepository.findUrlsForActiveGPUs().getFirst().equals(savedScorptecGPU.getUrl());
     }
 
@@ -63,7 +63,8 @@ public class ScorptecProductRepoIntegrationTests {
     @Test
     public void testThatSavedActiveCPUProductIsReturnedByGetURLs() {
         cpuService.save(cpuTestingUtility.createTestCPU());
-        ScorptecProductEntity savedScorptecCPU = scorptecProductRepository.save(cpuTestingUtility.createTestScorptecCPU());
+        VendorProductDTO scorptecVendorProduct = cpuTestingUtility.createTestScorptecCPU();
+        VendorProductDTO savedScorptecCPU = scorptecProductService.save(scorptecVendorProduct);
         assert scorptecProductRepository.findUrlsForActiveCPU().getFirst().equals(savedScorptecCPU.getUrl());
     }
 
@@ -72,7 +73,7 @@ public class ScorptecProductRepoIntegrationTests {
         CPUDTO cpuEntity = cpuTestingUtility.createTestCPU();
         cpuEntity.setIsActive(false);
         cpuService.save(cpuEntity);
-        scorptecProductRepository.save(cpuTestingUtility.createTestScorptecCPU());
+        scorptecProductService.save(cpuTestingUtility.createTestScorptecCPU());
         assert scorptecProductRepository.findUrlsForActiveCPU().isEmpty();
     }
 }

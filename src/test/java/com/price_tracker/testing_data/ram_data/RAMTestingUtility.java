@@ -1,8 +1,8 @@
 package com.price_tracker.testing_data.ram_data;
 
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
+import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
 import com.price_tracker.domain.entities.product_entities.RAMEntity;
-import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
@@ -64,8 +64,8 @@ public class RAMTestingUtility {
     }
 
     /// SAMPLE PRODUCTS
-    public UmartProductEntity createTestUmartRAM() {
-        return UmartProductEntity.builder()
+    public VendorProductDTO createTestUmartRAM() {
+        return VendorProductDTO.builder()
                 .productType(PRODUCT_TYPE_RAM)
                 .modelNumber(TESTING_RAM_MODEL_NUMBER)
                 .vendor(UMART)

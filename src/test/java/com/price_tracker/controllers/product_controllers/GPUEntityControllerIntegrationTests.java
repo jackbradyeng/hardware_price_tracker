@@ -39,7 +39,7 @@ public class GPUEntityControllerIntegrationTests {
         this.gpuService = gpuService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateGPUReturnsHttpStatus201Created() throws Exception {
         GPUDTO testGPU = gpuTestingUtility.createTestGPU();
@@ -84,7 +84,46 @@ public class GPUEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateGPUWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        testGPU.setModelNumber("");
+        testGPU.setChip("");
+        testGPU.setIsActive(null);
+        String gpuString = objectMapper.writeValueAsString(testGPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/gpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gpuString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateGPUWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        testGPU.setModelNumber("");
+        testGPU.setChip("");
+        testGPU.setIsActive(null);
+        String gpuString = objectMapper.writeValueAsString(testGPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/gpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gpuString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.chip").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.isActive").exists()
+        );
+    }
+
+    /// READ TESTS
     @Test
     public void testThatGPUReadAllReturnsHttpStatus200ok() throws Exception {
         mockMVC.perform(
@@ -118,7 +157,7 @@ public class GPUEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         GPUDTO testGPU = gpuTestingUtility.createTestGPU();
@@ -166,7 +205,7 @@ public class GPUEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingGPU() throws Exception {
         mockMVC.perform(

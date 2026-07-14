@@ -40,7 +40,7 @@ public class RAMEntityControllerIntegrationTests {
         this.ramService = ramService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateRAMReturnsHttpStatus201Created()  throws Exception {
         RAMDTO testRAM = ramTestingUtility.createTestRAM();
@@ -85,7 +85,46 @@ public class RAMEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateRAMWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        RAMDTO testRAM = ramTestingUtility.createTestRAM();
+        testRAM.setModelNumber("");
+        testRAM.setVolume(null);
+        testRAM.setDimmCount(13);
+        String ramString = objectMapper.writeValueAsString(testRAM);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/ram")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ramString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateRAMWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        RAMDTO testRAM = ramTestingUtility.createTestRAM();
+        testRAM.setModelNumber("");
+        testRAM.setVolume(null);
+        testRAM.setDimmCount(13);
+        String ramString = objectMapper.writeValueAsString(testRAM);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/ram")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ramString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.volume").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.dimmCount").exists()
+        );
+    }
+
+    /// READ TESTS
     @Test
     public void testThatRAMReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -119,7 +158,7 @@ public class RAMEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         RAMDTO testRAM = ramTestingUtility.createTestRAM();
@@ -165,7 +204,7 @@ public class RAMEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteRAMReturnsHttpStatus204FromNonExistingRAM() throws Exception {
         mockMvc.perform(

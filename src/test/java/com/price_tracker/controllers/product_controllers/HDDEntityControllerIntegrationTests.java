@@ -39,7 +39,7 @@ public class HDDEntityControllerIntegrationTests {
         this.hddService = hddService;
     }
 
-    /// create tests
+    /// CREATE TESTS
     @Test
     public void testThatCreateHDDReturnsHttpStatus201Created() throws Exception {
         HDDDTO testHDD = hddTestingUtility.createTestHDD();
@@ -84,7 +84,46 @@ public class HDDEntityControllerIntegrationTests {
         );
     }
 
-    /// read tests
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateHDDWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        HDDDTO testHDD = hddTestingUtility.createTestHDD();
+        testHDD.setModelNumber("");
+        testHDD.setCapacity(null);
+        testHDD.setRpm(-1);
+        String hddString = objectMapper.writeValueAsString(testHDD);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/hdds")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(hddString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateHDDWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        HDDDTO testHDD = hddTestingUtility.createTestHDD();
+        testHDD.setModelNumber("");
+        testHDD.setCapacity(null);
+        testHDD.setRpm(-1);
+        String hddString = objectMapper.writeValueAsString(testHDD);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/hdds")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(hddString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.capacity").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.rpm").exists()
+        );
+    }
+
+    /// READ TESTS
     @Test
     public void testThatHDDReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
@@ -118,7 +157,7 @@ public class HDDEntityControllerIntegrationTests {
         );
     }
 
-    /// update tests
+    /// UPDATE TESTS
     @Test
     public void testThatFullUpdateReturns200ok() throws Exception {
         HDDDTO testHDD = hddTestingUtility.createTestHDD();
@@ -164,7 +203,7 @@ public class HDDEntityControllerIntegrationTests {
         );
     }
 
-    /// delete tests
+    /// DELETE TESTS
     @Test
     public void testThatDeleteHDDReturnsHttpStatus204FromNonExistingHDD() throws Exception {
         mockMvc.perform(

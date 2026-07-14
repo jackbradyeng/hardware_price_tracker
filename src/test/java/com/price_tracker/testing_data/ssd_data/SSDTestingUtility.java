@@ -36,6 +36,7 @@ public class SSDTestingUtility {
                 .sequentialWrite(TESTING_SSD_SEQUENTIAL_WRITE)
                 .meanTimeBetweenFailures(TESTING_SSD_MTBF)
                 .storageInterface(TESTING_SSD_STORAGE_INTERFACE)
+                .isActive(true)
                 .build());
     }
 
@@ -49,6 +50,7 @@ public class SSDTestingUtility {
                 .sequentialWrite(TESTING_SSD_SEQUENTIAL_WRITE)
                 .meanTimeBetweenFailures(TESTING_SSD_MTBF)
                 .storageInterface(TESTING_SSD_STORAGE_INTERFACE)
+                .isActive(true)
                 .build());
     }
 

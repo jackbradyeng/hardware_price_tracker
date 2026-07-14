@@ -37,6 +37,7 @@ public class NVMETestingUtility {
                 .meanTimeBetweenFailures(TESTING_NVME_MTBF)
                 .storageInterface(TESTING_NVME_STORAGE_INTERFACE)
                 .includesHeatSink(TESTING_NVME_INCLUDES_HEAT_SINK)
+                .isActive(true)
                 .build());
     }
 
@@ -51,6 +52,7 @@ public class NVMETestingUtility {
                 .meanTimeBetweenFailures(TESTING_NVME_MTBF)
                 .storageInterface(TESTING_NVME_STORAGE_INTERFACE)
                 .includesHeatSink(TESTING_NVME_INCLUDES_HEAT_SINK)
+                .isActive(true)
                 .build());
     }
 
