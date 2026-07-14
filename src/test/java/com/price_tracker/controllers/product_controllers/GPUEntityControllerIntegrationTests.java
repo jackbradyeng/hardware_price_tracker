@@ -84,6 +84,45 @@ public class GPUEntityControllerIntegrationTests {
         );
     }
 
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateGPUWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        testGPU.setModelNumber("");
+        testGPU.setChip("");
+        testGPU.setIsActive(null);
+        String gpuString = objectMapper.writeValueAsString(testGPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/gpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gpuString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateGPUWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        GPUDTO testGPU = gpuTestingUtility.createTestGPU();
+        testGPU.setModelNumber("");
+        testGPU.setChip("");
+        testGPU.setIsActive(null);
+        String gpuString = objectMapper.writeValueAsString(testGPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/gpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gpuString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.chip").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.isActive").exists()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatGPUReadAllReturnsHttpStatus200ok() throws Exception {
