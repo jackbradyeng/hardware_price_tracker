@@ -73,6 +73,45 @@ public class GPUWorkstationControllerIntegrationTests {
         );
     }
 
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateWSGPUWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        GPUWorkstationDTO testGPUDTO = workstationGPUTestingUtility.createTestWorkstationGPUDTO();
+        testGPUDTO.setModelNumber("");
+        testGPUDTO.setGpuMemory(null);
+        testGPUDTO.setMaxPower(-1);
+        String gpuJson = objectMapper.writeValueAsString(testGPUDTO);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/workstation_gpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gpuJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateWSGPUWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        GPUWorkstationDTO testGPUDTO = workstationGPUTestingUtility.createTestWorkstationGPUDTO();
+        testGPUDTO.setModelNumber("");
+        testGPUDTO.setGpuMemory(null);
+        testGPUDTO.setMaxPower(-1);
+        String gpuJson = objectMapper.writeValueAsString(testGPUDTO);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/workstation_gpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gpuJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.gpuMemory").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.maxPower").exists()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatWSGPUReadAllReturnsHttpStatus200ok() throws Exception {
