@@ -7,6 +7,7 @@ import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.repositories.vendor_repos.ScorptecProductRepository;
 import com.price_tracker.services.vendor_services.GenericVendorService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ public class ScorptecProductServiceImpl implements GenericVendorService<VendorPr
     private final ModelMapper nullSafeModelMapper;
     private final GenericMapper<ScorptecProductEntity, VendorProductDTO> mapper;
 
+    @Autowired
     public ScorptecProductServiceImpl(ScorptecProductRepository scorptecProductRepository,
                                       ModelMapper nullSafeModelMapper,
                                       MapperFactory mapperFactory) {
@@ -70,7 +72,7 @@ public class ScorptecProductServiceImpl implements GenericVendorService<VendorPr
     }
 
     @Override
-    public Optional<VendorProductDTO> partialUpdate(String id, VendorProductDTO scorptecProductDTO) {
+    public Optional<VendorProductDTO> partialUpdate(String id, VendorProductDTO dto) {
 
         Optional<ScorptecProductEntity> existingOptional = scorptecProductRepository.findById(id);
 
@@ -81,17 +83,17 @@ public class ScorptecProductServiceImpl implements GenericVendorService<VendorPr
         ScorptecProductEntity existing = existingOptional.get();
 
         // match the IDs
-        scorptecProductDTO.setId(Long.parseLong(id));
+        dto.setId(Long.parseLong(id));
 
         // map the partial updates from the provided DTO to the new object
-        nullSafeModelMapper.map(scorptecProductDTO, existing);
+        nullSafeModelMapper.map(dto, existing);
 
         ScorptecProductEntity updatedEntity = scorptecProductRepository.save(existing);
         return Optional.of(mapper.mapTo(updatedEntity));
     }
 
     @Override
-    public Optional<VendorProductDTO> fullUpdate(String id, VendorProductDTO scorptecProductDTO) {
+    public Optional<VendorProductDTO> fullUpdate(String id, VendorProductDTO dto) {
 
         // returns empty if the specified ID is not found
         if (!this.exists(id)) {
@@ -99,10 +101,10 @@ public class ScorptecProductServiceImpl implements GenericVendorService<VendorPr
         }
 
         // matches the ID in the provided VendorProductDTO to avoid updating the wrong resource
-        scorptecProductDTO.setId(Long.parseLong(id));
+        dto.setId(Long.parseLong(id));
 
         Optional<ScorptecProductEntity> updatedScorptecProduct = Optional.ofNullable(nullSafeModelMapper
-                .map(scorptecProductDTO, ScorptecProductEntity.class));
+                .map(dto, ScorptecProductEntity.class));
 
         return updatedScorptecProduct
                 .map(scorptecProductRepository::save)
