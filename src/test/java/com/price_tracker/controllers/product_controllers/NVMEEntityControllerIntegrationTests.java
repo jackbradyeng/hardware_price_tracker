@@ -84,6 +84,45 @@ public class NVMEEntityControllerIntegrationTests {
         );
     }
 
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateNVMEWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        NVMEDTO testNVME = nvmeTestingUtility.createTestNVME();
+        testNVME.setModelNumber("");
+        testNVME.setCapacity(null);
+        testNVME.setSequentialRead(-1);
+        String nvmeString = objectMapper.writeValueAsString(testNVME);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/nvmes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(nvmeString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateNVMEWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        NVMEDTO testNVME = nvmeTestingUtility.createTestNVME();
+        testNVME.setModelNumber("");
+        testNVME.setCapacity(null);
+        testNVME.setSequentialRead(-1);
+        String nvmeString = objectMapper.writeValueAsString(testNVME);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/nvmes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(nvmeString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.capacity").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.sequentialRead").exists()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatNVMEReadAllReturnsHttpStatus200ok() throws Exception {
