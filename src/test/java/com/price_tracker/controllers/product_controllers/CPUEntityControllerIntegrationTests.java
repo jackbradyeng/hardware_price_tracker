@@ -69,6 +69,45 @@ public class CPUEntityControllerIntegrationTests {
         );
     }
 
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateCPUWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        testCPU.setModelNumber("");
+        testCPU.setCores(null);
+        testCPU.setThermalDesignPower(-1);
+        String cpuString = objectMapper.writeValueAsString(testCPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/cpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(cpuString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateCPUWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        testCPU.setModelNumber("");
+        testCPU.setCores(null);
+        testCPU.setThermalDesignPower(-1);
+        String cpuString = objectMapper.writeValueAsString(testCPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.post("/api/cpus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(cpuString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.cores").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.thermalDesignPower").exists()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatCPUReadAllReturnsHttpStatus200ok() throws Exception {
