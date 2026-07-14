@@ -2,10 +2,10 @@ package com.price_tracker.repositories;
 
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.dto.product_dtos.RAMDTO;
-import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
+import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
 import com.price_tracker.repositories.vendor_repos.UmartProductRepository;
 import com.price_tracker.services.product_services.GenericProductService;
-import com.price_tracker.services.vendor_services.UmartProductService;
+import com.price_tracker.services.vendor_services.impl.UmartProductServiceImpl;
 import com.price_tracker.testing_data.gpu_data.GPUTestingUtility;
 import com.price_tracker.testing_data.ram_data.RAMTestingUtility;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class UmartProductRepoIntegrationTests {
 
     private final UmartProductRepository umartProductRepository;
-    private final UmartProductService umartProductService;
+    private final UmartProductServiceImpl umartProductService;
     private final GenericProductService<GPUDTO> gpuService;
     private final GenericProductService<RAMDTO> ramService;
     private final GPUTestingUtility gpuTestingUtility;
@@ -31,7 +31,7 @@ public class UmartProductRepoIntegrationTests {
 
     @Autowired
     public UmartProductRepoIntegrationTests(UmartProductRepository umartProductRepository,
-                                            UmartProductService umartProductService,
+                                            UmartProductServiceImpl umartProductService,
                                             GenericProductService<GPUDTO> gpuService,
                                             GenericProductService<RAMDTO> ramService,
                                             GPUTestingUtility gpuTestingUtility,
@@ -47,7 +47,7 @@ public class UmartProductRepoIntegrationTests {
     @Test
     public void testThatActiveSavedGPUProductIsReturnedByGetURLs() {
         gpuService.save(gpuTestingUtility.createTestGPU());
-        UmartProductEntity savedUmartGPU = umartProductService.save(gpuTestingUtility.createTestUmartGPU());
+        VendorProductDTO savedUmartGPU = umartProductService.save(gpuTestingUtility.createTestUmartGPU());
         assert umartProductRepository.findUrlsForActiveGPUs().getFirst().equals(savedUmartGPU.getUrl());
     }
 
@@ -63,7 +63,7 @@ public class UmartProductRepoIntegrationTests {
     @Test
     public void testThatSavedActiveRAMProductIsReturnedByGetURLs() {
         ramService.save(ramTestingUtility.createTestRAM());
-        UmartProductEntity savedUmartRAM = umartProductRepository.save(ramTestingUtility.createTestUmartRAM());
+        VendorProductDTO savedUmartRAM = umartProductService.save(ramTestingUtility.createTestUmartRAM());
         assert umartProductRepository.findUrlsForActiveRAM().getFirst().equals(savedUmartRAM.getUrl());
     }
 
@@ -72,7 +72,7 @@ public class UmartProductRepoIntegrationTests {
         RAMDTO ramEntity = ramTestingUtility.createTestRAM();
         ramEntity.setIsActive(false);
         ramService.save(ramEntity);
-        umartProductRepository.save(ramTestingUtility.createTestUmartRAM());
+        umartProductService.save(ramTestingUtility.createTestUmartRAM());
         assert umartProductRepository.findUrlsForActiveRAM().isEmpty();
     }
 }

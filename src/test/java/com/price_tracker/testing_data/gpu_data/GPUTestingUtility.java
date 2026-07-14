@@ -3,7 +3,6 @@ package com.price_tracker.testing_data.gpu_data;
 import com.price_tracker.domain.dto.product_dtos.GPUDTO;
 import com.price_tracker.domain.dto.vendor_dtos.VendorProductDTO;
 import com.price_tracker.domain.entities.product_entities.GPUEntity;
-import com.price_tracker.domain.entities.vendor_entities.UmartProductEntity;
 import com.price_tracker.mappers.GenericMapper;
 import com.price_tracker.mappers.MapperFactory;
 import com.price_tracker.webscraper.dtos.ScrapedDataDTO;
@@ -59,8 +58,8 @@ public class GPUTestingUtility {
     }
 
     /// SAMPLE PRODUCTS
-    public UmartProductEntity createTestUmartGPU() {
-        return UmartProductEntity.builder()
+    public VendorProductDTO createTestUmartGPU() {
+        return VendorProductDTO.builder()
                 .productType(PRODUCT_TYPE_GPU)
                 .modelNumber(TESTING_GPU_MODEL_NUMBER)
                 .vendor(UMART)
