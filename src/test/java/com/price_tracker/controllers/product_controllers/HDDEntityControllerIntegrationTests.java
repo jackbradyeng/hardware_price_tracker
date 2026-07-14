@@ -84,6 +84,45 @@ public class HDDEntityControllerIntegrationTests {
         );
     }
 
+    /// VALIDATION WIRING TESTS
+    @Test
+    public void testThatCreateHDDWithInvalidFieldsReturnsHttpStatus400BadRequest() throws Exception {
+        HDDDTO testHDD = hddTestingUtility.createTestHDD();
+        testHDD.setModelNumber("");
+        testHDD.setCapacity(null);
+        testHDD.setRpm(-1);
+        String hddString = objectMapper.writeValueAsString(testHDD);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/hdds")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(hddString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatCreateHDDWithInvalidFieldsReturnsExpectedValidationErrors() throws Exception {
+        HDDDTO testHDD = hddTestingUtility.createTestHDD();
+        testHDD.setModelNumber("");
+        testHDD.setCapacity(null);
+        testHDD.setRpm(-1);
+        String hddString = objectMapper.writeValueAsString(testHDD);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/hdds")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(hddString)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.modelNumber").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.capacity").exists()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.errors.rpm").exists()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatHDDReadAllReturnsHttpStatus200ok() throws Exception {
