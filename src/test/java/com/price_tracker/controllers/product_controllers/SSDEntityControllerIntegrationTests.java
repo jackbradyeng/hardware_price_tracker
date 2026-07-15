@@ -123,6 +123,16 @@ public class SSDEntityControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatGetSSDByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/ssds/{id}", " ")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatSSDReadAllReturnsHttpStatus200ok() throws Exception {

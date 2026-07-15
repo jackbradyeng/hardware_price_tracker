@@ -123,6 +123,16 @@ public class HDDEntityControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatGetHDDByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/hdds/{id}", " ")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatHDDReadAllReturnsHttpStatus200ok() throws Exception {

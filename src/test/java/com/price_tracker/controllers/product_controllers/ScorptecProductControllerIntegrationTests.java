@@ -132,6 +132,16 @@ public class ScorptecProductControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatGetScorptecProductByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/scorptecproducts/{id}", " ")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
     // UPDATE TESTS
     @Test
     public void testThatFullUpdateScorptecProductReturnsHttpStatus200ok() throws Exception {

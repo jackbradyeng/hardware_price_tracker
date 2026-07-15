@@ -112,6 +112,16 @@ public class GPUWorkstationControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatGetWSGPUByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/workstation_gpus/{id}", " ")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatWSGPUReadAllReturnsHttpStatus200ok() throws Exception {

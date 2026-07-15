@@ -123,6 +123,16 @@ public class NVMEEntityControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatGetNVMEByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/nvmes/{id}", " ")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatNVMEReadAllReturnsHttpStatus200ok() throws Exception {

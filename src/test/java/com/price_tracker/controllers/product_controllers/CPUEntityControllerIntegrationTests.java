@@ -108,6 +108,16 @@ public class CPUEntityControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatGetCPUByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/cpus/{id}", " ")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
     /// READ TESTS
     @Test
     public void testThatCPUReadAllReturnsHttpStatus200ok() throws Exception {

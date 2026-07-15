@@ -8,13 +8,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@Log
+@Validated
 @RestController
 @RequiredArgsConstructor
-@Log
 public class NVMEController {
 
     private final GenericProductService<NVMEDTO> nvmeService;
