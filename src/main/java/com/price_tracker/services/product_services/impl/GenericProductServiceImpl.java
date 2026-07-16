@@ -13,13 +13,16 @@ public class GenericProductServiceImpl<E, D> implements GenericProductService<D>
 
     private final JpaRepository<E, String> repository;
     private final GenericMapper<E, D> mapper;
+    private final ModelMapper modelMapper;
     private final ModelMapper nullSafeModelMapper;
 
     public GenericProductServiceImpl(JpaRepository<E, String> repository,
                                      GenericMapper<E, D> mapper,
+                                     ModelMapper modelMapper,
                                      ModelMapper nullSafeModelMapper) {
         this.repository = repository;
         this.mapper = mapper;
+        this.modelMapper = modelMapper;
         this.nullSafeModelMapper = nullSafeModelMapper;
     }
 
@@ -63,8 +66,8 @@ public class GenericProductServiceImpl<E, D> implements GenericProductService<D>
     @Override
     public Optional<D> fullUpdate(String id, D dto) {
         return repository.findById(id).map(existing -> {
-            E entity = mapper.mapFrom(dto);
-            E savedEntity = repository.save(entity);
+            modelMapper.map(dto, existing);
+            E savedEntity = repository.save(existing);
             return mapper.mapTo(savedEntity);
         });
     }
