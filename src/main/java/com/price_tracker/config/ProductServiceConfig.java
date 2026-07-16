@@ -34,51 +34,58 @@ public class ProductServiceConfig {
 
     @Bean
     public GenericProductService<CPUDTO> cpuService(CPURepository repository, MapperFactory mapperFactory,
+                                                    @Qualifier("modelMapper") ModelMapper modelMapper,
                                                     @Qualifier("nullSafeModelMapper") ModelMapper nullSafeModelMapper) {
-        return new GenericProductServiceImpl<CPUEntity, CPUDTO>(repository,
-                mapperFactory.create(CPUEntity.class, CPUDTO.class), nullSafeModelMapper);
+        return new GenericProductServiceImpl<>(repository,
+                mapperFactory.create(CPUEntity.class, CPUDTO.class), modelMapper, nullSafeModelMapper);
     }
 
     @Bean
     public GenericProductService<GPUDTO> gpuService(GPURepository repository, MapperFactory mapperFactory,
+                                                    @Qualifier("modelMapper") ModelMapper modelMapper,
                                                     @Qualifier("nullSafeModelMapper") ModelMapper nullSafeModelMapper) {
-        return new GenericProductServiceImpl<GPUEntity, GPUDTO>(repository,
-                mapperFactory.create(GPUEntity.class, GPUDTO.class), nullSafeModelMapper);
+        return new GenericProductServiceImpl<>(repository,
+                mapperFactory.create(GPUEntity.class, GPUDTO.class), modelMapper, nullSafeModelMapper);
     }
 
     @Bean
     public GenericProductService<GPUWorkstationDTO> gpuWorkstationService(GPUWorkstationRepository repository,
                                                                           MapperFactory mapperFactory,
+                                                                          @Qualifier("modelMapper") ModelMapper modelMapper,
                                                                           @Qualifier("nullSafeModelMapper") ModelMapper nullSafeModelMapper) {
-        return new GenericProductServiceImpl<GPUWorkstationEntity, GPUWorkstationDTO>(repository,
-                mapperFactory.create(GPUWorkstationEntity.class, GPUWorkstationDTO.class), nullSafeModelMapper);
+        return new GenericProductServiceImpl<>(repository,
+                mapperFactory.create(GPUWorkstationEntity.class, GPUWorkstationDTO.class), modelMapper, nullSafeModelMapper);
     }
 
     @Bean
     public GenericProductService<HDDDTO> hddService(HDDRepository repository, MapperFactory mapperFactory,
+                                                    @Qualifier("modelMapper") ModelMapper modelMapper,
                                                     @Qualifier("nullSafeModelMapper") ModelMapper nullSafeModelMapper) {
-        return new GenericProductServiceImpl<HDDEntity, HDDDTO>(repository,
-                mapperFactory.create(HDDEntity.class, HDDDTO.class), nullSafeModelMapper);
+        return new GenericProductServiceImpl<>(repository,
+                mapperFactory.create(HDDEntity.class, HDDDTO.class), modelMapper, nullSafeModelMapper);
     }
 
     @Bean
     public GenericProductService<NVMEDTO> nvmeService(NVMERepository repository, MapperFactory mapperFactory,
+                                                      @Qualifier("modelMapper") ModelMapper modelMapper,
                                                       @Qualifier("nullSafeModelMapper") ModelMapper nullSafeModelMapper) {
-        return new GenericProductServiceImpl<NVMEEntity, NVMEDTO>(repository,
-                mapperFactory.create(NVMEEntity.class, NVMEDTO.class), nullSafeModelMapper);
+        return new GenericProductServiceImpl<>(repository,
+                mapperFactory.create(NVMEEntity.class, NVMEDTO.class), modelMapper, nullSafeModelMapper);
     }
 
     @Bean
     public GenericProductService<RAMDTO> ramService(RAMRepository repository, MapperFactory mapperFactory,
+                                                    @Qualifier("modelMapper") ModelMapper modelMapper,
                                                     @Qualifier("nullSafeModelMapper") ModelMapper nullSafeModelMapper) {
-        return new GenericProductServiceImpl<RAMEntity, RAMDTO>(repository,
-                mapperFactory.create(RAMEntity.class, RAMDTO.class), nullSafeModelMapper);
+        return new GenericProductServiceImpl<>(repository,
+                mapperFactory.create(RAMEntity.class, RAMDTO.class), modelMapper, nullSafeModelMapper);
     }
 
     @Bean
     public GenericProductService<SSDDTO> ssdService(SSDRepository repository, MapperFactory mapperFactory,
+                                                    @Qualifier("modelMapper") ModelMapper modelMapper,
                                                     @Qualifier("nullSafeModelMapper") ModelMapper nullSafeModelMapper) {
-        return new GenericProductServiceImpl<SSDEntity, SSDDTO>(repository,
-                mapperFactory.create(SSDEntity.class, SSDDTO.class), nullSafeModelMapper);
+        return new GenericProductServiceImpl<>(repository,
+                mapperFactory.create(SSDEntity.class, SSDDTO.class), modelMapper, nullSafeModelMapper);
     }
 }
