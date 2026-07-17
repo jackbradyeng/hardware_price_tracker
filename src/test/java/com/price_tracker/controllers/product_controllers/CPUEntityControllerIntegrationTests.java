@@ -45,7 +45,7 @@ public class CPUEntityControllerIntegrationTests {
         String cpuString = objectMapper.writeValueAsString(testCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/cpus")
+                MockMvcRequestBuilders.post("/api/v1/cpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(cpuString)
         ).andExpect(
@@ -59,7 +59,7 @@ public class CPUEntityControllerIntegrationTests {
         String cpuString = objectMapper.writeValueAsString(testCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/cpus")
+                MockMvcRequestBuilders.post("/api/v1/cpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(cpuString)
         ).andExpect(
@@ -79,7 +79,7 @@ public class CPUEntityControllerIntegrationTests {
         String cpuString = objectMapper.writeValueAsString(testCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/cpus")
+                MockMvcRequestBuilders.post("/api/v1/cpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(cpuString)
         ).andExpect(
@@ -96,7 +96,7 @@ public class CPUEntityControllerIntegrationTests {
         String cpuString = objectMapper.writeValueAsString(testCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/cpus")
+                MockMvcRequestBuilders.post("/api/v1/cpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(cpuString)
         ).andExpect(
@@ -111,7 +111,7 @@ public class CPUEntityControllerIntegrationTests {
     @Test
     public void testThatGetCPUByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/cpus/{id}", " ")
+                MockMvcRequestBuilders.get("/api/v1/cpus/{id}", " ")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
@@ -122,7 +122,7 @@ public class CPUEntityControllerIntegrationTests {
     @Test
     public void testThatCPUReadAllReturnsHttpStatus200ok() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/cpus")
+                MockMvcRequestBuilders.get("/api/v1/cpus")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
             MockMvcResultMatchers.status().isOk()
@@ -135,7 +135,7 @@ public class CPUEntityControllerIntegrationTests {
         CPUDTO savedCPU = cpuService.save(testCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/cpus/" + savedCPU.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/cpus/" + savedCPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -145,7 +145,7 @@ public class CPUEntityControllerIntegrationTests {
     @Test
     public void testThatCPUGetByIDReturnsHttpStatusNotFoundWhenCPUDoesNotExist() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/cpus/cpuDoesNotExist")
+                MockMvcRequestBuilders.get("/api/v1/cpus/cpuDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
@@ -163,7 +163,7 @@ public class CPUEntityControllerIntegrationTests {
         String cpuJson = objectMapper.writeValueAsString(updatedCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.put("/api/cpus/" + savedCPU.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/cpus/" + savedCPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(cpuJson)
         ).andExpect(
@@ -183,7 +183,7 @@ public class CPUEntityControllerIntegrationTests {
         String cpuJson = objectMapper.writeValueAsString(updatedCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.put("/api/cpus/" + savedCPU.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/cpus/" + savedCPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(cpuJson)
         ).andExpect(
@@ -199,7 +199,7 @@ public class CPUEntityControllerIntegrationTests {
     @Test
     public void testThatDeleteCPUReturnsHttpStatus204FromNonExistingCPU() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.delete("/api/cpus/cpuDoesNotExist")
+                MockMvcRequestBuilders.delete("/api/v1/cpus/cpuDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -210,7 +210,7 @@ public class CPUEntityControllerIntegrationTests {
         CPUDTO savedCPU = cpuService.save(testCPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.delete("/api/cpus/" + savedCPU.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/v1/cpus/" + savedCPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

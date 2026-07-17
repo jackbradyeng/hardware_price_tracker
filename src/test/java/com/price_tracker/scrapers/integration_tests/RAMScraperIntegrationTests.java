@@ -81,7 +81,7 @@ public class RAMScraperIntegrationTests {
         ramGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/ram_pricepoints")
+                MockMvcRequestBuilders.get("/api/v1/ram_pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -99,7 +99,7 @@ public class RAMScraperIntegrationTests {
         ramGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
-                        MockMvcRequestBuilders.get("/api/ram_pricepoints")
+                        MockMvcRequestBuilders.get("/api/v1/ram_pricepoints")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -145,7 +145,7 @@ public class RAMScraperIntegrationTests {
         ramGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/ram_pricepoints/" + savedRAM.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/ram_pricepoints/" + savedRAM.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -155,7 +155,7 @@ public class RAMScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/ram_pricepoints/" + "random_model_number")
+                MockMvcRequestBuilders.get("/api/v1/ram_pricepoints/" + "random_model_number")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()

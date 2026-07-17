@@ -21,33 +21,33 @@ public class SSDController {
 
     private final GenericProductService<SSDDTO> ssdService;
 
-    @PostMapping(path = "/api/ssds")
+    @PostMapping(path = "/api/v1/ssds")
     public ResponseEntity<SSDDTO> createSSD(@Valid @RequestBody final SSDDTO ssdDTO) {
         log.info("Got SSD: " + ssdDTO.toString());
         SSDDTO savedSSD = ssdService.save(ssdDTO);
         return new ResponseEntity<>(savedSSD, HttpStatus.CREATED);
     }
 
-    @PostMapping(path = "/api/ssds/saveall")
+    @PostMapping(path = "/api/v1/ssds/saveall")
     public ResponseEntity<List<SSDDTO>> createSSDs(@Valid @RequestBody final List<SSDDTO> ssdDTOs) {
         log.info("Processing batch of " + ssdDTOs.size() + " SSD records");
         List<SSDDTO> savedEntities = ssdService.saveAll(ssdDTOs);
         return new ResponseEntity<>(savedEntities, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/api/ssds")
+    @GetMapping(path = "/api/v1/ssds")
     public ResponseEntity<List<SSDDTO>> listSSDs() {
         return new ResponseEntity<>(ssdService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/ssds/{id}")
+    @GetMapping(path = "/api/v1/ssds/{id}")
     public ResponseEntity<SSDDTO> getSSD(@NotBlank @PathVariable String id) {
         Optional<SSDDTO> foundSSD = ssdService.findOne(id);
         return foundSSD.map(ssd -> new ResponseEntity<>(ssd, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping(path = "/api/ssds/{id}")
+    @PutMapping(path = "/api/v1/ssds/{id}")
     public ResponseEntity<SSDDTO> fullUpdateSSD(@NotBlank @PathVariable String id,
                                                 @Valid @RequestBody SSDDTO ssdDTO) {
         return ssdService.fullUpdate(id, ssdDTO)
@@ -55,7 +55,7 @@ public class SSDController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PatchMapping(path = "/api/ssds/{id}")
+    @PatchMapping(path = "/api/v1/ssds/{id}")
     public ResponseEntity<SSDDTO> partialUpdate(@NotBlank @PathVariable String id,
                                                 @Valid @RequestBody SSDDTO ssdDTO) {
         return ssdService.partialUpdate(id, ssdDTO)
@@ -63,7 +63,7 @@ public class SSDController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping(path = "/api/ssds/{id}")
+    @DeleteMapping(path = "/api/v1/ssds/{id}")
     public ResponseEntity<SSDDTO> deleteSSD(@NotBlank @PathVariable String id) {
         ssdService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

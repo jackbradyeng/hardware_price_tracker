@@ -23,13 +23,13 @@ public class HDDPricePointController {
 
     private final GenericPricePointService<HDDDataAndPricePointDTO> hddPricePointService;
 
-    @GetMapping(path = "/api/hdd_pricepoints")
+    @GetMapping(path = "/api/v1/hdd_pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listHDDPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(hddPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/hdd_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/hdd_pricepoints/{modelNumber}")
     public ResponseEntity<HDDDataAndPricePointDTO> findHDDPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

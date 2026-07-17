@@ -23,13 +23,13 @@ public class NVMEPricePointController {
 
     private final GenericPricePointService<NVMEDataAndPricePointDTO> nvmePricePointService;
 
-    @GetMapping(path = "/api/nvme_pricepoints")
+    @GetMapping(path = "/api/v1/nvme_pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listNVMEPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(nvmePricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/nvme_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/nvme_pricepoints/{modelNumber}")
     public ResponseEntity<NVMEDataAndPricePointDTO> findNVMEPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

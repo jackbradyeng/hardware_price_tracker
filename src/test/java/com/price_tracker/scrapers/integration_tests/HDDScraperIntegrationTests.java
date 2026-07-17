@@ -81,7 +81,7 @@ public class HDDScraperIntegrationTests {
         hddGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/hdd_pricepoints")
+                MockMvcRequestBuilders.get("/api/v1/hdd_pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -99,7 +99,7 @@ public class HDDScraperIntegrationTests {
         hddGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
-                        MockMvcRequestBuilders.get("/api/hdd_pricepoints")
+                        MockMvcRequestBuilders.get("/api/v1/hdd_pricepoints")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -141,7 +141,7 @@ public class HDDScraperIntegrationTests {
         hddGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/hdd_pricepoints/" + savedHDD.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/hdd_pricepoints/" + savedHDD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -151,7 +151,7 @@ public class HDDScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/hdd_pricepoints/" + "random_model_number")
+                MockMvcRequestBuilders.get("/api/v1/hdd_pricepoints/" + "random_model_number")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()

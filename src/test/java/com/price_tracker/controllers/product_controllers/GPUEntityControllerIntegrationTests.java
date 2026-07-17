@@ -46,7 +46,7 @@ public class GPUEntityControllerIntegrationTests {
         String gpuString = objectMapper.writeValueAsString(testGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/gpus")
+                MockMvcRequestBuilders.post("/api/v1/gpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuString)
         ).andExpect(
@@ -60,7 +60,7 @@ public class GPUEntityControllerIntegrationTests {
         String gpuString = objectMapper.writeValueAsString(testGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/gpus")
+                MockMvcRequestBuilders.post("/api/v1/gpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuString)
         ).andExpect(
@@ -76,7 +76,7 @@ public class GPUEntityControllerIntegrationTests {
         String listString = objectMapper.writeValueAsString(testGPUDTOs);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/gpus/saveall")
+                MockMvcRequestBuilders.post("/api/v1/gpus/saveall")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(listString)
         ).andExpect(
@@ -94,7 +94,7 @@ public class GPUEntityControllerIntegrationTests {
         String gpuString = objectMapper.writeValueAsString(testGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/gpus")
+                MockMvcRequestBuilders.post("/api/v1/gpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuString)
         ).andExpect(
@@ -111,7 +111,7 @@ public class GPUEntityControllerIntegrationTests {
         String gpuString = objectMapper.writeValueAsString(testGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/gpus")
+                MockMvcRequestBuilders.post("/api/v1/gpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuString)
         ).andExpect(
@@ -126,7 +126,7 @@ public class GPUEntityControllerIntegrationTests {
     @Test
     public void testThatGetGPUByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/gpus/{id}", " ")
+                MockMvcRequestBuilders.get("/api/v1/gpus/{id}", " ")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
@@ -137,7 +137,7 @@ public class GPUEntityControllerIntegrationTests {
     @Test
     public void testThatGPUReadAllReturnsHttpStatus200ok() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/gpus")
+                MockMvcRequestBuilders.get("/api/v1/gpus")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
             MockMvcResultMatchers.status().isOk()
@@ -150,7 +150,7 @@ public class GPUEntityControllerIntegrationTests {
         GPUDTO savedGPU = gpuService.save(testGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/gpus/" + savedGPU.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/gpus/" + savedGPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -160,7 +160,7 @@ public class GPUEntityControllerIntegrationTests {
     @Test
     public void testThatGPUGetByIDReturnsHttpStatusNotFoundWhenGPUDoesNotExist() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/gpus/gpuDoesNotExist")
+                MockMvcRequestBuilders.get("/api/v1/gpus/gpuDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
@@ -178,7 +178,7 @@ public class GPUEntityControllerIntegrationTests {
         String gpuJson = objectMapper.writeValueAsString(updatedGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.put("/api/gpus/" + savedGPU.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/gpus/" + savedGPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuJson)
         ).andExpect(
@@ -199,7 +199,7 @@ public class GPUEntityControllerIntegrationTests {
         String gpuJson = objectMapper.writeValueAsString(updatedGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.put("/api/gpus/" + savedGPU.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/gpus/" + savedGPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuJson)
         ).andExpect(
@@ -219,7 +219,7 @@ public class GPUEntityControllerIntegrationTests {
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingGPU() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.delete("/api/gpus/gpuDoesNotExist")
+                MockMvcRequestBuilders.delete("/api/v1/gpus/gpuDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -230,7 +230,7 @@ public class GPUEntityControllerIntegrationTests {
         GPUDTO savedGPU = gpuService.save(testGPU);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.delete("/api/gpus/" + savedGPU.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/v1/gpus/" + savedGPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

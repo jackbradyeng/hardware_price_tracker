@@ -46,7 +46,7 @@ public class NVMEEntityControllerIntegrationTests {
         String nvmeString = objectMapper.writeValueAsString(testNVME);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/nvmes")
+                MockMvcRequestBuilders.post("/api/v1/nvmes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(nvmeString)
         ).andExpect(
@@ -60,7 +60,7 @@ public class NVMEEntityControllerIntegrationTests {
         String nvmeString = objectMapper.writeValueAsString(testNVME);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/nvmes")
+                MockMvcRequestBuilders.post("/api/v1/nvmes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(nvmeString)
         ).andExpect(
@@ -76,7 +76,7 @@ public class NVMEEntityControllerIntegrationTests {
         String listString = objectMapper.writeValueAsString(testNVMEDTOs);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/nvmes/saveall")
+                MockMvcRequestBuilders.post("/api/v1/nvmes/saveall")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(listString)
         ).andExpect(
@@ -94,7 +94,7 @@ public class NVMEEntityControllerIntegrationTests {
         String nvmeString = objectMapper.writeValueAsString(testNVME);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/nvmes")
+                MockMvcRequestBuilders.post("/api/v1/nvmes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(nvmeString)
         ).andExpect(
@@ -111,7 +111,7 @@ public class NVMEEntityControllerIntegrationTests {
         String nvmeString = objectMapper.writeValueAsString(testNVME);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/nvmes")
+                MockMvcRequestBuilders.post("/api/v1/nvmes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(nvmeString)
         ).andExpect(
@@ -126,7 +126,7 @@ public class NVMEEntityControllerIntegrationTests {
     @Test
     public void testThatGetNVMEByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/nvmes/{id}", " ")
+                MockMvcRequestBuilders.get("/api/v1/nvmes/{id}", " ")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
@@ -137,7 +137,7 @@ public class NVMEEntityControllerIntegrationTests {
     @Test
     public void testThatNVMEReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/nvmes")
+                MockMvcRequestBuilders.get("/api/v1/nvmes")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -150,7 +150,7 @@ public class NVMEEntityControllerIntegrationTests {
         NVMEDTO savedNVME = nvmeService.save(testNVME);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/nvmes/" + savedNVME.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/nvmes/" + savedNVME.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -160,7 +160,7 @@ public class NVMEEntityControllerIntegrationTests {
     @Test
     public void testThatNVMEGetByIDReturnsHttpStatusNotFoundWhenNVMEDoesNotExist() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/nvmes/nvmeDoesNotExist")
+                MockMvcRequestBuilders.get("/api/v1/nvmes/nvmeDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
@@ -178,7 +178,7 @@ public class NVMEEntityControllerIntegrationTests {
         String nvmeJson = objectMapper.writeValueAsString(updatedNVME);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/nvmes/" + savedNVME.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/nvmes/" + savedNVME.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(nvmeJson)
         ).andExpect(
@@ -199,7 +199,7 @@ public class NVMEEntityControllerIntegrationTests {
         String nvmeJson = objectMapper.writeValueAsString(updatedNVME);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/nvmes/" + savedNVME.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/nvmes/" + savedNVME.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(nvmeJson)
         ).andExpect(
@@ -217,7 +217,7 @@ public class NVMEEntityControllerIntegrationTests {
     @Test
     public void testThatDeleteNVMEReturnsHttpStatus204FromNonExistingNVME() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/nvmes/nvmeDoesNotExist")
+                MockMvcRequestBuilders.delete("/api/v1/nvmes/nvmeDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -228,7 +228,7 @@ public class NVMEEntityControllerIntegrationTests {
         NVMEDTO savedNVME = nvmeService.save(testNVME);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/nvmes/" + savedNVME.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/v1/nvmes/" + savedNVME.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

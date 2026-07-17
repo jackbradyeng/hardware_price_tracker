@@ -81,7 +81,7 @@ public class CPUScraperIntegrationTests {
         cpuGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/cpu_pricepoints")
+                MockMvcRequestBuilders.get("/api/v1/cpu_pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -99,7 +99,7 @@ public class CPUScraperIntegrationTests {
         cpuGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
-                        MockMvcRequestBuilders.get("/api/cpu_pricepoints")
+                        MockMvcRequestBuilders.get("/api/v1/cpu_pricepoints")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -145,7 +145,7 @@ public class CPUScraperIntegrationTests {
         cpuGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/cpu_pricepoints/" + savedCPU.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/cpu_pricepoints/" + savedCPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -155,7 +155,7 @@ public class CPUScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/cpu_pricepoints/" + "random_model_number")
+                MockMvcRequestBuilders.get("/api/v1/cpu_pricepoints/" + "random_model_number")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()

@@ -58,7 +58,7 @@ public class UmartProductControllerIntegrationTests {
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/umartproducts")
+                MockMvcRequestBuilders.post("/api/v1/umartproducts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testProductString)
         ).andExpect(
@@ -72,7 +72,7 @@ public class UmartProductControllerIntegrationTests {
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/umartproducts")
+                MockMvcRequestBuilders.post("/api/v1/umartproducts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testProductString)
         ).andExpect(
@@ -90,7 +90,7 @@ public class UmartProductControllerIntegrationTests {
         String jsonString = objectMapper.writeValueAsString(testVendorProductDTOS);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/umartproducts/saveall")
+                MockMvcRequestBuilders.post("/api/v1/umartproducts/saveall")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonString)
         ).andExpect(
@@ -102,7 +102,7 @@ public class UmartProductControllerIntegrationTests {
     @Test
     public void testThatUmartProductReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/umartproducts")
+                MockMvcRequestBuilders.get("/api/v1/umartproducts")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -115,7 +115,7 @@ public class UmartProductControllerIntegrationTests {
         VendorProductDTO savedProduct = umartProductService.save(umartProductEntity);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/umartproducts/" + savedProduct.getId())
+                MockMvcRequestBuilders.get("/api/v1/umartproducts/" + savedProduct.getId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -125,7 +125,7 @@ public class UmartProductControllerIntegrationTests {
     @Test
     public void testThatUmartProductGetByIDReturnsHttpStatusNotFoundWhenProductDoesNotExist() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/umartproducts/" + Long.MAX_VALUE)
+                MockMvcRequestBuilders.get("/api/v1/umartproducts/" + Long.MAX_VALUE)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
@@ -135,7 +135,7 @@ public class UmartProductControllerIntegrationTests {
     @Test
     public void testThatGetUmartProductByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/umartproducts/{id}", " ")
+                MockMvcRequestBuilders.get("/api/v1/umartproducts/{id}", " ")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
@@ -157,7 +157,7 @@ public class UmartProductControllerIntegrationTests {
         String updatedProductString = objectMapper.writeValueAsString(updatedProduct);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/umartproducts/" + savedProduct.getId())
+                MockMvcRequestBuilders.put("/api/v1/umartproducts/" + savedProduct.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedProductString)
         ).andExpect(
@@ -179,7 +179,7 @@ public class UmartProductControllerIntegrationTests {
         String updatedProductString = objectMapper.writeValueAsString(updatedProduct);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/umartproducts/" + savedProduct.getId())
+                MockMvcRequestBuilders.put("/api/v1/umartproducts/" + savedProduct.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedProductString)
         ).andExpect(
@@ -200,7 +200,7 @@ public class UmartProductControllerIntegrationTests {
         String updatedProductString = objectMapper.writeValueAsString(updatedProduct);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/umartproducts/" + Long.MAX_VALUE)
+                MockMvcRequestBuilders.put("/api/v1/umartproducts/" + Long.MAX_VALUE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedProductString)
         ).andExpect(
@@ -212,7 +212,7 @@ public class UmartProductControllerIntegrationTests {
     @Test
     public void testThatDeleteGPUReturnsHttpStatus204FromNonExistingProduct() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/umartproducts/" + Long.MAX_VALUE)
+                MockMvcRequestBuilders.delete("/api/v1/umartproducts/" + Long.MAX_VALUE)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -223,7 +223,7 @@ public class UmartProductControllerIntegrationTests {
         VendorProductDTO savedProduct = umartProductService.save(umartProductEntity);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/umartproducts/" + savedProduct.getId())
+                MockMvcRequestBuilders.delete("/api/v1/umartproducts/" + savedProduct.getId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
