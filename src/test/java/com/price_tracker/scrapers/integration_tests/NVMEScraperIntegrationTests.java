@@ -81,7 +81,7 @@ public class NVMEScraperIntegrationTests {
         nvmeGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/nvme_pricepoints")
+                MockMvcRequestBuilders.get("/api/v1/nvme_pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -99,7 +99,7 @@ public class NVMEScraperIntegrationTests {
         nvmeGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
-                        MockMvcRequestBuilders.get("/api/nvme_pricepoints")
+                        MockMvcRequestBuilders.get("/api/v1/nvme_pricepoints")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -141,7 +141,7 @@ public class NVMEScraperIntegrationTests {
         nvmeGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/nvme_pricepoints/" + savedNVME.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/nvme_pricepoints/" + savedNVME.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -151,7 +151,7 @@ public class NVMEScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/nvme_pricepoints/" + "random_model_number")
+                MockMvcRequestBuilders.get("/api/v1/nvme_pricepoints/" + "random_model_number")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()

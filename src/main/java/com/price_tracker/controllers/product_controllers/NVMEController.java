@@ -21,47 +21,47 @@ public class NVMEController {
 
     private final GenericProductService<NVMEDTO> nvmeService;
 
-    @PostMapping(path = "/api/nvmes")
+    @PostMapping(path = "/api/v1/nvmes")
     public ResponseEntity<NVMEDTO> createNVME(@Valid @RequestBody final NVMEDTO nvmeDTO) {
         log.info("Got NVME: " + nvmeDTO.toString());
         NVMEDTO savedNVME = nvmeService.save(nvmeDTO);
         return new ResponseEntity<>(savedNVME, HttpStatus.CREATED);
     }
 
-    @PostMapping(path = "/api/nvmes/saveall")
+    @PostMapping(path = "/api/v1/nvmes/saveall")
     public ResponseEntity<List<NVMEDTO>> createNVMEs(@Valid @RequestBody final List<NVMEDTO> nvmeDTOs) {
         log.info("Processing batch of " + nvmeDTOs.size() + " NVME records");
         List<NVMEDTO> savedEntities = nvmeService.saveAll(nvmeDTOs);
         return new ResponseEntity<>(savedEntities, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/api/nvmes")
+    @GetMapping(path = "/api/v1/nvmes")
     public ResponseEntity<List<NVMEDTO>> listNVMEs() {
         return new ResponseEntity<>(nvmeService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/nvmes/{id}")
+    @GetMapping(path = "/api/v1/nvmes/{id}")
     public ResponseEntity<NVMEDTO> getNVME(@NotBlank @PathVariable String id) {
         Optional<NVMEDTO> foundNVME = nvmeService.findOne(id);
         return foundNVME.map(nvme -> new ResponseEntity<>(nvme, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping(path = "/api/nvmes/{id}")
+    @PutMapping(path = "/api/v1/nvmes/{id}")
     public ResponseEntity<NVMEDTO> fullUpdateNVME(@NotBlank @PathVariable String id, @Valid @RequestBody NVMEDTO nvmeDTO) {
         return nvmeService.fullUpdate(id, nvmeDTO)
                 .map(nvme -> new ResponseEntity<>(nvme, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PatchMapping(path = "/api/nvmes/{id}")
+    @PatchMapping(path = "/api/v1/nvmes/{id}")
     public ResponseEntity<NVMEDTO> partialUpdate(@NotBlank @PathVariable String id, @Valid @RequestBody NVMEDTO nvmeDTO) {
         return nvmeService.partialUpdate(id, nvmeDTO)
                 .map(nvme -> new ResponseEntity<>(nvme, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping(path = "/api/nvmes/{id}")
+    @DeleteMapping(path = "/api/v1/nvmes/{id}")
     public ResponseEntity<NVMEDTO> deleteNVME(@NotBlank @PathVariable String id) {
         nvmeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

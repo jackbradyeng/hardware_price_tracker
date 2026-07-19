@@ -23,13 +23,13 @@ public class CPUPricePointController {
 
     private final GenericPricePointService<CPUDataAndPricePointDTO> cpuPricePointService;
 
-    @GetMapping(path = "/api/cpu_pricepoints")
+    @GetMapping(path = "/api/v1/cpu_pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listCPUPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(cpuPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/cpu_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/cpu_pricepoints/{modelNumber}")
     public ResponseEntity<CPUDataAndPricePointDTO> findCPUPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

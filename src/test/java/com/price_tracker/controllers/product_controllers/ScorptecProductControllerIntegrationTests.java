@@ -58,7 +58,7 @@ public class ScorptecProductControllerIntegrationTests {
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/scorptecproducts")
+                MockMvcRequestBuilders.post("/api/v1/scorptecproducts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testProductString)
         ).andExpect(
@@ -72,7 +72,7 @@ public class ScorptecProductControllerIntegrationTests {
         String testProductString = objectMapper.writeValueAsString(testProductEntity);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/scorptecproducts")
+                MockMvcRequestBuilders.post("/api/v1/scorptecproducts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testProductString)
         ).andExpect(
@@ -90,7 +90,7 @@ public class ScorptecProductControllerIntegrationTests {
         String jsonString = objectMapper.writeValueAsString(testVendorProductDTOS);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/scorptecproducts/saveall")
+                MockMvcRequestBuilders.post("/api/v1/scorptecproducts/saveall")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonString)
         ).andExpect(
@@ -102,7 +102,7 @@ public class ScorptecProductControllerIntegrationTests {
     @Test
     public void testThatScorptecProductReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/scorptecproducts")
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -115,7 +115,7 @@ public class ScorptecProductControllerIntegrationTests {
         VendorProductDTO savedProduct = scorptecProductService.save(scorptecProductEntity);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/scorptecproducts/" + savedProduct.getId())
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/" + savedProduct.getId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -125,7 +125,7 @@ public class ScorptecProductControllerIntegrationTests {
     @Test
     public void testThatScorptecProductGetByIDReturnsHttpStatusNotFoundWhenProductDoesNotExist() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/scorptecproducts/" + Long.MAX_VALUE)
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/" + Long.MAX_VALUE)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
@@ -135,7 +135,7 @@ public class ScorptecProductControllerIntegrationTests {
     @Test
     public void testThatGetScorptecProductByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/scorptecproducts/{id}", " ")
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/{id}", " ")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
@@ -157,7 +157,7 @@ public class ScorptecProductControllerIntegrationTests {
         String updatedProductString = objectMapper.writeValueAsString(updatedProduct);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/scorptecproducts/" + savedProduct.getId())
+                MockMvcRequestBuilders.put("/api/v1/scorptecproducts/" + savedProduct.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedProductString)
         ).andExpect(
@@ -179,7 +179,7 @@ public class ScorptecProductControllerIntegrationTests {
         String updatedProductString = objectMapper.writeValueAsString(updatedProduct);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/scorptecproducts/" + savedProduct.getId())
+                MockMvcRequestBuilders.put("/api/v1/scorptecproducts/" + savedProduct.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedProductString)
         ).andExpect(
@@ -200,7 +200,7 @@ public class ScorptecProductControllerIntegrationTests {
         String updatedProductString = objectMapper.writeValueAsString(updatedProduct);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/scorptecproducts/" + Long.MAX_VALUE)
+                MockMvcRequestBuilders.put("/api/v1/scorptecproducts/" + Long.MAX_VALUE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedProductString)
         ).andExpect(
@@ -212,7 +212,7 @@ public class ScorptecProductControllerIntegrationTests {
     @Test
     public void testThatDeleteScorptecProductReturnsHttpStatus204FromNonExistingProduct() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/scorptecproducts/" + Long.MAX_VALUE)
+                MockMvcRequestBuilders.delete("/api/v1/scorptecproducts/" + Long.MAX_VALUE)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -223,7 +223,7 @@ public class ScorptecProductControllerIntegrationTests {
         VendorProductDTO savedProduct = scorptecProductService.save(scorptecProductEntity);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/scorptecproducts/" + savedProduct.getId())
+                MockMvcRequestBuilders.delete("/api/v1/scorptecproducts/" + savedProduct.getId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

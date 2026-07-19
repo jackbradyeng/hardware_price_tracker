@@ -48,7 +48,7 @@ public class PricePointServiceConfig {
     @Bean
     public GenericPricePointService<CPUDataAndPricePointDTO> cpuPricePointService(CPUPricePointRepository repository,
                                                                                   MapperFactory mapperFactory) {
-        return new GenericPricePointServiceImpl<CPUEntity, CPUPricePoint, CPUDTO, CPUDataAndPricePointDTO>(
+        return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(CPUPricePoint.class, GenericPricePointDTO.class),
@@ -67,7 +67,7 @@ public class PricePointServiceConfig {
     @Bean
     public GenericPricePointService<GPUDataAndPricePointDTO> gpuPricePointService(GPUPricePointRepository repository,
                                                                                   MapperFactory mapperFactory) {
-        return new GenericPricePointServiceImpl<GPUEntity, GPUPricePoint, GPUDTO, GPUDataAndPricePointDTO>(
+        return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(GPUPricePoint.class, GenericPricePointDTO.class),
@@ -86,7 +86,7 @@ public class PricePointServiceConfig {
     @Bean
     public GenericPricePointService<GPUWorkstationDataAndPricePointDTO> gpuWorkstationPricePointService(
             GPUWorkstationPricePointRepository repository, MapperFactory mapperFactory) {
-        return new GenericPricePointServiceImpl<GPUWorkstationEntity, GPUWorkstationPricePoint, GPUWorkstationDTO, GPUWorkstationDataAndPricePointDTO>(
+        return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(GPUWorkstationPricePoint.class, GenericPricePointDTO.class),
@@ -105,7 +105,7 @@ public class PricePointServiceConfig {
     @Bean
     public GenericPricePointService<HDDDataAndPricePointDTO> hddPricePointService(HDDPricePointRepository repository,
                                                                                   MapperFactory mapperFactory) {
-        return new GenericPricePointServiceImpl<HDDEntity, HDDPricePoint, HDDDTO, HDDDataAndPricePointDTO>(
+        return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(HDDPricePoint.class, GenericPricePointDTO.class),
@@ -124,7 +124,7 @@ public class PricePointServiceConfig {
     @Bean
     public GenericPricePointService<NVMEDataAndPricePointDTO> nvmePricePointService(NVMEPricePointRepository repository,
                                                                                     MapperFactory mapperFactory) {
-        return new GenericPricePointServiceImpl<NVMEEntity, NVMEPricePoint, NVMEDTO, NVMEDataAndPricePointDTO>(
+        return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(NVMEPricePoint.class, GenericPricePointDTO.class),
@@ -143,7 +143,7 @@ public class PricePointServiceConfig {
     @Bean
     public GenericPricePointService<RAMDataAndPricePointDTO> ramPricePointService(RAMPricePointRepository repository,
                                                                                   MapperFactory mapperFactory) {
-        return new GenericPricePointServiceImpl<RAMEntity, RAMPricePoint, RAMDTO, RAMDataAndPricePointDTO>(
+        return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(RAMPricePoint.class, GenericPricePointDTO.class),
@@ -162,7 +162,7 @@ public class PricePointServiceConfig {
     @Bean
     public GenericPricePointService<SSDDataAndPricePointDTO> ssdPricePointService(SSDPricePointRepository repository,
                                                                                   MapperFactory mapperFactory) {
-        return new GenericPricePointServiceImpl<SSDEntity, SSDPricePoint, SSDDTO, SSDDataAndPricePointDTO>(
+        return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(SSDPricePoint.class, GenericPricePointDTO.class),

@@ -81,7 +81,7 @@ public class GPUScraperIntegrationTests {
         gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/gpu_pricepoints")
+                MockMvcRequestBuilders.get("/api/v1/gpu_pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -99,7 +99,7 @@ public class GPUScraperIntegrationTests {
         gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
-                        MockMvcRequestBuilders.get("/api/gpu_pricepoints")
+                        MockMvcRequestBuilders.get("/api/v1/gpu_pricepoints")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -145,7 +145,7 @@ public class GPUScraperIntegrationTests {
         gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/gpu_pricepoints/" + savedGPU.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/gpu_pricepoints/" + savedGPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -155,7 +155,7 @@ public class GPUScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/gpu_pricepoints/" + "random_model_number")
+                MockMvcRequestBuilders.get("/api/v1/gpu_pricepoints/" + "random_model_number")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()

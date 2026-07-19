@@ -46,7 +46,7 @@ public class HDDEntityControllerIntegrationTests {
         String hddString = objectMapper.writeValueAsString(testHDD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/hdds")
+                MockMvcRequestBuilders.post("/api/v1/hdds")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(hddString)
         ).andExpect(
@@ -60,7 +60,7 @@ public class HDDEntityControllerIntegrationTests {
         String hddString = objectMapper.writeValueAsString(testHDD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/hdds")
+                MockMvcRequestBuilders.post("/api/v1/hdds")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(hddString)
         ).andExpect(
@@ -76,7 +76,7 @@ public class HDDEntityControllerIntegrationTests {
         String listString = objectMapper.writeValueAsString(testHDDDTOs);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/hdds/saveall")
+                MockMvcRequestBuilders.post("/api/v1/hdds/saveall")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(listString)
         ).andExpect(
@@ -94,7 +94,7 @@ public class HDDEntityControllerIntegrationTests {
         String hddString = objectMapper.writeValueAsString(testHDD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/hdds")
+                MockMvcRequestBuilders.post("/api/v1/hdds")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(hddString)
         ).andExpect(
@@ -111,7 +111,7 @@ public class HDDEntityControllerIntegrationTests {
         String hddString = objectMapper.writeValueAsString(testHDD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/hdds")
+                MockMvcRequestBuilders.post("/api/v1/hdds")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(hddString)
         ).andExpect(
@@ -126,7 +126,7 @@ public class HDDEntityControllerIntegrationTests {
     @Test
     public void testThatGetHDDByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/hdds/{id}", " ")
+                MockMvcRequestBuilders.get("/api/v1/hdds/{id}", " ")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
@@ -137,7 +137,7 @@ public class HDDEntityControllerIntegrationTests {
     @Test
     public void testThatHDDReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/hdds")
+                MockMvcRequestBuilders.get("/api/v1/hdds")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -150,7 +150,7 @@ public class HDDEntityControllerIntegrationTests {
         HDDDTO savedHDD = hddService.save(testHDD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/hdds/" + savedHDD.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/hdds/" + savedHDD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -160,7 +160,7 @@ public class HDDEntityControllerIntegrationTests {
     @Test
     public void testThatHDDGetByIDReturnsHttpStatusNotFoundWhenHDDDoesNotExist() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/hdds/hddDoesNotExist")
+                MockMvcRequestBuilders.get("/api/v1/hdds/hddDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
@@ -178,7 +178,7 @@ public class HDDEntityControllerIntegrationTests {
         String hddJson = objectMapper.writeValueAsString(updatedHDD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/hdds/" + savedHDD.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/hdds/" + savedHDD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(hddJson)
         ).andExpect(
@@ -199,7 +199,7 @@ public class HDDEntityControllerIntegrationTests {
         String hddJson = objectMapper.writeValueAsString(updatedHDD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/hdds/" + savedHDD.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/hdds/" + savedHDD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(hddJson)
         ).andExpect(
@@ -217,7 +217,7 @@ public class HDDEntityControllerIntegrationTests {
     @Test
     public void testThatDeleteHDDReturnsHttpStatus204FromNonExistingHDD() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/hdds/hddDoesNotExist")
+                MockMvcRequestBuilders.delete("/api/v1/hdds/hddDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -228,7 +228,7 @@ public class HDDEntityControllerIntegrationTests {
         HDDDTO savedHDD = hddService.save(testHDD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/hdds/" + savedHDD.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/v1/hdds/" + savedHDD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

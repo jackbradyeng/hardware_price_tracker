@@ -23,13 +23,13 @@ public class GPUPricePointController {
 
     private final GenericPricePointService<GPUDataAndPricePointDTO> gpuPricePointService;
 
-    @GetMapping(path = "/api/gpu_pricepoints")
+    @GetMapping(path = "/api/v1/gpu_pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listGPUPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(gpuPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/gpu_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/gpu_pricepoints/{modelNumber}")
     public ResponseEntity<GPUDataAndPricePointDTO> findGPUPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

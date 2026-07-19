@@ -23,13 +23,13 @@ public class SSDPricePointController {
 
     private final GenericPricePointService<SSDDataAndPricePointDTO> ssdPricePointService;
 
-    @GetMapping(path = "/api/ssd_pricepoints")
+    @GetMapping(path = "/api/v1/ssd_pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listSSDPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(ssdPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/ssd_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/ssd_pricepoints/{modelNumber}")
     public ResponseEntity<SSDDataAndPricePointDTO> findSSDPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

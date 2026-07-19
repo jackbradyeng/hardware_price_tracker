@@ -47,7 +47,7 @@ public class RAMEntityControllerIntegrationTests {
         String ramString = objectMapper.writeValueAsString(testRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ram")
+                MockMvcRequestBuilders.post("/api/v1/ram")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ramString)
         ).andExpect(
@@ -61,7 +61,7 @@ public class RAMEntityControllerIntegrationTests {
         String ramString = objectMapper.writeValueAsString(testRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ram")
+                MockMvcRequestBuilders.post("/api/v1/ram")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ramString)
         ).andExpect(
@@ -77,7 +77,7 @@ public class RAMEntityControllerIntegrationTests {
         String listString = objectMapper.writeValueAsString(testRAMDTOs);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ram/saveall")
+                MockMvcRequestBuilders.post("/api/v1/ram/saveall")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(listString)
         ).andExpect(
@@ -95,7 +95,7 @@ public class RAMEntityControllerIntegrationTests {
         String ramString = objectMapper.writeValueAsString(testRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ram")
+                MockMvcRequestBuilders.post("/api/v1/ram")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ramString)
         ).andExpect(
@@ -112,7 +112,7 @@ public class RAMEntityControllerIntegrationTests {
         String ramString = objectMapper.writeValueAsString(testRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ram")
+                MockMvcRequestBuilders.post("/api/v1/ram")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ramString)
         ).andExpect(
@@ -127,7 +127,7 @@ public class RAMEntityControllerIntegrationTests {
     @Test
     public void testThatGetRAMByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/ram/{id}", " ")
+                MockMvcRequestBuilders.get("/api/v1/ram/{id}", " ")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
@@ -138,7 +138,7 @@ public class RAMEntityControllerIntegrationTests {
     @Test
     public void testThatRAMReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/ram")
+                MockMvcRequestBuilders.get("/api/v1/ram")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -151,7 +151,7 @@ public class RAMEntityControllerIntegrationTests {
         RAMDTO savedRAM = ramService.save(testRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/ram/" + savedRAM.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/ram/" + savedRAM.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -161,7 +161,7 @@ public class RAMEntityControllerIntegrationTests {
     @Test
     public void testThatRAMGetByIDReturnsHttpStatusNotFoundWhenRAMDoesNotExist() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/ram/ramDoesNotExist")
+                MockMvcRequestBuilders.get("/api/v1/ram/ramDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
@@ -179,7 +179,7 @@ public class RAMEntityControllerIntegrationTests {
         String ramJson = objectMapper.writeValueAsString(updatedRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/ram/" + savedRAM.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/ram/" + savedRAM.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ramJson)
         ).andExpect(
@@ -200,7 +200,7 @@ public class RAMEntityControllerIntegrationTests {
         String ramJson = objectMapper.writeValueAsString(updatedRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/ram/" + savedRAM.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/ram/" + savedRAM.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ramJson)
         ).andExpect(
@@ -218,7 +218,7 @@ public class RAMEntityControllerIntegrationTests {
     @Test
     public void testThatDeleteRAMReturnsHttpStatus204FromNonExistingRAM() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/ram/ramDoesNotExist")
+                MockMvcRequestBuilders.delete("/api/v1/ram/ramDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -229,7 +229,7 @@ public class RAMEntityControllerIntegrationTests {
         RAMDTO savedRAM = ramService.save(testRAM);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/ram/" + savedRAM.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/v1/ram/" + savedRAM.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

@@ -49,7 +49,7 @@ public class GPUWorkstationControllerIntegrationTests {
         String gpuString = objectMapper.writeValueAsString(testGPUEntity);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/workstation_gpus")
+                MockMvcRequestBuilders.post("/api/v1/workstation_gpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuString)
         ).andExpect(
@@ -63,7 +63,7 @@ public class GPUWorkstationControllerIntegrationTests {
         String gpuString = objectMapper.writeValueAsString(testGPUEntity);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/workstation_gpus")
+                MockMvcRequestBuilders.post("/api/v1/workstation_gpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuString)
         ).andExpect(
@@ -83,7 +83,7 @@ public class GPUWorkstationControllerIntegrationTests {
         String gpuJson = objectMapper.writeValueAsString(testGPUDTO);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/workstation_gpus")
+                MockMvcRequestBuilders.post("/api/v1/workstation_gpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuJson)
         ).andExpect(
@@ -100,7 +100,7 @@ public class GPUWorkstationControllerIntegrationTests {
         String gpuJson = objectMapper.writeValueAsString(testGPUDTO);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.post("/api/workstation_gpus")
+                MockMvcRequestBuilders.post("/api/v1/workstation_gpus")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuJson)
         ).andExpect(
@@ -115,7 +115,7 @@ public class GPUWorkstationControllerIntegrationTests {
     @Test
     public void testThatGetWSGPUByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/workstation_gpus/{id}", " ")
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpus/{id}", " ")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
@@ -126,7 +126,7 @@ public class GPUWorkstationControllerIntegrationTests {
     @Test
     public void testThatWSGPUReadAllReturnsHttpStatus200ok() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/workstation_gpus")
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpus")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -139,7 +139,7 @@ public class GPUWorkstationControllerIntegrationTests {
         GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(testGPUDTO);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/workstation_gpus/" + savedGPUEntity.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpus/" + savedGPUEntity.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -149,7 +149,7 @@ public class GPUWorkstationControllerIntegrationTests {
     @Test
     public void testThatWSGPUGetByIDReturnsHttpStatusNotFoundWhenGPUDoesNotExist() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/workstation_gpus/gpuDoesNotExist")
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpus/gpuDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
@@ -166,7 +166,7 @@ public class GPUWorkstationControllerIntegrationTests {
         String gpuJson = objectMapper.writeValueAsString(savedGPUEntity);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.put("/api/workstation_gpus/" + savedGPUEntity.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/workstation_gpus/" + savedGPUEntity.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuJson)
         ).andExpect(
@@ -184,7 +184,7 @@ public class GPUWorkstationControllerIntegrationTests {
         String gpuJson = objectMapper.writeValueAsString(savedGPUEntity);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.put("/api/workstation_gpus/" + savedGPUEntity.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/workstation_gpus/" + savedGPUEntity.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gpuJson)
         ).andExpect(
@@ -203,7 +203,7 @@ public class GPUWorkstationControllerIntegrationTests {
     @Test
     public void testThatDeleteWSGPUReturnsHttpStatus204FromNonExistingGPU() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.delete("/api/workstation_gpus/gpuDoesNotExist")
+                MockMvcRequestBuilders.delete("/api/v1/workstation_gpus/gpuDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -214,7 +214,7 @@ public class GPUWorkstationControllerIntegrationTests {
         GPUWorkstationDTO savedGPUEntity = gpuWorkstationService.save(testGPUDTO);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.delete("/api/workstation_gpus/" + savedGPUEntity.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/v1/workstation_gpus/" + savedGPUEntity.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

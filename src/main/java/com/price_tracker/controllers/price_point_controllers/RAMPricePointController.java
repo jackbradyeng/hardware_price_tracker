@@ -23,13 +23,13 @@ public class RAMPricePointController {
 
     private final GenericPricePointService<RAMDataAndPricePointDTO> ramPricePointService;
 
-    @GetMapping(path = "/api/ram_pricepoints")
+    @GetMapping(path = "/api/v1/ram_pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listRAMPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(ramPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/ram_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/ram_pricepoints/{modelNumber}")
     public ResponseEntity<RAMDataAndPricePointDTO> findRAMPricePointsBYModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

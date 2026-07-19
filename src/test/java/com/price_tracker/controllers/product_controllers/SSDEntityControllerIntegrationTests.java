@@ -46,7 +46,7 @@ public class SSDEntityControllerIntegrationTests {
         String ssdString = objectMapper.writeValueAsString(testSSD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ssds")
+                MockMvcRequestBuilders.post("/api/v1/ssds")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ssdString)
         ).andExpect(
@@ -60,7 +60,7 @@ public class SSDEntityControllerIntegrationTests {
         String ssdString = objectMapper.writeValueAsString(testSSD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ssds")
+                MockMvcRequestBuilders.post("/api/v1/ssds")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ssdString)
         ).andExpect(
@@ -76,7 +76,7 @@ public class SSDEntityControllerIntegrationTests {
         String listString = objectMapper.writeValueAsString(testSSDDTOs);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ssds/saveall")
+                MockMvcRequestBuilders.post("/api/v1/ssds/saveall")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(listString)
         ).andExpect(
@@ -94,7 +94,7 @@ public class SSDEntityControllerIntegrationTests {
         String ssdString = objectMapper.writeValueAsString(testSSD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ssds")
+                MockMvcRequestBuilders.post("/api/v1/ssds")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ssdString)
         ).andExpect(
@@ -111,7 +111,7 @@ public class SSDEntityControllerIntegrationTests {
         String ssdString = objectMapper.writeValueAsString(testSSD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/ssds")
+                MockMvcRequestBuilders.post("/api/v1/ssds")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ssdString)
         ).andExpect(
@@ -126,7 +126,7 @@ public class SSDEntityControllerIntegrationTests {
     @Test
     public void testThatGetSSDByBlankIDReturnsHttpStatus400BadRequest() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/ssds/{id}", " ")
+                MockMvcRequestBuilders.get("/api/v1/ssds/{id}", " ")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
@@ -137,7 +137,7 @@ public class SSDEntityControllerIntegrationTests {
     @Test
     public void testThatSSDReadAllReturnsHttpStatus200ok() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/ssds")
+                MockMvcRequestBuilders.get("/api/v1/ssds")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -150,7 +150,7 @@ public class SSDEntityControllerIntegrationTests {
         SSDDTO savedSSD = ssdService.save(testSSD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/ssds/" + savedSSD.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/ssds/" + savedSSD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -160,7 +160,7 @@ public class SSDEntityControllerIntegrationTests {
     @Test
     public void testThatSSDGetByIDReturnsHttpStatusNotFoundWhenSSDDoesNotExist() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/ssds/ssdDoesNotExist")
+                MockMvcRequestBuilders.get("/api/v1/ssds/ssdDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
@@ -178,7 +178,7 @@ public class SSDEntityControllerIntegrationTests {
         String ssdJson = objectMapper.writeValueAsString(updatedSSD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/ssds/" + savedSSD.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/ssds/" + savedSSD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ssdJson)
         ).andExpect(
@@ -199,7 +199,7 @@ public class SSDEntityControllerIntegrationTests {
         String ssdJson = objectMapper.writeValueAsString(updatedSSD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/ssds/" + savedSSD.getModelNumber())
+                MockMvcRequestBuilders.put("/api/v1/ssds/" + savedSSD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ssdJson)
         ).andExpect(
@@ -217,7 +217,7 @@ public class SSDEntityControllerIntegrationTests {
     @Test
     public void testThatDeleteSSDReturnsHttpStatus204FromNonExistingSSD() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/ssds/ssdDoesNotExist")
+                MockMvcRequestBuilders.delete("/api/v1/ssds/ssdDoesNotExist")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -228,7 +228,7 @@ public class SSDEntityControllerIntegrationTests {
         SSDDTO savedSSD = ssdService.save(testSSD);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/ssds/" + savedSSD.getModelNumber())
+                MockMvcRequestBuilders.delete("/api/v1/ssds/" + savedSSD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

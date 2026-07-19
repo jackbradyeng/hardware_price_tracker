@@ -81,7 +81,7 @@ public class GPUWorkstationScraperIntegrationTests {
         gpuWorkstationGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/workstation_gpu_pricepoints")
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpu_pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -99,7 +99,7 @@ public class GPUWorkstationScraperIntegrationTests {
         gpuWorkstationGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
-                        MockMvcRequestBuilders.get("/api/workstation_gpu_pricepoints")
+                        MockMvcRequestBuilders.get("/api/v1/workstation_gpu_pricepoints")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -146,7 +146,7 @@ public class GPUWorkstationScraperIntegrationTests {
         gpuWorkstationGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/workstation_gpu_pricepoints/" + savedWSGPU.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpu_pricepoints/" + savedWSGPU.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -156,7 +156,7 @@ public class GPUWorkstationScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/workstation_gpu_pricepoints/" + "random_model_number")
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpu_pricepoints/" + "random_model_number")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()

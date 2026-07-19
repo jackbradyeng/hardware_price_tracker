@@ -21,7 +21,7 @@ public class GPUWorkstationController {
 
     private final GenericProductService<GPUWorkstationDTO> gpuWorkstationService;
 
-    @PostMapping(path = "/api/workstation_gpus")
+    @PostMapping(path = "/api/v1/workstation_gpus")
     public ResponseEntity<GPUWorkstationDTO> createWorkstationGPU(
             @Valid @RequestBody final GPUWorkstationDTO gpuWorkstationDTO) {
 
@@ -30,7 +30,7 @@ public class GPUWorkstationController {
         return new ResponseEntity<>(savedGPUWorkstation, HttpStatus.CREATED);
     }
 
-    @PostMapping(path = "/api/workstation_gpus/saveall")
+    @PostMapping(path = "/api/v1/workstation_gpus/saveall")
     public ResponseEntity<List<GPUWorkstationDTO>> createWorkstationGPU(
             @Valid @RequestBody final List<GPUWorkstationDTO> gpuWorkstationDTOS) {
 
@@ -39,12 +39,12 @@ public class GPUWorkstationController {
         return new ResponseEntity<>(savedEntities, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/api/workstation_gpus")
+    @GetMapping(path = "/api/v1/workstation_gpus")
     public ResponseEntity<List<GPUWorkstationDTO>> listWorkstationGPUs() {
         return new ResponseEntity<>(gpuWorkstationService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/workstation_gpus/{id}")
+    @GetMapping(path = "/api/v1/workstation_gpus/{id}")
     public ResponseEntity<GPUWorkstationDTO> getWorkstationGPU(@NotBlank @PathVariable String id) {
 
         Optional<GPUWorkstationDTO> foundGPU = gpuWorkstationService.findOne(id);
@@ -54,7 +54,7 @@ public class GPUWorkstationController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping(path = "/api/workstation_gpus/{id}")
+    @PutMapping(path = "/api/v1/workstation_gpus/{id}")
     public ResponseEntity<GPUWorkstationDTO> fullUpdate(
             @NotBlank @PathVariable String id,
             @Valid @RequestBody GPUWorkstationDTO gpuWorkstationDTO) {
@@ -65,7 +65,7 @@ public class GPUWorkstationController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PatchMapping(path = "/api/workstation_gpus/{id}")
+    @PatchMapping(path = "/api/v1/workstation_gpus/{id}")
     public ResponseEntity<GPUWorkstationDTO> partialUpdate(
             @NotBlank @PathVariable String id,
             @Valid @RequestBody GPUWorkstationDTO gpuWorkstationDTO) {
@@ -76,7 +76,7 @@ public class GPUWorkstationController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping(path = "/api/workstation_gpus/{id}")
+    @DeleteMapping(path = "/api/v1/workstation_gpus/{id}")
     public ResponseEntity<GPUWorkstationDTO> deleteWorkstationGPU(@NotBlank @PathVariable String id) {
         gpuWorkstationService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

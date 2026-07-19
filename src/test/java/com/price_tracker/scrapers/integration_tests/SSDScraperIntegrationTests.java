@@ -81,7 +81,7 @@ public class SSDScraperIntegrationTests {
         ssdGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/ssd_pricepoints")
+                MockMvcRequestBuilders.get("/api/v1/ssd_pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -99,7 +99,7 @@ public class SSDScraperIntegrationTests {
         ssdGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
 
         MvcResult result = mockMVC.perform(
-                        MockMvcRequestBuilders.get("/api/ssd_pricepoints")
+                        MockMvcRequestBuilders.get("/api/v1/ssd_pricepoints")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -141,7 +141,7 @@ public class SSDScraperIntegrationTests {
         ssdGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/ssd_pricepoints/" + savedSSD.getModelNumber())
+                MockMvcRequestBuilders.get("/api/v1/ssd_pricepoints/" + savedSSD.getModelNumber())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -151,7 +151,7 @@ public class SSDScraperIntegrationTests {
     @Test
     public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/api/ssd_pricepoints/" + "random_model_number")
+                MockMvcRequestBuilders.get("/api/v1/ssd_pricepoints/" + "random_model_number")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isNotFound()
