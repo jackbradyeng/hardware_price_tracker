@@ -1,0 +1,707 @@
+databaseChangeLog:
+- changeSet:
+    id: 1784523200596-1
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: gpu_price_history_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: currency
+            type: VARCHAR(255)
+        - column:
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: price
+            type: numeric(38, 2)
+        - column:
+            name: scraped_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        tableName: gpu_price_history
+- changeSet:
+    id: 1784523200596-2
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: ram_price_history_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: currency
+            type: VARCHAR(255)
+        - column:
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: price
+            type: numeric(38, 2)
+        - column:
+            name: scraped_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        tableName: ram_price_history
+- changeSet:
+    id: 1784523200596-3
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: cpu_price_history_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: currency
+            type: VARCHAR(255)
+        - column:
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: price
+            type: numeric(38, 2)
+        - column:
+            name: scraped_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        tableName: cpu_price_history
+- changeSet:
+    id: 1784523200596-4
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: ws_gpu_price_history_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: currency
+            type: VARCHAR(255)
+        - column:
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: price
+            type: numeric(38, 2)
+        - column:
+            name: scraped_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        tableName: ws_gpu_price_history
+- changeSet:
+    id: 1784523200596-5
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: users_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: password
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: role
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: username
+            type: VARCHAR(255)
+        tableName: users
+- changeSet:
+    id: 1784523200596-6
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: cpus_pkey
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: chip_manufacturer
+            type: VARCHAR(255)
+        - column:
+            name: cores
+            type: INTEGER
+        - column:
+            name: l1_cache
+            type: FLOAT8
+        - column:
+            name: l2_cache
+            type: FLOAT8
+        - column:
+            name: l3_cache
+            type: FLOAT8
+        - column:
+            name: max_memory
+            type: INTEGER
+        - column:
+            name: memory_supported
+            type: VARCHAR(255)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: series
+            type: VARCHAR(255)
+        - column:
+            name: threads
+            type: INTEGER
+        - column:
+            name: base_clock
+            type: FLOAT8
+        - column:
+            name: boost_clock
+            type: FLOAT8
+        - column:
+            name: has_integratedgpu
+            type: BOOLEAN
+        - column:
+            name: max_temperature
+            type: INTEGER
+        - column:
+            name: thermal_design_power
+            type: INTEGER
+        - column:
+            name: is_active
+            type: BOOLEAN
+        tableName: cpus
+- changeSet:
+    id: 1784523200596-7
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: gpus_pkey
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: board_manufacturer
+            type: VARCHAR(255)
+        - column:
+            name: chip
+            type: VARCHAR(255)
+        - column:
+            name: chip_manufacturer
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: is_active
+            type: BOOLEAN
+        - column:
+            name: name
+            type: VARCHAR(255)
+        tableName: gpus
+- changeSet:
+    id: 1784523200596-8
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hdd_price_history_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: currency
+            type: VARCHAR(255)
+        - column:
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: price
+            type: numeric(38, 2)
+        - column:
+            name: scraped_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        tableName: hdd_price_history
+- changeSet:
+    id: 1784523200596-9
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hdds_pkey
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: brand
+            type: VARCHAR(255)
+        - column:
+            name: cache
+            type: INTEGER
+        - column:
+            name: capacity
+            type: INTEGER
+        - column:
+            name: form_factor
+            type: FLOAT4
+        - column:
+            name: is_active
+            type: BOOLEAN
+        - column:
+            name: mean_time_between_failures
+            type: BIGINT
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: rpm
+            type: INTEGER
+        - column:
+            name: sequential_read
+            type: INTEGER
+        - column:
+            name: sequential_write
+            type: INTEGER
+        - column:
+            name: storage_interface
+            type: VARCHAR(255)
+        tableName: hdds
+- changeSet:
+    id: 1784523200596-10
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: nvme_price_history_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: currency
+            type: VARCHAR(255)
+        - column:
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: price
+            type: numeric(38, 2)
+        - column:
+            name: scraped_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        tableName: nvme_price_history
+- changeSet:
+    id: 1784523200596-11
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: nvmes_pkey
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: brand
+            type: VARCHAR(255)
+        - column:
+            name: capacity
+            type: INTEGER
+        - column:
+            name: includes_heat_sink
+            type: BOOLEAN
+        - column:
+            name: is_active
+            type: BOOLEAN
+        - column:
+            name: mean_time_between_failures
+            type: BIGINT
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: sequential_read
+            type: INTEGER
+        - column:
+            name: sequential_write
+            type: INTEGER
+        - column:
+            name: storage_interface
+            type: VARCHAR(255)
+        tableName: nvmes
+- changeSet:
+    id: 1784523200596-12
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: ram_pkey
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: brand
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: clock_rate
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: dimm_count
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: is_active
+            type: BOOLEAN
+        - column:
+            name: latency
+            type: VARCHAR(255)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: standard
+            type: VARCHAR(255)
+        - column:
+            name: voltage
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: volume
+            type: INTEGER
+        tableName: ram
+- changeSet:
+    id: 1784523200596-13
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: scorptec_products_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: product_type
+            type: VARCHAR(255)
+        - column:
+            name: url
+            type: VARCHAR(255)
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        tableName: scorptec_products
+- changeSet:
+    id: 1784523200596-14
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: ssd_price_history_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: currency
+            type: VARCHAR(255)
+        - column:
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: price
+            type: numeric(38, 2)
+        - column:
+            name: scraped_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        tableName: ssd_price_history
+- changeSet:
+    id: 1784523200596-15
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: ssds_pkey
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: brand
+            type: VARCHAR(255)
+        - column:
+            name: capacity
+            type: INTEGER
+        - column:
+            name: is_active
+            type: BOOLEAN
+        - column:
+            name: mean_time_between_failures
+            type: BIGINT
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: sequential_read
+            type: INTEGER
+        - column:
+            name: sequential_write
+            type: INTEGER
+        - column:
+            name: storage_interface
+            type: VARCHAR(255)
+        tableName: ssds
+- changeSet:
+    id: 1784523200596-16
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: umart_products_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: product_type
+            type: VARCHAR(255)
+        - column:
+            name: url
+            type: VARCHAR(255)
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        tableName: umart_products
+- changeSet:
+    id: 1784523200596-17
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: vendors_pkey
+            name: vendor
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: active_status
+            type: BOOLEAN
+        - column:
+            name: homeurl
+            type: VARCHAR(255)
+        - column:
+            name: primary_currency
+            type: VARCHAR(255)
+        - column:
+            name: primary_location
+            type: VARCHAR(255)
+        tableName: vendors
+- changeSet:
+    id: 1784523200596-18
+    author: jack-brady (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: ws_gpus_pkey
+            name: model_number
+            type: VARCHAR(255)
+        - column:
+            name: chip_manufacturer
+            type: VARCHAR(255)
+        - column:
+            name: cuda_cores
+            type: INTEGER
+        - column:
+            name: gpu_memory
+            type: INTEGER
+        - column:
+            name: is_active
+            type: BOOLEAN
+        - column:
+            name: max_power
+            type: INTEGER
+        - column:
+            name: memory_bandwidth
+            type: INTEGER
+        - column:
+            name: memory_interface
+            type: INTEGER
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: raytracing_cores
+            type: INTEGER
+        - column:
+            name: system_interface
+            type: VARCHAR(255)
+        - column:
+            name: tensor_cores
+            type: INTEGER
+        tableName: ws_gpus
+- changeSet:
+    id: 1784523200596-19
+    author: jack-brady (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: ws_price_sequence
+        startValue: 1
+- changeSet:
+    id: 1784523200596-20
+    author: jack-brady (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: username
+        constraintName: ukr43af9ap4edm43mmtq01oddj6
+        tableName: users
+- changeSet:
+    id: 1784523200596-21
+    author: jack-brady (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: hdd_price_sequence
+        startValue: 1
+- changeSet:
+    id: 1784523200596-22
+    author: jack-brady (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: nvme_price_sequence
+        startValue: 1
+- changeSet:
+    id: 1784523200596-23
+    author: jack-brady (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: ssd_price_sequence
+        startValue: 1
+- changeSet:
+    id: 1784523200596-24
+    author: jack-brady (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: user_sequence
+        startValue: 1
+
