@@ -21,9 +21,13 @@ public class RAMEntity {
     private String brand;
     private String standard;
     private String latency;
+    @Column(nullable = false)
     private Integer volume;
+    @Column(nullable = false)
     private Integer dimmCount;
+    @Column(nullable = false)
     private Integer clockRate; // measured in MHZ
     private Double voltage; // measured in volts
+    @Column(nullable = false)
     private Boolean isActive = true; // active status flag, tells the scraper whether to look for the given model
 }

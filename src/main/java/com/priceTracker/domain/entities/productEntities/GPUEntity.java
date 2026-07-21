@@ -21,5 +21,6 @@ public class GPUEntity {
     private String chipManufacturer;
     private String boardManufacturer;
     private String name;
+    @Column(nullable = false)
     private Boolean isActive = true;
 }
