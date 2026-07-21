@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import static com.priceTracker.constants.otherConstants.DatabaseConstants.RAM_TABLE_NAME;
 
+/** Volume measured in gigabytes; clock rate in hertz; and voltage in volts. **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,8 +27,8 @@ public class RAMEntity {
     @Column(nullable = false)
     private Integer dimmCount;
     @Column(nullable = false)
-    private Integer clockRate; // measured in MHZ
-    private Double voltage; // measured in volts
+    private Integer clockRate;
+    private Double voltage;
     @Column(nullable = false)
-    private Boolean isActive = true; // active status flag, tells the scraper whether to look for the given model
+    private Boolean isActive = true;
 }

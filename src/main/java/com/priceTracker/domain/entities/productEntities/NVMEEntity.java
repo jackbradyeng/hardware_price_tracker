@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import static com.priceTracker.constants.otherConstants.DatabaseConstants.NVME_TABLE_NAME;
 
+/** Capacity measured in gigabyte; sequential read/write measured in gigabytes/second; and MTBF measured in hours. **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

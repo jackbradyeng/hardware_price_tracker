@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import static com.priceTracker.constants.otherConstants.DatabaseConstants.CPU_TABLE_NAME;
 
+/** Base/boost clock measured in gigahertz; l1/l2/l3 cache in megabytes; TDP in watts, and max temperature in Celsius. **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
