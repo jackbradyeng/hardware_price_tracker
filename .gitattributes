@@ -2,4 +2,4 @@
 *.cmd text eol=crlf
 
 # Captured vendor HTML fixtures - exclude from GitHub language stats
-src/test/resources/scraper_fixtures/** linguist-vendored
+src/test/resources/scraperDocuments/** linguist-vendored
