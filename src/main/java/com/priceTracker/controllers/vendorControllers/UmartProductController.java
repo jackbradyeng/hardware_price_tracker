@@ -1,0 +1,71 @@
+package com.priceTracker.controllers.vendorControllers;
+
+import com.priceTracker.domain.dto.vendorDTOs.VendorProductDTO;
+import com.priceTracker.services.vendorServices.impl.UmartProductServiceImpl;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Optional;
+
+@Log
+@Validated
+@RestController
+@RequiredArgsConstructor
+public class UmartProductController {
+
+    private final UmartProductServiceImpl umartProductService;
+
+    @PostMapping(path = "/api/v1/umartproducts")
+    public ResponseEntity<VendorProductDTO> createProduct(@Valid @RequestBody final VendorProductDTO vendorProductDTO) {
+        log.info("Got Umart product " + vendorProductDTO.toString());
+        VendorProductDTO savedUmartProduct = umartProductService.save(vendorProductDTO);
+        return new ResponseEntity<>(savedUmartProduct, HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/api/v1/umartproducts/saveall")
+    public ResponseEntity<List<VendorProductDTO>> createProducts(@Valid @RequestBody final List<VendorProductDTO> vendorProductDTOS) {
+        log.info("Processing batch of " + vendorProductDTOS.size() + " Umart product records.");
+        List<VendorProductDTO> savedEntities = umartProductService.saveAll(vendorProductDTOS);
+        return new ResponseEntity<>(savedEntities, HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/api/v1/umartproducts")
+    public ResponseEntity<List<VendorProductDTO>> listUmartProducts() {
+        return new ResponseEntity<>(umartProductService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/v1/umartproducts/{id}")
+    public ResponseEntity<VendorProductDTO> getProduct(@NotBlank @PathVariable String id) {
+        Optional<VendorProductDTO> foundProduct = umartProductService.findOne(id);
+        return foundProduct.map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping(path = "/api/v1/umartproducts/{id}")
+    public ResponseEntity<VendorProductDTO> fullUpdateProduct(@NotBlank @PathVariable String id,
+                                                              @Valid @RequestBody VendorProductDTO vendorProductDTO) {
+        return umartProductService.fullUpdate(id, vendorProductDTO)
+                .map(updatedUmartProduct -> new ResponseEntity<>(updatedUmartProduct, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PatchMapping(path = "/api/v1/umartproducts/{id}")
+    public ResponseEntity<VendorProductDTO> partialUpdateProduct(@NotBlank @PathVariable String id,
+                                                                 @Valid @RequestBody VendorProductDTO vendorProductDTO) {
+        return umartProductService.partialUpdate(id, vendorProductDTO)
+                .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping(path = "/api/v1/umartproducts/{id}")
+    public ResponseEntity<VendorProductDTO> deleteProduct(@NotBlank @PathVariable String id) {
+        umartProductService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}

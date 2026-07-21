@@ -1,0 +1,221 @@
+package com.priceTracker.scrapers.integrationTests;
+
+import com.priceTracker.domain.dto.hybridDTOs.GPUWorkstationDataAndPricePointDTO;
+import com.priceTracker.domain.dto.pricePointDTOs.GenericPricePointDTO;
+import com.priceTracker.domain.dto.productDTOs.GPUWorkstationDTO;
+import com.priceTracker.domain.entities.pricePointEntities.GPUWorkstationPricePoint;
+import com.priceTracker.mappers.GenericMapper;
+import com.priceTracker.mappers.MapperFactory;
+import com.priceTracker.repositories.pricePointRepositories.jdbcTemplates.GenericPricePointJdbcTemplate;
+import com.priceTracker.services.pricePointServices.GenericPricePointService;
+import com.priceTracker.services.productServices.GenericProductService;
+import com.priceTracker.testingData.RestPage;
+import com.priceTracker.testingData.wsgpuData.WorkstationGPUTestingUtility;
+import com.priceTracker.webscraper.productServices.GenericScrapingService;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+import static com.priceTracker.constants.otherConstants.CurrencyConstants.AUD;
+import static com.priceTracker.constants.vendorConstants.VendorNames.UMART;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Transactional
+public class GPUWorkstationScraperIntegrationTests {
+
+    private final MockMvc mockMVC;
+    private final WorkstationGPUTestingUtility workstationGPUTestingUtility;
+    private final GenericScrapingService scraper;
+    private final ObjectMapper objectMapper;
+    private final GenericPricePointJdbcTemplate<GPUWorkstationPricePoint> gpuWorkstationGenericPricePointJDBCTemplate;
+    private final GenericProductService<GPUWorkstationDTO> gpuWorkstationService;
+    private final GenericMapper<GPUWorkstationPricePoint, GenericPricePointDTO> gpuWorkstationPricePointMapper;
+    private final GenericPricePointService<GPUWorkstationDataAndPricePointDTO> gpuWorkstationPricePointService;
+
+    @Autowired
+    public GPUWorkstationScraperIntegrationTests(MockMvc mockMVC,
+                                                 WorkstationGPUTestingUtility workstationGPUTestingUtility,
+                                                 GenericScrapingService scraper,
+                                                 ObjectMapper objectMapper,
+                                                 MapperFactory mapperFactory,
+                                                 GenericPricePointJdbcTemplate<GPUWorkstationPricePoint> gpuWorkstationGenericPricePointJDBCTemplate,
+                                                 GenericProductService<GPUWorkstationDTO> gpuWorkstationService,
+                                                 GenericPricePointService<GPUWorkstationDataAndPricePointDTO> gpuWorkstationPricePointService) {
+        this.mockMVC = mockMVC;
+        this.workstationGPUTestingUtility = workstationGPUTestingUtility;
+        this.scraper = scraper;
+        this.objectMapper = objectMapper;
+        this.gpuWorkstationGenericPricePointJDBCTemplate = gpuWorkstationGenericPricePointJDBCTemplate;
+        this.gpuWorkstationService = gpuWorkstationService;
+        this.gpuWorkstationPricePointMapper = mapperFactory.create(GPUWorkstationPricePoint.class, GenericPricePointDTO.class);
+        this.gpuWorkstationPricePointService = gpuWorkstationPricePointService;
+    }
+
+    @Test
+    public void testThatWSGPUPricePointInsertionWithJDBCTemplateReturnsOK() throws Exception {
+        List<GPUWorkstationPricePoint> returnList = Stream.generate(() ->
+                        gpuWorkstationPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                workstationGPUTestingUtility.createSampleWSGPUPricePointData(), UMART, AUD)))
+                .limit(10)
+                .toList();
+
+        gpuWorkstationGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpu_pricepoints")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    public void testThatWSGPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(int insertionCount)
+            throws Exception {
+        List<GPUWorkstationPricePoint> returnList = Stream.generate(() ->
+                        gpuWorkstationPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                workstationGPUTestingUtility.createSampleWSGPUPricePointData(), UMART, AUD)))
+                .limit(insertionCount)
+                .toList();
+
+        gpuWorkstationGenericPricePointJDBCTemplate.batchInsertPricePoints(returnList);
+
+        MvcResult result = mockMVC.perform(
+                        MockMvcRequestBuilders.get("/api/v1/workstation_gpu_pricepoints")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        // de-serialize the return object so that it's size and contents can be tested
+        String contentAsString = result.getResponse().getContentAsString();
+        RestPage<GenericPricePointDTO> actualPage = objectMapper.readValue(
+                contentAsString,
+                new TypeReference<>() {}
+        );
+        List<GenericPricePointDTO> actualList = actualPage.getContent();
+
+        // store the sequence of expected IDs
+        List<Long> expectedIds = returnList.stream()
+                .map(GPUWorkstationPricePoint::getId)
+                .toList();
+
+        // ensure that the return instance has the expected size and corresponding IDs
+        assertThat(actualList)
+                .hasSize(returnList.size())
+                .extracting(GenericPricePointDTO::getId)
+                .containsExactlyElementsOf(expectedIds);
+    }
+
+    @Test
+    public void testThatWSGPUPricePointInsertionReturnsExpectedNumberOfObjectsAndIDs() throws Exception {
+
+        testThatWSGPUPricePointInsertReturnsExpectedNumberAfterGivenNumberOfInsertions(10);
+    }
+
+    @Test
+    public void testThatFindByModelNumberReturnsHttpStatus200Ok() throws Exception {
+
+        GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(workstationGPUTestingUtility
+                .createTestWorkstationGPUDTO());
+
+        List<GPUWorkstationPricePoint> sampleList = Stream.generate(() ->
+                        gpuWorkstationPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                workstationGPUTestingUtility.createSampleWSGPUPricePointData(), UMART, AUD)))
+                .limit(10)
+                .toList();
+
+        gpuWorkstationGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpu_pricepoints/" + savedWSGPU.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFindByModelNumberReturnsHttpStatusWithRandomModelNumber() throws Exception {
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/api/v1/workstation_gpu_pricepoints/" + "random_model_number")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatFindByModelNumberReturnsExpectedPricePoints() {
+
+        // first we save the workstation GPU to the DB
+        GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(workstationGPUTestingUtility
+                .createTestWorkstationGPUDTO());
+
+        // next we generate and save a collection of price points with the same model number to the DB
+        List<GPUWorkstationPricePoint> sampleList = Stream.generate(() ->
+                        gpuWorkstationPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                workstationGPUTestingUtility.createSampleWSGPUPricePointData(), UMART, AUD)))
+                .limit(10)
+                .toList()
+                .reversed();
+
+        gpuWorkstationGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+
+        // convert price points to DTO for comparison's sake
+        List<GenericPricePointDTO> pricePointDTOS = sampleList.stream()
+                .map(gpuWorkstationPricePointMapper::mapTo)
+                .toList();
+
+        // next we query by the workstation GPU's model number - this should return a collection of composite DTOs
+        Optional<GPUWorkstationDataAndPricePointDTO> returnList = gpuWorkstationPricePointService
+                .findByModelNumber(savedWSGPU.getModelNumber(), Pageable.unpaged());
+
+        assertThat(returnList).isPresent();
+        assertThat(returnList.get().getGpuWorkstationPricePointDTOList())
+                .hasSize(10)
+                .containsExactlyElementsOf(pricePointDTOS);
+    }
+
+    @Test
+    public void testThatFindByModelNumberReturnsExpectedWSGPUData() {
+
+        // first we save the workstation GPU to the DB
+        GPUWorkstationDTO savedWSGPU = gpuWorkstationService.save(workstationGPUTestingUtility
+                .createTestWorkstationGPUDTO());
+
+        // next we generate and save a collection of price points with the same model number to the DB
+        List<GPUWorkstationPricePoint> sampleList = Stream.generate(() ->
+                        gpuWorkstationPricePointMapper.mapFrom(scraper.createGenericPricePoint(
+                                workstationGPUTestingUtility.createSampleWSGPUPricePointData(), UMART, AUD)))
+                .limit(10)
+                .toList();
+
+        gpuWorkstationGenericPricePointJDBCTemplate.batchInsertPricePoints(sampleList);
+
+        // next we query by the workstation GPU's model number - this should return a collection of composite DTOs
+        Optional<GPUWorkstationDataAndPricePointDTO> returnList = gpuWorkstationPricePointService
+                .findByModelNumber(savedWSGPU.getModelNumber(), Pageable.unpaged());
+
+        assertThat(returnList).isPresent();
+        assertThat(returnList.get().getGpuWorkstationDTO().equals(savedWSGPU));
+    }
+}

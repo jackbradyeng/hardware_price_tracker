@@ -1,0 +1,44 @@
+package com.priceTracker.controllers.pricePointControllers;
+
+import com.priceTracker.domain.dto.hybridDTOs.HDDDataAndPricePointDTO;
+import com.priceTracker.domain.dto.pricePointDTOs.GenericPricePointDTO;
+import com.priceTracker.services.pricePointServices.GenericPricePointService;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.Optional;
+
+@Validated
+@RestController
+@RequiredArgsConstructor
+public class HDDPricePointController {
+
+    private final GenericPricePointService<HDDDataAndPricePointDTO> hddPricePointService;
+
+    @GetMapping(path = "/api/v1/hdd_pricepoints")
+    public ResponseEntity<Page<GenericPricePointDTO>> listHDDPricePoints(
+            @PageableDefault(size = 30) Pageable pageable) {
+        return new ResponseEntity<>(hddPricePointService.findAll(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/v1/hdd_pricepoints/{modelNumber}")
+    public ResponseEntity<HDDDataAndPricePointDTO> findHDDPricePointsByModelNumber(
+            @NotBlank @PathVariable String modelNumber,
+            @PageableDefault(size = 30) Pageable pageable) {
+
+        Optional<HDDDataAndPricePointDTO> hddPricePointDTOS = hddPricePointService
+                .findByModelNumber(modelNumber, pageable);
+
+        return hddPricePointDTOS.map(foundPriceHistory ->
+                new ResponseEntity<>(foundPriceHistory, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+}
