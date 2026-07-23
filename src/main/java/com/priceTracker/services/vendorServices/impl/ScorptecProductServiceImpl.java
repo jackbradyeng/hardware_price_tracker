@@ -115,4 +115,32 @@ public class ScorptecProductServiceImpl implements GenericVendorService<VendorPr
     public void delete(String id) {
         scorptecProductRepository.deleteById(id);
     }
+
+    public List<String> findScorptecGPULinks() {
+        return scorptecProductRepository.findUrlsForActiveGPUs();
+    }
+
+    public List<String> findScorptecRAMLinks() {
+        return scorptecProductRepository.findUrlsForActiveRAM();
+    }
+
+    public List<String> findScorptecCPULinks() {
+        return scorptecProductRepository.findUrlsForActiveCPU();
+    }
+
+    public List<String> findScorptecWorkstationGPULinks() {
+        return scorptecProductRepository.findUrlsForActiveWorkstationGPUs();
+    }
+
+    public List<String> findScorptecHDDLinks() {
+        return scorptecProductRepository.findUrlsForActiveHDDs();
+    }
+
+    public List<String> findScorptecSSDLinks() {
+        return scorptecProductRepository.findUrlsForActiveSSDs();
+    }
+
+    public List<String> findScorptecNVMELinks() {
+        return scorptecProductRepository.findUrlsForActiveNVMEs();
+    }
 }
