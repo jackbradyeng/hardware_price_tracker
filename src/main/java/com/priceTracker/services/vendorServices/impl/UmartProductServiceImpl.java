@@ -108,4 +108,32 @@ public class UmartProductServiceImpl implements GenericVendorService<VendorProdu
     public void delete(String id) {
         umartProductRepository.deleteById(id);
     }
+
+    public List<String> findUmartGPULinks() {
+        return umartProductRepository.findUrlsForActiveGPUs();
+    }
+
+    public List<String> findUmartRAMLinks() {
+        return umartProductRepository.findUrlsForActiveRAM();
+    }
+
+    public List<String> findUmartCPULinks() {
+        return umartProductRepository.findUrlsForActiveCPU();
+    }
+
+    public List<String> findUmartWorkstationGPULinks() {
+        return umartProductRepository.findUrlsForActiveWorkstationGPUs();
+    }
+
+    public List<String> findUmartHDDLinks() {
+        return umartProductRepository.findUrlsForActiveHDDs();
+    }
+
+    public List<String> findUmartSSDLinks() {
+        return umartProductRepository.findUrlsForActiveSSDs();
+    }
+
+    public List<String> findUmartNVMELinks() {
+        return umartProductRepository.findUrlsForActiveNVMEs();
+    }
 }
