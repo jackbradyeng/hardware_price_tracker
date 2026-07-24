@@ -2,7 +2,9 @@ package com.priceTracker.services.pricePointServices.impl;
 
 import com.priceTracker.domain.dto.hybridInterfaces.GenericDataAndPricePointProjection;
 import com.priceTracker.domain.dto.pricePointDTOs.GenericPricePointDTO;
+import com.priceTracker.domain.entities.pricePointEntities.GenericPricePoint;
 import com.priceTracker.mappers.GenericMapper;
+import com.priceTracker.repositories.pricePointRepositories.jdbcTemplates.GenericPricePointJdbcTemplate;
 import com.priceTracker.services.pricePointServices.DataAndPricePointFactory;
 import com.priceTracker.services.pricePointServices.GenericPricePointService;
 import jakarta.transaction.Transactional;
@@ -14,24 +16,43 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 @Transactional
-public class GenericPricePointServiceImpl<E, P, D, H> implements GenericPricePointService<H> {
+public class GenericPricePointServiceImpl<E, P extends GenericPricePoint, D, H> implements GenericPricePointService<H> {
 
     private final JpaRepository<P, Long> repository;
     private final BiFunction<String, Pageable, Page<GenericDataAndPricePointProjection<E, P>>> findByModelNumberQuery;
     private final GenericMapper<P, GenericPricePointDTO> pricePointMapper;
     private final GenericMapper<E, D> productMapper;
+    private final GenericPricePointJdbcTemplate<P> pricePointJdbcTemplate;
     private final DataAndPricePointFactory<D, H> hybridDtoFactory;
 
     public GenericPricePointServiceImpl(JpaRepository<P, Long> repository,
                                         BiFunction<String, Pageable, Page<GenericDataAndPricePointProjection<E, P>>> findByModelNumberQuery,
                                         GenericMapper<P, GenericPricePointDTO> pricePointMapper,
                                         GenericMapper<E, D> productMapper,
+                                        GenericPricePointJdbcTemplate<P> pricePointJdbcTemplate,
                                         DataAndPricePointFactory<D, H> hybridDtoFactory) {
         this.repository = repository;
         this.findByModelNumberQuery = findByModelNumberQuery;
         this.pricePointMapper = pricePointMapper;
         this.productMapper = productMapper;
+        this.pricePointJdbcTemplate = pricePointJdbcTemplate;
         this.hybridDtoFactory = hybridDtoFactory;
+    }
+
+    @Override
+    public Optional<List<GenericPricePointDTO>> saveAll(List<GenericPricePointDTO> pricePointDTOs) {
+
+        // if empty return empty
+        if (pricePointDTOs.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<P> pricePoints = pricePointDTOs.stream()
+                .map(pricePointMapper::mapFrom)
+                .toList();
+
+        pricePointJdbcTemplate.batchInsertPricePoints(pricePoints);
+        return Optional.of(pricePointDTOs);
     }
 
     @Override

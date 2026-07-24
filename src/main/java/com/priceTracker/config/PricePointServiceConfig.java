@@ -37,6 +37,7 @@ import com.priceTracker.repositories.pricePointRepositories.HDDPricePointReposit
 import com.priceTracker.repositories.pricePointRepositories.NVMEPricePointRepository;
 import com.priceTracker.repositories.pricePointRepositories.RAMPricePointRepository;
 import com.priceTracker.repositories.pricePointRepositories.SSDPricePointRepository;
+import com.priceTracker.repositories.pricePointRepositories.jdbcTemplates.GenericPricePointJdbcTemplate;
 import com.priceTracker.services.pricePointServices.GenericPricePointService;
 import com.priceTracker.services.pricePointServices.impl.GenericPricePointServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -46,13 +47,17 @@ import org.springframework.context.annotation.Configuration;
 public class PricePointServiceConfig {
 
     @Bean
-    public GenericPricePointService<CPUDataAndPricePointDTO> cpuPricePointService(CPUPricePointRepository repository,
-                                                                                  MapperFactory mapperFactory) {
+    public GenericPricePointService<CPUDataAndPricePointDTO>
+    cpuPricePointService(CPUPricePointRepository repository,
+                         GenericPricePointJdbcTemplate<CPUPricePoint> pricePointJdbcTemplate,
+                         MapperFactory mapperFactory) {
+
         return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(CPUPricePoint.class, GenericPricePointDTO.class),
                 mapperFactory.create(CPUEntity.class, CPUDTO.class),
+                pricePointJdbcTemplate,
                 (productDTO, pricePoints, page, pageSize, totalPages, totalElements)
                         -> CPUDataAndPricePointDTO.builder()
                         .cpuDTO(productDTO)
@@ -65,13 +70,17 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<GPUDataAndPricePointDTO> gpuPricePointService(GPUPricePointRepository repository,
-                                                                                  MapperFactory mapperFactory) {
+    public GenericPricePointService<GPUDataAndPricePointDTO>
+    gpuPricePointService(GPUPricePointRepository repository,
+                         GenericPricePointJdbcTemplate<GPUPricePoint> pricePointJdbcTemplate,
+                         MapperFactory mapperFactory) {
+
         return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(GPUPricePoint.class, GenericPricePointDTO.class),
                 mapperFactory.create(GPUEntity.class, GPUDTO.class),
+                pricePointJdbcTemplate,
                 (productDTO, pricePoints, page, pageSize, totalPages, totalElements)
                         -> GPUDataAndPricePointDTO.builder()
                         .gpuDTO(productDTO)
@@ -84,13 +93,17 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<GPUWorkstationDataAndPricePointDTO> gpuWorkstationPricePointService(
-            GPUWorkstationPricePointRepository repository, MapperFactory mapperFactory) {
+    public GenericPricePointService<GPUWorkstationDataAndPricePointDTO>
+    gpuWorkstationPricePointService(GPUWorkstationPricePointRepository repository,
+                                    GenericPricePointJdbcTemplate<GPUWorkstationPricePoint> pricePointJdbcTemplate,
+                                    MapperFactory mapperFactory) {
+
         return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(GPUWorkstationPricePoint.class, GenericPricePointDTO.class),
                 mapperFactory.create(GPUWorkstationEntity.class, GPUWorkstationDTO.class),
+                pricePointJdbcTemplate,
                 (productDTO, pricePoints, page, pageSize, totalPages, totalElements)
                         -> GPUWorkstationDataAndPricePointDTO.builder()
                         .gpuWorkstationDTO(productDTO)
@@ -103,13 +116,17 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<HDDDataAndPricePointDTO> hddPricePointService(HDDPricePointRepository repository,
-                                                                                  MapperFactory mapperFactory) {
+    public GenericPricePointService<HDDDataAndPricePointDTO>
+    hddPricePointService(HDDPricePointRepository repository,
+                         GenericPricePointJdbcTemplate<HDDPricePoint> pricePointJdbcTemplate,
+                         MapperFactory mapperFactory) {
+
         return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(HDDPricePoint.class, GenericPricePointDTO.class),
                 mapperFactory.create(HDDEntity.class, HDDDTO.class),
+                pricePointJdbcTemplate,
                 (productDTO, pricePoints, page, pageSize, totalPages, totalElements)
                         -> HDDDataAndPricePointDTO.builder()
                         .hddDTO(productDTO)
@@ -122,13 +139,17 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<NVMEDataAndPricePointDTO> nvmePricePointService(NVMEPricePointRepository repository,
-                                                                                    MapperFactory mapperFactory) {
+    public GenericPricePointService<NVMEDataAndPricePointDTO>
+    nvmePricePointService(NVMEPricePointRepository repository,
+                          GenericPricePointJdbcTemplate<NVMEPricePoint> pricePointJdbcTemplate,
+                          MapperFactory mapperFactory) {
+
         return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(NVMEPricePoint.class, GenericPricePointDTO.class),
                 mapperFactory.create(NVMEEntity.class, NVMEDTO.class),
+                pricePointJdbcTemplate,
                 (productDTO, pricePoints, page, pageSize, totalPages, totalElements)
                         -> NVMEDataAndPricePointDTO.builder()
                         .nvmeDTO(productDTO)
@@ -141,13 +162,17 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<RAMDataAndPricePointDTO> ramPricePointService(RAMPricePointRepository repository,
-                                                                                  MapperFactory mapperFactory) {
+    public GenericPricePointService<RAMDataAndPricePointDTO>
+    ramPricePointService(RAMPricePointRepository repository,
+                         GenericPricePointJdbcTemplate<RAMPricePoint> pricePointJdbcTemplate,
+                         MapperFactory mapperFactory) {
+
         return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(RAMPricePoint.class, GenericPricePointDTO.class),
                 mapperFactory.create(RAMEntity.class, RAMDTO.class),
+                pricePointJdbcTemplate,
                 (productDTO, pricePoints, page, pageSize, totalPages, totalElements)
                         -> RAMDataAndPricePointDTO.builder()
                         .ramDTO(productDTO)
@@ -160,13 +185,17 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<SSDDataAndPricePointDTO> ssdPricePointService(SSDPricePointRepository repository,
-                                                                                  MapperFactory mapperFactory) {
+    public GenericPricePointService<SSDDataAndPricePointDTO>
+    ssdPricePointService(SSDPricePointRepository repository,
+                         GenericPricePointJdbcTemplate<SSDPricePoint> pricePointJdbcTemplate,
+                         MapperFactory mapperFactory) {
+
         return new GenericPricePointServiceImpl<>(
                 repository,
                 repository::getPricePointsByModelNumber,
                 mapperFactory.create(SSDPricePoint.class, GenericPricePointDTO.class),
                 mapperFactory.create(SSDEntity.class, SSDDTO.class),
+                pricePointJdbcTemplate,
                 (productDTO, pricePoints, page, pageSize, totalPages, totalElements)
                         -> SSDDataAndPricePointDTO.builder()
                         .ssdDTO(productDTO)
