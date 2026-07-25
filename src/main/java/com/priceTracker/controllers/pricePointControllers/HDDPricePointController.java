@@ -28,7 +28,7 @@ public class HDDPricePointController {
     private final GenericPricePointService<HDDDataAndPricePointDTO> hddPricePointService;
 
     // CREATE ENDPOINTS (ADMIN ONLY)
-    @PostMapping(path = "/api/v1/hdd_pricepoints")
+    @PostMapping(path = "/api/v1/hdd-pricepoints")
     public ResponseEntity<List<GenericPricePointDTO>> createPricePoints(
             @Valid @RequestBody List<GenericPricePointDTO> pricePointDTOs) {
         Optional<List<GenericPricePointDTO>> savedPricePoints = hddPricePointService.saveAll(pricePointDTOs);
@@ -38,7 +38,7 @@ public class HDDPricePointController {
     }
 
     // READ ENDPOINTS (PUBLIC)
-    @GetMapping(path = "/api/v1/hdd_pricepoints")
+    @GetMapping(path = "/api/v1/hdd-pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listHDDPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(hddPricePointService.findAll(pageable), HttpStatus.OK);

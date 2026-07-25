@@ -28,7 +28,7 @@ public class RAMPricePointController {
     private final GenericPricePointService<RAMDataAndPricePointDTO> ramPricePointService;
 
     // CREATE ENDPOINTS (ADMIN ONLY)
-    @PostMapping(path = "/api/v1/ram_pricepoints")
+    @PostMapping(path = "/api/v1/ram-pricepoints")
     public ResponseEntity<List<GenericPricePointDTO>> createPricePoints(
             @Valid @RequestBody List<GenericPricePointDTO> pricePointDTOs) {
         Optional<List<GenericPricePointDTO>> savedPricePoints = ramPricePointService.saveAll(pricePointDTOs);
@@ -38,7 +38,7 @@ public class RAMPricePointController {
     }
 
     // READ ENDPOINTS (PUBLIC)
-    @GetMapping(path = "/api/v1/ram_pricepoints")
+    @GetMapping(path = "/api/v1/ram-pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listRAMPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(ramPricePointService.findAll(pageable), HttpStatus.OK);

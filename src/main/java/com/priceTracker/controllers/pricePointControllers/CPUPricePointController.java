@@ -28,7 +28,7 @@ public class CPUPricePointController {
     private final GenericPricePointService<CPUDataAndPricePointDTO> cpuPricePointService;
 
     // CREATE ENDPOINTS (ADMIN ONLY)
-    @PostMapping(path = "/api/v1/cpu_pricepoints")
+    @PostMapping(path = "/api/v1/cpu-pricepoints")
     public ResponseEntity<List<GenericPricePointDTO>> createPricePoints(
             @Valid @RequestBody List<GenericPricePointDTO> pricePointDTOs) {
         Optional<List<GenericPricePointDTO>> savedPricePoints = cpuPricePointService.saveAll(pricePointDTOs);
@@ -38,7 +38,7 @@ public class CPUPricePointController {
     }
 
     // READ ENDPOINTS (PUBLIC)
-    @GetMapping(path = "/api/v1/cpu_pricepoints")
+    @GetMapping(path = "/api/v1/cpu-pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listCPUPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(cpuPricePointService.findAll(pageable), HttpStatus.OK);

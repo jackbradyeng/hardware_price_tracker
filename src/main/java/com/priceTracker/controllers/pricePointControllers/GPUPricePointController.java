@@ -28,7 +28,7 @@ public class GPUPricePointController {
     private final GenericPricePointService<GPUDataAndPricePointDTO> gpuPricePointService;
 
     // CREATE ENDPOINTS (ADMIN ONLY)
-    @PostMapping(path = "/api/v1/gpu_pricepoints")
+    @PostMapping(path = "/api/v1/gpu-pricepoints")
     public ResponseEntity<List<GenericPricePointDTO>> createPricePoints(
             @Valid @RequestBody List<GenericPricePointDTO> pricePointDTOs) {
         Optional<List<GenericPricePointDTO>> savedPricePoints = gpuPricePointService.saveAll(pricePointDTOs);
@@ -38,7 +38,7 @@ public class GPUPricePointController {
     }
 
     // READ ENDPOINTS (PUBLIC)
-    @GetMapping(path = "/api/v1/gpu_pricepoints")
+    @GetMapping(path = "/api/v1/gpu-pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listGPUPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(gpuPricePointService.findAll(pageable), HttpStatus.OK);

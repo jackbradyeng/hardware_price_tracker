@@ -28,7 +28,7 @@ public class NVMEPricePointController {
     private final GenericPricePointService<NVMEDataAndPricePointDTO> nvmePricePointService;
 
     // CREATE ENDPOINTS (ADMIN ONLY)
-    @PostMapping(path = "/api/v1/nvme_pricepoints")
+    @PostMapping(path = "/api/v1/nvme-pricepoints")
     public ResponseEntity<List<GenericPricePointDTO>> createPricePoints(
             @Valid @RequestBody List<GenericPricePointDTO> pricePointDTOs) {
         Optional<List<GenericPricePointDTO>> savedPricePoints = nvmePricePointService.saveAll(pricePointDTOs);
@@ -38,7 +38,7 @@ public class NVMEPricePointController {
     }
 
     // READ ENDPOINTS (PUBLIC)
-    @GetMapping(path = "/api/v1/nvme_pricepoints")
+    @GetMapping(path = "/api/v1/nvme-pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listNVMEPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(nvmePricePointService.findAll(pageable), HttpStatus.OK);

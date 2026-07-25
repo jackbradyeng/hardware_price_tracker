@@ -28,7 +28,7 @@ public class SSDPricePointController {
     private final GenericPricePointService<SSDDataAndPricePointDTO> ssdPricePointService;
 
     // CREATE ENDPOINTS (ADMIN ONLY)
-    @PostMapping(path = "/api/v1/ssd_pricepoints")
+    @PostMapping(path = "/api/v1/ssd-pricepoints")
     public ResponseEntity<List<GenericPricePointDTO>> createPricePoints(
             @Valid @RequestBody List<GenericPricePointDTO> pricePointDTOs) {
         Optional<List<GenericPricePointDTO>> savedPricePoints = ssdPricePointService.saveAll(pricePointDTOs);
@@ -38,7 +38,7 @@ public class SSDPricePointController {
     }
 
     // READ ENDPOINTS (PUBLIC)
-    @GetMapping(path = "/api/v1/ssd_pricepoints")
+    @GetMapping(path = "/api/v1/ssd-pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listSSDPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(ssdPricePointService.findAll(pageable), HttpStatus.OK);
