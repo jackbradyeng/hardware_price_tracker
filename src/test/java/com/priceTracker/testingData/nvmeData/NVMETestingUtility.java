@@ -2,17 +2,12 @@ package com.priceTracker.testingData.nvmeData;
 
 import com.priceTracker.domain.dto.productDTOs.NVMEDTO;
 import com.priceTracker.domain.entities.productEntities.NVMEEntity;
-import com.priceTracker.domain.entities.vendorEntities.UmartProductEntity;
 import com.priceTracker.mappers.GenericMapper;
 import com.priceTracker.mappers.MapperFactory;
-import com.priceTracker.webscraper.dtos.ScrapedDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import static com.priceTracker.constants.VendorNames.UMART;
-import static com.priceTracker.testingData.vendorData.VendorWebDomainNames.UMART_CRUCIAL_P510_1TB;
 import static com.priceTracker.testingData.nvmeData.NVMETestingData.*;
 
 @Component
@@ -61,23 +56,5 @@ public class NVMETestingUtility {
         nvmeDTOs.add(createTestNVME());
         nvmeDTOs.add(createSecondTestNVME());
         return nvmeDTOs;
-    }
-
-    /// SAMPLE PRODUCTS
-    public UmartProductEntity createTestUmartNVME() {
-        return UmartProductEntity.builder()
-                .productType(PRODUCT_TYPE_NVME)
-                .modelNumber(TESTING_NVME_MODEL_NUMBER)
-                .vendor(UMART)
-                .url(UMART_CRUCIAL_P510_1TB)
-                .build();
-    }
-
-    /// SAMPLE PRICE POINTS
-    public ScrapedDataDTO createSampleNVMEPricePointData() {
-        return ScrapedDataDTO.builder()
-                .modelNumber(TESTING_NVME_MODEL_NUMBER)
-                .price(new BigDecimal(TESTING_NVME_PRICE))
-                .build();
     }
 }

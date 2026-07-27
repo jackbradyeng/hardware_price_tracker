@@ -5,10 +5,8 @@ import com.priceTracker.domain.dto.vendorDTOs.VendorProductDTO;
 import com.priceTracker.domain.entities.productEntities.GPUEntity;
 import com.priceTracker.mappers.GenericMapper;
 import com.priceTracker.mappers.MapperFactory;
-import com.priceTracker.webscraper.dtos.ScrapedDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import static com.priceTracker.constants.VendorNames.SCORPTEC;
@@ -73,14 +71,6 @@ public class GPUTestingUtility {
                 .modelNumber(TESTING_GPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)
                 .url(SCORPTEC_ASUS_5070TI)
-                .build();
-    }
-
-    /// SAMPLE PRICE POINTS
-    public ScrapedDataDTO createSampleGPUPricePointData() {
-        return ScrapedDataDTO.builder()
-                .modelNumber(TESTING_GPU_MODEL_NUMBER)
-                .price(new BigDecimal(TESTING_GPU_PRICE))
                 .build();
     }
 }

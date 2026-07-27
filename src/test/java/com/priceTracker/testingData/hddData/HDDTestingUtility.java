@@ -5,10 +5,8 @@ import com.priceTracker.domain.entities.productEntities.HDDEntity;
 import com.priceTracker.domain.entities.vendorEntities.UmartProductEntity;
 import com.priceTracker.mappers.GenericMapper;
 import com.priceTracker.mappers.MapperFactory;
-import com.priceTracker.webscraper.dtos.ScrapedDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import static com.priceTracker.constants.VendorNames.UMART;
@@ -74,14 +72,6 @@ public class HDDTestingUtility {
                 .modelNumber(TESTING_HDD_MODEL_NUMBER)
                 .vendor(UMART)
                 .url(UMART_SEAGATE_ST2000DM005)
-                .build();
-    }
-
-    /// SAMPLE PRICE POINTS
-    public ScrapedDataDTO createSampleHDDPricePointData() {
-        return ScrapedDataDTO.builder()
-                .modelNumber(TESTING_HDD_MODEL_NUMBER)
-                .price(new BigDecimal(TESTING_HDD_PRICE))
                 .build();
     }
 }
