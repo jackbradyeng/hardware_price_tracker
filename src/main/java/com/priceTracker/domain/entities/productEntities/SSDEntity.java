@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static com.priceTracker.constants.otherConstants.DatabaseConstants.SSD_TABLE_NAME;
+import static com.priceTracker.constants.DatabaseConstants.SSD_TABLE_NAME;
 
 @Data
 @AllArgsConstructor

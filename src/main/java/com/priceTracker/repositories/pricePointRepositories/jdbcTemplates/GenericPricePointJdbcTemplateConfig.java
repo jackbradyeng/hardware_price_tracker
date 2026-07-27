@@ -4,7 +4,7 @@ import com.priceTracker.domain.entities.pricePointEntities.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import static com.priceTracker.constants.otherConstants.DatabaseConstants.*;
+import static com.priceTracker.constants.DatabaseConstants.*;
 
 /**
  * Provides the necessary bean definitions to Spring for dependency injection into the respective

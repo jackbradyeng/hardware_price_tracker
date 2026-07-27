@@ -1,4 +1,4 @@
-package com.priceTracker.constants.otherConstants;
+package com.priceTracker.constants;
 
 public final class DatabaseConstants {
 

@@ -8,7 +8,7 @@ import com.priceTracker.mappers.MapperFactory;
 import com.priceTracker.webscraper.dtos.ScrapedDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import static com.priceTracker.constants.vendorConstants.VendorNames.SCORPTEC;
+import static com.priceTracker.constants.VendorNames.SCORPTEC;
 import static com.priceTracker.testingData.vendorData.VendorWebDomainNames.SCORPTEC_RYZEN_5_9600X;
 import static com.priceTracker.testingData.cpuData.CPUTestingData.*;
 import java.math.BigDecimal;

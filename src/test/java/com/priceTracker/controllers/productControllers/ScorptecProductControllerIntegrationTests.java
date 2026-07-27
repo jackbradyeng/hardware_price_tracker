@@ -27,7 +27,7 @@ import java.util.List;
 import static com.priceTracker.testingData.vendorData.VendorWebDomainNames.SCORPTEC_ASUS_5070TI;
 import static com.priceTracker.testingData.gpuData.GPUTestingData.PRODUCT_TYPE_GPU;
 import static com.priceTracker.testingData.gpuData.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
-import static com.priceTracker.constants.vendorConstants.VendorNames.SCORPTEC;
+import static com.priceTracker.constants.VendorNames.SCORPTEC;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)

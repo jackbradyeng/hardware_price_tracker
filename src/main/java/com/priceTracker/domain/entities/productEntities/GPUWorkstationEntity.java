@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
-import static com.priceTracker.constants.otherConstants.DatabaseConstants.WORKSTATION_GPU_TABLE_NAME;
+import static com.priceTracker.constants.DatabaseConstants.WORKSTATION_GPU_TABLE_NAME;
 
 /** Memory measured in gigabytes; memory-interface in bits; memory bandwidth in gigabytes per second; and max power in
  * watts. */

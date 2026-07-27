@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static com.priceTracker.constants.otherConstants.DatabaseConstants.HDD_TABLE_NAME;
+import static com.priceTracker.constants.DatabaseConstants.HDD_TABLE_NAME;
 
 /** Capacity measured in gigabytes; sequential read/write in gigabytes/second; MTBF in hours; and cache measured in
  * megabytes. **/

@@ -27,7 +27,7 @@ import java.util.List;
 import static com.priceTracker.testingData.vendorData.VendorWebDomainNames.UMART_ASUS_5070TI;
 import static com.priceTracker.testingData.gpuData.GPUTestingData.PRODUCT_TYPE_GPU;
 import static com.priceTracker.testingData.gpuData.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
-import static com.priceTracker.constants.vendorConstants.VendorNames.UMART;
+import static com.priceTracker.constants.VendorNames.UMART;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)

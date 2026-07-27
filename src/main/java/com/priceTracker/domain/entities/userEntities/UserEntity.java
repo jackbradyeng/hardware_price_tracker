@@ -13,8 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import static com.priceTracker.constants.otherConstants.DatabaseConstants.USER_SEQUENCE;
-import static com.priceTracker.constants.otherConstants.DatabaseConstants.USER_TABLE_NAME;
+import static com.priceTracker.constants.DatabaseConstants.USER_SEQUENCE;
+import static com.priceTracker.constants.DatabaseConstants.USER_TABLE_NAME;
 
 @Data
 @AllArgsConstructor

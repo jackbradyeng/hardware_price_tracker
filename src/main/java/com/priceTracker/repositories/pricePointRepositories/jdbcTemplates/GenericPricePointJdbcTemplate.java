@@ -1,6 +1,6 @@
 package com.priceTracker.repositories.pricePointRepositories.jdbcTemplates;
 
-import static com.priceTracker.constants.otherConstants.DatabaseConstants.DEFAULT_JDBC_BATCH_SIZE;
+import static com.priceTracker.constants.DatabaseConstants.DEFAULT_JDBC_BATCH_SIZE;
 import com.priceTracker.domain.entities.pricePointEntities.GenericPricePoint;
 import jakarta.transaction.Transactional;
 import org.springframework.jdbc.core.JdbcTemplate;

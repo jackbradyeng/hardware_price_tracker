@@ -1,4 +1,4 @@
-package com.priceTracker.constants.vendorConstants;
+package com.priceTracker.constants;
 
 public class VendorNames {
 

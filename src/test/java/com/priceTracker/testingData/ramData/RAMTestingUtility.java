@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import static com.priceTracker.constants.vendorConstants.VendorNames.UMART;
+import static com.priceTracker.constants.VendorNames.UMART;
 import static com.priceTracker.testingData.vendorData.VendorWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 import static com.priceTracker.testingData.ramData.RAMTestingData.*;
 

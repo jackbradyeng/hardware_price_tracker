@@ -17,7 +17,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import static com.priceTracker.constants.vendorConstants.VendorNames.SCORPTEC;
+import static com.priceTracker.constants.VendorNames.SCORPTEC;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
