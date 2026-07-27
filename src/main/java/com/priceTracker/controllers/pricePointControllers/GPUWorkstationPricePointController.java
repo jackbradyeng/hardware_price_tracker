@@ -44,7 +44,7 @@ public class GPUWorkstationPricePointController {
         return new ResponseEntity<>(gpuWorkstationPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/v1/workstation_gpu_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/workstation-gpu-pricepoints/{modelNumber}")
     public ResponseEntity<GPUWorkstationDataAndPricePointDTO> findWorkstationGPUPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

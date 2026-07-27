@@ -44,7 +44,7 @@ public class HDDPricePointController {
         return new ResponseEntity<>(hddPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/v1/hdd_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/hdd-pricepoints/{modelNumber}")
     public ResponseEntity<HDDDataAndPricePointDTO> findHDDPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

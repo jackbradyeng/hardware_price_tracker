@@ -44,7 +44,7 @@ public class NVMEPricePointController {
         return new ResponseEntity<>(nvmePricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/v1/nvme_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/nvme-pricepoints/{modelNumber}")
     public ResponseEntity<NVMEDataAndPricePointDTO> findNVMEPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

@@ -44,7 +44,7 @@ public class CPUPricePointController {
         return new ResponseEntity<>(cpuPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/v1/cpu_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/cpu-pricepoints/{modelNumber}")
     public ResponseEntity<CPUDataAndPricePointDTO> findCPUPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

@@ -44,7 +44,7 @@ public class RAMPricePointController {
         return new ResponseEntity<>(ramPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/v1/ram_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/ram-pricepoints/{modelNumber}")
     public ResponseEntity<RAMDataAndPricePointDTO> findRAMPricePointsBYModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {
