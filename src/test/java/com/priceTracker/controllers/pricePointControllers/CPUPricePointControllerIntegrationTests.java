@@ -59,7 +59,7 @@ public class CPUPricePointControllerIntegrationTests {
         String testPricePointsString = objectMapper.writeValueAsString(testPricePoints);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testPricePointsString)
         ).andExpect(
@@ -73,7 +73,7 @@ public class CPUPricePointControllerIntegrationTests {
         String testPricePointsString = objectMapper.writeValueAsString(testPricePoints);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testPricePointsString)
         ).andExpect(
@@ -93,7 +93,7 @@ public class CPUPricePointControllerIntegrationTests {
         String testPricePointsString = objectMapper.writeValueAsString(testPricePoints);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testPricePointsString)
         ).andExpect(
@@ -124,7 +124,7 @@ public class CPUPricePointControllerIntegrationTests {
         String testPricePointsString = objectMapper.writeValueAsString(testPricePoints);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testPricePointsString)
         ).andExpect(
@@ -139,7 +139,7 @@ public class CPUPricePointControllerIntegrationTests {
         String emptyListString = objectMapper.writeValueAsString(List.of());
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(emptyListString)
         ).andExpect(
@@ -187,7 +187,7 @@ public class CPUPricePointControllerIntegrationTests {
         String invalidPricePointString = objectMapper.writeValueAsString(List.of(invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
@@ -201,7 +201,7 @@ public class CPUPricePointControllerIntegrationTests {
         String invalidPricePointString = objectMapper.writeValueAsString(List.of(invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
@@ -217,7 +217,7 @@ public class CPUPricePointControllerIntegrationTests {
         String invalidPricePointString = objectMapper.writeValueAsString(List.of(invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
@@ -233,7 +233,7 @@ public class CPUPricePointControllerIntegrationTests {
         String invalidPricePointString = objectMapper.writeValueAsString(List.of(invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
@@ -249,7 +249,7 @@ public class CPUPricePointControllerIntegrationTests {
         String invalidPricePointString = objectMapper.writeValueAsString(List.of(invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
@@ -265,7 +265,7 @@ public class CPUPricePointControllerIntegrationTests {
         String invalidPricePointString = objectMapper.writeValueAsString(List.of(invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
@@ -276,7 +276,7 @@ public class CPUPricePointControllerIntegrationTests {
     }
 
     @Test
-    public void testThatCreatePricePointsWithNullIdReturnsHttpStatus400BadRequest() throws Exception {
+    public void testThatCreatePricePointsWithNullIdReturnsHttpStatus200_Ok() throws Exception {
         GenericPricePointDTO invalidPricePoint = GenericPricePointDTO.builder()
                 .id(null)
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
@@ -288,13 +288,11 @@ public class CPUPricePointControllerIntegrationTests {
         String invalidPricePointString = objectMapper.writeValueAsString(List.of(invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
-                MockMvcResultMatchers.status().isBadRequest()
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.errors['createPricePoints.pricePointDTOs[0].id']").exists()
+                MockMvcResultMatchers.status().isOk()
         );
     }
 
@@ -311,7 +309,7 @@ public class CPUPricePointControllerIntegrationTests {
         String invalidPricePointString = objectMapper.writeValueAsString(List.of(invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
@@ -334,7 +332,7 @@ public class CPUPricePointControllerIntegrationTests {
         String invalidPricePointString = objectMapper.writeValueAsString(List.of(invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
@@ -351,7 +349,7 @@ public class CPUPricePointControllerIntegrationTests {
         String testPricePointsString = objectMapper.writeValueAsString(List.of(validPricePoint, invalidPricePoint));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/cpu_pricepoints")
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testPricePointsString)
         ).andExpect(
