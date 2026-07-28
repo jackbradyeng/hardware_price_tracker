@@ -1,34 +1,38 @@
 # Hardware Price Tracker (Backend)
 
-A Spring Boot application which tracks computer hardware prices over time by scraping popular vendor websites on a daily schedule. Built for flexibility across hardware categories and vendor sources.
+A Spring Boot API which designed to track computer hardware prices over time and across multiple vendors. Built for flexibility across hardware categories and vendor sources.
 
 ---
 
 ## Overview
 
-This application maintains a catalogue of computer hardware products (CPUs, GPUs, RAM, GPU Workstations, HDDs, SSDs, NVMEs, etc.) and records their price points from vendors daily. Pricing history is stored as time-series data, enabling price trend analysis over time.
+This application maintains a catalogue of computer hardware products (CPUs, GPUs, RAM, GPU Workstations, HDDs, SSDs, NVMEs, etc.) and stores their price points from vendors as time-series data, enabling price trend analysis over time.
+
+Importantly, it doesn't perform the scraping function itself. That is the role of a separate repository, `price_tracker_scraping_microservice`, which pulls product URLs from this application and pushes scraped price points back to it (see [Scraping Moved to a Separate Service](#scraping-moved-to-a-separate-service)). This app functions as the API that both the scraper and the frontend consume.
 
 **Key capabilities:**
 - Full CRUD API for hardware product management across various product types
-- Daily scheduled web scraping across multiple vendors & product categories using a CRON schedule
-- Price point history stored per product and vendor
-- Staggered scraping schedules to distribute load and avoid rate limiting
+- Bulk price-point CREATE endpoint, backed by a batch JDBC insert, for the scraper to write results to (ADMIN only)
+- Vendor product-link GET endpoints exposing active product URLs for the scraper to pull work from
+- Price point history stored per product and vendor, exposed as paginated time-series data
+- Admin-gated writes (HTTP Basic + `ROLE_ADMIN`) with public reads
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology                                                       |
-|-------|------------------------------------------------------------------|
-| Framework | Spring Boot 4.0.2 (Java 21)                                      |
-| Database | PostgreSQL                                                       |
+| Layer | Technology |
+|-------|------------|
+| Framework | Spring Boot 4.0.2 (Java 21) |
+| Database | PostgreSQL |
 | ORM | Spring Data JPA (standard queries), JDBC Template (bulk inserts) |
-| Web Scraping | JSoup 1.15.3                                                     |
-| Mapping | ModelMapper 3.0.0                                                |
-| Env Config | Java Dotenv                                                      |
-| Build | Maven                                                            |
-| Testing | JUnit 5, Spring Boot Test (integration), Mockito, AssertJ        |
-| Dev Infrastructure | Docker / docker-compose                                          |
+| Security | Spring Security (HTTP Basic, BCrypt) |
+| Mapping | ModelMapper 3.0.0 |
+| Validation | Jakarta Bean Validation |
+| Env Config | Java Dotenv |
+| Build | Maven |
+| Testing | JUnit 5, Spring Boot Test (integration), Mockito, AssertJ |
+| Dev Infrastructure | Docker / docker-compose |
 
 ---
 
@@ -41,36 +45,38 @@ Controller → Service (interface + implementation) → Repository (JPA + generi
 ```
 
 ```
-src/main/java/com/price_tracker/
+src/main/java/com/priceTracker/
 ├── controllers/
-│   ├── product_controllers/        # REST API endpoints per product type
-│   ├── price_point_controllers/    # Price history endpoints
-│   └── vendor_controllers/         # Vendor & vendor-product mapping endpoints
+│   ├── productControllers/
+│   ├── pricePointControllers/
+│   └── vendorControllers/
 ├── services/
+│   ├── productServices/
+│   ├── vendorServices/
+│   └── pricePointServices/
 ├── repositories/
-│   ├── product_repos/              # JPA repositories, one per product type
-│   ├── vendor_repos/               # JPA repositories for vendors & vendor products
-│   └── price_point_repos/
-│       └── jdbc_templates/         # Generic batch insert template (shared across all domains)
+│   ├── productRepositories/
+│   ├── vendorRepositories/
+│   ├── userRepositories/
+│   └── pricePointRepositories/
+│       └── jdbcTemplates/
 ├── domain/
 │   ├── entities/
-│   │   ├── product_entities/       # JPA entities per product
-│   │   ├── price_point_entities/   # GenericPricePoint (mapped superclass) + per-domain subclasses
-│   │   └── vendor_entities/        # Vendor & vendor-product entities
-│   ├── dto/                        # Request/response DTOs
-│   │   └── hybrid_interfaces/      # Generic JPA projection interface
-│   └── ...
-├── webscraper/
-│   ├── orchestrators/              # Scheduled scraping jobs, split by vendor
-│   │   ├── umart_orchestrators/
-│   │   └── scorptec_orchestrators/
-│   ├── product_services/           # Generic service that builds price point DTOs
-│   └── vendor_templates/
-│       ├── GenericVendorScraper.java   # Shared scraper contract
-│       └── impl/                       # One implementation per vendor
-├── mappers/                        # Generic Mapper<A,B> interface + impls
-├── config/                         # Spring bean configuration
-└── constants/                      # CSS selectors, table names, cron schedules, URLs
+│   │   ├── productEntities/
+│   │   ├── pricePointEntities/
+│   │   ├── vendorEntities/
+│   │   └── userEntities/
+│   └── dto/
+│       ├── hybridDTOs/
+│       ├── hybridInterfaces/
+│       ├── productDTOs/
+│       ├── pricePointDTOs/
+│       └── vendorDTOs/
+├── mappers/
+├── security/
+├── advice/
+├── config/
+└── constants/
 ```
 
 ---
@@ -85,6 +91,21 @@ Product entities use **JPA** for standard CRUD and custom HQL queries, including
 public interface GenericDataAndPricePointProjection<E, P> {
     E getEntity();
     P getPricePoint();
+}
+```
+
+A set of HQL join queries relay composite product & price point DTOs to the front-end: 
+
+```java
+@Repository
+public interface CPUPricePointRepository extends JpaRepository<CPUPricePoint, Long> {
+    @Query(value = "select p as pricePoint, e as entity from CPUPricePoint p " +
+            "left join CPUEntity e on p.modelNumber = e.modelNumber " +
+            "where p.modelNumber = :modelNumber " +
+            "order by p.scrapedAt desc",
+            countQuery = "select count(p) from CPUPricePoint p where p.modelNumber = :modelNumber")
+    Page<GenericDataAndPricePointProjection<CPUEntity, CPUPricePoint>> getPricePointsByModelNumber(
+            @Param("modelNumber") String modelNumber, Pageable pageable);
 }
 ```
 
@@ -109,25 +130,17 @@ A single Spring configuration class wires up one bean per product domain (e.g. a
 
 Price point entities share a common `GenericPricePoint` `@MappedSuperclass` holding `modelNumber`, `vendor`, `currency`, `price`, and `scrapedAt`. Each domain (`GPUPricePoint`, `CPUPricePoint`, etc.) extends it and declares only its own `@Id`/`@SequenceGenerator`, since Spring Data JPA doesn't allow a mapped superclass to define those directly.
 
-### Generic Scraper Contract
+### Scraping Moved to a Separate Service
 
-Rather than one scraper class per vendor *per product*, there is a single scraper implementation per vendor. Each implementation handles JSoup connections, DOM parsing, model number/price refinement, and delegates the CSS selectors for a given product to the caller — so the same scraper instance is reused across all seven product domains for that vendor.
+This app used to scrape vendor sites itself, via per-vendor orchestrators on `@Scheduled` CRON jobs. That logic — orchestrators, vendor scraper implementations, CSS selector constants — has been extracted entirely into its own repository, `price_tracker_scraping_microservice`, and no longer exists here. This app's role has thus narrowed to two functions: i) tell the scraper what to scrape; and ii) validate and store what it finds.
 
-### Orchestrator Pattern for Scheduled Jobs
+The two repos talk over the REST API described in [API Endpoints](#api-endpoints), not a shared codebase or database:
 
-Each vendor/product combination has a dedicated orchestrator annotated with `@Scheduled`, grouped into per-vendor packages. All orchestrators implement a shared `GenericScrapingOrchestrator` interface, which provides a default method for scraping + sleeping + mapping a single product URL into a price point DTO:
+1. **Pull** — the scraper calls the vendor `-page-links` endpoints (e.g. `GET /api/v1/umartproducts/gpu-page-links`) to get the current list of active product URLs for a vendor/category pair.
+2. **Scrape** — it fetches and parses each page itself, entirely outside this app.
+3. **Push** — it batches the results and calls the corresponding price point controller's bulk create endpoint (e.g. `POST /api/v1/gpu-pricepoints`) to persist them.
 
-```java
-List<GPUPricePoint> pricePoints = umartProductRepository.findUrlsForActiveGPUs()
-    .stream()
-    .map(url -> processPricePoint(umartProductScraper, genericScrapingService, UMART_SLEEPING_CONSTANT,
-            url, UMART_CSS_MODEL_LOCATION, UMART_CSS_PRICE_LOCATION, UMART, AUD))
-    .flatMap(Optional::stream)
-    .map(pricePointMapper::mapFrom)
-    .toList();
-
-gpuGenericPricePointJDBCTemplate.batchInsertPricePoints(pricePoints);
-```
+This decouples the two systems' scaling and deployment: this application no longer needs to run scraping work on any particular instance, so it can be scaled horizontally on API/DB load alone, while the scraper can be scheduled, retried, and scaled independently without a release here. The tradeoff is that what used to be one in-process call is now a network round trip with its own auth, validation, and failure modes — bulk-create payloads are validated with bean validation (`@NotBlank`/`@NotNull`/`@Positive` on `GenericPricePointDTO`) since they now originate outside the JVM, and writes are gated behind `ROLE_ADMIN` HTTP Basic auth.
 
 ### Generic Mapper
 
@@ -141,38 +154,39 @@ public CPUServiceImpl(CPURepository cpuRepository, MapperFactory mapperFactory) 
 
 ### Centralised Constants
 
-All magic values are defined in a `/constants/` package rather than scattered through the codebase. This includes CSS selectors, vendor URLs, database table/sequence names, JDBC batch size, and CRON expressions. Adapting to a vendor site change means updating one file.
+Magic values are defined in a flat `/constants/` package rather than being scattered throughout the codebase — currently database table/sequence names and vendor names. Vendor-site specifics like CSS selectors moved out with the scraper into `price_tracker_scraping_microservice`.
 
 ---
 
 ## API Endpoints
 
+All endpoints are versioned under `/api/v1`. Reads (`GET`) are public; every other verb requires HTTP Basic auth with `ROLE_ADMIN`.
+
 Each hardware category exposes the same RESTful interface. Using GPU as an example:
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/api/gpus` | Create a GPU |
-| `POST` | `/api/gpus/saveall` | Batch create GPUs |
-| `GET` | `/api/gpus` | List all GPUs |
-| `GET` | `/api/gpus/{id}` | Get GPU by model number |
-| `PUT` | `/api/gpus/{id}` | Full update |
-| `PATCH` | `/api/gpus/{id}` | Partial update |
-| `DELETE` | `/api/gpus/{id}` | Delete GPU |
+| `POST` | `/api/v1/gpus` | Create a GPU |
+| `POST` | `/api/v1/gpus/saveall` | Batch create GPUs |
+| `GET` | `/api/v1/gpus` | List all GPUs |
+| `GET` | `/api/v1/gpus/{id}` | Get GPU by model number |
+| `PUT` | `/api/v1/gpus/{id}` | Full update |
+| `PATCH` | `/api/v1/gpus/{id}` | Partial update |
+| `DELETE` | `/api/v1/gpus/{id}` | Delete GPU |
 
-Identical endpoints exist for `/api/cpus`, `/api/rams`, `/api/workstation_gpus`, `/api/hdds`, `/api/ssds`, and `/api/nvmes`.
-
-Price point history endpoints follow the same pattern under `/api/gpu_pricepoints`, etc.
+Identical endpoints exist for `/api/v1/cpus`, `/api/v1/ram`, `/api/v1/workstation_gpus`, `/api/v1/hdds`, `/api/v1/ssds`, and `/api/v1/nvmes`.
 
 ### Price Point Endpoints (Paginated)
 
-Price point endpoints return paginated responses. Using GPU as an example:
+Using GPU as an example:
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/gpu_pricepoints` | List all GPU price points (paginated) |
-| `GET` | `/api/gpu_pricepoints/{modelNumber}` | Get price history for a specific GPU (paginated) |
+| Method | Endpoint                                | Description |
+|--------|-----------------------------------------|-------------|
+| `POST` | `/api/v1/gpu-pricepoints`               | Bulk create price points (admin only; batch JDBC insert) |
+| `GET` | `/api/v1/gpu-pricepoints`               | List all GPU price points (paginated) |
+| `GET` | `/api/v1/gpu-pricepoints/{modelNumber}` | Get price history for a specific GPU (paginated) |
 
-Both endpoints accept standard Spring `Pageable` query parameters with a default page size of 30:
+Both `GET` endpoints accept standard Spring `Pageable` query parameters with a default page size of 30:
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
@@ -182,41 +196,51 @@ Both endpoints accept standard Spring `Pageable` query parameters with a default
 
 Responses are wrapped in a Spring `Page<T>` envelope with `content`, `totalElements`, `totalPages`, `number`, and `size` fields.
 
-Identical paginated endpoints exist for `/api/cpu_pricepoints`, `/api/ram_pricepoints`, `/api/workstation_gpu_pricepoints`, `/api/hdd_pricepoints`, `/api/ssd_pricepoints`, and `/api/nvme_pricepoints`.
+Identical endpoints exist for `/api/v1/cpu-pricepoints`, `/api/v1/ram-pricepoints`, `/api/v1/workstation-gpu-pricepoints`, `/api/v1/hdd-pricepoints`, `/api/v1/ssd-pricepoints`, and `/api/v1/nvme-pricepoints`.
 
 ### Vendor Endpoints
 
-`/api/vendors` exposes CRUD for the vendors table. Each vendor also has its own product-mapping endpoint, linking a product's model number to the scraped URL used to track it (e.g. `/api/umartproducts`, `/api/scorptecproducts`), each supporting the same create/batch-create/list/get/update/delete operations as the product endpoints above.
+`/api/v1/vendors` exposes CRUD for the vendors table. Each vendor also has its own product-mapping endpoint, linking a product's model number to the URL used to track it (`/api/v1/umartproducts`, `/api/v1/scorptecproducts`), supporting the same create/batch-create/list/get/update/delete operations as the product endpoints above.
+
+Each vendor-product controller additionally exposes a set of read-only link endpoints, consumed by the separate `price_tracker_scraping_microservice` to discover which URLs to scrape next:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/v1/{vendor}products/cpu-page-links` | Active CPU product URLs |
+| `GET` | `/api/v1/{vendor}products/gpu-page-links` | Active GPU product URLs |
+| `GET` | `/api/v1/{vendor}products/workstation-gpu-page-links` | Active workstation GPU product URLs |
+| `GET` | `/api/v1/{vendor}products/ram-page-links` | Active RAM product URLs |
+| `GET` | `/api/v1/{vendor}products/hdd-page-links` | Active HDD product URLs |
+| `GET` | `/api/v1/{vendor}products/ssd-page-links` | Active SSD product URLs |
+| `GET` | `/api/v1/{vendor}products/nvme-page-links` | Active NVME product URLs |
+
+...where `{vendor}` is `umart` or `scorptec`.
 
 ---
 
 ## Frontend Networking
 
-CORS is configured for `localhost:3000`. This enables communication with the frontend - a separate repo called hardware_price_tracker.fe.
+CORS is currently configured for `localhost:3000`, although this is scheduled to be changed on cloud deployment. The CORS configuration allows the backend to communicate with the frontend - a separate repo called `hardware_price_tracker.fe`.
 
 ---
 
 ## Testing
 
-Tests are organised into three layers, mirroring the application's layered architecture, plus a dedicated scraper test split:
+Tests are organised into three layers, mirroring the application's layered architecture:
 
-**Repository tests** (`repositories/`) — exercises JPA repositories directly, verifying that entities can be persisted and retrieved correctly from the database.
+**Repository tests** (`repositories/`) — exercise JPA repositories directly against a real PostgreSQL instance, verifying that entities and vendor-product mappings can be persisted and retrieved correctly.
 
-**Controller tests** (`controllers/`) — tests REST endpoints via `MockMvc`, covering the full request/response cycle (status codes, response body shape, CRUD operations, and 404 handling for missing resources).
+**Controller tests** (`controllers/`) — test REST endpoints via `MockMvc`, covering the full request/response cycle: status codes, response body shape, CRUD operations, pagination, and 404 handling for missing resources. This now includes the bulk price-point create endpoint (currently covered for CPU) and the vendor `-page-links` endpoints. A `MockMvcAdminAuthCustomizer` (`config/`) attaches admin HTTP Basic credentials to every request by default, since most controllers mix public `GET` endpoints with admin-only write endpoints.
 
-**Scraper unit tests** (`scrapers/unit_tests/`) — run offline against static HTML fixtures checked into test resources, verifying that each vendor scraper extracts the expected model number and correctly refines prices/model numbers, without hitting a live site or a database.
+**DTO validation unit tests** (`domain/dto/productDTOs/`) — assert that bean validation constraints on each product DTO reject invalid input, independent of the web layer.
 
-**Scraper integration tests** (`scrapers/integration_tests/`) — spin up the full Spring context against a real PostgreSQL instance, persist price points via the generic JDBC batch template, and assert on the returned data through the price point API. Batch insertion correctness is verified across both small (10 items) and large (110 items, spanning multiple round-trips) insertion counts.
+Test data is centralised in per-domain utility classes under `testingData/` (e.g. `GPUTestingUtility`, `GPUTestingData`), plus per-vendor utilities, providing shared fixture creation methods reused across test layers.
 
-Static HTML fixtures are captured on demand by a manually-run capture tool that hits live vendor URLs, and loaded in unit tests from disk. Fixtures are re-captured whenever a vendor changes their page markup.
-
-**Test data** is centralised in per-domain utility classes (`testing_data/`), e.g. `GPUTestingUtility` and `GPUTestingData`, plus per-vendor utilities, which provide shared fixture creation methods used across all test layers.
-
-**NOTE:** Tests use `@ActiveProfiles("test")` to switch to a `create-drop` database, and controller/repository tests run within a `@Transactional` context that rolls back after each test. This ensures full isolation without manual teardown.
+**NOTE:** Tests use `@ActiveProfiles("test")` to switch to a `create-drop` database, and controller/repository tests run within a `@Transactional` context that rolls back after each test. This ensures full isolation without manual teardown. Liquibase is disabled for the `test` profile — Hibernate owns schema creation instead, since it would otherwise try to migrate the same schema on every context load.
 
 ---
 
-## Getting Started
+## Getting Started (For Recruiters, Interviewers, & Contributors)
 
 ### Prerequisites
 
@@ -226,19 +250,34 @@ Static HTML fixtures are captured on demand by a manually-run capture tool that 
 
 ### Running Locally
 
+`docker-compose.yml` defines two Postgres instances so local development never shares a database with production: `db` (port 5432, `production` profile) and `db-developer` (port 5433, `developer` profile).
+
+Create a `secrets.env` (gitignored) alongside `docker-compose.yml` with:
+
+```
+DB_NAME=
+DB_USERNAME=
+DB_PASSWORD=
+DEV_DB_NAME=
+DEV_DB_USERNAME=
+DEV_DB_PASSWORD=
+ADMIN_USERNAME=
+ADMIN_PASSWORD=
+DEV_ADMIN_USERNAME=
+DEV_ADMIN_PASSWORD=
+```
+
+Only the `DEV_*` values are needed to run locally, since the app defaults to the `developer` profile (`application.properties`); the plain `DB_*`/`ADMIN_*` values back the `production` profile.
+
 ```bash
-# Start PostgreSQL
-docker-compose up
+# Start both Postgres instances
+docker-compose --env-file secrets.env up
 
-# Set environment variables (or create a .env file)
-export DB_NAME=your_db_name
-export DB_PASSWORD=your_password
-
-# Run the application
+# Run the application (developer profile by default)
 ./mvnw spring-boot:run
 ```
 
-The API will be available at `http://localhost:8080`.
+Under the `developer` profile the app connects to `db-developer` and serves at `http://localhost:8082`. Under `production` it serves at `http://localhost:8080` against `db`.
 
 ### Running Tests
 
