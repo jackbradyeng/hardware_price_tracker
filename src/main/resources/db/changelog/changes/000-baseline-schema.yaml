@@ -704,4 +704,43 @@ databaseChangeLog:
         minValue: 1
         sequenceName: user_sequence
         startValue: 1
+- changeSet:
+    id: 1784523200596-25
+    author: jack-brady (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: cpu_price_sequence
+        startValue: 1
+- changeSet:
+    id: 1784523200596-26
+    author: jack-brady (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: gpu_price_sequence
+        startValue: 1
+- changeSet:
+    id: 1784523200596-27
+    author: jack-brady (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: ram_price_sequence
+        startValue: 1
 

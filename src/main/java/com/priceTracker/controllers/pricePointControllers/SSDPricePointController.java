@@ -3,6 +3,7 @@ package com.priceTracker.controllers.pricePointControllers;
 import com.priceTracker.domain.dto.hybridDTOs.SSDDataAndPricePointDTO;
 import com.priceTracker.domain.dto.pricePointDTOs.GenericPricePointDTO;
 import com.priceTracker.services.pricePointServices.GenericPricePointService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 import java.util.Optional;
 
 @Validated
@@ -23,13 +27,24 @@ public class SSDPricePointController {
 
     private final GenericPricePointService<SSDDataAndPricePointDTO> ssdPricePointService;
 
-    @GetMapping(path = "/api/v1/ssd_pricepoints")
+    // CREATE ENDPOINTS (ADMIN ONLY)
+    @PostMapping(path = "/api/v1/ssd-pricepoints")
+    public ResponseEntity<List<GenericPricePointDTO>> createPricePoints(
+            @Valid @RequestBody List<GenericPricePointDTO> pricePointDTOs) {
+        Optional<List<GenericPricePointDTO>> savedPricePoints = ssdPricePointService.saveAll(pricePointDTOs);
+        return savedPricePoints.map(savedPriceHistory ->
+                new ResponseEntity<>(savedPriceHistory, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NO_CONTENT));
+    }
+
+    // READ ENDPOINTS (PUBLIC)
+    @GetMapping(path = "/api/v1/ssd-pricepoints")
     public ResponseEntity<Page<GenericPricePointDTO>> listSSDPricePoints(
             @PageableDefault(size = 30) Pageable pageable) {
         return new ResponseEntity<>(ssdPricePointService.findAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/api/v1/ssd_pricepoints/{modelNumber}")
+    @GetMapping(path = "/api/v1/ssd-pricepoints/{modelNumber}")
     public ResponseEntity<SSDDataAndPricePointDTO> findSSDPricePointsByModelNumber(
             @NotBlank @PathVariable String modelNumber,
             @PageableDefault(size = 30) Pageable pageable) {

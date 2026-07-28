@@ -5,13 +5,11 @@ import com.priceTracker.domain.dto.vendorDTOs.VendorProductDTO;
 import com.priceTracker.domain.entities.productEntities.RAMEntity;
 import com.priceTracker.mappers.GenericMapper;
 import com.priceTracker.mappers.MapperFactory;
-import com.priceTracker.webscraper.dtos.ScrapedDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import static com.priceTracker.constants.vendorConstants.VendorNames.UMART;
+import static com.priceTracker.constants.VendorNames.UMART;
 import static com.priceTracker.testingData.vendorData.VendorWebDomainNames.UMART_KINGSTON_KINGSTON_F64G;
 import static com.priceTracker.testingData.ramData.RAMTestingData.*;
 
@@ -70,14 +68,6 @@ public class RAMTestingUtility {
                 .modelNumber(TESTING_RAM_MODEL_NUMBER)
                 .vendor(UMART)
                 .url(UMART_KINGSTON_KINGSTON_F64G)
-                .build();
-    }
-
-    /// SAMPLE PRICE POINTS
-    public ScrapedDataDTO createSampleRAMPricePointData() {
-        return ScrapedDataDTO.builder()
-                .modelNumber(TESTING_RAM_MODEL_NUMBER)
-                .price(new BigDecimal(TESTING_RAM_PRICE))
                 .build();
     }
 }

@@ -5,9 +5,24 @@ services:
       - "5432:5432"
     restart: always
     environment:
+      POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql
 
+  db-developer:
+    image: postgres
+    ports:
+      - "5433:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: ${DEV_DB_USERNAME}
+      POSTGRES_PASSWORD: ${DEV_DB_PASSWORD}
+      POSTGRES_DB: ${DEV_DB_NAME}
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql
+
 volumes:
   postgres_data:
+  postgres_dev_data:

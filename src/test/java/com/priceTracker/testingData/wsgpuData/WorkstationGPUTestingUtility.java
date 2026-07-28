@@ -1,13 +1,11 @@
 package com.priceTracker.testingData.wsgpuData;
 
-import com.priceTracker.webscraper.dtos.ScrapedDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.priceTracker.domain.dto.productDTOs.GPUWorkstationDTO;
 import com.priceTracker.domain.entities.productEntities.GPUWorkstationEntity;
 import com.priceTracker.mappers.GenericMapper;
 import com.priceTracker.mappers.MapperFactory;
-import java.math.BigDecimal;
 import static com.priceTracker.testingData.wsgpuData.WorkstationGPUTestingData.*;
 
 @Component
@@ -40,13 +38,5 @@ public class WorkstationGPUTestingUtility {
 
     public GPUWorkstationDTO createTestWorkstationGPUDTO() {
         return gpuWorkstationMapper.mapTo(createTestWorkstationGPU());
-    }
-
-    /// SAMPLE PRICE POINTS
-    public ScrapedDataDTO createSampleWSGPUPricePointData() {
-        return ScrapedDataDTO.builder()
-                .modelNumber(TESTING_WS_GPU_MODEL_NUMBER)
-                .price(new BigDecimal(TESTING_WS_GPU_PRICE))
-                .build();
     }
 }

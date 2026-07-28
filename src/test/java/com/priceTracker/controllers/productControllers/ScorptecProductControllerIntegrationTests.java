@@ -1,6 +1,10 @@
 package com.priceTracker.controllers.productControllers;
 
+import com.priceTracker.domain.dto.productDTOs.CPUDTO;
+import com.priceTracker.domain.dto.productDTOs.GPUDTO;
 import com.priceTracker.mappers.MapperFactory;
+import com.priceTracker.services.productServices.GenericProductService;
+import com.priceTracker.testingData.cpuData.CPUTestingUtility;
 import com.priceTracker.testingData.vendorData.ScorptecTestDataUtility;
 import com.priceTracker.domain.dto.vendorDTOs.VendorProductDTO;
 import com.priceTracker.repositories.vendorRepositories.ScorptecProductRepository;
@@ -23,7 +27,7 @@ import java.util.List;
 import static com.priceTracker.testingData.vendorData.VendorWebDomainNames.SCORPTEC_ASUS_5070TI;
 import static com.priceTracker.testingData.gpuData.GPUTestingData.PRODUCT_TYPE_GPU;
 import static com.priceTracker.testingData.gpuData.GPUTestingData.TESTING_GPU_MODEL_NUMBER;
-import static com.priceTracker.constants.vendorConstants.VendorNames.SCORPTEC;
+import static com.priceTracker.constants.VendorNames.SCORPTEC;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -34,7 +38,10 @@ public class ScorptecProductControllerIntegrationTests {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final ScorptecProductServiceImpl scorptecProductService;
+    private final GenericProductService<GPUDTO> gpuService;
+    private final GenericProductService<CPUDTO> cpuService;
     private final GPUTestingUtility gpuTestingUtility;
+    private final CPUTestingUtility cpuTestingUtility;
     private final ScorptecTestDataUtility tdl;
 
     @Autowired
@@ -42,12 +49,18 @@ public class ScorptecProductControllerIntegrationTests {
                                                      ScorptecProductRepository scorptecProductRepository,
                                                      ModelMapper modelMapper,
                                                      MapperFactory mapperFactory,
+                                                     GenericProductService<GPUDTO> gpuService,
+                                                     GenericProductService<CPUDTO> cpuService,
                                                      GPUTestingUtility gpuTestingUtility,
+                                                     CPUTestingUtility cpuTestingUtility,
                                                      ScorptecTestDataUtility tdl) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
         this.scorptecProductService = new ScorptecProductServiceImpl(scorptecProductRepository, modelMapper, mapperFactory);
+        this.gpuService = gpuService;
+        this.cpuService = cpuService;
         this.gpuTestingUtility = gpuTestingUtility;
+        this.cpuTestingUtility = cpuTestingUtility;
         this.tdl = tdl;
     }
 
@@ -139,6 +152,121 @@ public class ScorptecProductControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    // GET TESTS (PRODUCT URLS)
+    @Test
+    public void testThatGetScorptecGPULinksReturnsUrlForActiveGPU() throws Exception {
+        gpuService.save(gpuTestingUtility.createTestGPU());
+        VendorProductDTO savedProduct = scorptecProductService.save(gpuTestingUtility.createTestScorptecGPU());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/gpu-page-links")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0]").value(savedProduct.getUrl())
+        );
+    }
+
+    @Test
+    public void testThatGetScorptecGPULinksDoesNotReturnUrlForInactiveGPU() throws Exception {
+        GPUDTO gpuEntity = gpuTestingUtility.createTestGPU();
+        gpuEntity.setIsActive(false);
+        gpuService.save(gpuEntity);
+        scorptecProductService.save(gpuTestingUtility.createTestScorptecGPU());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/gpu-page-links")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$").isEmpty()
+        );
+    }
+
+    @Test
+    public void testThatGetScorptecCPULinksReturnsUrlForActiveCPU() throws Exception {
+        cpuService.save(cpuTestingUtility.createTestCPU());
+        VendorProductDTO savedProduct = scorptecProductService.save(cpuTestingUtility.createTestScorptecCPU());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/cpu-page-links")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0]").value(savedProduct.getUrl())
+        );
+    }
+
+    @Test
+    public void testThatGetScorptecCPULinksDoesNotReturnUrlForInactiveCPU() throws Exception {
+        CPUDTO cpuEntity = cpuTestingUtility.createTestCPU();
+        cpuEntity.setIsActive(false);
+        cpuService.save(cpuEntity);
+        scorptecProductService.save(cpuTestingUtility.createTestScorptecCPU());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/cpu-page-links")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$").isEmpty()
+        );
+    }
+
+    @Test
+    public void testThatGetScorptecRAMLinksReturnsHttpStatus200Ok() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/ram-page-links")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetScorptecWorkstationGPULinksReturnsHttpStatus200Ok() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/workstation-gpu-page-links")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetScorptecHDDLinksReturnsHttpStatus200Ok() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/hdd-page-links")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetScorptecSSDLinksReturnsHttpStatus200Ok() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/ssd-page-links")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetScorptecNVMELinksReturnsHttpStatus200Ok() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/scorptecproducts/nvme-page-links")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
         );
     }
 

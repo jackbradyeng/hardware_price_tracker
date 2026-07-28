@@ -21,6 +21,7 @@ public class UmartProductController {
 
     private final UmartProductServiceImpl umartProductService;
 
+    // CREATE ENDPOINTS (ADMIN ONLY)
     @PostMapping(path = "/api/v1/umartproducts")
     public ResponseEntity<VendorProductDTO> createProduct(@Valid @RequestBody final VendorProductDTO vendorProductDTO) {
         log.info("Got Umart product " + vendorProductDTO.toString());
@@ -35,6 +36,7 @@ public class UmartProductController {
         return new ResponseEntity<>(savedEntities, HttpStatus.CREATED);
     }
 
+    // GET ENDPOINTS (PUBLIC)
     @GetMapping(path = "/api/v1/umartproducts")
     public ResponseEntity<List<VendorProductDTO>> listUmartProducts() {
         return new ResponseEntity<>(umartProductService.findAll(), HttpStatus.OK);
@@ -47,6 +49,43 @@ public class UmartProductController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // GET ENDPOINTS (PRODUCT URLS) - TO BE CONSUMED BY THE SCRAPING MICROSERVICE
+    @GetMapping(path = "/api/v1/umartproducts/gpu-page-links")
+    public ResponseEntity<List<String>> getUmartGPULinks() {
+        return new ResponseEntity<>(umartProductService.findUmartGPULinks(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/v1/umartproducts/ram-page-links")
+    public ResponseEntity<List<String>> getUmartRAMLinks() {
+        return new ResponseEntity<>(umartProductService.findUmartRAMLinks(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/v1/umartproducts/cpu-page-links")
+    public ResponseEntity<List<String>> getUmartCPULinks() {
+        return new ResponseEntity<>(umartProductService.findUmartCPULinks(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/v1/umartproducts/workstation-gpu-page-links")
+    public ResponseEntity<List<String>> getUmartWorkstationGPULinks() {
+        return new ResponseEntity<>(umartProductService.findUmartWorkstationGPULinks(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/v1/umartproducts/hdd-page-links")
+    public ResponseEntity<List<String>> getUmartHDDLinks() {
+        return new ResponseEntity<>(umartProductService.findUmartHDDLinks(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/v1/umartproducts/ssd-page-links")
+    public ResponseEntity<List<String>> getUmartSSDLinks() {
+        return new ResponseEntity<>(umartProductService.findUmartSSDLinks(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/v1/umartproducts/nvme-page-links")
+    public ResponseEntity<List<String>> getUmartNVMELinks() {
+        return new ResponseEntity<>(umartProductService.findUmartNVMELinks(), HttpStatus.OK);
+    }
+
+    // UPDATE ENDPOINTS (ADMIN ONLY)
     @PutMapping(path = "/api/v1/umartproducts/{id}")
     public ResponseEntity<VendorProductDTO> fullUpdateProduct(@NotBlank @PathVariable String id,
                                                               @Valid @RequestBody VendorProductDTO vendorProductDTO) {
@@ -63,6 +102,7 @@ public class UmartProductController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // DELETE ENDPOINT (ADMIN ONLY)
     @DeleteMapping(path = "/api/v1/umartproducts/{id}")
     public ResponseEntity<VendorProductDTO> deleteProduct(@NotBlank @PathVariable String id) {
         umartProductService.delete(id);

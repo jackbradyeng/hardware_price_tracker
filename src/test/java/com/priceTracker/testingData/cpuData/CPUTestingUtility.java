@@ -5,13 +5,11 @@ import com.priceTracker.domain.dto.vendorDTOs.VendorProductDTO;
 import com.priceTracker.domain.entities.productEntities.CPUEntity;
 import com.priceTracker.mappers.GenericMapper;
 import com.priceTracker.mappers.MapperFactory;
-import com.priceTracker.webscraper.dtos.ScrapedDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import static com.priceTracker.constants.vendorConstants.VendorNames.SCORPTEC;
+import static com.priceTracker.constants.VendorNames.SCORPTEC;
 import static com.priceTracker.testingData.vendorData.VendorWebDomainNames.SCORPTEC_RYZEN_5_9600X;
 import static com.priceTracker.testingData.cpuData.CPUTestingData.*;
-import java.math.BigDecimal;
 
 @Component
 public class CPUTestingUtility {
@@ -53,14 +51,6 @@ public class CPUTestingUtility {
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)
                 .url(SCORPTEC_RYZEN_5_9600X)
-                .build();
-    }
-
-    /// SAMPLE PRICE POINTS
-    public ScrapedDataDTO createSampleCPUPricePointData() {
-        return ScrapedDataDTO.builder()
-                .modelNumber(TESTING_CPU_MODEL_NUMBER)
-                .price(new BigDecimal("360.00"))
                 .build();
     }
 }

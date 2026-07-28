@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import static com.priceTracker.constants.otherConstants.DatabaseConstants.*;
+import static com.priceTracker.constants.DatabaseConstants.*;
 
 @Getter
 @Setter
