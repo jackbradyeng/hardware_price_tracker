@@ -1,4 +1,25 @@
+# Docker compose expects environment variables to come from a secrets.env file. Meaning that to initialize the
+# container users must invoke -> docker compose --env-file secrets.env up backend.
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    restart: always
+    depends_on:
+      - db
+    environment:
+      SPRING_PROFILES_ACTIVE: production
+      DB_HOST: db
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    networks:
+      - default
+      - price_tracker_net
+
   db:
     image: postgres
     ports:
