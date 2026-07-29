@@ -1,0 +1,23 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - price_tracker_net
+
+# Shared with the backend and frontend compose projects so this container can reach 'backend' and 'frontend' by name. To
+# be created once on the host: docker network create price_tracker_net.
+networks:
+  price_tracker_net:
+    external: true
+
+volumes:
+  caddy_data:
+  caddy_config:
