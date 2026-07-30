@@ -1,10 +1,6 @@
 package com.priceTracker.domain.dto.productDTOs;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,11 +24,11 @@ public class GPUWorkstationDTO {
     private Integer memoryInterface; // in bits
     @NotNull @Positive
     private Integer memoryBandwidth; // gigabytes/second
-    @NotNull @Positive
+    @NotNull @PositiveOrZero
     private Integer cudaCores;
-    @NotNull @Positive
+    @NotNull @PositiveOrZero
     private Integer tensorCores;
-    @NotNull @Positive
+    @NotNull @PositiveOrZero
     private Integer raytracingCores;
     @NotNull @Positive @Max(10000)
     private Integer maxPower; // no GPU should consume 10KW of power
