@@ -33,7 +33,7 @@ public class GPUPricePointController {
             @Valid @RequestBody List<GenericPricePointDTO> pricePointDTOs) {
         Optional<List<GenericPricePointDTO>> savedPricePoints = gpuPricePointService.saveAll(pricePointDTOs);
         return savedPricePoints.map(savedPriceHistory ->
-                new ResponseEntity<>(savedPriceHistory, HttpStatus.OK))
+                new ResponseEntity<>(savedPriceHistory, HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
