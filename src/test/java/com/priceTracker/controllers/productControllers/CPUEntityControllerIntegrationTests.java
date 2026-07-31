@@ -195,6 +195,51 @@ public class CPUEntityControllerIntegrationTests {
         );
     }
 
+    /// PARTIAL UPDATE TESTS
+    @Test
+    public void testThatPartialUpdateReturns200ok() throws Exception {
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        CPUDTO savedCPU = cpuService.save(testCPU);
+
+        CPUDTO updatedCPU = cpuTestingUtility.createTestCPU();
+        updatedCPU.setName("Updated CPU model name");
+        String cpuJson = objectMapper.writeValueAsString(updatedCPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.patch("/api/v1/cpus/" + savedCPU.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(cpuJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateReplacingOnlyModelNumberReturnsCPUWithNewModelNumberAndOtherFieldsUnchanged() throws Exception {
+        CPUDTO testCPU = cpuTestingUtility.createTestCPU();
+        CPUDTO savedCPU = cpuService.save(testCPU);
+
+        CPUDTO updatedCPU = cpuTestingUtility.createTestCPU();
+        updatedCPU.setName("Updated CPU model name");
+        String cpuJson = objectMapper.writeValueAsString(updatedCPU);
+
+        mockMVC.perform(
+                MockMvcRequestBuilders.patch("/api/v1/cpus/" + savedCPU.getModelNumber())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(cpuJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.modelNumber").value(savedCPU.getModelNumber())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value("Updated CPU model name")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.chipManufacturer").value(savedCPU.getChipManufacturer())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.series").value(savedCPU.getSeries())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.cores").value(savedCPU.getCores())
+        );
+    }
+
     /// DELETE TESTS
     @Test
     public void testThatDeleteCPUReturnsHttpStatus204FromNonExistingCPU() throws Exception {
