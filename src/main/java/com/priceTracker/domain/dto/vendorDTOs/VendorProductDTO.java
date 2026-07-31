@@ -1,6 +1,7 @@
 package com.priceTracker.domain.dto.vendorDTOs;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class VendorProductDTO {
 
     /* IDs are automatically generated for all vendor products. */
+    @Null
     private Long id;
     @NotBlank @Size(min = 1, max = 75)
     private String vendor;

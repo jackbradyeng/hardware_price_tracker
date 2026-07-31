@@ -54,7 +54,7 @@ public class CPUPricePointControllerIntegrationTests {
 
     // CREATE TESTS (ADMIN ONLY)
     @Test
-    public void testThatCreatePricePointsAsAdminReturnsHttpStatus200Ok() throws Exception {
+    public void testThatCreatePricePointsAsAdminReturnsHttpStatus201_Created() throws Exception {
         List<GenericPricePointDTO> testPricePoints = List.of(createTestCPUPricePointDTO());
         String testPricePointsString = objectMapper.writeValueAsString(testPricePoints);
 
@@ -63,7 +63,7 @@ public class CPUPricePointControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testPricePointsString)
         ).andExpect(
-                MockMvcResultMatchers.status().isOk()
+                MockMvcResultMatchers.status().isCreated()
         );
     }
 
@@ -97,7 +97,7 @@ public class CPUPricePointControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testPricePointsString)
         ).andExpect(
-                MockMvcResultMatchers.status().isOk()
+                MockMvcResultMatchers.status().isCreated()
         );
 
         boolean persisted = cpuPricePointRepository.findAll().stream()
@@ -128,7 +128,7 @@ public class CPUPricePointControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testPricePointsString)
         ).andExpect(
-                MockMvcResultMatchers.status().isOk()
+                MockMvcResultMatchers.status().isCreated()
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.length()").value(2)
         );
@@ -276,7 +276,7 @@ public class CPUPricePointControllerIntegrationTests {
     }
 
     @Test
-    public void testThatCreatePricePointsWithNullIdReturnsHttpStatus200_Ok() throws Exception {
+    public void testThatCreatePricePointsWithNullIdReturnsHttpStatus201_Created() throws Exception {
         GenericPricePointDTO invalidPricePoint = GenericPricePointDTO.builder()
                 .id(null)
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
@@ -292,7 +292,7 @@ public class CPUPricePointControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricePointString)
         ).andExpect(
-                MockMvcResultMatchers.status().isOk()
+                MockMvcResultMatchers.status().isCreated()
         );
     }
 

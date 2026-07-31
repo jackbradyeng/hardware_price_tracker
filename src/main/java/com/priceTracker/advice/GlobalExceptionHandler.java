@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,6 +102,16 @@ public class GlobalExceptionHandler {
                 "timestamp", Instant.now(),
                 "status", 405,
                 "message", "HTTP method '" + ex.getMethod() + "' is not supported for this endpoint"
+        ));
+    }
+
+    /** Handles requests made to non-existent endpoints. */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNoResourceFound(NoResourceFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "timestamp", Instant.now(),
+                "status", 404,
+                "message", "No endpoint matches this request"
         ));
     }
 
