@@ -21,7 +21,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/actuator/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
                 .anyRequest().hasRole("ADMIN")
         )
                 .httpBasic(Customizer.withDefaults())
