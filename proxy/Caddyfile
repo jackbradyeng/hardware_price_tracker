@@ -1,0 +1,11 @@
+# To be replaced with the real domain once DNS is pointed at this host's IP.
+# Caddy auto-provisions and renews a Let's Encrypt cert for it on startup.
+hardwarepricetracker.com {
+    handle /api/* {
+        reverse_proxy backend:8080
+    }
+
+    handle {
+        reverse_proxy frontend:80
+    }
+}

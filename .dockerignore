@@ -1,0 +1,27 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+*.iml
+.vscode
+
+# Build output — regenerated inside the image by the build stage
+target/
+
+# Secrets — must never enter the build context or image layers
+secrets.env
+*.env
+
+# Docs / project meta — not needed at runtime
+README.md
+HELP.md
+CLAUDE.md
+.github
+
+# Docker itself
+backend.Dockerfile
+docker-compose.yml
+.dockerignore
