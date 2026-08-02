@@ -17,13 +17,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     /* CSRF checks are disabled as authorization is stateless (HTTP Basic, no session cookies) - re-enable if
-    * session/cookie-based auth is ever introduced. Reads are public; only writes require the admin role. */
+    * session/cookie-based auth is ever introduced. Reads are public; only writes require the admin role. Spring Boot
+    * Actuator permissions are configured to Admin-only for GET requests.
+    * **IMPORTANT:** If all endpoints are unlocked in application.properties, then POST, PATCH, and PUT requests also
+    * need to be calibrated to be read-only. */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/actuator/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                .anyRequest().hasRole("ADMIN")
+                        .anyRequest().hasRole("ADMIN")
         )
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
