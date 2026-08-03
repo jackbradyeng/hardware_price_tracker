@@ -47,3 +47,7 @@ services:
 volumes:
   postgres_data:
   postgres_dev_data:
+
+networks:
+  price_tracker_net:
+    external: true
