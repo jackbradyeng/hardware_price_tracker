@@ -5,6 +5,10 @@ hardwarepricetracker.com {
         reverse_proxy backend:8080
     }
 
+    handle /actuator/* {
+        reverse_proxy backend:8080
+    }
+
     handle {
         reverse_proxy frontend:80
     }

@@ -1,6 +1,6 @@
 # Hardware Price Tracker (Backend)
 
-A Spring Boot API which designed to track computer hardware prices over time and across multiple vendors. Built for flexibility across hardware categories and vendor sources.
+A Spring Boot CRUD API designed to track computer hardware prices over time and across multiple vendors. Built for flexibility across hardware categories and vendor sources.
 
 ---
 
