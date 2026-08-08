@@ -4,6 +4,9 @@ A Spring Boot CRUD API designed to track computer hardware prices over time and 
 
 ---
 
+https://github.com/user-attachments/assets/635383d5-a66c-4d4a-80ef-f81997e434d1
+
+
 ## Overview
 
 This application maintains a catalogue of computer hardware products (CPUs, GPUs, RAM, GPU Workstations, HDDs, SSDs, NVMEs, etc.) and stores their price points from vendors as time-series data, enabling price trend analysis over time.
