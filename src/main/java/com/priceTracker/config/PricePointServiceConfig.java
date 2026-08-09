@@ -1,42 +1,12 @@
 package com.priceTracker.config;
 
-import com.priceTracker.domain.dto.hybridDTOs.CPUDataAndPricePointDTO;
-import com.priceTracker.domain.dto.hybridDTOs.GPUDataAndPricePointDTO;
-import com.priceTracker.domain.dto.hybridDTOs.GPUWorkstationDataAndPricePointDTO;
-import com.priceTracker.domain.dto.hybridDTOs.HDDDataAndPricePointDTO;
-import com.priceTracker.domain.dto.hybridDTOs.NVMEDataAndPricePointDTO;
-import com.priceTracker.domain.dto.hybridDTOs.RAMDataAndPricePointDTO;
-import com.priceTracker.domain.dto.hybridDTOs.SSDDataAndPricePointDTO;
+import com.priceTracker.domain.dto.hybridDTOs.*;
 import com.priceTracker.domain.dto.pricePointDTOs.GenericPricePointDTO;
-import com.priceTracker.domain.dto.productDTOs.CPUDTO;
-import com.priceTracker.domain.dto.productDTOs.GPUDTO;
-import com.priceTracker.domain.dto.productDTOs.GPUWorkstationDTO;
-import com.priceTracker.domain.dto.productDTOs.HDDDTO;
-import com.priceTracker.domain.dto.productDTOs.NVMEDTO;
-import com.priceTracker.domain.dto.productDTOs.RAMDTO;
-import com.priceTracker.domain.dto.productDTOs.SSDDTO;
-import com.priceTracker.domain.entities.pricePointEntities.CPUPricePoint;
-import com.priceTracker.domain.entities.pricePointEntities.GPUPricePoint;
-import com.priceTracker.domain.entities.pricePointEntities.GPUWorkstationPricePoint;
-import com.priceTracker.domain.entities.pricePointEntities.HDDPricePoint;
-import com.priceTracker.domain.entities.pricePointEntities.NVMEPricePoint;
-import com.priceTracker.domain.entities.pricePointEntities.RAMPricePoint;
-import com.priceTracker.domain.entities.pricePointEntities.SSDPricePoint;
-import com.priceTracker.domain.entities.productEntities.CPUEntity;
-import com.priceTracker.domain.entities.productEntities.GPUEntity;
-import com.priceTracker.domain.entities.productEntities.GPUWorkstationEntity;
-import com.priceTracker.domain.entities.productEntities.HDDEntity;
-import com.priceTracker.domain.entities.productEntities.NVMEEntity;
-import com.priceTracker.domain.entities.productEntities.RAMEntity;
-import com.priceTracker.domain.entities.productEntities.SSDEntity;
+import com.priceTracker.domain.dto.productDTOs.*;
+import com.priceTracker.domain.entities.pricePointEntities.*;
+import com.priceTracker.domain.entities.productEntities.*;
 import com.priceTracker.mappers.MapperFactory;
-import com.priceTracker.repositories.pricePointRepositories.CPUPricePointRepository;
-import com.priceTracker.repositories.pricePointRepositories.GPUPricePointRepository;
-import com.priceTracker.repositories.pricePointRepositories.GPUWorkstationPricePointRepository;
-import com.priceTracker.repositories.pricePointRepositories.HDDPricePointRepository;
-import com.priceTracker.repositories.pricePointRepositories.NVMEPricePointRepository;
-import com.priceTracker.repositories.pricePointRepositories.RAMPricePointRepository;
-import com.priceTracker.repositories.pricePointRepositories.SSDPricePointRepository;
+import com.priceTracker.repositories.pricePointRepositories.*;
 import com.priceTracker.repositories.pricePointRepositories.jdbcTemplates.GenericPricePointJdbcTemplate;
 import com.priceTracker.services.pricePointServices.GenericPricePointService;
 import com.priceTracker.services.pricePointServices.impl.GenericPricePointServiceImpl;
@@ -47,10 +17,10 @@ import org.springframework.context.annotation.Configuration;
 public class PricePointServiceConfig {
 
     @Bean
-    public GenericPricePointService<CPUDataAndPricePointDTO>
-    cpuPricePointService(CPUPricePointRepository repository,
-                         GenericPricePointJdbcTemplate<CPUPricePoint> pricePointJdbcTemplate,
-                         MapperFactory mapperFactory) {
+    public GenericPricePointService<CPUDataAndPricePointDTO> cpuPricePointService(
+            CPUPricePointRepository repository,
+            GenericPricePointJdbcTemplate<CPUPricePoint> pricePointJdbcTemplate,
+            MapperFactory mapperFactory) {
 
         return new GenericPricePointServiceImpl<>(
                 repository,
@@ -70,10 +40,10 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<GPUDataAndPricePointDTO>
-    gpuPricePointService(GPUPricePointRepository repository,
-                         GenericPricePointJdbcTemplate<GPUPricePoint> pricePointJdbcTemplate,
-                         MapperFactory mapperFactory) {
+    public GenericPricePointService<GPUDataAndPricePointDTO> gpuPricePointService(
+            GPUPricePointRepository repository,
+            GenericPricePointJdbcTemplate<GPUPricePoint> pricePointJdbcTemplate,
+            MapperFactory mapperFactory) {
 
         return new GenericPricePointServiceImpl<>(
                 repository,
@@ -93,10 +63,10 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<GPUWorkstationDataAndPricePointDTO>
-    gpuWorkstationPricePointService(GPUWorkstationPricePointRepository repository,
-                                    GenericPricePointJdbcTemplate<GPUWorkstationPricePoint> pricePointJdbcTemplate,
-                                    MapperFactory mapperFactory) {
+    public GenericPricePointService<GPUWorkstationDataAndPricePointDTO> gpuWorkstationPricePointService(
+            GPUWorkstationPricePointRepository repository,
+            GenericPricePointJdbcTemplate<GPUWorkstationPricePoint> pricePointJdbcTemplate,
+            MapperFactory mapperFactory) {
 
         return new GenericPricePointServiceImpl<>(
                 repository,
@@ -116,10 +86,10 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<HDDDataAndPricePointDTO>
-    hddPricePointService(HDDPricePointRepository repository,
-                         GenericPricePointJdbcTemplate<HDDPricePoint> pricePointJdbcTemplate,
-                         MapperFactory mapperFactory) {
+    public GenericPricePointService<HDDDataAndPricePointDTO> hddPricePointService(
+            HDDPricePointRepository repository,
+            GenericPricePointJdbcTemplate<HDDPricePoint> pricePointJdbcTemplate,
+            MapperFactory mapperFactory) {
 
         return new GenericPricePointServiceImpl<>(
                 repository,
@@ -139,10 +109,10 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<NVMEDataAndPricePointDTO>
-    nvmePricePointService(NVMEPricePointRepository repository,
-                          GenericPricePointJdbcTemplate<NVMEPricePoint> pricePointJdbcTemplate,
-                          MapperFactory mapperFactory) {
+    public GenericPricePointService<NVMEDataAndPricePointDTO> nvmePricePointService(
+            NVMEPricePointRepository repository,
+            GenericPricePointJdbcTemplate<NVMEPricePoint> pricePointJdbcTemplate,
+            MapperFactory mapperFactory) {
 
         return new GenericPricePointServiceImpl<>(
                 repository,
@@ -162,10 +132,10 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<RAMDataAndPricePointDTO>
-    ramPricePointService(RAMPricePointRepository repository,
-                         GenericPricePointJdbcTemplate<RAMPricePoint> pricePointJdbcTemplate,
-                         MapperFactory mapperFactory) {
+    public GenericPricePointService<RAMDataAndPricePointDTO> ramPricePointService(
+            RAMPricePointRepository repository,
+            GenericPricePointJdbcTemplate<RAMPricePoint> pricePointJdbcTemplate,
+            MapperFactory mapperFactory) {
 
         return new GenericPricePointServiceImpl<>(
                 repository,
@@ -185,10 +155,10 @@ public class PricePointServiceConfig {
     }
 
     @Bean
-    public GenericPricePointService<SSDDataAndPricePointDTO>
-    ssdPricePointService(SSDPricePointRepository repository,
-                         GenericPricePointJdbcTemplate<SSDPricePoint> pricePointJdbcTemplate,
-                         MapperFactory mapperFactory) {
+    public GenericPricePointService<SSDDataAndPricePointDTO> ssdPricePointService(
+            SSDPricePointRepository repository,
+            GenericPricePointJdbcTemplate<SSDPricePoint> pricePointJdbcTemplate,
+            MapperFactory mapperFactory) {
 
         return new GenericPricePointServiceImpl<>(
                 repository,
