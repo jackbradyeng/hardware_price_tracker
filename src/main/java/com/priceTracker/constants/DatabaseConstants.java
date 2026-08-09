@@ -20,6 +20,9 @@ public final class DatabaseConstants {
     public static final String SSD_PRICE_HISTORY = "SSD_PRICE_HISTORY";
     public static final String NVME_PRICE_HISTORY = "NVME_PRICE_HISTORY";
 
+    // SCRAPING JOB TABLES
+    public static final String SCRAPING_JOB_RESULT = "SCRAPING_JOB_RESULT";
+
     // VENDORS
     public static final String VENDOR_TABLE_NAME = "VENDORS";
     public static final String UMART_PRODUCT_NAME = "UMART_PRODUCTS";
@@ -37,6 +40,7 @@ public final class DatabaseConstants {
     public static final String HDD_PRICE_SEQUENCE = "hdd_price_sequence";
     public static final String SSD_PRICE_SEQUENCE = "ssd_price_sequence";
     public static final String NVME_PRICE_SEQUENCE = "nvme_price_sequence";
+    public static final String SCRAPING_JOB_RESULT_SEQUENCE = "scraping_job_result_sequence";
 
     // JDBC BATCH SIZE FOR AUTOMATED PRICE POINT INSERTIONS
     public static final Integer DEFAULT_JDBC_BATCH_SIZE = 50;
