@@ -57,8 +57,14 @@ public class GenericPricePointServiceImpl<E, P extends GenericPricePoint, D, H>
     @Override
     public Optional<List<GenericPricePointDTO>> saveAll(List<GenericPricePointDTO> pricePointDTOs) {
 
-        // if empty or invalid return empty
-        if (pricePointDTOs.isEmpty() || !validatePricePointDTOs(pricePointDTOs)) {
+        if (pricePointDTOs.isEmpty()) {
+            saveResults("EMPTY VENDOR", "EMPTY TYPE", 0, 0);
+            return Optional.empty();
+        }
+
+        // uses the validate method from the interface GenericPricePointValidator
+        if (!validatePricePointDTOs(pricePointDTOs)) {
+            saveResults("INVALID VENDOR", "INVALID TYPE", pricePointDTOs.size(), 0);
             return Optional.empty();
         }
 
