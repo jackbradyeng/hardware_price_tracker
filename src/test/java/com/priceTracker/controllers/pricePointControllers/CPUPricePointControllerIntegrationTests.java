@@ -44,6 +44,7 @@ public class CPUPricePointControllerIntegrationTests {
     private GenericPricePointDTO createTestCPUPricePointDTO() {
         return GenericPricePointDTO.builder()
                 .id(1L)
+                .productType("CPU")
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)
                 .currency(TESTING_CPU_PRICE_POINT_CURRENCY)
@@ -111,6 +112,7 @@ public class CPUPricePointControllerIntegrationTests {
     public void testThatCreateMultiplePricePointsReturnsAllSavedPricePoints() throws Exception {
         GenericPricePointDTO secondPricePoint = GenericPricePointDTO.builder()
                 .id(2L)
+                .productType("CPU")
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)
                 .currency(TESTING_CPU_PRICE_POINT_CURRENCY)
@@ -279,6 +281,7 @@ public class CPUPricePointControllerIntegrationTests {
     public void testThatCreatePricePointsWithNullIdReturnsHttpStatus201_Created() throws Exception {
         GenericPricePointDTO invalidPricePoint = GenericPricePointDTO.builder()
                 .id(null)
+                .productType("CPU")
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)
                 .currency(TESTING_CPU_PRICE_POINT_CURRENCY)
