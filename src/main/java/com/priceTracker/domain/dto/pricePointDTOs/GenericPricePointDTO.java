@@ -23,6 +23,8 @@ public class GenericPricePointDTO {
 
     private Long id;
     @NotBlank
+    private String productType;
+    @NotBlank
     private String modelNumber;
     @NotBlank
     private String vendor;

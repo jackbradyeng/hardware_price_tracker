@@ -1,7 +1,9 @@
 package com.priceTracker.controllers.pricePointControllers;
 
 import com.priceTracker.domain.dto.pricePointDTOs.GenericPricePointDTO;
+import com.priceTracker.domain.entities.scrapingJobEntities.ScrapingJobResult;
 import com.priceTracker.repositories.pricePointRepositories.CPUPricePointRepository;
+import com.priceTracker.repositories.scrapingJobRepositories.ScrapingJobResultRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import static com.priceTracker.constants.VendorNames.SCORPTEC;
+import static com.priceTracker.constants.VendorNames.UMART;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -32,18 +37,28 @@ public class CPUPricePointControllerIntegrationTests {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final CPUPricePointRepository cpuPricePointRepository;
+    private final ScrapingJobResultRepository scrapingJobResultRepository;
 
     @Autowired
     public CPUPricePointControllerIntegrationTests(MockMvc mockMvc,
-                                                   CPUPricePointRepository cpuPricePointRepository) {
+                                                   CPUPricePointRepository cpuPricePointRepository,
+                                                   ScrapingJobResultRepository scrapingJobResultRepository) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
         this.cpuPricePointRepository = cpuPricePointRepository;
+        this.scrapingJobResultRepository = scrapingJobResultRepository;
+    }
+
+    private ScrapingJobResult getMostRecentScrapingJobResult() {
+        return scrapingJobResultRepository.findAll().stream()
+                .max(Comparator.comparing(ScrapingJobResult::getId))
+                .orElseThrow();
     }
 
     private GenericPricePointDTO createTestCPUPricePointDTO() {
         return GenericPricePointDTO.builder()
                 .id(1L)
+                .productType("CPU")
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)
                 .currency(TESTING_CPU_PRICE_POINT_CURRENCY)
@@ -111,6 +126,7 @@ public class CPUPricePointControllerIntegrationTests {
     public void testThatCreateMultiplePricePointsReturnsAllSavedPricePoints() throws Exception {
         GenericPricePointDTO secondPricePoint = GenericPricePointDTO.builder()
                 .id(2L)
+                .productType("CPU")
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)
                 .currency(TESTING_CPU_PRICE_POINT_CURRENCY)
@@ -145,6 +161,129 @@ public class CPUPricePointControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.status().isNoContent()
         );
+    }
+
+    // SCRAPING JOB STAT TESTS
+    @Test
+    public void testThatSaveAllWithValidPricePointsSavesScrapingJobResultWithCorrectVendorAndProductType() throws Exception {
+        List<GenericPricePointDTO> testPricePoints = List.of(createTestCPUPricePointDTO());
+        String testPricePointsString = objectMapper.writeValueAsString(testPricePoints);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(testPricePointsString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isCreated()
+        );
+
+        ScrapingJobResult scrapingJobResult = getMostRecentScrapingJobResult();
+        assertEquals(SCORPTEC, scrapingJobResult.getVendor());
+        assertEquals("CPU", scrapingJobResult.getProductType());
+    }
+
+    @Test
+    public void testThatSaveAllWithValidPricePointsSavesScrapingJobResultWithRecordsReceivedMatchingRecordsSaved() throws Exception {
+        GenericPricePointDTO secondPricePoint = GenericPricePointDTO.builder()
+                .id(2L)
+                .productType("CPU")
+                .modelNumber(TESTING_CPU_MODEL_NUMBER)
+                .vendor(SCORPTEC)
+                .currency(TESTING_CPU_PRICE_POINT_CURRENCY)
+                .price(new BigDecimal("399.99"))
+                .scrapedAt(LocalDateTime.now())
+                .build();
+        List<GenericPricePointDTO> testPricePoints = List.of(createTestCPUPricePointDTO(), secondPricePoint);
+        String testPricePointsString = objectMapper.writeValueAsString(testPricePoints);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(testPricePointsString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isCreated()
+        );
+
+        ScrapingJobResult scrapingJobResult = getMostRecentScrapingJobResult();
+        assertEquals(2, scrapingJobResult.getRecordsReceived());
+        assertEquals(2, scrapingJobResult.getRecordsSaved());
+    }
+
+    @Test
+    public void testThatSaveAllWithEmptyListSavesFailedScrapingJobResultWithZeroRecordsReceivedAndSaved() throws Exception {
+        String emptyListString = objectMapper.writeValueAsString(List.of());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(emptyListString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+
+        ScrapingJobResult scrapingJobResult = getMostRecentScrapingJobResult();
+        assertEquals("EMPTY VENDOR", scrapingJobResult.getVendor());
+        assertEquals("EMPTY TYPE", scrapingJobResult.getProductType());
+        assertEquals(0, scrapingJobResult.getRecordsReceived());
+        assertEquals(0, scrapingJobResult.getRecordsSaved());
+    }
+
+    @Test
+    public void testThatSaveAllWithMismatchedVendorsSavesFailedScrapingJobResultWithRecordsReceivedButNoRecordsSaved() throws Exception {
+        GenericPricePointDTO firstPricePoint = createTestCPUPricePointDTO();
+        GenericPricePointDTO secondPricePoint = GenericPricePointDTO.builder()
+                .id(2L)
+                .productType("CPU")
+                .modelNumber(TESTING_CPU_MODEL_NUMBER)
+                .vendor(UMART)
+                .currency(TESTING_CPU_PRICE_POINT_CURRENCY)
+                .price(TESTING_CPU_PRICE_POINT_PRICE)
+                .scrapedAt(LocalDateTime.now())
+                .build();
+        String testPricePointsString = objectMapper.writeValueAsString(List.of(firstPricePoint, secondPricePoint));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(testPricePointsString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+
+        ScrapingJobResult scrapingJobResult = getMostRecentScrapingJobResult();
+        assertEquals("INVALID VENDOR", scrapingJobResult.getVendor());
+        assertEquals("INVALID TYPE", scrapingJobResult.getProductType());
+        assertEquals(2, scrapingJobResult.getRecordsReceived());
+        assertEquals(0, scrapingJobResult.getRecordsSaved());
+    }
+
+    @Test
+    public void testThatSaveAllWithMismatchedProductTypesSavesFailedScrapingJobResultWithRecordsReceivedButNoRecordsSaved() throws Exception {
+        GenericPricePointDTO firstPricePoint = createTestCPUPricePointDTO();
+        GenericPricePointDTO secondPricePoint = GenericPricePointDTO.builder()
+                .id(2L)
+                .productType("GPU")
+                .modelNumber(TESTING_CPU_MODEL_NUMBER)
+                .vendor(SCORPTEC)
+                .currency(TESTING_CPU_PRICE_POINT_CURRENCY)
+                .price(TESTING_CPU_PRICE_POINT_PRICE)
+                .scrapedAt(LocalDateTime.now())
+                .build();
+        String testPricePointsString = objectMapper.writeValueAsString(List.of(firstPricePoint, secondPricePoint));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/cpu-pricepoints")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(testPricePointsString)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+
+        ScrapingJobResult scrapingJobResult = getMostRecentScrapingJobResult();
+        assertEquals("INVALID VENDOR", scrapingJobResult.getVendor());
+        assertEquals("INVALID TYPE", scrapingJobResult.getProductType());
+        assertEquals(2, scrapingJobResult.getRecordsReceived());
+        assertEquals(0, scrapingJobResult.getRecordsSaved());
     }
 
     // VALIDATION WIRING TESTS
@@ -279,6 +418,7 @@ public class CPUPricePointControllerIntegrationTests {
     public void testThatCreatePricePointsWithNullIdReturnsHttpStatus201_Created() throws Exception {
         GenericPricePointDTO invalidPricePoint = GenericPricePointDTO.builder()
                 .id(null)
+                .productType("CPU")
                 .modelNumber(TESTING_CPU_MODEL_NUMBER)
                 .vendor(SCORPTEC)
                 .currency(TESTING_CPU_PRICE_POINT_CURRENCY)

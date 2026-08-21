@@ -1,0 +1,43 @@
+databaseChangeLog:
+- changeSet:
+    id: 1786320000000-1
+    author: jack-brady
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: scraping_job_result_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: vendor
+            type: VARCHAR(255)
+        - column:
+            name: product_type
+            type: VARCHAR(255)
+        - column:
+            name: records_received
+            type: INTEGER
+        - column:
+            name: records_saved
+            type: INTEGER
+        - column:
+            name: time_completed
+            type: TIMESTAMP WITHOUT TIME ZONE
+        tableName: scraping_job_result
+- changeSet:
+    id: 1786320000000-2
+    author: jack-brady
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: scraping_job_result_sequence
+        startValue: 1
