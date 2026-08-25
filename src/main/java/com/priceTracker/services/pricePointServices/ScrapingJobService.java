@@ -37,4 +37,12 @@ public class ScrapingJobService {
     public List<ScrapingJobResult> findResults() {
         return scrapingJobResultRepository.findAll();
     }
+
+    public List<ScrapingJobResult> findResultsByProductType(String productType) {
+        return scrapingJobResultRepository.findScrapingJobsByProduct(productType);
+    }
+
+    public List<ScrapingJobResult> findResultsByVendor(String vendor) {
+        return scrapingJobResultRepository.findScrapingJobsByVendor(vendor);
+    }
 }
