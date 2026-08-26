@@ -47,21 +47,21 @@ public class ScrapingJobService {
                 .map(mapper::mapTo);
     }
 
-    public List<ScrapingJobResultDTO> findResults() {
-        return scrapingJobResultRepository.findAll().stream()
+    public Optional<List<ScrapingJobResultDTO>> findAll() {
+        return Optional.of(scrapingJobResultRepository.findAll().stream()
                 .map(mapper::mapTo)
-                .toList();
+                .toList());
     }
 
-    public List<ScrapingJobResultDTO> findResultsByProductType(String productType) {
-        return scrapingJobResultRepository.findScrapingJobsByProduct(productType).stream()
+    public Optional<List<ScrapingJobResultDTO>> findByProductType(String productType) {
+        return Optional.of(scrapingJobResultRepository.findScrapingJobsByProduct(productType).stream()
                 .map(mapper::mapTo)
-                .toList();
+                .toList());
     }
 
-    public List<ScrapingJobResultDTO> findResultsByVendor(String vendor) {
-        return scrapingJobResultRepository.findScrapingJobsByVendor(vendor).stream()
+    public Optional<List<ScrapingJobResultDTO>> findByVendor(String vendor) {
+        return Optional.of(scrapingJobResultRepository.findScrapingJobsByVendor(vendor).stream()
                 .map(mapper::mapTo)
-                .toList();
+                .toList());
     }
 }
