@@ -10,11 +10,11 @@ import java.util.List;
 @Repository
 public interface ScrapingJobResultRepository extends JpaRepository<ScrapingJobResult, Long> {
 
-    @Query(value = "select ScrapingJobResult s " +
+    @Query(value = "select s from ScrapingJobResult s " +
             "where s.productType = :productType")
     List<ScrapingJobResult> findScrapingJobsByProduct(@Param("productType") String productType);
 
-    @Query(value = "select ScrapingJobResult s " +
+    @Query(value = "select s from ScrapingJobResult s " +
             "where s.vendor = :vendor")
     List<ScrapingJobResult> findScrapingJobsByVendor(@Param("vendor") String vendor);
 }
